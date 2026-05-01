@@ -1,0 +1,141 @@
+{
+  "date": "2026-05-01",
+  "user_slug": "aditi",
+  "gmail": [
+    {
+      "id": "msg_mom_1",
+      "thread_id": "thr_mom_1",
+      "from": "sunita.sharma.gk2@gmail.com",
+      "to": "aditi.sharma91@gmail.com",
+      "subject": "Thinking of you",
+      "snippet": "Hi beta, how is work? Mom and Dad are missing you.",
+      "body": "Hope you are eating well.",
+      "labels": [
+        "INBOX",
+        "Personal"
+      ],
+      "received_at": "2026-04-30T09:45:00+05:30"
+    },
+    {
+      "id": "msg_hr_1",
+      "thread_id": "thr_hr_1",
+      "from": "hr@karman.in",
+      "to": "aditi.sharma91@gmail.com",
+      "subject": "Holiday on May 1st",
+      "snippet": "Office will be closed for Labor Day.",
+      "body": "Enjoy the long weekend!",
+      "labels": [
+        "INBOX",
+        "Work"
+      ],
+      "received_at": "2026-04-30T14:00:00+05:30"
+    },
+    {
+      "id": "msg_dad_1",
+      "thread_id": "thr_dad_1",
+      "from": "rajesh.sharma.banker@gmail.com",
+      "to": "aditi.sharma91@gmail.com",
+      "subject": "Insurance renewal",
+      "snippet": "Aditi, check the ICICI Lombard renewal I forwarded.",
+      "body": "It's due next week.",
+      "labels": [
+        "INBOX",
+        "Personal"
+      ],
+      "received_at": "2026-04-30T16:20:00+05:30"
+    }
+  ],
+  "calendar": [
+    {
+      "id": "ev_may1_date",
+      "summary": "Date Night: Toit",
+      "start": "2026-05-01T20:00:00+05:30",
+      "end": "2026-05-01T23:00:00+05:30",
+      "location": "Toit Indiranagar",
+      "attendees": [
+        "Karan Malhotra"
+      ],
+      "description": "Friday night ritual",
+      "all_day": false
+    },
+    {
+      "id": "ev_561abd2fe028",
+      "summary": "Pottery Class at Clay Story",
+      "start": "2026-05-02T16:00:00+05:30",
+      "end": "2026-05-02T18:00:00+05:30",
+      "location": "Indiranagar",
+      "attendees": [],
+      "description": "Clay Story pottery session",
+      "all_day": false
+    },
+    {
+      "id": "ev_540946863ce8",
+      "summary": "Yoga at SARVA Studio",
+      "start": "2026-05-03T08:00:00+05:30",
+      "end": "2026-05-03T09:00:00+05:30",
+      "location": "Indiranagar",
+      "attendees": [],
+      "description": "Weekly yoga session",
+      "all_day": false
+    },
+    {
+      "id": "ev_may3_brunch",
+      "summary": "Sunday Brunch at Glen's",
+      "start": "2026-05-03T11:00:00+05:30",
+      "end": "2026-05-03T13:30:00+05:30",
+      "location": "Glen's Bakehouse, Indiranagar",
+      "attendees": [
+        "Karan Malhotra"
+      ],
+      "description": "Sunday ritual",
+      "all_day": false
+    },
+    {
+      "id": "ev_may4_standup",
+      "summary": "Engineering Standup",
+      "start": "2026-05-04T10:00:00+05:30",
+      "end": "2026-05-04T10:30:00+05:30",
+      "location": "Google Meet",
+      "attendees": [],
+      "description": "Weekly standup",
+      "all_day": false
+    },
+    {
+      "id": "ev_0248e337c228",
+      "summary": "Sprint Planning",
+      "start": "2026-05-05T11:00:00+05:30",
+      "end": "2026-05-05T13:00:00+05:30",
+      "location": "Embassy Tech Village",
+      "attendees": [
+        "karan.r@karman.in",
+        "tech-team@karman.in"
+      ],
+      "description": "Weekly sprint planning",
+      "all_day": false
+    },
+    {
+      "id": "ev_may6_design",
+      "summary": "Design Review",
+      "start": "2026-05-06T16:00:00+05:30",
+      "end": "2026-05-06T17:30:00+05:30",
+      "location": "Embassy Tech Village",
+      "attendees": [
+        "design-team@karman.in"
+      ],
+      "description": "New feature mockup review",
+      "all_day": false
+    },
+    {
+      "id": "ev_may7_sync",
+      "summary": "Leadership Sync",
+      "start": "2026-05-07T16:00:00+05:30",
+      "end": "2026-05-07T17:00:00+05:30",
+      "location": "Embassy Tech Village",
+      "attendees": [
+        "leadership@karman.in"
+      ],
+      "description": "Bi-weekly sync",
+      "all_day": false
+    }
+  ]
+}

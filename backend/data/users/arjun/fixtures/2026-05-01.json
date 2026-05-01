@@ -1,0 +1,35 @@
+{
+  "date": "2026-05-01",
+  "user_slug": "arjun",
+  "gmail": [
+    {
+      "id": "msg_bbeb109a3ff1",
+      "thread_id": "thr_d76d08fd6153",
+      "from": "sudipto@lawfirm.in",
+      "to": "arjun.banerjee.art@gmail.com",
+      "subject": "Saturday Bridge?",
+      "snippet": "Joining?",
+      "body": "Hey Arjun, let me know about bridge.",
+      "labels": [
+        "INBOX",
+        "Personal"
+      ],
+      "received_at": "2026-04-30T14:15:00+05:30"
+    },
+    {
+      "id": "msg_9995f6f04ae9",
+      "thread_id": "thr_cb00ab7202e2",
+      "from": "mitali.b@design.com",
+      "to": "arjun.banerjee.art@gmail.com",
+      "subject": "Sunday Breakfast Idea",
+      "snippet": "Flurys?",
+      "body": "Hi Arjun, breakfast this Sunday?",
+      "labels": [
+        "INBOX",
+        "Personal"
+      ],
+      "received_at": "2026-04-30T19:30:00+05:30"
+    }
+  ],
+  "calendar": []
+}

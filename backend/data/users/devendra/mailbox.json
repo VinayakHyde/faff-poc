@@ -1,0 +1,584 @@
+{
+  "messages": [
+    {
+      "id": "msg_sat_0",
+      "thread_id": "thread_sat_0",
+      "from": "delivery@swatisnacks.com",
+      "to": "devendra.patel.ca@gmail.com",
+      "subject": "Order Received - Swati Snacks",
+      "snippet": "Panki and Handvo (Jain) are being prepared.",
+      "body": "Your order for Jain Panki and Handvo is confirmed. Expected delivery in 45 mins.",
+      "labels": [
+        "Orders",
+        "Food"
+      ],
+      "received_at": "2025-05-03T18:15:00+05:30"
+    },
+    {
+      "id": "msg_sun_0",
+      "thread_id": "thread_sun_0",
+      "from": "orders@iscongathiya.com",
+      "to": "devendra.patel.ca@gmail.com",
+      "subject": "Your Iscon Gathiya Order Confirmation",
+      "snippet": "Thank you for your order! Your Gathiya and Jalebi are on the way.",
+      "body": "Dear Devendra Patel, your order for Gathiya (500g) and Jalebi (250g) has been confirmed. Total: 450 INR.",
+      "labels": [
+        "Orders",
+        "Food"
+      ],
+      "received_at": "2025-05-04T08:30:00+05:30"
+    },
+    {
+      "id": "msg_airtel_0",
+      "thread_id": "thread_airtel_0",
+      "from": "billing@airtel.com",
+      "to": "devendra.patel.ca@gmail.com",
+      "subject": "Your Airtel Postpaid Bill for May 2025",
+      "snippet": "Your monthly bill is ₹1,299. Due date: 20th of the month.",
+      "body": "Hi Devendra, your Airtel bill is ready. You can pay using the Airtel Thanks app.",
+      "labels": [
+        "Bills"
+      ],
+      "received_at": "2025-05-05T11:00:00+05:30"
+    },
+    {
+      "id": "msg_airtel_1",
+      "thread_id": "thread_airtel_1",
+      "from": "billing@airtel.com",
+      "to": "devendra.patel.ca@gmail.com",
+      "subject": "Your Airtel Postpaid Bill for May 2025",
+      "snippet": "Your monthly bill is ₹1,299. Due date: 20th of the month.",
+      "body": "Hi Devendra, your Airtel bill is ready. You can pay using the Airtel Thanks app.",
+      "labels": [
+        "Bills"
+      ],
+      "received_at": "2025-05-05T11:00:00+05:30"
+    },
+    {
+      "id": "msg_torrent_0",
+      "thread_id": "thread_torrent_0",
+      "from": "no-reply@torrentpower.com",
+      "to": "devendra.patel.ca@gmail.com",
+      "subject": "Electricity Bill for May 2025",
+      "snippet": "Your bill for Service No. 10023456 is ready. Amount: ₹7630.",
+      "body": "Dear Customer, your electricity bill for the month of May 2025 has been generated. Please pay before the 20th.",
+      "labels": [
+        "Bills"
+      ],
+      "received_at": "2025-05-10T10:00:00+05:30"
+    },
+    {
+      "id": "msg_torrent_1",
+      "thread_id": "thread_torrent_1",
+      "from": "no-reply@torrentpower.com",
+      "to": "devendra.patel.ca@gmail.com",
+      "subject": "Electricity Bill for May 2025",
+      "snippet": "Your bill for Service No. 10023456 is ready. Amount: ₹4404.",
+      "body": "Dear Customer, your electricity bill for the month of May 2025 has been generated. Please pay before the 20th.",
+      "labels": [
+        "Bills"
+      ],
+      "received_at": "2025-05-10T10:00:00+05:30"
+    },
+    {
+      "id": "msg_cric_25",
+      "thread_id": "t_cric_25",
+      "from": "news@cricinfo.com",
+      "to": "devendra.patel.ca@gmail.com",
+      "subject": "IPL Update",
+      "snippet": "Match results...",
+      "body": "...",
+      "labels": [
+        "Hobbies"
+      ],
+      "received_at": "2025-05-13T00:00:00+05:30"
+    },
+    {
+      "id": "msg_airtel_2",
+      "thread_id": "thread_airtel_2",
+      "from": "billing@airtel.com",
+      "to": "devendra.patel.ca@gmail.com",
+      "subject": "Your Airtel Postpaid Bill for June 2025",
+      "snippet": "Your monthly bill is ₹1,299. Due date: 20th of the month.",
+      "body": "Hi Devendra, your Airtel bill is ready. You can pay using the Airtel Thanks app.",
+      "labels": [
+        "Bills"
+      ],
+      "received_at": "2025-06-05T11:00:00+05:30"
+    },
+    {
+      "id": "msg_torrent_2",
+      "thread_id": "thread_torrent_2",
+      "from": "no-reply@torrentpower.com",
+      "to": "devendra.patel.ca@gmail.com",
+      "subject": "Electricity Bill for June 2025",
+      "snippet": "Your bill for Service No. 10023456 is ready. Amount: ₹5640.",
+      "body": "Dear Customer, your electricity bill for the month of June 2025 has been generated. Please pay before the 20th.",
+      "labels": [
+        "Bills"
+      ],
+      "received_at": "2025-06-10T10:00:00+05:30"
+    },
+    {
+      "id": "msg_us_1",
+      "thread_id": "t_us",
+      "from": "bookings@airindia.in",
+      "to": "devendra.patel.ca@gmail.com",
+      "subject": "Flight Confirmation: AMD to EWR",
+      "snippet": "Booking ID AI-982345 confirmed.",
+      "body": "...",
+      "labels": [
+        "Travel"
+      ],
+      "received_at": "2025-06-15T14:30:00+05:30"
+    },
+    {
+      "id": "msg_cric_17",
+      "thread_id": "t_cric_17",
+      "from": "news@cricinfo.com",
+      "to": "devendra.patel.ca@gmail.com",
+      "subject": "IPL Update",
+      "snippet": "Match results...",
+      "body": "...",
+      "labels": [
+        "Hobbies"
+      ],
+      "received_at": "2025-07-04T00:00:00+05:30"
+    },
+    {
+      "id": "msg_airtel_3",
+      "thread_id": "thread_airtel_3",
+      "from": "billing@airtel.com",
+      "to": "devendra.patel.ca@gmail.com",
+      "subject": "Your Airtel Postpaid Bill for July 2025",
+      "snippet": "Your monthly bill is ₹1,299. Due date: 20th of the month.",
+      "body": "Hi Devendra, your Airtel bill is ready. You can pay using the Airtel Thanks app.",
+      "labels": [
+        "Bills"
+      ],
+      "received_at": "2025-07-05T11:00:00+05:30"
+    },
+    {
+      "id": "msg_torrent_3",
+      "thread_id": "thread_torrent_3",
+      "from": "no-reply@torrentpower.com",
+      "to": "devendra.patel.ca@gmail.com",
+      "subject": "Electricity Bill for July 2025",
+      "snippet": "Your bill for Service No. 10023456 is ready. Amount: ₹6296.",
+      "body": "Dear Customer, your electricity bill for the month of July 2025 has been generated. Please pay before the 20th.",
+      "labels": [
+        "Bills"
+      ],
+      "received_at": "2025-07-10T10:00:00+05:30"
+    },
+    {
+      "id": "msg_sat_3",
+      "thread_id": "thread_sat_3",
+      "from": "delivery@swatisnacks.com",
+      "to": "devendra.patel.ca@gmail.com",
+      "subject": "Order Received - Swati Snacks",
+      "snippet": "Panki and Handvo (Jain) are being prepared.",
+      "body": "Your order for Jain Panki and Handvo is confirmed. Expected delivery in 45 mins.",
+      "labels": [
+        "Orders",
+        "Food"
+      ],
+      "received_at": "2025-07-26T18:15:00+05:30"
+    },
+    {
+      "id": "msg_sun_3",
+      "thread_id": "thread_sun_3",
+      "from": "orders@iscongathiya.com",
+      "to": "devendra.patel.ca@gmail.com",
+      "subject": "Your Iscon Gathiya Order Confirmation",
+      "snippet": "Thank you for your order! Your Gathiya and Jalebi are on the way.",
+      "body": "Dear Devendra Patel, your order for Gathiya (500g) and Jalebi (250g) has been confirmed. Total: 450 INR.",
+      "labels": [
+        "Orders",
+        "Food"
+      ],
+      "received_at": "2025-07-27T08:30:00+05:30"
+    },
+    {
+      "id": "msg_cric_21",
+      "thread_id": "t_cric_21",
+      "from": "news@cricinfo.com",
+      "to": "devendra.patel.ca@gmail.com",
+      "subject": "IPL Update",
+      "snippet": "Match results...",
+      "body": "...",
+      "labels": [
+        "Hobbies"
+      ],
+      "received_at": "2025-08-03T00:00:00+05:30"
+    },
+    {
+      "id": "msg_airtel_4",
+      "thread_id": "thread_airtel_4",
+      "from": "billing@airtel.com",
+      "to": "devendra.patel.ca@gmail.com",
+      "subject": "Your Airtel Postpaid Bill for August 2025",
+      "snippet": "Your monthly bill is ₹1,299. Due date: 20th of the month.",
+      "body": "Hi Devendra, your Airtel bill is ready. You can pay using the Airtel Thanks app.",
+      "labels": [
+        "Bills"
+      ],
+      "received_at": "2025-08-05T11:00:00+05:30"
+    },
+    {
+      "id": "msg_cric_16",
+      "thread_id": "t_cric_16",
+      "from": "news@cricinfo.com",
+      "to": "devendra.patel.ca@gmail.com",
+      "subject": "IPL Update",
+      "snippet": "Match results...",
+      "body": "...",
+      "labels": [
+        "Hobbies"
+      ],
+      "received_at": "2025-08-09T00:00:00+05:30"
+    },
+    {
+      "id": "msg_torrent_4",
+      "thread_id": "thread_torrent_4",
+      "from": "no-reply@torrentpower.com",
+      "to": "devendra.patel.ca@gmail.com",
+      "subject": "Electricity Bill for August 2025",
+      "snippet": "Your bill for Service No. 10023456 is ready. Amount: ₹6242.",
+      "body": "Dear Customer, your electricity bill for the month of August 2025 has been generated. Please pay before the 20th.",
+      "labels": [
+        "Bills"
+      ],
+      "received_at": "2025-08-10T10:00:00+05:30"
+    },
+    {
+      "id": "msg_airtel_5",
+      "thread_id": "thread_airtel_5",
+      "from": "billing@airtel.com",
+      "to": "devendra.patel.ca@gmail.com",
+      "subject": "Your Airtel Postpaid Bill for September 2025",
+      "snippet": "Your monthly bill is ₹1,299. Due date: 20th of the month.",
+      "body": "Hi Devendra, your Airtel bill is ready. You can pay using the Airtel Thanks app.",
+      "labels": [
+        "Bills"
+      ],
+      "received_at": "2025-09-05T11:00:00+05:30"
+    },
+    {
+      "id": "msg_torrent_5",
+      "thread_id": "thread_torrent_5",
+      "from": "no-reply@torrentpower.com",
+      "to": "devendra.patel.ca@gmail.com",
+      "subject": "Electricity Bill for September 2025",
+      "snippet": "Your bill for Service No. 10023456 is ready. Amount: ₹6542.",
+      "body": "Dear Customer, your electricity bill for the month of September 2025 has been generated. Please pay before the 20th.",
+      "labels": [
+        "Bills"
+      ],
+      "received_at": "2025-09-10T10:00:00+05:30"
+    },
+    {
+      "id": "msg_airtel_6",
+      "thread_id": "thread_airtel_6",
+      "from": "billing@airtel.com",
+      "to": "devendra.patel.ca@gmail.com",
+      "subject": "Your Airtel Postpaid Bill for October 2025",
+      "snippet": "Your monthly bill is ₹1,299. Due date: 20th of the month.",
+      "body": "Hi Devendra, your Airtel bill is ready. You can pay using the Airtel Thanks app.",
+      "labels": [
+        "Bills"
+      ],
+      "received_at": "2025-10-05T11:00:00+05:30"
+    },
+    {
+      "id": "msg_torrent_6",
+      "thread_id": "thread_torrent_6",
+      "from": "no-reply@torrentpower.com",
+      "to": "devendra.patel.ca@gmail.com",
+      "subject": "Electricity Bill for October 2025",
+      "snippet": "Your bill for Service No. 10023456 is ready. Amount: ₹5956.",
+      "body": "Dear Customer, your electricity bill for the month of October 2025 has been generated. Please pay before the 20th.",
+      "labels": [
+        "Bills"
+      ],
+      "received_at": "2025-10-10T10:00:00+05:30"
+    },
+    {
+      "id": "msg_sat_6",
+      "thread_id": "thread_sat_6",
+      "from": "delivery@swatisnacks.com",
+      "to": "devendra.patel.ca@gmail.com",
+      "subject": "Order Received - Swati Snacks",
+      "snippet": "Panki and Handvo (Jain) are being prepared.",
+      "body": "Your order for Jain Panki and Handvo is confirmed. Expected delivery in 45 mins.",
+      "labels": [
+        "Orders",
+        "Food"
+      ],
+      "received_at": "2025-10-18T18:15:00+05:30"
+    },
+    {
+      "id": "msg_sun_6",
+      "thread_id": "thread_sun_6",
+      "from": "orders@iscongathiya.com",
+      "to": "devendra.patel.ca@gmail.com",
+      "subject": "Your Iscon Gathiya Order Confirmation",
+      "snippet": "Thank you for your order! Your Gathiya and Jalebi are on the way.",
+      "body": "Dear Devendra Patel, your order for Gathiya (500g) and Jalebi (250g) has been confirmed. Total: 450 INR.",
+      "labels": [
+        "Orders",
+        "Food"
+      ],
+      "received_at": "2025-10-19T08:30:00+05:30"
+    },
+    {
+      "id": "msg_palitana_1",
+      "thread_id": "t_pal",
+      "from": "reservations@palitanaretreat.com",
+      "to": "devendra.patel.ca@gmail.com",
+      "subject": "Booking Confirmation",
+      "snippet": "Nov 12-15 confirmed.",
+      "body": "...",
+      "labels": [
+        "Travel"
+      ],
+      "received_at": "2025-10-20T11:00:00+05:30"
+    },
+    {
+      "id": "msg_airtel_7",
+      "thread_id": "thread_airtel_7",
+      "from": "billing@airtel.com",
+      "to": "devendra.patel.ca@gmail.com",
+      "subject": "Your Airtel Postpaid Bill for November 2025",
+      "snippet": "Your monthly bill is ₹1,299. Due date: 20th of the month.",
+      "body": "Hi Devendra, your Airtel bill is ready. You can pay using the Airtel Thanks app.",
+      "labels": [
+        "Bills"
+      ],
+      "received_at": "2025-11-05T11:00:00+05:30"
+    },
+    {
+      "id": "msg_torrent_7",
+      "thread_id": "thread_torrent_7",
+      "from": "no-reply@torrentpower.com",
+      "to": "devendra.patel.ca@gmail.com",
+      "subject": "Electricity Bill for November 2025",
+      "snippet": "Your bill for Service No. 10023456 is ready. Amount: ₹5339.",
+      "body": "Dear Customer, your electricity bill for the month of November 2025 has been generated. Please pay before the 20th.",
+      "labels": [
+        "Bills"
+      ],
+      "received_at": "2025-11-10T10:00:00+05:30"
+    },
+    {
+      "id": "msg_airtel_8",
+      "thread_id": "thread_airtel_8",
+      "from": "billing@airtel.com",
+      "to": "devendra.patel.ca@gmail.com",
+      "subject": "Your Airtel Postpaid Bill for December 2025",
+      "snippet": "Your monthly bill is ₹1,299. Due date: 20th of the month.",
+      "body": "Hi Devendra, your Airtel bill is ready. You can pay using the Airtel Thanks app.",
+      "labels": [
+        "Bills"
+      ],
+      "received_at": "2025-12-05T11:00:00+05:30"
+    },
+    {
+      "id": "msg_cric_4",
+      "thread_id": "t_cric_4",
+      "from": "news@cricinfo.com",
+      "to": "devendra.patel.ca@gmail.com",
+      "subject": "IPL Update",
+      "snippet": "Match results...",
+      "body": "...",
+      "labels": [
+        "Hobbies"
+      ],
+      "received_at": "2025-12-07T00:00:00+05:30"
+    },
+    {
+      "id": "msg_torrent_8",
+      "thread_id": "thread_torrent_8",
+      "from": "no-reply@torrentpower.com",
+      "to": "devendra.patel.ca@gmail.com",
+      "subject": "Electricity Bill for December 2025",
+      "snippet": "Your bill for Service No. 10023456 is ready. Amount: ₹5684.",
+      "body": "Dear Customer, your electricity bill for the month of December 2025 has been generated. Please pay before the 20th.",
+      "labels": [
+        "Bills"
+      ],
+      "received_at": "2025-12-10T10:00:00+05:30"
+    },
+    {
+      "id": "msg_airtel_9",
+      "thread_id": "thread_airtel_9",
+      "from": "billing@airtel.com",
+      "to": "devendra.patel.ca@gmail.com",
+      "subject": "Your Airtel Postpaid Bill for January 2026",
+      "snippet": "Your monthly bill is ₹1,299. Due date: 20th of the month.",
+      "body": "Hi Devendra, your Airtel bill is ready. You can pay using the Airtel Thanks app.",
+      "labels": [
+        "Bills"
+      ],
+      "received_at": "2026-01-05T11:00:00+05:30"
+    },
+    {
+      "id": "msg_torrent_9",
+      "thread_id": "thread_torrent_9",
+      "from": "no-reply@torrentpower.com",
+      "to": "devendra.patel.ca@gmail.com",
+      "subject": "Electricity Bill for January 2026",
+      "snippet": "Your bill for Service No. 10023456 is ready. Amount: ₹7080.",
+      "body": "Dear Customer, your electricity bill for the month of January 2026 has been generated. Please pay before the 20th.",
+      "labels": [
+        "Bills"
+      ],
+      "received_at": "2026-01-10T10:00:00+05:30"
+    },
+    {
+      "id": "msg_sat_9",
+      "thread_id": "thread_sat_9",
+      "from": "delivery@swatisnacks.com",
+      "to": "devendra.patel.ca@gmail.com",
+      "subject": "Order Received - Swati Snacks",
+      "snippet": "Panki and Handvo (Jain) are being prepared.",
+      "body": "Your order for Jain Panki and Handvo is confirmed. Expected delivery in 45 mins.",
+      "labels": [
+        "Orders",
+        "Food"
+      ],
+      "received_at": "2026-01-10T18:15:00+05:30"
+    },
+    {
+      "id": "msg_sun_9",
+      "thread_id": "thread_sun_9",
+      "from": "orders@iscongathiya.com",
+      "to": "devendra.patel.ca@gmail.com",
+      "subject": "Your Iscon Gathiya Order Confirmation",
+      "snippet": "Thank you for your order! Your Gathiya and Jalebi are on the way.",
+      "body": "Dear Devendra Patel, your order for Gathiya (500g) and Jalebi (250g) has been confirmed. Total: 450 INR.",
+      "labels": [
+        "Orders",
+        "Food"
+      ],
+      "received_at": "2026-01-11T08:30:00+05:30"
+    },
+    {
+      "id": "msg_cric_11",
+      "thread_id": "t_cric_11",
+      "from": "news@cricinfo.com",
+      "to": "devendra.patel.ca@gmail.com",
+      "subject": "IPL Update",
+      "snippet": "Match results...",
+      "body": "...",
+      "labels": [
+        "Hobbies"
+      ],
+      "received_at": "2026-01-30T00:00:00+05:30"
+    },
+    {
+      "id": "msg_cric_22",
+      "thread_id": "t_cric_22",
+      "from": "news@cricinfo.com",
+      "to": "devendra.patel.ca@gmail.com",
+      "subject": "IPL Update",
+      "snippet": "Match results...",
+      "body": "...",
+      "labels": [
+        "Hobbies"
+      ],
+      "received_at": "2026-02-05T00:00:00+05:30"
+    },
+    {
+      "id": "msg_airtel_10",
+      "thread_id": "thread_airtel_10",
+      "from": "billing@airtel.com",
+      "to": "devendra.patel.ca@gmail.com",
+      "subject": "Your Airtel Postpaid Bill for February 2026",
+      "snippet": "Your monthly bill is ₹1,299. Due date: 20th of the month.",
+      "body": "Hi Devendra, your Airtel bill is ready. You can pay using the Airtel Thanks app.",
+      "labels": [
+        "Bills"
+      ],
+      "received_at": "2026-02-05T11:00:00+05:30"
+    },
+    {
+      "id": "msg_torrent_10",
+      "thread_id": "thread_torrent_10",
+      "from": "no-reply@torrentpower.com",
+      "to": "devendra.patel.ca@gmail.com",
+      "subject": "Electricity Bill for February 2026",
+      "snippet": "Your bill for Service No. 10023456 is ready. Amount: ₹4326.",
+      "body": "Dear Customer, your electricity bill for the month of February 2026 has been generated. Please pay before the 20th.",
+      "labels": [
+        "Bills"
+      ],
+      "received_at": "2026-02-10T10:00:00+05:30"
+    },
+    {
+      "id": "msg_airtel_11",
+      "thread_id": "thread_airtel_11",
+      "from": "billing@airtel.com",
+      "to": "devendra.patel.ca@gmail.com",
+      "subject": "Your Airtel Postpaid Bill for March 2026",
+      "snippet": "Your monthly bill is ₹1,299. Due date: 20th of the month.",
+      "body": "Hi Devendra, your Airtel bill is ready. You can pay using the Airtel Thanks app.",
+      "labels": [
+        "Bills"
+      ],
+      "received_at": "2026-03-05T11:00:00+05:30"
+    },
+    {
+      "id": "msg_torrent_11",
+      "thread_id": "thread_torrent_11",
+      "from": "no-reply@torrentpower.com",
+      "to": "devendra.patel.ca@gmail.com",
+      "subject": "Electricity Bill for March 2026",
+      "snippet": "Your bill for Service No. 10023456 is ready. Amount: ₹7595.",
+      "body": "Dear Customer, your electricity bill for the month of March 2026 has been generated. Please pay before the 20th.",
+      "labels": [
+        "Bills"
+      ],
+      "received_at": "2026-03-10T10:00:00+05:30"
+    },
+    {
+      "id": "msg_mumbai_1",
+      "thread_id": "t_mum",
+      "from": "confirmations@indigo.in",
+      "to": "devendra.patel.ca@gmail.com",
+      "subject": "Flight Ticket - AMD to BOM",
+      "snippet": "Flight 6E-234 on May 1.",
+      "body": "...",
+      "labels": [
+        "Travel"
+      ],
+      "received_at": "2026-04-15T16:45:00+05:30"
+    },
+    {
+      "id": "msg_cric_28",
+      "thread_id": "t_cric_28",
+      "from": "news@cricinfo.com",
+      "to": "devendra.patel.ca@gmail.com",
+      "subject": "IPL Update",
+      "snippet": "Match results...",
+      "body": "...",
+      "labels": [
+        "Hobbies"
+      ],
+      "received_at": "2026-04-18T00:00:00+05:30"
+    },
+    {
+      "id": "fix_msg_1",
+      "thread_id": "tf1",
+      "from": "nilesh@patelassociates.com",
+      "to": "devendra.patel.ca@gmail.com",
+      "subject": "Final review of FY25 Audit",
+      "snippet": "Discuss tomorrow?",
+      "body": "...",
+      "labels": [
+        "Work"
+      ],
+      "received_at": "2026-04-30T17:30:00+05:30"
+    }
+  ]
+}

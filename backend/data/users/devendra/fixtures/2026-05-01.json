@@ -1,0 +1,20 @@
+{
+  "date": "2026-05-01",
+  "user_slug": "devendra",
+  "gmail": [
+    {
+      "id": "fix_msg_1",
+      "thread_id": "tf1",
+      "from": "nilesh@patelassociates.com",
+      "to": "devendra.patel.ca@gmail.com",
+      "subject": "Final review of FY25 Audit",
+      "snippet": "Discuss tomorrow?",
+      "body": "...",
+      "labels": [
+        "Work"
+      ],
+      "received_at": "2026-04-30T17:30:00+05:30"
+    }
+  ],
+  "calendar": []
+}

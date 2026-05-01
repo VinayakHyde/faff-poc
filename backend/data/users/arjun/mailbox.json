@@ -1,0 +1,886 @@
+{
+  "messages": [
+    {
+      "id": "msg_4d7808af55b4",
+      "thread_id": "thr_f2c34db24ea5",
+      "from": "billing@jio.com",
+      "to": "arjun.banerjee.art@gmail.com",
+      "subject": "JioFiber Bill - May 2025",
+      "snippet": "Bill amount: INR 999",
+      "body": "Dear Arjun, your bill for May 2025 is INR 999.",
+      "labels": [
+        "INBOX",
+        "Bills"
+      ],
+      "received_at": "2025-05-01T10:03:00+05:30"
+    },
+    {
+      "id": "msg_823657a20b54",
+      "thread_id": "thr_96a4fefc5bea",
+      "from": "ebill@airtel.com",
+      "to": "arjun.banerjee.art@gmail.com",
+      "subject": "Your Airtel Postpaid Bill - May 2025",
+      "snippet": "Bill amount: INR 1499",
+      "body": "Dear Arjun, your bill for May 2025 is INR 1499.",
+      "labels": [
+        "INBOX",
+        "Bills"
+      ],
+      "received_at": "2025-05-02T10:29:00+05:30"
+    },
+    {
+      "id": "msg_4d980d1f002f",
+      "thread_id": "thr_18ac1e1bbd65",
+      "from": "billing@cesc.co.in",
+      "to": "arjun.banerjee.art@gmail.com",
+      "subject": "CESC Bill for Account 8892 - May 2025",
+      "snippet": "Bill amount: INR 3932",
+      "body": "Dear Arjun, your bill for May 2025 is INR 3932.",
+      "labels": [
+        "INBOX",
+        "Bills"
+      ],
+      "received_at": "2025-05-05T10:20:00+05:30"
+    },
+    {
+      "id": "msg_1c7410d2fe1d",
+      "thread_id": "thr_ad328082da52",
+      "from": "noreply@swiggy.in",
+      "to": "arjun.banerjee.art@gmail.com",
+      "subject": "Your order from Flurys is confirmed!",
+      "snippet": "Breakfast is on its way!",
+      "body": "Hi Arjun, your order from Flurys is being prepared.",
+      "labels": [
+        "INBOX",
+        "Purchases"
+      ],
+      "received_at": "2025-05-11T09:29:00+05:30"
+    },
+    {
+      "id": "msg_b16800ccdfa3",
+      "thread_id": "thr_290546d91487",
+      "from": "noreply@swiggy.in",
+      "to": "arjun.banerjee.art@gmail.com",
+      "subject": "Your order from Amber is confirmed!",
+      "snippet": "Your delicious meal from Amber is on its way.",
+      "body": "Hi Arjun, your order from Amber is being prepared.",
+      "labels": [
+        "INBOX",
+        "Purchases"
+      ],
+      "received_at": "2025-05-15T20:19:00+05:30"
+    },
+    {
+      "id": "msg_67e9ddaeca1a",
+      "thread_id": "thr_3da69a684579",
+      "from": "noreply@swiggy.in",
+      "to": "arjun.banerjee.art@gmail.com",
+      "subject": "Your order from Kareem's is confirmed!",
+      "snippet": "Your delicious meal from Kareem's is on its way.",
+      "body": "Hi Arjun, your order from Kareem's is being prepared.",
+      "labels": [
+        "INBOX",
+        "Purchases"
+      ],
+      "received_at": "2025-05-22T20:53:00+05:30"
+    },
+    {
+      "id": "msg_953116d4bd39",
+      "thread_id": "thr_c8ccb5b86bf5",
+      "from": "rina@modernart.com",
+      "to": "arjun.banerjee.art@gmail.com",
+      "subject": "Upcoming Show",
+      "snippet": "Hi Arjun...",
+      "body": "Dear Arjun, Upcoming Show.",
+      "labels": [
+        "INBOX",
+        "Work"
+      ],
+      "received_at": "2025-06-01T00:00:00+05:30"
+    },
+    {
+      "id": "msg_36aabe983f24",
+      "thread_id": "thr_593ace5e45f2",
+      "from": "noreply@swiggy.in",
+      "to": "arjun.banerjee.art@gmail.com",
+      "subject": "Your order from Flurys is confirmed!",
+      "snippet": "Breakfast is on its way!",
+      "body": "Hi Arjun, your order from Flurys is being prepared.",
+      "labels": [
+        "INBOX",
+        "Purchases"
+      ],
+      "received_at": "2025-06-01T09:19:00+05:30"
+    },
+    {
+      "id": "msg_d9587a093faf",
+      "thread_id": "thr_077e371de225",
+      "from": "billing@jio.com",
+      "to": "arjun.banerjee.art@gmail.com",
+      "subject": "JioFiber Bill - June 2025",
+      "snippet": "Bill amount: INR 999",
+      "body": "Dear Arjun, your bill for June 2025 is INR 999.",
+      "labels": [
+        "INBOX",
+        "Bills"
+      ],
+      "received_at": "2025-06-01T10:28:00+05:30"
+    },
+    {
+      "id": "msg_e11fe6145b4b",
+      "thread_id": "thr_d094651a6756",
+      "from": "ebill@airtel.com",
+      "to": "arjun.banerjee.art@gmail.com",
+      "subject": "Your Airtel Postpaid Bill - June 2025",
+      "snippet": "Bill amount: INR 1499",
+      "body": "Dear Arjun, your bill for June 2025 is INR 1499.",
+      "labels": [
+        "INBOX",
+        "Bills"
+      ],
+      "received_at": "2025-06-02T10:34:00+05:30"
+    },
+    {
+      "id": "msg_0a96d180986e",
+      "thread_id": "thr_ac58eb9ae417",
+      "from": "billing@cesc.co.in",
+      "to": "arjun.banerjee.art@gmail.com",
+      "subject": "CESC Bill for Account 8892 - June 2025",
+      "snippet": "Bill amount: INR 5747",
+      "body": "Dear Arjun, your bill for June 2025 is INR 5747.",
+      "labels": [
+        "INBOX",
+        "Bills"
+      ],
+      "received_at": "2025-06-05T10:46:00+05:30"
+    },
+    {
+      "id": "msg_d1f6e05f9891",
+      "thread_id": "thr_5a14c6beb043",
+      "from": "rina@modernart.com",
+      "to": "arjun.banerjee.art@gmail.com",
+      "subject": "Upcoming Show",
+      "snippet": "Hi Arjun...",
+      "body": "Dear Arjun, Upcoming Show.",
+      "labels": [
+        "INBOX",
+        "Work"
+      ],
+      "received_at": "2025-06-09T00:00:00+05:30"
+    },
+    {
+      "id": "msg_9d2debbd7b8d",
+      "thread_id": "thr_11bd14b54a74",
+      "from": "art-collector@yahoo.com",
+      "to": "arjun.banerjee.art@gmail.com",
+      "subject": "Price list request",
+      "snippet": "Hi Arjun...",
+      "body": "Dear Arjun, Price list request.",
+      "labels": [
+        "INBOX",
+        "Work"
+      ],
+      "received_at": "2025-06-10T00:00:00+05:30"
+    },
+    {
+      "id": "msg_e5a48dd31e55",
+      "thread_id": "thr_5b9b33aab8cb",
+      "from": "noreply@swiggy.in",
+      "to": "arjun.banerjee.art@gmail.com",
+      "subject": "Your order from Amber is confirmed!",
+      "snippet": "Your delicious meal from Amber is on its way.",
+      "body": "Hi Arjun, your order from Amber is being prepared.",
+      "labels": [
+        "INBOX",
+        "Purchases"
+      ],
+      "received_at": "2025-06-19T20:44:00+05:30"
+    },
+    {
+      "id": "msg_3bf30dc9641f",
+      "thread_id": "thr_f606c171eff5",
+      "from": "info@kalakritigallery.com",
+      "to": "arjun.banerjee.art@gmail.com",
+      "subject": "Framing Status",
+      "snippet": "Hi Arjun...",
+      "body": "Dear Arjun, Framing Status.",
+      "labels": [
+        "INBOX",
+        "Work"
+      ],
+      "received_at": "2025-06-22T00:00:00+05:30"
+    },
+    {
+      "id": "msg_8ec4171007d8",
+      "thread_id": "thr_0b3962aa2503",
+      "from": "billing@jio.com",
+      "to": "arjun.banerjee.art@gmail.com",
+      "subject": "JioFiber Bill - July 2025",
+      "snippet": "Bill amount: INR 999",
+      "body": "Dear Arjun, your bill for July 2025 is INR 999.",
+      "labels": [
+        "INBOX",
+        "Bills"
+      ],
+      "received_at": "2025-07-01T10:11:00+05:30"
+    },
+    {
+      "id": "msg_d3cda97c0b8f",
+      "thread_id": "thr_6f1aef888deb",
+      "from": "ebill@airtel.com",
+      "to": "arjun.banerjee.art@gmail.com",
+      "subject": "Your Airtel Postpaid Bill - July 2025",
+      "snippet": "Bill amount: INR 1499",
+      "body": "Dear Arjun, your bill for July 2025 is INR 1499.",
+      "labels": [
+        "INBOX",
+        "Bills"
+      ],
+      "received_at": "2025-07-02T10:36:00+05:30"
+    },
+    {
+      "id": "msg_41498f00e630",
+      "thread_id": "thr_7dce4e7d26bc",
+      "from": "billing@cesc.co.in",
+      "to": "arjun.banerjee.art@gmail.com",
+      "subject": "CESC Bill for Account 8892 - July 2025",
+      "snippet": "Bill amount: INR 5723",
+      "body": "Dear Arjun, your bill for July 2025 is INR 5723.",
+      "labels": [
+        "INBOX",
+        "Bills"
+      ],
+      "received_at": "2025-07-05T10:05:00+05:30"
+    },
+    {
+      "id": "msg_bf58d378eaa4",
+      "thread_id": "thr_f34613495eba",
+      "from": "billing@jio.com",
+      "to": "arjun.banerjee.art@gmail.com",
+      "subject": "JioFiber Bill - August 2025",
+      "snippet": "Bill amount: INR 999",
+      "body": "Dear Arjun, your bill for August 2025 is INR 999.",
+      "labels": [
+        "INBOX",
+        "Bills"
+      ],
+      "received_at": "2025-08-01T10:58:00+05:30"
+    },
+    {
+      "id": "msg_09d0b01ddb71",
+      "thread_id": "thr_b7b68022a036",
+      "from": "ebill@airtel.com",
+      "to": "arjun.banerjee.art@gmail.com",
+      "subject": "Your Airtel Postpaid Bill - August 2025",
+      "snippet": "Bill amount: INR 1499",
+      "body": "Dear Arjun, your bill for August 2025 is INR 1499.",
+      "labels": [
+        "INBOX",
+        "Bills"
+      ],
+      "received_at": "2025-08-02T10:53:00+05:30"
+    },
+    {
+      "id": "msg_ac7a79ef35f8",
+      "thread_id": "thr_1734231f8394",
+      "from": "billing@cesc.co.in",
+      "to": "arjun.banerjee.art@gmail.com",
+      "subject": "CESC Bill for Account 8892 - August 2025",
+      "snippet": "Bill amount: INR 3214",
+      "body": "Dear Arjun, your bill for August 2025 is INR 3214.",
+      "labels": [
+        "INBOX",
+        "Bills"
+      ],
+      "received_at": "2025-08-05T10:22:00+05:30"
+    },
+    {
+      "id": "msg_9ca8d5609e2e",
+      "thread_id": "thr_77fa9beb2b42",
+      "from": "rina@modernart.com",
+      "to": "arjun.banerjee.art@gmail.com",
+      "subject": "Upcoming Show",
+      "snippet": "Hi Arjun...",
+      "body": "Dear Arjun, Upcoming Show.",
+      "labels": [
+        "INBOX",
+        "Work"
+      ],
+      "received_at": "2025-08-14T00:00:00+05:30"
+    },
+    {
+      "id": "msg_e920f07327d6",
+      "thread_id": "thr_b1dbed9f1175",
+      "from": "noreply@swiggy.in",
+      "to": "arjun.banerjee.art@gmail.com",
+      "subject": "Your order from Amber is confirmed!",
+      "snippet": "Your delicious meal from Amber is on its way.",
+      "body": "Hi Arjun, your order from Amber is being prepared.",
+      "labels": [
+        "INBOX",
+        "Purchases"
+      ],
+      "received_at": "2025-08-14T20:58:00+05:30"
+    },
+    {
+      "id": "msg_240bc347f8ed",
+      "thread_id": "thr_58d78c70f30a",
+      "from": "info@kalakritigallery.com",
+      "to": "arjun.banerjee.art@gmail.com",
+      "subject": "Framing Status",
+      "snippet": "Hi Arjun...",
+      "body": "Dear Arjun, Framing Status.",
+      "labels": [
+        "INBOX",
+        "Work"
+      ],
+      "received_at": "2025-08-22T00:00:00+05:30"
+    },
+    {
+      "id": "msg_302b56ef1fbd",
+      "thread_id": "thr_ec0b66aea9b5",
+      "from": "info@kalakritigallery.com",
+      "to": "arjun.banerjee.art@gmail.com",
+      "subject": "Framing Status",
+      "snippet": "Hi Arjun...",
+      "body": "Dear Arjun, Framing Status.",
+      "labels": [
+        "INBOX",
+        "Work"
+      ],
+      "received_at": "2025-08-23T00:00:00+05:30"
+    },
+    {
+      "id": "msg_9fbdcdc58ded",
+      "thread_id": "thr_16b572688be7",
+      "from": "art-collector@yahoo.com",
+      "to": "arjun.banerjee.art@gmail.com",
+      "subject": "Price list request",
+      "snippet": "Hi Arjun...",
+      "body": "Dear Arjun, Price list request.",
+      "labels": [
+        "INBOX",
+        "Work"
+      ],
+      "received_at": "2025-08-30T00:00:00+05:30"
+    },
+    {
+      "id": "msg_80ae4f361f85",
+      "thread_id": "thr_6d3a4a75c1b0",
+      "from": "art-collector@yahoo.com",
+      "to": "arjun.banerjee.art@gmail.com",
+      "subject": "Price list request",
+      "snippet": "Hi Arjun...",
+      "body": "Dear Arjun, Price list request.",
+      "labels": [
+        "INBOX",
+        "Work"
+      ],
+      "received_at": "2025-08-31T00:00:00+05:30"
+    },
+    {
+      "id": "msg_14b1c126a881",
+      "thread_id": "thr_afff5cd244d3",
+      "from": "billing@jio.com",
+      "to": "arjun.banerjee.art@gmail.com",
+      "subject": "JioFiber Bill - September 2025",
+      "snippet": "Bill amount: INR 999",
+      "body": "Dear Arjun, your bill for September 2025 is INR 999.",
+      "labels": [
+        "INBOX",
+        "Bills"
+      ],
+      "received_at": "2025-09-01T10:52:00+05:30"
+    },
+    {
+      "id": "msg_8dcac72786dd",
+      "thread_id": "thr_b3ec2b949a9d",
+      "from": "ebill@airtel.com",
+      "to": "arjun.banerjee.art@gmail.com",
+      "subject": "Your Airtel Postpaid Bill - September 2025",
+      "snippet": "Bill amount: INR 1499",
+      "body": "Dear Arjun, your bill for September 2025 is INR 1499.",
+      "labels": [
+        "INBOX",
+        "Bills"
+      ],
+      "received_at": "2025-09-02T10:30:00+05:30"
+    },
+    {
+      "id": "msg_e9b0535a62bd",
+      "thread_id": "thr_2925d2ffc008",
+      "from": "billing@cesc.co.in",
+      "to": "arjun.banerjee.art@gmail.com",
+      "subject": "CESC Bill for Account 8892 - September 2025",
+      "snippet": "Bill amount: INR 5774",
+      "body": "Dear Arjun, your bill for September 2025 is INR 5774.",
+      "labels": [
+        "INBOX",
+        "Bills"
+      ],
+      "received_at": "2025-09-05T10:18:00+05:30"
+    },
+    {
+      "id": "msg_7c7d852fd845",
+      "thread_id": "thr_0723be83f3b0",
+      "from": "noreply@swiggy.in",
+      "to": "arjun.banerjee.art@gmail.com",
+      "subject": "Your order from Amber is confirmed!",
+      "snippet": "Your delicious meal from Amber is on its way.",
+      "body": "Hi Arjun, your order from Amber is being prepared.",
+      "labels": [
+        "INBOX",
+        "Purchases"
+      ],
+      "received_at": "2025-09-11T20:13:00+05:30"
+    },
+    {
+      "id": "msg_3c0bf91b2cb3",
+      "thread_id": "thr_cff1939fef36",
+      "from": "reservations@airindia.in",
+      "to": "arjun.banerjee.art@gmail.com",
+      "subject": "E-Ticket: Kolkata to London",
+      "snippet": "Oct 12, 2025 confirmed.",
+      "body": "Oct 12, 2025 confirmed.",
+      "labels": [
+        "INBOX",
+        "Travel"
+      ],
+      "received_at": "2025-09-15T14:20:00+05:30"
+    },
+    {
+      "id": "msg_fb76233e2013",
+      "thread_id": "thr_8bc9417a8836",
+      "from": "billing@jio.com",
+      "to": "arjun.banerjee.art@gmail.com",
+      "subject": "JioFiber Bill - October 2025",
+      "snippet": "Bill amount: INR 999",
+      "body": "Dear Arjun, your bill for October 2025 is INR 999.",
+      "labels": [
+        "INBOX",
+        "Bills"
+      ],
+      "received_at": "2025-10-01T10:17:00+05:30"
+    },
+    {
+      "id": "msg_0576101a965f",
+      "thread_id": "thr_cafe8ef2f9d2",
+      "from": "ebill@airtel.com",
+      "to": "arjun.banerjee.art@gmail.com",
+      "subject": "Your Airtel Postpaid Bill - October 2025",
+      "snippet": "Bill amount: INR 1499",
+      "body": "Dear Arjun, your bill for October 2025 is INR 1499.",
+      "labels": [
+        "INBOX",
+        "Bills"
+      ],
+      "received_at": "2025-10-02T10:35:00+05:30"
+    },
+    {
+      "id": "msg_9c9a8c316323",
+      "thread_id": "thr_999c24be7583",
+      "from": "billing@cesc.co.in",
+      "to": "arjun.banerjee.art@gmail.com",
+      "subject": "CESC Bill for Account 8892 - October 2025",
+      "snippet": "Bill amount: INR 4978",
+      "body": "Dear Arjun, your bill for October 2025 is INR 4978.",
+      "labels": [
+        "INBOX",
+        "Bills"
+      ],
+      "received_at": "2025-10-05T10:48:00+05:30"
+    },
+    {
+      "id": "msg_7464bfd9e58c",
+      "thread_id": "thr_a2e2aabef032",
+      "from": "billing@jio.com",
+      "to": "arjun.banerjee.art@gmail.com",
+      "subject": "JioFiber Bill - November 2025",
+      "snippet": "Bill amount: INR 999",
+      "body": "Dear Arjun, your bill for November 2025 is INR 999.",
+      "labels": [
+        "INBOX",
+        "Bills"
+      ],
+      "received_at": "2025-11-01T10:28:00+05:30"
+    },
+    {
+      "id": "msg_2e735f9f4ccf",
+      "thread_id": "thr_b17a9dfd3bd1",
+      "from": "ebill@airtel.com",
+      "to": "arjun.banerjee.art@gmail.com",
+      "subject": "Your Airtel Postpaid Bill - November 2025",
+      "snippet": "Bill amount: INR 1499",
+      "body": "Dear Arjun, your bill for November 2025 is INR 1499.",
+      "labels": [
+        "INBOX",
+        "Bills"
+      ],
+      "received_at": "2025-11-02T10:06:00+05:30"
+    },
+    {
+      "id": "msg_3adc05d4766f",
+      "thread_id": "thr_26b9d1453d66",
+      "from": "billing@cesc.co.in",
+      "to": "arjun.banerjee.art@gmail.com",
+      "subject": "CESC Bill for Account 8892 - November 2025",
+      "snippet": "Bill amount: INR 4317",
+      "body": "Dear Arjun, your bill for November 2025 is INR 4317.",
+      "labels": [
+        "INBOX",
+        "Bills"
+      ],
+      "received_at": "2025-11-05T10:33:00+05:30"
+    },
+    {
+      "id": "msg_f94a80dfe6b7",
+      "thread_id": "thr_73d7202d25c9",
+      "from": "billing@jio.com",
+      "to": "arjun.banerjee.art@gmail.com",
+      "subject": "JioFiber Bill - December 2025",
+      "snippet": "Bill amount: INR 999",
+      "body": "Dear Arjun, your bill for December 2025 is INR 999.",
+      "labels": [
+        "INBOX",
+        "Bills"
+      ],
+      "received_at": "2025-12-01T10:21:00+05:30"
+    },
+    {
+      "id": "msg_955030ddcffc",
+      "thread_id": "thr_312d7f323862",
+      "from": "ebill@airtel.com",
+      "to": "arjun.banerjee.art@gmail.com",
+      "subject": "Your Airtel Postpaid Bill - December 2025",
+      "snippet": "Bill amount: INR 1499",
+      "body": "Dear Arjun, your bill for December 2025 is INR 1499.",
+      "labels": [
+        "INBOX",
+        "Bills"
+      ],
+      "received_at": "2025-12-02T10:33:00+05:30"
+    },
+    {
+      "id": "msg_f0313ddd2c96",
+      "thread_id": "thr_556e831a4896",
+      "from": "billing@cesc.co.in",
+      "to": "arjun.banerjee.art@gmail.com",
+      "subject": "CESC Bill for Account 8892 - December 2025",
+      "snippet": "Bill amount: INR 4331",
+      "body": "Dear Arjun, your bill for December 2025 is INR 4331.",
+      "labels": [
+        "INBOX",
+        "Bills"
+      ],
+      "received_at": "2025-12-05T10:00:00+05:30"
+    },
+    {
+      "id": "msg_2876c2d2e2c1",
+      "thread_id": "thr_5522544cea35",
+      "from": "noreply@swiggy.in",
+      "to": "arjun.banerjee.art@gmail.com",
+      "subject": "Your order from Flurys is confirmed!",
+      "snippet": "Breakfast is on its way!",
+      "body": "Hi Arjun, your order from Flurys is being prepared.",
+      "labels": [
+        "INBOX",
+        "Purchases"
+      ],
+      "received_at": "2025-12-28T09:48:00+05:30"
+    },
+    {
+      "id": "msg_5f5f21d7bfec",
+      "thread_id": "thr_44907e0afb88",
+      "from": "billing@jio.com",
+      "to": "arjun.banerjee.art@gmail.com",
+      "subject": "JioFiber Bill - January 2026",
+      "snippet": "Bill amount: INR 999",
+      "body": "Dear Arjun, your bill for January 2026 is INR 999.",
+      "labels": [
+        "INBOX",
+        "Bills"
+      ],
+      "received_at": "2026-01-01T10:01:00+05:30"
+    },
+    {
+      "id": "msg_621e577170b8",
+      "thread_id": "thr_14e9d0cf18a5",
+      "from": "ebill@airtel.com",
+      "to": "arjun.banerjee.art@gmail.com",
+      "subject": "Your Airtel Postpaid Bill - January 2026",
+      "snippet": "Bill amount: INR 1499",
+      "body": "Dear Arjun, your bill for January 2026 is INR 1499.",
+      "labels": [
+        "INBOX",
+        "Bills"
+      ],
+      "received_at": "2026-01-02T10:20:00+05:30"
+    },
+    {
+      "id": "msg_a82b5079ef97",
+      "thread_id": "thr_2fd33bb541ec",
+      "from": "rina@modernart.com",
+      "to": "arjun.banerjee.art@gmail.com",
+      "subject": "Upcoming Show",
+      "snippet": "Hi Arjun...",
+      "body": "Dear Arjun, Upcoming Show.",
+      "labels": [
+        "INBOX",
+        "Work"
+      ],
+      "received_at": "2026-01-05T00:00:00+05:30"
+    },
+    {
+      "id": "msg_99d4ecce96c0",
+      "thread_id": "thr_683da49943a1",
+      "from": "billing@cesc.co.in",
+      "to": "arjun.banerjee.art@gmail.com",
+      "subject": "CESC Bill for Account 8892 - January 2026",
+      "snippet": "Bill amount: INR 3387",
+      "body": "Dear Arjun, your bill for January 2026 is INR 3387.",
+      "labels": [
+        "INBOX",
+        "Bills"
+      ],
+      "received_at": "2026-01-05T10:40:00+05:30"
+    },
+    {
+      "id": "msg_fe6613ae09b0",
+      "thread_id": "thr_e04a8660ca44",
+      "from": "tickets@indiaartfair.in",
+      "to": "arjun.banerjee.art@gmail.com",
+      "subject": "India Art Fair 2026 Tickets",
+      "snippet": "Preview Day access.",
+      "body": "Preview Day access.",
+      "labels": [
+        "INBOX",
+        "Travel"
+      ],
+      "received_at": "2026-01-10T11:00:00+05:30"
+    },
+    {
+      "id": "msg_bf2ed0acacbe",
+      "thread_id": "thr_196c8df22981",
+      "from": "noreply@swiggy.in",
+      "to": "arjun.banerjee.art@gmail.com",
+      "subject": "Your order from Kareem's is confirmed!",
+      "snippet": "Your delicious meal from Kareem's is on its way.",
+      "body": "Hi Arjun, your order from Kareem's is being prepared.",
+      "labels": [
+        "INBOX",
+        "Purchases"
+      ],
+      "received_at": "2026-01-29T20:02:00+05:30"
+    },
+    {
+      "id": "msg_3044040c33c0",
+      "thread_id": "thr_ca8c97131988",
+      "from": "billing@jio.com",
+      "to": "arjun.banerjee.art@gmail.com",
+      "subject": "JioFiber Bill - February 2026",
+      "snippet": "Bill amount: INR 999",
+      "body": "Dear Arjun, your bill for February 2026 is INR 999.",
+      "labels": [
+        "INBOX",
+        "Bills"
+      ],
+      "received_at": "2026-02-01T10:48:00+05:30"
+    },
+    {
+      "id": "msg_96c514ed36b8",
+      "thread_id": "thr_d4cff4922912",
+      "from": "ebill@airtel.com",
+      "to": "arjun.banerjee.art@gmail.com",
+      "subject": "Your Airtel Postpaid Bill - February 2026",
+      "snippet": "Bill amount: INR 1499",
+      "body": "Dear Arjun, your bill for February 2026 is INR 1499.",
+      "labels": [
+        "INBOX",
+        "Bills"
+      ],
+      "received_at": "2026-02-02T10:53:00+05:30"
+    },
+    {
+      "id": "msg_c2354ad821ac",
+      "thread_id": "thr_e877670bb0e8",
+      "from": "billing@cesc.co.in",
+      "to": "arjun.banerjee.art@gmail.com",
+      "subject": "CESC Bill for Account 8892 - February 2026",
+      "snippet": "Bill amount: INR 4274",
+      "body": "Dear Arjun, your bill for February 2026 is INR 4274.",
+      "labels": [
+        "INBOX",
+        "Bills"
+      ],
+      "received_at": "2026-02-05T10:39:00+05:30"
+    },
+    {
+      "id": "msg_3230389172b9",
+      "thread_id": "thr_a810ec0ff5c8",
+      "from": "info@kalakritigallery.com",
+      "to": "arjun.banerjee.art@gmail.com",
+      "subject": "Framing Status",
+      "snippet": "Hi Arjun...",
+      "body": "Dear Arjun, Framing Status.",
+      "labels": [
+        "INBOX",
+        "Work"
+      ],
+      "received_at": "2026-02-15T00:00:00+05:30"
+    },
+    {
+      "id": "msg_fd2d6ded94ac",
+      "thread_id": "thr_7fc663286c75",
+      "from": "noreply@swiggy.in",
+      "to": "arjun.banerjee.art@gmail.com",
+      "subject": "Your order from Flurys is confirmed!",
+      "snippet": "Breakfast is on its way!",
+      "body": "Hi Arjun, your order from Flurys is being prepared.",
+      "labels": [
+        "INBOX",
+        "Purchases"
+      ],
+      "received_at": "2026-03-01T09:11:00+05:30"
+    },
+    {
+      "id": "msg_d9b3fa21df1b",
+      "thread_id": "thr_3ba90b382ac7",
+      "from": "billing@jio.com",
+      "to": "arjun.banerjee.art@gmail.com",
+      "subject": "JioFiber Bill - March 2026",
+      "snippet": "Bill amount: INR 999",
+      "body": "Dear Arjun, your bill for March 2026 is INR 999.",
+      "labels": [
+        "INBOX",
+        "Bills"
+      ],
+      "received_at": "2026-03-01T10:50:00+05:30"
+    },
+    {
+      "id": "msg_1717cb84c6dd",
+      "thread_id": "thr_a7fdb88c1b29",
+      "from": "ebill@airtel.com",
+      "to": "arjun.banerjee.art@gmail.com",
+      "subject": "Your Airtel Postpaid Bill - March 2026",
+      "snippet": "Bill amount: INR 1499",
+      "body": "Dear Arjun, your bill for March 2026 is INR 1499.",
+      "labels": [
+        "INBOX",
+        "Bills"
+      ],
+      "received_at": "2026-03-02T10:16:00+05:30"
+    },
+    {
+      "id": "msg_902af9dd1b68",
+      "thread_id": "thr_c8654278944a",
+      "from": "billing@cesc.co.in",
+      "to": "arjun.banerjee.art@gmail.com",
+      "subject": "CESC Bill for Account 8892 - March 2026",
+      "snippet": "Bill amount: INR 5670",
+      "body": "Dear Arjun, your bill for March 2026 is INR 5670.",
+      "labels": [
+        "INBOX",
+        "Bills"
+      ],
+      "received_at": "2026-03-05T10:53:00+05:30"
+    },
+    {
+      "id": "msg_ead06ad31130",
+      "thread_id": "thr_e3d1132a8c6d",
+      "from": "billing@jio.com",
+      "to": "arjun.banerjee.art@gmail.com",
+      "subject": "JioFiber Bill - April 2026",
+      "snippet": "Bill amount: INR 999",
+      "body": "Dear Arjun, your bill for April 2026 is INR 999.",
+      "labels": [
+        "INBOX",
+        "Bills"
+      ],
+      "received_at": "2026-04-01T10:01:00+05:30"
+    },
+    {
+      "id": "msg_a7f148a73cfb",
+      "thread_id": "thr_09162d83eef4",
+      "from": "ebill@airtel.com",
+      "to": "arjun.banerjee.art@gmail.com",
+      "subject": "Your Airtel Postpaid Bill - April 2026",
+      "snippet": "Bill amount: INR 1499",
+      "body": "Dear Arjun, your bill for April 2026 is INR 1499.",
+      "labels": [
+        "INBOX",
+        "Bills"
+      ],
+      "received_at": "2026-04-02T10:23:00+05:30"
+    },
+    {
+      "id": "msg_aecfddb4baca",
+      "thread_id": "thr_0cde5c4d8f30",
+      "from": "billing@cesc.co.in",
+      "to": "arjun.banerjee.art@gmail.com",
+      "subject": "CESC Bill for Account 8892 - April 2026",
+      "snippet": "Bill amount: INR 5460",
+      "body": "Dear Arjun, your bill for April 2026 is INR 5460.",
+      "labels": [
+        "INBOX",
+        "Bills"
+      ],
+      "received_at": "2026-04-05T10:11:00+05:30"
+    },
+    {
+      "id": "msg_0413e73d3da5",
+      "thread_id": "thr_312085948d66",
+      "from": "info@kalakritigallery.com",
+      "to": "arjun.banerjee.art@gmail.com",
+      "subject": "Framing Status",
+      "snippet": "Hi Arjun...",
+      "body": "Dear Arjun, Framing Status.",
+      "labels": [
+        "INBOX",
+        "Work"
+      ],
+      "received_at": "2026-04-06T00:00:00+05:30"
+    },
+    {
+      "id": "msg_279d949744ee",
+      "thread_id": "thr_8ff9b4faefdb",
+      "from": "reservations@tajhotels.com",
+      "to": "arjun.banerjee.art@gmail.com",
+      "subject": "Booking Confirmed: Taj Mahal Palace, Mumbai",
+      "snippet": "June 10-15, 2026 stay.",
+      "body": "June 10-15, 2026 stay.",
+      "labels": [
+        "INBOX",
+        "Travel"
+      ],
+      "received_at": "2026-04-20T16:45:00+05:30"
+    },
+    {
+      "id": "msg_bbeb109a3ff1",
+      "thread_id": "thr_d76d08fd6153",
+      "from": "sudipto@lawfirm.in",
+      "to": "arjun.banerjee.art@gmail.com",
+      "subject": "Saturday Bridge?",
+      "snippet": "Joining?",
+      "body": "Hey Arjun, let me know about bridge.",
+      "labels": [
+        "INBOX",
+        "Personal"
+      ],
+      "received_at": "2026-04-30T14:15:00+05:30"
+    },
+    {
+      "id": "msg_9995f6f04ae9",
+      "thread_id": "thr_cb00ab7202e2",
+      "from": "mitali.b@design.com",
+      "to": "arjun.banerjee.art@gmail.com",
+      "subject": "Sunday Breakfast Idea",
+      "snippet": "Flurys?",
+      "body": "Hi Arjun, breakfast this Sunday?",
+      "labels": [
+        "INBOX",
+        "Personal"
+      ],
+      "received_at": "2026-04-30T19:30:00+05:30"
+    }
+  ]
+}

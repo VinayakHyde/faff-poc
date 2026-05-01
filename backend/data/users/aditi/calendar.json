@@ -1,0 +1,585 @@
+{
+  "events": [
+    {
+      "id": "ev_36c8ef1fe76a",
+      "summary": "Tara's Birthday",
+      "start": "2025-11-30T00:00:00+05:30",
+      "end": "2025-11-30T23:59:59+05:30",
+      "location": "",
+      "attendees": [],
+      "description": "Birthday celebration",
+      "all_day": true
+    },
+    {
+      "id": "ev_e4e405b50f33",
+      "summary": "Dad's Birthday",
+      "start": "2026-03-11T00:00:00+05:30",
+      "end": "2026-03-11T23:59:59+05:30",
+      "location": "",
+      "attendees": [],
+      "description": "Birthday celebration",
+      "all_day": true
+    },
+    {
+      "id": "ev_afee9646da54",
+      "summary": "Pottery Class at Clay Story",
+      "start": "2026-04-04T16:00:00+05:30",
+      "end": "2026-04-04T18:00:00+05:30",
+      "location": "Indiranagar",
+      "attendees": [],
+      "description": "Clay Story pottery session",
+      "all_day": false
+    },
+    {
+      "id": "ev_9c07b599dbeb",
+      "summary": "Yoga at SARVA Studio",
+      "start": "2026-04-05T08:00:00+05:30",
+      "end": "2026-04-05T09:00:00+05:30",
+      "location": "Indiranagar",
+      "attendees": [],
+      "description": "Weekly yoga session",
+      "all_day": false
+    },
+    {
+      "id": "ev_aaa6cf2783f8",
+      "summary": "Sprint Planning",
+      "start": "2026-04-07T11:00:00+05:30",
+      "end": "2026-04-07T13:00:00+05:30",
+      "location": "Embassy Tech Village",
+      "attendees": [
+        "karan.r@karman.in",
+        "tech-team@karman.in"
+      ],
+      "description": "Weekly sprint planning",
+      "all_day": false
+    },
+    {
+      "id": "ev_fb6a36c9c347",
+      "summary": "Pottery Class at Clay Story",
+      "start": "2026-04-11T16:00:00+05:30",
+      "end": "2026-04-11T18:00:00+05:30",
+      "location": "Indiranagar",
+      "attendees": [],
+      "description": "Clay Story pottery session",
+      "all_day": false
+    },
+    {
+      "id": "ev_bc675a24a162",
+      "summary": "Yoga at SARVA Studio",
+      "start": "2026-04-12T08:00:00+05:30",
+      "end": "2026-04-12T09:00:00+05:30",
+      "location": "Indiranagar",
+      "attendees": [],
+      "description": "Weekly yoga session",
+      "all_day": false
+    },
+    {
+      "id": "ev_7bdfabd46231",
+      "summary": "Sprint Planning",
+      "start": "2026-04-14T11:00:00+05:30",
+      "end": "2026-04-14T13:00:00+05:30",
+      "location": "Embassy Tech Village",
+      "attendees": [
+        "karan.r@karman.in",
+        "tech-team@karman.in"
+      ],
+      "description": "Weekly sprint planning",
+      "all_day": false
+    },
+    {
+      "id": "ev_87c3742d5202",
+      "summary": "Pottery Class at Clay Story",
+      "start": "2026-04-18T16:00:00+05:30",
+      "end": "2026-04-18T18:00:00+05:30",
+      "location": "Indiranagar",
+      "attendees": [],
+      "description": "Clay Story pottery session",
+      "all_day": false
+    },
+    {
+      "id": "ev_54db39f8c2e6",
+      "summary": "Yoga at SARVA Studio",
+      "start": "2026-04-19T08:00:00+05:30",
+      "end": "2026-04-19T09:00:00+05:30",
+      "location": "Indiranagar",
+      "attendees": [],
+      "description": "Weekly yoga session",
+      "all_day": false
+    },
+    {
+      "id": "ev_3794c39a713e",
+      "summary": "Sprint Planning",
+      "start": "2026-04-21T11:00:00+05:30",
+      "end": "2026-04-21T13:00:00+05:30",
+      "location": "Embassy Tech Village",
+      "attendees": [
+        "karan.r@karman.in",
+        "tech-team@karman.in"
+      ],
+      "description": "Weekly sprint planning",
+      "all_day": false
+    },
+    {
+      "id": "ev_54c3e90eee9e",
+      "summary": "Riya's Birthday",
+      "start": "2026-04-22T00:00:00+05:30",
+      "end": "2026-04-22T23:59:59+05:30",
+      "location": "",
+      "attendees": [],
+      "description": "Birthday celebration",
+      "all_day": true
+    },
+    {
+      "id": "ev_7d8a55a4ea05",
+      "summary": "Pottery Class at Clay Story",
+      "start": "2026-04-25T16:00:00+05:30",
+      "end": "2026-04-25T18:00:00+05:30",
+      "location": "Indiranagar",
+      "attendees": [],
+      "description": "Clay Story pottery session",
+      "all_day": false
+    },
+    {
+      "id": "ev_9776e3ce2128",
+      "summary": "Yoga at SARVA Studio",
+      "start": "2026-04-26T08:00:00+05:30",
+      "end": "2026-04-26T09:00:00+05:30",
+      "location": "Indiranagar",
+      "attendees": [],
+      "description": "Weekly yoga session",
+      "all_day": false
+    },
+    {
+      "id": "ev_972d56632f9f",
+      "summary": "Sprint Planning",
+      "start": "2026-04-28T11:00:00+05:30",
+      "end": "2026-04-28T13:00:00+05:30",
+      "location": "Embassy Tech Village",
+      "attendees": [
+        "karan.r@karman.in",
+        "tech-team@karman.in"
+      ],
+      "description": "Weekly sprint planning",
+      "all_day": false
+    },
+    {
+      "id": "ev_may1_date",
+      "summary": "Date Night: Toit",
+      "start": "2026-05-01T20:00:00+05:30",
+      "end": "2026-05-01T23:00:00+05:30",
+      "location": "Toit Indiranagar",
+      "attendees": [
+        "Karan Malhotra"
+      ],
+      "description": "Friday night ritual",
+      "all_day": false
+    },
+    {
+      "id": "ev_561abd2fe028",
+      "summary": "Pottery Class at Clay Story",
+      "start": "2026-05-02T16:00:00+05:30",
+      "end": "2026-05-02T18:00:00+05:30",
+      "location": "Indiranagar",
+      "attendees": [],
+      "description": "Clay Story pottery session",
+      "all_day": false
+    },
+    {
+      "id": "ev_540946863ce8",
+      "summary": "Yoga at SARVA Studio",
+      "start": "2026-05-03T08:00:00+05:30",
+      "end": "2026-05-03T09:00:00+05:30",
+      "location": "Indiranagar",
+      "attendees": [],
+      "description": "Weekly yoga session",
+      "all_day": false
+    },
+    {
+      "id": "ev_may3_brunch",
+      "summary": "Sunday Brunch at Glen's",
+      "start": "2026-05-03T11:00:00+05:30",
+      "end": "2026-05-03T13:30:00+05:30",
+      "location": "Glen's Bakehouse, Indiranagar",
+      "attendees": [
+        "Karan Malhotra"
+      ],
+      "description": "Sunday ritual",
+      "all_day": false
+    },
+    {
+      "id": "ev_may4_standup",
+      "summary": "Engineering Standup",
+      "start": "2026-05-04T10:00:00+05:30",
+      "end": "2026-05-04T10:30:00+05:30",
+      "location": "Google Meet",
+      "attendees": [],
+      "description": "Weekly standup",
+      "all_day": false
+    },
+    {
+      "id": "ev_0248e337c228",
+      "summary": "Sprint Planning",
+      "start": "2026-05-05T11:00:00+05:30",
+      "end": "2026-05-05T13:00:00+05:30",
+      "location": "Embassy Tech Village",
+      "attendees": [
+        "karan.r@karman.in",
+        "tech-team@karman.in"
+      ],
+      "description": "Weekly sprint planning",
+      "all_day": false
+    },
+    {
+      "id": "ev_may6_design",
+      "summary": "Design Review",
+      "start": "2026-05-06T16:00:00+05:30",
+      "end": "2026-05-06T17:30:00+05:30",
+      "location": "Embassy Tech Village",
+      "attendees": [
+        "design-team@karman.in"
+      ],
+      "description": "New feature mockup review",
+      "all_day": false
+    },
+    {
+      "id": "ev_may7_sync",
+      "summary": "Leadership Sync",
+      "start": "2026-05-07T16:00:00+05:30",
+      "end": "2026-05-07T17:00:00+05:30",
+      "location": "Embassy Tech Village",
+      "attendees": [
+        "leadership@karman.in"
+      ],
+      "description": "Bi-weekly sync",
+      "all_day": false
+    },
+    {
+      "id": "ev_fa8ef8f52d26",
+      "summary": "Pottery Class at Clay Story",
+      "start": "2026-05-09T16:00:00+05:30",
+      "end": "2026-05-09T18:00:00+05:30",
+      "location": "Indiranagar",
+      "attendees": [],
+      "description": "Clay Story pottery session",
+      "all_day": false
+    },
+    {
+      "id": "ev_b795b9fbfd77",
+      "summary": "Yoga at SARVA Studio",
+      "start": "2026-05-10T08:00:00+05:30",
+      "end": "2026-05-10T09:00:00+05:30",
+      "location": "Indiranagar",
+      "attendees": [],
+      "description": "Weekly yoga session",
+      "all_day": false
+    },
+    {
+      "id": "ev_3d6eabb4106b",
+      "summary": "Sprint Planning",
+      "start": "2026-05-12T11:00:00+05:30",
+      "end": "2026-05-12T13:00:00+05:30",
+      "location": "Embassy Tech Village",
+      "attendees": [
+        "karan.r@karman.in",
+        "tech-team@karman.in"
+      ],
+      "description": "Weekly sprint planning",
+      "all_day": false
+    },
+    {
+      "id": "ev_63e56ef79cdd",
+      "summary": "Pottery Class at Clay Story",
+      "start": "2026-05-16T16:00:00+05:30",
+      "end": "2026-05-16T18:00:00+05:30",
+      "location": "Indiranagar",
+      "attendees": [],
+      "description": "Clay Story pottery session",
+      "all_day": false
+    },
+    {
+      "id": "ev_d3283b04593e",
+      "summary": "Yoga at SARVA Studio",
+      "start": "2026-05-17T08:00:00+05:30",
+      "end": "2026-05-17T09:00:00+05:30",
+      "location": "Indiranagar",
+      "attendees": [],
+      "description": "Weekly yoga session",
+      "all_day": false
+    },
+    {
+      "id": "ev_e93b2c9d5afb",
+      "summary": "Sprint Planning",
+      "start": "2026-05-19T11:00:00+05:30",
+      "end": "2026-05-19T13:00:00+05:30",
+      "location": "Embassy Tech Village",
+      "attendees": [
+        "karan.r@karman.in",
+        "tech-team@karman.in"
+      ],
+      "description": "Weekly sprint planning",
+      "all_day": false
+    },
+    {
+      "id": "ev_6505c90edb98",
+      "summary": "Pottery Class at Clay Story",
+      "start": "2026-05-23T16:00:00+05:30",
+      "end": "2026-05-23T18:00:00+05:30",
+      "location": "Indiranagar",
+      "attendees": [],
+      "description": "Clay Story pottery session",
+      "all_day": false
+    },
+    {
+      "id": "ev_fbe39f6546a9",
+      "summary": "Yoga at SARVA Studio",
+      "start": "2026-05-24T08:00:00+05:30",
+      "end": "2026-05-24T09:00:00+05:30",
+      "location": "Indiranagar",
+      "attendees": [],
+      "description": "Weekly yoga session",
+      "all_day": false
+    },
+    {
+      "id": "ev_12231d386fd1",
+      "summary": "Sprint Planning",
+      "start": "2026-05-26T11:00:00+05:30",
+      "end": "2026-05-26T13:00:00+05:30",
+      "location": "Embassy Tech Village",
+      "attendees": [
+        "karan.r@karman.in",
+        "tech-team@karman.in"
+      ],
+      "description": "Weekly sprint planning",
+      "all_day": false
+    },
+    {
+      "id": "ev_ce8c3718cd8b",
+      "summary": "Pottery Class at Clay Story",
+      "start": "2026-05-30T16:00:00+05:30",
+      "end": "2026-05-30T18:00:00+05:30",
+      "location": "Indiranagar",
+      "attendees": [],
+      "description": "Clay Story pottery session",
+      "all_day": false
+    },
+    {
+      "id": "ev_120db1fbccc8",
+      "summary": "Yoga at SARVA Studio",
+      "start": "2026-05-31T08:00:00+05:30",
+      "end": "2026-05-31T09:00:00+05:30",
+      "location": "Indiranagar",
+      "attendees": [],
+      "description": "Weekly yoga session",
+      "all_day": false
+    },
+    {
+      "id": "ev_dd0ea63e4e72",
+      "summary": "Sprint Planning",
+      "start": "2026-06-02T11:00:00+05:30",
+      "end": "2026-06-02T13:00:00+05:30",
+      "location": "Embassy Tech Village",
+      "attendees": [
+        "karan.r@karman.in",
+        "tech-team@karman.in"
+      ],
+      "description": "Weekly sprint planning",
+      "all_day": false
+    },
+    {
+      "id": "ev_9c7f300470c5",
+      "summary": "Pottery Class at Clay Story",
+      "start": "2026-06-06T16:00:00+05:30",
+      "end": "2026-06-06T18:00:00+05:30",
+      "location": "Indiranagar",
+      "attendees": [],
+      "description": "Clay Story pottery session",
+      "all_day": false
+    },
+    {
+      "id": "ev_55356992a26f",
+      "summary": "Yoga at SARVA Studio",
+      "start": "2026-06-07T08:00:00+05:30",
+      "end": "2026-06-07T09:00:00+05:30",
+      "location": "Indiranagar",
+      "attendees": [],
+      "description": "Weekly yoga session",
+      "all_day": false
+    },
+    {
+      "id": "ev_a53131070886",
+      "summary": "Sprint Planning",
+      "start": "2026-06-09T11:00:00+05:30",
+      "end": "2026-06-09T13:00:00+05:30",
+      "location": "Embassy Tech Village",
+      "attendees": [
+        "karan.r@karman.in",
+        "tech-team@karman.in"
+      ],
+      "description": "Weekly sprint planning",
+      "all_day": false
+    },
+    {
+      "id": "ev_26788cdf827c",
+      "summary": "Pottery Class at Clay Story",
+      "start": "2026-06-13T16:00:00+05:30",
+      "end": "2026-06-13T18:00:00+05:30",
+      "location": "Indiranagar",
+      "attendees": [],
+      "description": "Clay Story pottery session",
+      "all_day": false
+    },
+    {
+      "id": "ev_6d5cdf46ea8b",
+      "summary": "Yoga at SARVA Studio",
+      "start": "2026-06-14T08:00:00+05:30",
+      "end": "2026-06-14T09:00:00+05:30",
+      "location": "Indiranagar",
+      "attendees": [],
+      "description": "Weekly yoga session",
+      "all_day": false
+    },
+    {
+      "id": "ev_e5deda1dc432",
+      "summary": "Sprint Planning",
+      "start": "2026-06-16T11:00:00+05:30",
+      "end": "2026-06-16T13:00:00+05:30",
+      "location": "Embassy Tech Village",
+      "attendees": [
+        "karan.r@karman.in",
+        "tech-team@karman.in"
+      ],
+      "description": "Weekly sprint planning",
+      "all_day": false
+    },
+    {
+      "id": "ev_6ac44d72c963",
+      "summary": "Ayaan's Birthday",
+      "start": "2026-06-17T00:00:00+05:30",
+      "end": "2026-06-17T23:59:59+05:30",
+      "location": "",
+      "attendees": [],
+      "description": "Birthday celebration",
+      "all_day": true
+    },
+    {
+      "id": "ev_e559cbe2aadf",
+      "summary": "Pottery Class at Clay Story",
+      "start": "2026-06-20T16:00:00+05:30",
+      "end": "2026-06-20T18:00:00+05:30",
+      "location": "Indiranagar",
+      "attendees": [],
+      "description": "Clay Story pottery session",
+      "all_day": false
+    },
+    {
+      "id": "ev_2101959b7200",
+      "summary": "Yoga at SARVA Studio",
+      "start": "2026-06-21T08:00:00+05:30",
+      "end": "2026-06-21T09:00:00+05:30",
+      "location": "Indiranagar",
+      "attendees": [],
+      "description": "Weekly yoga session",
+      "all_day": false
+    },
+    {
+      "id": "ev_46804c17b1cd",
+      "summary": "Sprint Planning",
+      "start": "2026-06-23T11:00:00+05:30",
+      "end": "2026-06-23T13:00:00+05:30",
+      "location": "Embassy Tech Village",
+      "attendees": [
+        "karan.r@karman.in",
+        "tech-team@karman.in"
+      ],
+      "description": "Weekly sprint planning",
+      "all_day": false
+    },
+    {
+      "id": "ev_7189dd8440ed",
+      "summary": "Pottery Class at Clay Story",
+      "start": "2026-06-27T16:00:00+05:30",
+      "end": "2026-06-27T18:00:00+05:30",
+      "location": "Indiranagar",
+      "attendees": [],
+      "description": "Clay Story pottery session",
+      "all_day": false
+    },
+    {
+      "id": "ev_91bc5bf206b9",
+      "summary": "Yoga at SARVA Studio",
+      "start": "2026-06-28T08:00:00+05:30",
+      "end": "2026-06-28T09:00:00+05:30",
+      "location": "Indiranagar",
+      "attendees": [],
+      "description": "Weekly yoga session",
+      "all_day": false
+    },
+    {
+      "id": "ev_77b93c298749",
+      "summary": "Sprint Planning",
+      "start": "2026-06-30T11:00:00+05:30",
+      "end": "2026-06-30T13:00:00+05:30",
+      "location": "Embassy Tech Village",
+      "attendees": [
+        "karan.r@karman.in",
+        "tech-team@karman.in"
+      ],
+      "description": "Weekly sprint planning",
+      "all_day": false
+    },
+    {
+      "id": "ev_bali_2026",
+      "summary": "Bali Trip (Mother-Daughter)",
+      "start": "2026-07-12T00:00:00+05:30",
+      "end": "2026-07-19T23:59:59+05:30",
+      "location": "Bali, Indonesia",
+      "attendees": [
+        "Sunita Sharma"
+      ],
+      "description": "Confirmed vacation",
+      "all_day": true
+    },
+    {
+      "id": "ev_57931ac454ec",
+      "summary": "Mom's Birthday",
+      "start": "2026-08-23T00:00:00+05:30",
+      "end": "2026-08-23T23:59:59+05:30",
+      "location": "",
+      "attendees": [],
+      "description": "Birthday celebration",
+      "all_day": true
+    },
+    {
+      "id": "ev_3cbde3ebe673",
+      "summary": "Karan's Birthday",
+      "start": "2026-09-05T00:00:00+05:30",
+      "end": "2026-09-05T23:59:59+05:30",
+      "location": "",
+      "attendees": [],
+      "description": "Birthday celebration",
+      "all_day": true
+    },
+    {
+      "id": "ev_2cc194034439",
+      "summary": "Priya's Birthday",
+      "start": "2026-10-09T00:00:00+05:30",
+      "end": "2026-10-09T23:59:59+05:30",
+      "location": "",
+      "attendees": [],
+      "description": "Birthday celebration",
+      "all_day": true
+    },
+    {
+      "id": "ev_japan_2026",
+      "summary": "Japan Trip with Karan",
+      "start": "2026-10-15T00:00:00+05:30",
+      "end": "2026-10-30T23:59:59+05:30",
+      "location": "Japan",
+      "attendees": [
+        "Karan Malhotra"
+      ],
+      "description": "Flights booked",
+      "all_day": true
+    }
+  ]
+}
