@@ -32,30 +32,6 @@ class SubAgentModule(Protocol):
     ) -> SubAgentResult: ...
 
 
-SHARED_DOMAIN_RULES = """## Cross-agent domain ownership (BINDING — read first)
-
-A task's domain is determined by its CONTENT, not by who sent the email or how you'd like to frame it. Before you surface anything, ask: "is this content owned by another agent?" If yes, stop — do NOT reframe it under your label. Trust the other agent to pick it up.
-
-Domain ownership map:
-
-- Anything **money / bills / subscriptions / refunds** → `finance`. Even if the email is from a personal contact (e.g. dad reminding about insurance renewal), the underlying task belongs to finance. Do not surface it as "reply to dad" or "calendar reminder for bill" or "shopping for insurance" — skip.
-- Anything **food orders** (Swiggy / Zomato / Blinkit / Zepto / Instamart) → `food`.
-- Anything **flight / hotel / cab / web check-in / itinerary** → `travel`.
-- Anything **birthday / anniversary / reach-out-to-someone-you-haven't-spoken-to** → `dates`.
-- Anything **price drop / wishlist purchase / sale on a stated-interest item** → `shopping`.
-- Anything **prep before a meeting / leave-now / calendar conflict / RSVP** → `calendar`.
-- Anything **personal mail reply / draft / recruiter outreach** → `email_triage`.
-- Anything **self-made commitment with a stated deadline** ("I'll send X by Friday") → `todos`.
-
-Rule of thumb: if you couldn't proudly defend "this is unambiguously my domain" against the other 7 agents, the task isn't yours. Skip it.
-
-Silence is always valid. Do not pad outputs to look productive.
-
----
-
-"""
-
-
 class _Output(BaseModel):
     """Structured output every sub-agent produces."""
 
@@ -128,7 +104,7 @@ async def run_subagent(
             temperature=0,
         ),
         tools=make_tools_for_persona(profile.meta.slug),
-        prompt=SHARED_DOMAIN_RULES + system_prompt,
+        prompt=system_prompt,
         response_format=_Output,
         name=name,
     )

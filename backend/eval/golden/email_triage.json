@@ -1,0 +1,89 @@
+{
+  "agent": "email_triage",
+  "schema_version": 2,
+  "evaluation_date": "2026-05-01",
+  "personas": [
+    {
+      "slug": "aditi",
+      "mode": "STEADY-STATE",
+      "expected_tasks": [
+        {
+          "id": "aditi_mom_reply",
+          "summary": "Reply to mom (Sunita) about her relational check-in; ideally suggest a weekend call.",
+          "evidence_email_ids": ["msg_mom_1"],
+          "category": "personal_social_emotional",
+          "notes": "Profile says Aditi tends to drop non-urgent personal emails — a nudge fits her stated tendency."
+        }
+      ],
+      "expected_skips": [
+        {
+          "id": "aditi_skip_hr_holiday",
+          "summary": "HR public-holiday FYI — pure announcement, no reply or follow-up needed.",
+          "evidence_email_ids": ["msg_hr_1"],
+          "category": "fyi_announcement"
+        },
+        {
+          "id": "aditi_skip_dad_insurance",
+          "summary": "Dad's email is administrative (insurance renewal) wrapped in a personal sender. The actual task is renewing the insurance, not replying to dad — out of email_triage scope.",
+          "evidence_email_ids": ["msg_dad_1"],
+          "category": "admin_from_family_sender"
+        }
+      ],
+      "expected_preference_topics": []
+    },
+
+    {
+      "slug": "arjun",
+      "mode": "BACKFILL",
+      "expected_tasks": [
+        {
+          "id": "arjun_sudipto_bridge_reply",
+          "summary": "Reply to Sudipto about Saturday bridge plans (yes/no + time).",
+          "evidence_email_ids": ["msg_bbeb109a3ff1"],
+          "category": "personal_social_emotional"
+        },
+        {
+          "id": "arjun_mitali_breakfast_reply",
+          "summary": "Reply to Mitali (wife) about Sunday breakfast — confirm or counter-propose.",
+          "evidence_email_ids": ["msg_9995f6f04ae9"],
+          "category": "personal_social_emotional"
+        }
+      ],
+      "expected_skips": [],
+      "expected_preference_topics": [
+        "Mitali (wife) emails personally about household / weekend plans",
+        "Sudipto sends bridge invitations periodically",
+        "Kalakriti gallery sends 'Framing Status' updates ~quarterly",
+        "Rina at modernart sends 'Upcoming Show' invitations periodically",
+        "Art collectors send 'Price list request' inquiries periodically"
+      ]
+    },
+
+    {
+      "slug": "devendra",
+      "mode": "BACKFILL",
+      "expected_tasks": [
+        {
+          "id": "devendra_nilesh_audit_reply",
+          "summary": "Reply to Nilesh about the FY25 audit final review — confirm a time to discuss.",
+          "evidence_email_ids": ["fix_msg_1"],
+          "category": "professional_work_correspondence"
+        }
+      ],
+      "expected_skips": [],
+      "expected_preference_topics": [
+        "Nilesh (nilesh@patelassociates.com) is the primary work-email contact for firm/audit matters",
+        "Cricinfo IPL Updates newsletter is content the user keeps reading (cricket fan per profile) — NOT an unsubscribe candidate"
+      ]
+    },
+
+    {
+      "slug": "meera",
+      "mode": "BACKFILL",
+      "expected_tasks": [],
+      "expected_skips": [],
+      "expected_preference_topics": [],
+      "notes": "Profile-only persona — no Gmail OAuth granted. Empty mailbox + empty fixture. Correct behaviour is total silence: 0 tasks, 0 preference_updates."
+    }
+  ]
+}
