@@ -34,6 +34,7 @@ A web interface split into stable context (left) vs. live daily input + agent ou
 - An input box at the top where I manually paste the day's JSON payload — i.e. what the cron job would have fetched from the Gmail + Calendar APIs for that day.
 - Below it, a chat-style stream of the agent's response: the automations it identified, the steps it took, and what it's doing under the hood, rendered as HTML trace components (Andrew Ng AI-agents-course / ag-ui style).
 - Each new JSON input produces a fresh agent run rendered in the same panel.
+- **Sub-agent filter** — a single run produces a lot of trace nodes (orchestrator + 8 sub-agents, each with their own tool calls, candidate tasks, and preference updates), so the panel includes a filter dropdown at the top of the trace stream. The dropdown lists every sub-agent (Calendar, Email, Food, Travel, Bills, Dates, Shopping, To-dos, plus Orchestrator and Rubric) with a toggle next to each — all enabled by default. Untoggling an agent hides its trace nodes so the user can isolate one agent's trace end-to-end. Pure client-side hide/show on already-rendered nodes (each node carries a `data-agent` attribute) — no re-running, no backend round-trip.
 
 ## Daily flow (cron-triggered)
 
