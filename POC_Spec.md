@@ -104,7 +104,7 @@ Grounded in what Poke and similar proactive assistants actually ship as hero use
    - Looks at preferences + email + calendar for things the user said they'd do ("I'll send you X by Friday", action items from meeting notes).
    - Surfaces: deadline-approaching reminders for self-made commitments.
 
-The orchestrator decides which sub-agents to invoke for a given day's input (no point running the Travel agent if there's nothing travel-related in scope). New sub-agents can be added later — Health, Home automation, Developer/PR — but v1 sticks to this set since it covers the bulk of what a human assistant would handle.
+All sub-agents are invoked on every run — there is no orchestrator-level pruning. Each sub-agent decides for itself whether it has anything to surface; if its slice of today's input is empty, it returns no candidate tasks. Always-on fan-out keeps the orchestrator simple and ensures we never miss a category by mis-routing. (See the stretch section for the latency optimisation of pruning idle sub-agents — explicitly out of scope for the POC.) New sub-agents can be added later — Health, Home automation, Developer/PR — but v1 sticks to this set since it covers the bulk of what a human assistant would handle.
 
 #### Preference-update edge cases at the sub-agent layer
 
