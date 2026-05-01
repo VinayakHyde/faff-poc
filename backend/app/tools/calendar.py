@@ -4,9 +4,20 @@ from typing import Callable
 
 from langchain_core.tools import tool
 
-from app.tools._query import matches_any, tokenize
+from app.tools._query import bm25_rank, tokenize
 
 DATA_DIR = Path(__file__).resolve().parent.parent.parent / "data" / "users"
+
+
+def _document_text(e: dict) -> str:
+    return " ".join(
+        [
+            e.get("summary", ""),
+            e.get("location", ""),
+            e.get("description", ""),
+            " ".join(e.get("attendees", [])),
+        ]
+    )
 
 
 def make_calendar_search(persona_slug: str) -> Callable:
@@ -21,20 +32,18 @@ def make_calendar_search(persona_slug: str) -> Callable:
     ) -> str:
         """Search the user's calendar for events matching the query and date window.
 
-        Matching: the query is tokenised on whitespace and OR-matched against
-        event summary, location, description, and attendees — any token hit
-        qualifies the event. Empty query = no text filter (date filter only).
-        Use focused tokens like `'pottery'` or `'sprint planning'`; avoid
-        stuffing many unrelated keywords.
+        Ranking is BM25 over summary + location + description + attendees,
+        with whole-word matching as a sanity gate. Empty query = no text
+        filter (date filter only, sorted soonest-first).
 
         Args:
-            query: Free-text search. Tokenised + OR-matched. Empty = no text filter.
+            query: Free-text search. Tokenised, BM25-ranked, word-bounded.
             start_date: Optional earliest date (YYYY-MM-DD).
             end_date: Optional latest date (YYYY-MM-DD).
             max_results: Cap on returned events (default 30).
 
         Returns:
-            JSON-encoded list of matching events, soonest first.
+            JSON-encoded list of matching events. Empty query → soonest first.
         """
         path = DATA_DIR / persona_slug / "calendar.json"
         if not path.exists():
@@ -42,28 +51,28 @@ def make_calendar_search(persona_slug: str) -> Callable:
 
         calendar = json.loads(path.read_text())
         events = calendar.get("events", [])
-        tokens = tokenize(query)
+        if not events:
+            return json.dumps([])
 
-        out = []
+        candidates = []
         for e in events:
-            haystack = " ".join(
-                [
-                    e.get("summary", ""),
-                    e.get("location", ""),
-                    e.get("description", ""),
-                    " ".join(e.get("attendees", [])),
-                ]
-            )
-            if not matches_any(haystack, tokens):
-                continue
             event_date = str(e.get("start", ""))[:10]
             if start_date and event_date < start_date:
                 continue
             if end_date and event_date > end_date:
                 continue
-            out.append(e)
+            candidates.append(e)
+        if not candidates:
+            return json.dumps([])
 
-        out.sort(key=lambda e: str(e.get("start", "")))
+        tokens = tokenize(query)
+        if not tokens:
+            candidates.sort(key=lambda e: str(e.get("start", "")))
+            return json.dumps(candidates[:max_results])
+
+        docs = [_document_text(e) for e in candidates]
+        ranked = bm25_rank(docs, query)
+        out = [candidates[i] for i, _ in ranked]
         return json.dumps(out[:max_results])
 
     return calendar_search
