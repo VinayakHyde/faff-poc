@@ -4,6 +4,8 @@ from typing import Callable
 
 from langchain_core.tools import tool
 
+from app.tools._query import matches_any, tokenize
+
 DATA_DIR = Path(__file__).resolve().parent.parent.parent / "data" / "users"
 
 
@@ -22,8 +24,15 @@ def make_gmail_search(persona_slug: str) -> Callable:
         Use this to look beyond today's slice — historical order
         confirmations, prior threads with a contact, past bill cycles, etc.
 
+        Matching: the query is tokenised on whitespace and OR-matched —
+        a message qualifies if ANY token appears in subject + body + sender.
+        Gmail-style operators like `from:foo`, `to:`, `OR` are stripped, so
+        you can write either `'Nilesh'` or `'from:nilesh@patelassociates.com'`
+        and get the same result. Prefer short, focused tokens; avoid stuffing
+        many unrelated keywords into one query.
+
         Args:
-            query: Free-text search. Matched against subject, body, sender, snippet.
+            query: Free-text search. Tokenised + OR-matched against subject, body, sender, snippet.
             start_date: Optional earliest date (YYYY-MM-DD).
             end_date: Optional latest date (YYYY-MM-DD).
             max_results: Cap on returned messages (default 20).
@@ -37,7 +46,7 @@ def make_gmail_search(persona_slug: str) -> Callable:
 
         mailbox = json.loads(path.read_text())
         messages = mailbox.get("messages", [])
-        q = query.lower().strip()
+        tokens = tokenize(query)
 
         out = []
         for m in messages:
@@ -48,8 +57,8 @@ def make_gmail_search(persona_slug: str) -> Callable:
                     m.get("from", ""),
                     m.get("snippet", ""),
                 ]
-            ).lower()
-            if q and q not in haystack:
+            )
+            if not matches_any(haystack, tokens):
                 continue
             received = m.get("received_at", "")[:10]
             if start_date and received < start_date:

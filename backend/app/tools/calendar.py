@@ -4,6 +4,8 @@ from typing import Callable
 
 from langchain_core.tools import tool
 
+from app.tools._query import matches_any, tokenize
+
 DATA_DIR = Path(__file__).resolve().parent.parent.parent / "data" / "users"
 
 
@@ -19,12 +21,14 @@ def make_calendar_search(persona_slug: str) -> Callable:
     ) -> str:
         """Search the user's calendar for events matching the query and date window.
 
-        Use this to look beyond the current week — past events for follow-ups,
-        upcoming travel blocks, recurring patterns, birthdays already on the
-        calendar.
+        Matching: the query is tokenised on whitespace and OR-matched against
+        event summary, location, description, and attendees — any token hit
+        qualifies the event. Empty query = no text filter (date filter only).
+        Use focused tokens like `'pottery'` or `'sprint planning'`; avoid
+        stuffing many unrelated keywords.
 
         Args:
-            query: Free-text search against event summary, location, description, attendees. Empty = no text filter.
+            query: Free-text search. Tokenised + OR-matched. Empty = no text filter.
             start_date: Optional earliest date (YYYY-MM-DD).
             end_date: Optional latest date (YYYY-MM-DD).
             max_results: Cap on returned events (default 30).
@@ -38,7 +42,7 @@ def make_calendar_search(persona_slug: str) -> Callable:
 
         calendar = json.loads(path.read_text())
         events = calendar.get("events", [])
-        q = query.lower().strip()
+        tokens = tokenize(query)
 
         out = []
         for e in events:
@@ -49,8 +53,8 @@ def make_calendar_search(persona_slug: str) -> Callable:
                     e.get("description", ""),
                     " ".join(e.get("attendees", [])),
                 ]
-            ).lower()
-            if q and q not in haystack:
+            )
+            if not matches_any(haystack, tokens):
                 continue
             event_date = str(e.get("start", ""))[:10]
             if start_date and event_date < start_date:
