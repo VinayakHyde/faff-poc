@@ -124,11 +124,15 @@ class ScoredTask(BaseModel):
 
 
 TraceEventType = Literal[
+    "orchestrator_started",
     "subagent_started",
     "subagent_returned",
+    "dedup_decision",
     "preference_merged",
     "task_scored",
+    "task_filtered",
     "task_emitted",
+    "orchestrator_finished",
 ]
 
 
@@ -137,3 +141,15 @@ class TraceEvent(BaseModel):
     sub_agent: str | None = None
     payload: dict[str, Any] = {}
     at: datetime = Field(default_factory=datetime.now)
+
+
+class OrchestratorResult(BaseModel):
+    """Full output of one daily run."""
+
+    persona_slug: str
+    daily_input_date: str
+    sub_agent_results: list[SubAgentResult] = []
+    merged_preference_updates: list[PreferenceUpdate] = []
+    scored_tasks: list[ScoredTask] = []
+    final_tasks: list[ScoredTask] = []
+    trace_events: list[TraceEvent] = []
