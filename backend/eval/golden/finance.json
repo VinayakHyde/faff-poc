@@ -1,0 +1,387 @@
+{
+  "agent": "finance",
+  "schema_version": 2,
+  "evaluation_date": "2026-05-01",
+  "personas": [
+    {
+      "slug": "aditi",
+      "mode": "STEADY-STATE",
+      "expected_tasks": [
+        {
+          "id": "aditi_icici_lombard_renewal",
+          "summary": "Pay ICICI Lombard family floater health-insurance renewal — Dad forwarded the renewal notice on 2026-04-30 saying it's 'due next week'. Surface a ~3-day-out nudge timed before the stated due window. Profile names ICICI Lombard as the family floater (₹15L, includes parents) and HDFC Diners as the primary card.",
+          "evidence_email_ids": [
+            "msg_dad_1"
+          ],
+          "category": "bill_due_nudge",
+          "notes": "Tempting failure mode is to surface this as a 'reply to dad' (email_triage's lane) or a calendar block. Finance correctly owns this because the underlying content is an insurance-renewal money action, regardless of the personal sender wrapping it.",
+          "valid_until": null,
+          "profile_md_lines": [],
+          "mailbox_json_lines": [],
+          "calendar_json_lines": []
+        }
+      ],
+      "expected_skips": [
+        {
+          "id": "aditi_skip_mom_checkin_as_finance",
+          "summary": "Do NOT surface mom's relational check-in as a finance task. The email contains no money signal.",
+          "evidence_email_ids": [
+            "msg_mom_1"
+          ],
+          "category": "off_lane_personal",
+          "valid_until": null,
+          "profile_md_lines": [],
+          "mailbox_json_lines": [],
+          "calendar_json_lines": []
+        },
+        {
+          "id": "aditi_skip_hr_holiday_as_finance",
+          "summary": "Do NOT surface the HR public-holiday FYI as a finance task — pure announcement, no money action.",
+          "evidence_email_ids": [
+            "msg_hr_1"
+          ],
+          "category": "off_lane_fyi",
+          "valid_until": null,
+          "profile_md_lines": [],
+          "mailbox_json_lines": [],
+          "calendar_json_lines": []
+        },
+        {
+          "id": "aditi_skip_april_bescom_late_nudge",
+          "summary": "Do NOT surface April's BESCOM bill (received 2026-04-03, due ~April 10) as a current task. Today is May 1 — that bill's due date passed three weeks ago; you cannot tell from inbox alone whether it was paid, and nudging now is noise.",
+          "evidence_email_ids": [
+            "msg_91b20b117edc"
+          ],
+          "category": "stale_bill",
+          "valid_until": null,
+          "profile_md_lines": [],
+          "mailbox_json_lines": [],
+          "calendar_json_lines": []
+        },
+        {
+          "id": "aditi_skip_april_airtel_late_nudge",
+          "summary": "Do NOT surface April's Airtel postpaid bill (received 2026-04-02) as a current task. Past its useful-nudge window; this cycle's bill hasn't arrived yet.",
+          "evidence_email_ids": [
+            "msg_981ae79ae147"
+          ],
+          "category": "stale_bill",
+          "valid_until": null,
+          "profile_md_lines": [],
+          "mailbox_json_lines": [],
+          "calendar_json_lines": []
+        },
+        {
+          "id": "aditi_skip_april_act_late_nudge",
+          "summary": "Do NOT surface April's ACT Fibernet bill (received 2026-04-15) as a fresh nudge — its due window has passed and the May bill hasn't arrived.",
+          "evidence_email_ids": [
+            "msg_ca7fc25f5a85"
+          ],
+          "category": "stale_bill",
+          "valid_until": null,
+          "profile_md_lines": [],
+          "mailbox_json_lines": [],
+          "calendar_json_lines": []
+        },
+        {
+          "id": "aditi_skip_netflix_autopay_fyi",
+          "summary": "Do NOT surface the April Netflix renewal email as a Pay-Netflix task. Profile explicitly marks Netflix Premium as 'autopay 8th' — money already moves automatically; surfacing this is filler.",
+          "evidence_email_ids": [
+            "msg_587236e9af57"
+          ],
+          "category": "autopay_fyi",
+          "valid_until": null,
+          "profile_md_lines": [],
+          "mailbox_json_lines": [],
+          "calendar_json_lines": []
+        },
+        {
+          "id": "aditi_skip_spotify_autopay_fyi",
+          "summary": "Do NOT surface the April Spotify Family renewal as a task. Profile flags Spotify Family as 'autopay 12th'.",
+          "evidence_email_ids": [
+            "msg_1b50d2dcc8c1"
+          ],
+          "category": "autopay_fyi",
+          "valid_until": null,
+          "profile_md_lines": [],
+          "mailbox_json_lines": [],
+          "calendar_json_lines": []
+        },
+        {
+          "id": "aditi_skip_apple_one_autopay_fyi",
+          "summary": "Do NOT surface the April Apple One invoice as a task. Profile flags Apple One Premier as 'autopay 18th'.",
+          "evidence_email_ids": [
+            "msg_0ad7b2243ec6"
+          ],
+          "category": "autopay_fyi",
+          "valid_until": null,
+          "profile_md_lines": [],
+          "mailbox_json_lines": [],
+          "calendar_json_lines": []
+        },
+        {
+          "id": "aditi_skip_dad_reply",
+          "summary": "Do NOT reframe Dad's insurance forward as a 'Reply to Dad' task. That action verb is email_triage's lane; finance owns the renewal-payment action itself, not the conversational reply.",
+          "evidence_email_ids": [
+            "msg_dad_1"
+          ],
+          "category": "wrong_action_verb",
+          "valid_until": null,
+          "profile_md_lines": [],
+          "mailbox_json_lines": [],
+          "calendar_json_lines": []
+        }
+      ],
+      "expected_preference_topics": []
+    },
+    {
+      "slug": "arjun",
+      "mode": "BACKFILL",
+      "expected_tasks": [],
+      "expected_skips": [
+        {
+          "id": "arjun_skip_april_cesc_late_nudge",
+          "summary": "Do NOT surface the April CESC electricity bill (received 2026-04-05, due ~April 15, account 8892) as a current task. Today is May 1 — its due date passed 16 days ago; the May bill hasn't arrived yet (will arrive ~May 5).",
+          "evidence_email_ids": [],
+          "category": "stale_bill",
+          "valid_until": null,
+          "profile_md_lines": [],
+          "mailbox_json_lines": [],
+          "calendar_json_lines": []
+        },
+        {
+          "id": "arjun_skip_april_airtel_late_nudge",
+          "summary": "Do NOT surface April's Airtel Postpaid bill as a current task. Past its nudge window; May bill not yet in inbox.",
+          "evidence_email_ids": [],
+          "category": "stale_bill",
+          "valid_until": null,
+          "profile_md_lines": [],
+          "mailbox_json_lines": [],
+          "calendar_json_lines": []
+        },
+        {
+          "id": "arjun_skip_april_jiofiber_late_nudge",
+          "summary": "Do NOT surface April's JioFiber bill as a current task. Past its nudge window.",
+          "evidence_email_ids": [],
+          "category": "stale_bill",
+          "valid_until": null,
+          "profile_md_lines": [],
+          "mailbox_json_lines": [],
+          "calendar_json_lines": []
+        },
+        {
+          "id": "arjun_skip_sudipto_bridge_as_finance",
+          "summary": "Do NOT surface Sudipto's Saturday bridge invitation as a finance task — no money signal.",
+          "evidence_email_ids": [
+            "msg_bbeb109a3ff1"
+          ],
+          "category": "off_lane_personal",
+          "valid_until": null,
+          "profile_md_lines": [],
+          "mailbox_json_lines": [],
+          "calendar_json_lines": []
+        },
+        {
+          "id": "arjun_skip_mitali_breakfast_as_finance",
+          "summary": "Do NOT surface Mitali's Sunday breakfast email as a finance task — no money signal.",
+          "evidence_email_ids": [
+            "msg_9995f6f04ae9"
+          ],
+          "category": "off_lane_personal",
+          "valid_until": null,
+          "profile_md_lines": [],
+          "mailbox_json_lines": [],
+          "calendar_json_lines": []
+        },
+        {
+          "id": "arjun_skip_taj_booking_as_finance",
+          "summary": "Do NOT surface the Taj Mumbai booking confirmation as a finance task. Travel itinerary belongs to the travel agent.",
+          "evidence_email_ids": [],
+          "category": "off_lane_travel",
+          "valid_until": null,
+          "profile_md_lines": [],
+          "mailbox_json_lines": [],
+          "calendar_json_lines": []
+        },
+        {
+          "id": "arjun_skip_swiggy_orders_as_finance",
+          "summary": "Do NOT surface Swiggy order confirmations (Flurys, Kareem's, Amber) as finance tasks. Recurring food orders are the food agent's lane; finance only handles recurring bill cycles.",
+          "evidence_email_ids": [],
+          "category": "off_lane_food",
+          "valid_until": null,
+          "profile_md_lines": [],
+          "mailbox_json_lines": [],
+          "calendar_json_lines": []
+        },
+        {
+          "id": "arjun_skip_kalakriti_framing_as_finance",
+          "summary": "Do NOT surface 'Framing Status' updates from Kalakriti gallery as finance tasks — gallery business correspondence, not a money action.",
+          "evidence_email_ids": [],
+          "category": "off_lane_business",
+          "valid_until": null,
+          "profile_md_lines": [],
+          "mailbox_json_lines": [],
+          "calendar_json_lines": []
+        }
+      ],
+      "expected_preference_topics": [
+        "JioFiber bill arrives ~1st of every month at ~₹999, stable amount",
+        "Airtel postpaid bill arrives ~2nd of every month at ~₹1,499, stable amount",
+        "CESC electricity bill (account 8892) arrives ~5th of every month, due ~15th, amount varies seasonally (~₹3.4K–₹5.7K)"
+      ]
+    },
+    {
+      "slug": "devendra",
+      "mode": "BACKFILL",
+      "expected_tasks": [],
+      "expected_skips": [
+        {
+          "id": "devendra_skip_march_torrent_power_late_nudge",
+          "summary": "Do NOT surface the March Torrent Power electricity bill (received 2026-03-10, due ~March 20) as a current task. The most recent Torrent Power email is more than 50 days old — well past any useful nudge window.",
+          "evidence_email_ids": [],
+          "category": "stale_bill",
+          "valid_until": null,
+          "profile_md_lines": [],
+          "mailbox_json_lines": [],
+          "calendar_json_lines": []
+        },
+        {
+          "id": "devendra_skip_march_airtel_late_nudge",
+          "summary": "Do NOT surface the March Airtel Postpaid bill (received 2026-03-05) as a current task. Past its nudge window by ~50 days.",
+          "evidence_email_ids": [],
+          "category": "stale_bill",
+          "valid_until": null,
+          "profile_md_lines": [],
+          "mailbox_json_lines": [],
+          "calendar_json_lines": []
+        },
+        {
+          "id": "devendra_skip_nilesh_audit_as_finance",
+          "summary": "Do NOT surface Nilesh's 'Final review of FY25 Audit' email as a finance task. It's a work-coordination email, not a money action — belongs to email_triage.",
+          "evidence_email_ids": [
+            "fix_msg_1"
+          ],
+          "category": "off_lane_work",
+          "valid_until": null,
+          "profile_md_lines": [],
+          "mailbox_json_lines": [],
+          "calendar_json_lines": []
+        },
+        {
+          "id": "devendra_skip_cricinfo_as_finance",
+          "summary": "Do NOT surface the Cricinfo IPL Update newsletter as a finance task — content newsletter, not a bill or subscription action.",
+          "evidence_email_ids": [],
+          "category": "off_lane_newsletter",
+          "valid_until": null,
+          "profile_md_lines": [],
+          "mailbox_json_lines": [],
+          "calendar_json_lines": []
+        },
+        {
+          "id": "devendra_skip_swati_iscon_orders_as_finance",
+          "summary": "Do NOT surface Swati Snacks / Iscon Gathiya order confirmations as finance tasks. Food orders belong to the food agent.",
+          "evidence_email_ids": [],
+          "category": "off_lane_food",
+          "valid_until": null,
+          "profile_md_lines": [],
+          "mailbox_json_lines": [],
+          "calendar_json_lines": []
+        },
+        {
+          "id": "devendra_skip_indigo_flight_as_finance",
+          "summary": "Do NOT surface the AMD-BOM flight ticket confirmation as a finance task. Flight bookings belong to the travel agent.",
+          "evidence_email_ids": [],
+          "category": "off_lane_travel",
+          "valid_until": null,
+          "profile_md_lines": [],
+          "mailbox_json_lines": [],
+          "calendar_json_lines": []
+        }
+      ],
+      "expected_preference_topics": [
+        "Airtel postpaid bill arrives ~5th of every month, paid via Airtel Thanks app",
+        "Torrent Power electricity bill arrives ~10th of every month, due ~20th, monthly cadence"
+      ]
+    },
+    {
+      "slug": "meera",
+      "mode": "BACKFILL",
+      "expected_tasks": [
+        {
+          "id": "meera_airtel_postpaid_may4",
+          "summary": "Pay Airtel Postpaid ₹599 plan, due May 4 (3 days out) — profile-only fallback, since Meera has not granted Gmail access yet. Profile gives a hard date ('due 4th of every month'), the date is within 7 days, the provider is not flagged autopay. Rationale should explicitly note 'no fresh bill email in inbox; profile-states-cycle fallback'.",
+          "evidence_email_ids": [],
+          "category": "bill_due_nudge_profile_fallback",
+          "notes": "This is the canonical profile-only fallback case: the persona has clear bill metadata in the profile but no inbox to mine, so the agent must lean on the profile to nudge meaningful bills. Profile also explicitly says 'Money / bill due reminders 2 days before' work on her — a 2-day-out surface time is the right call.",
+          "valid_until": null,
+          "profile_md_lines": [],
+          "mailbox_json_lines": [],
+          "calendar_json_lines": []
+        }
+      ],
+      "expected_skips": [
+        {
+          "id": "meera_skip_hostel_rent",
+          "summary": "Do NOT surface hostel rent + mess fees as a finance task. Profile says these are 'deducted directly from stipend' — that's autopay, no money action.",
+          "evidence_email_ids": [],
+          "category": "autopay_fyi",
+          "valid_until": null,
+          "profile_md_lines": [],
+          "mailbox_json_lines": [],
+          "calendar_json_lines": []
+        },
+        {
+          "id": "meera_skip_netflix_shared",
+          "summary": "Do NOT surface the Netflix subscription as a finance task. Profile says Sneha pays and Meera contributes ₹250/mo — informal split with no specific due date in the profile, no fresh bill email. Out of scope for the profile-fallback rule.",
+          "evidence_email_ids": [],
+          "category": "no_hard_date",
+          "valid_until": null,
+          "profile_md_lines": [],
+          "mailbox_json_lines": [],
+          "calendar_json_lines": []
+        },
+        {
+          "id": "meera_skip_viki_pass",
+          "summary": "Do NOT surface Viki Pass as a finance task. Profile lists ₹449/mo but with no day-of-month and no autopay/manual flag — no hard date triggers the profile fallback.",
+          "evidence_email_ids": [],
+          "category": "no_hard_date",
+          "valid_until": null,
+          "profile_md_lines": [],
+          "mailbox_json_lines": [],
+          "calendar_json_lines": []
+        },
+        {
+          "id": "meera_skip_spotify_student",
+          "summary": "Do NOT surface Spotify Student as a finance task. ₹59/mo with no day-of-month in profile — no hard date.",
+          "evidence_email_ids": [],
+          "category": "no_hard_date",
+          "valid_until": null,
+          "profile_md_lines": [],
+          "mailbox_json_lines": [],
+          "calendar_json_lines": []
+        },
+        {
+          "id": "meera_skip_uptodate_hospital",
+          "summary": "Do NOT surface UpToDate as a finance task. Profile explicitly says 'hospital-sponsored' — Meera doesn't pay.",
+          "evidence_email_ids": [],
+          "category": "not_user_paid",
+          "valid_until": null,
+          "profile_md_lines": [],
+          "mailbox_json_lines": [],
+          "calendar_json_lines": []
+        },
+        {
+          "id": "meera_skip_sbi_loan",
+          "summary": "Do NOT surface the SBI Education loan as a finance task. Profile explicitly says 'Repayment starts after residency' — not currently due.",
+          "evidence_email_ids": [],
+          "category": "not_yet_active",
+          "valid_until": null,
+          "profile_md_lines": [],
+          "mailbox_json_lines": [],
+          "calendar_json_lines": []
+        }
+      ],
+      "expected_preference_topics": [],
+      "notes": "Persona has not granted Gmail OAuth — empty mailbox + empty fixture. The profile-fallback rule lets the agent surface ONE bill nudge here: Airtel ₹599 due May 4 (hard date in profile, 3 days out, manual-pay). Other profile-listed bills do NOT qualify because they either lack a day-of-month, are autopay (hostel rent), are hospital-sponsored, or are not yet active. Preference_updates remain empty (BACKFILL with no inbox = no history to mine; profile-echo prefs are still off-limits)."
+    }
+  ]
+}

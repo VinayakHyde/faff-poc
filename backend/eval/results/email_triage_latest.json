@@ -2,8 +2,8 @@
   "agent": "email_triage",
   "macro_avg": {
     "precision": 1.0,
-    "recall": 1.0,
-    "f1": 1.0,
+    "recall": 0.75,
+    "f1": 0.75,
     "specificity": 1.0,
     "pref_coverage": 1.0
   },
@@ -24,7 +24,9 @@
         "recall": 1.0,
         "f1": 1.0,
         "specificity": 1.0,
-        "pref_coverage": 1.0
+        "pref_coverage": 1.0,
+        "expired_tasks_filtered": 0,
+        "expired_skips_filtered": 0
       },
       "judge": {
         "task_alignments": [
@@ -32,7 +34,7 @@
             "actual_task_index": 0,
             "matched_id": "aditi_mom_reply",
             "kind": "expected_task",
-            "reasoning": "This directly matches the expected personal reply to mom about her relational check-in. The intent, sender, and action all align; the draft details differ slightly but are semantically the same task."
+            "reasoning": "This directly matches the expected personal reply to mom/Sunita about her relational check-in. The intent, recipient, and action all align. Suggested surface time is a concrete ISO timestamp."
           }
         ],
         "expected_task_misses": [],
@@ -42,10 +44,10 @@
       },
       "actual_tasks": [
         {
-          "title": "Reply to Mom’s check-in",
-          "action": "Draft a reply to Sunita Sharma asking how she’s doing and saying you’re eating well — confirm and send.",
-          "rationale": "Email from Sunita Sharma with subject \"Thinking of you\" is a personal relational check-in from Mom and merits a brief reply. Dad’s \"Insurance renewal\" email is excluded because it is financial admin, and HR’s holiday note does not require a reply.",
-          "suggested_surface_time": "2026-05-01T09:00:00+05:30",
+          "title": "Reply to Mom's check-in",
+          "action": "Reply to Sunita Sharma about her check-in",
+          "rationale": "Sunita Sharma's email with subject 'Thinking of you' is a personal relational check-in ('Hope you are eating well.') and needs a simple personal reply.",
+          "suggested_surface_time": "2026-05-01T10:30:00+05:30",
           "sub_agent": "email_triage"
         }
       ],
@@ -67,7 +69,9 @@
         "recall": 1.0,
         "f1": 1.0,
         "specificity": 1.0,
-        "pref_coverage": 1.0
+        "pref_coverage": 1.0,
+        "expired_tasks_filtered": 0,
+        "expired_skips_filtered": 0
       },
       "judge": {
         "task_alignments": [
@@ -75,13 +79,13 @@
             "actual_task_index": 0,
             "matched_id": "arjun_sudipto_bridge_reply",
             "kind": "expected_task",
-            "reasoning": "This matches the expected personal reply to Sudipto about Saturday bridge plans; same sender/topic and same intended action to confirm yes/no and timing."
+            "reasoning": "Both refer to replying to Sudipto about whether Arjun will join Saturday bridge, with similar timing. Suggested surface time is a concrete ISO timestamp."
           },
           {
             "actual_task_index": 1,
             "matched_id": "arjun_mitali_breakfast_reply",
             "kind": "expected_task",
-            "reasoning": "This matches the expected personal reply to Mitali about Sunday breakfast; same sender/topic and same intent to confirm or counter-propose plans."
+            "reasoning": "Both refer to replying to Mitali about Sunday breakfast plans by confirming or proposing an alternative. Suggested surface time is a concrete ISO timestamp."
           }
         ],
         "expected_task_misses": [],
@@ -90,27 +94,27 @@
           {
             "topic": "Mitali (wife) emails personally about household / weekend plans",
             "actual_pref_index": 0,
-            "reasoning": "The preference update says Mitali is a recurring personal contact who writes about family and weekend plans, including Sunday breakfast coordination."
+            "reasoning": "The preference update explicitly says Mitali is a high-priority personal contact who emails about family and weekend planning, including Sunday breakfast plans."
           },
           {
             "topic": "Sudipto sends bridge invitations periodically",
             "actual_pref_index": 1,
-            "reasoning": "The preference update explicitly says Sudipto emails about social plans and bridge meetups, with periodic outreach."
+            "reasoning": "The preference update explicitly says Sudipto is a recurring personal contact who emails about social plans, especially bridge and club meetups."
           },
           {
             "topic": "Kalakriti gallery sends 'Framing Status' updates ~quarterly",
-            "actual_pref_index": 4,
-            "reasoning": "The preference update explicitly references info@kalakritigallery.com sending recurring 'Framing Status' updates every few months."
+            "actual_pref_index": 3,
+            "reasoning": "The preference update explicitly identifies info@kalakritigallery.com as sending recurring 'Framing Status' updates every few months."
           },
           {
             "topic": "Rina at modernart sends 'Upcoming Show' invitations periodically",
             "actual_pref_index": 2,
-            "reasoning": "The preference update explicitly says Rina at Modern Art sends recurring gallery-related show invitations, citing repeated 'Upcoming Show' subjects."
+            "reasoning": "The preference update explicitly identifies Rina as a recurring contact with repeated 'Upcoming Show' emails on a roughly quarterly cadence."
           },
           {
             "topic": "Art collectors send 'Price list request' inquiries periodically",
-            "actual_pref_index": 3,
-            "reasoning": "The preference update says collector inquiries are recurring and typically ask for price lists, with repeated 'Price list request' subjects cited."
+            "actual_pref_index": 4,
+            "reasoning": "The preference update explicitly identifies a recurring collector contact who sends repeated 'Price list request' inquiries."
           }
         ],
         "preference_topic_misses": []
@@ -119,43 +123,43 @@
         {
           "title": "Reply to Sudipto about Saturday bridge",
           "action": "Reply to Sudipto about Saturday bridge",
-          "rationale": "Specific personal email from sudipto@lawfirm.in with subject 'Saturday Bridge?' received 2026-04-30 asks Arjun to confirm plans.",
+          "rationale": "Personal email from sudipto@lawfirm.in with subject 'Saturday Bridge?' received 2026-04-30 asks Arjun to confirm whether he is joining.",
           "suggested_surface_time": "2026-05-01T10:00:00+05:30",
           "sub_agent": "email_triage"
         },
         {
           "title": "Reply to Mitali about Sunday breakfast",
           "action": "Reply to Mitali about Sunday breakfast",
-          "rationale": "Specific personal email from mitali.b@design.com with subject 'Sunday Breakfast Idea' received 2026-04-30 is a relational message that likely expects a reply.",
-          "suggested_surface_time": "2026-05-01T09:30:00+05:30",
+          "rationale": "Personal email from mitali.b@design.com with subject 'Sunday Breakfast Idea' received 2026-04-30 asks about breakfast plans this Sunday.",
+          "suggested_surface_time": "2026-05-01T10:05:00+05:30",
           "sub_agent": "email_triage"
         }
       ],
       "actual_prefs": [
         {
           "section": "relationships",
-          "content": "Mitali Banerjee (mitali.b@design.com) is a recurring personal email contact who writes about family and weekend plans, including Sunday breakfast coordination.",
-          "reason": "Evidence: sender mitali.b@design.com; subject pattern includes 'Sunday Breakfast Idea' (2026-04-30). Supporting mailbox context shows recurring Sunday-morning Flurys order confirmations across 2025-05-11, 2025-06-01, 2025-12-28, and 2026-03-01, suggesting an ongoing breakfast-planning routine. Frequency: occasional direct planning emails tied to a recurring family weekend pattern."
+          "content": "Mitali Banerjee <mitali.b@design.com> is a high-priority personal contact who emails about family and weekend planning, including Sunday breakfast plans.",
+          "reason": "Evidence: sender mitali.b@design.com; subject 'Sunday Breakfast Idea'; recent personal planning email on 2026-04-30. Profile identifies Mitali as wife, so these messages are durable high-signal personal correspondence."
         },
         {
           "section": "relationships",
-          "content": "Sudipto (sudipto@lawfirm.in) is a recurring personal contact who emails about social plans and bridge meetups.",
-          "reason": "Evidence: sender sudipto@lawfirm.in; subject 'Saturday Bridge?' (2026-04-30). Frequency: current mailbox shows periodic bridge-planning outreach, consistent with a recurring social contact."
+          "content": "Sudipto <sudipto@lawfirm.in> is a recurring personal contact who emails about social plans, especially bridge and club meetups.",
+          "reason": "Evidence: sender sudipto@lawfirm.in; subject 'Saturday Bridge?'; recent personal email on 2026-04-30 asking Arjun to confirm bridge plans. Profile also identifies Sudipto as a close friend and frequent bridge partner."
         },
         {
-          "section": "work_relationships",
-          "content": "Rina at Modern Art (rina@modernart.com) is a recurring professional contact who sends gallery-related show invitations and coordination emails.",
-          "reason": "Evidence: sender rina@modernart.com; recurring subject pattern 'Upcoming Show' on 2025-06-01, 2025-06-09, 2025-08-14, and 2026-01-05. Frequency: repeated every few months, indicating ongoing professional/gallery-world contact."
+          "section": "work",
+          "content": "Rina <rina@modernart.com> is a recurring professional contact in Arjun's gallery network, usually emailing about upcoming shows and exhibition coordination.",
+          "reason": "Evidence: sender rina@modernart.com; recurring subject pattern 'Upcoming Show' on 2025-06-01, 2025-06-09, 2025-08-14, and 2026-01-05, indicating roughly quarterly exhibition-cycle communication."
         },
         {
-          "section": "vendors_and_services",
-          "content": "Collector inquiries from art-collector@yahoo.com are a recurring part of Arjun's gallery orbit; they typically email asking for price lists.",
-          "reason": "Evidence: sender art-collector@yahoo.com; recurring subject 'Price list request' on 2025-06-10, 2025-08-30, and 2025-08-31. Frequency: several inquiries over the year."
+          "section": "work",
+          "content": "Operational gallery-service email from info@kalakritigallery.com sends recurring framing-status updates and should be treated as part of Arjun's regular professional vendor orbit.",
+          "reason": "Evidence: sender info@kalakritigallery.com; recurring subject pattern 'Framing Status' on 2025-06-22, 2025-08-22, 2025-08-23, 2026-02-15, and 2026-04-06, showing repeated every-few-months workflow updates."
         },
         {
-          "section": "vendors_and_services",
-          "content": "Gallery operations updates from info@kalakritigallery.com are a recurring workflow signal; these emails usually contain framing-status updates.",
-          "reason": "Evidence: sender info@kalakritigallery.com; recurring subject 'Framing Status' on 2025-06-22, 2025-08-22, 2025-08-23, 2026-02-15, and 2026-04-06. Frequency: recurring every few months."
+          "section": "work",
+          "content": "art-collector@yahoo.com is a recurring buyer/collector contact who writes to request price lists and artwork details.",
+          "reason": "Evidence: sender art-collector@yahoo.com; recurring subject pattern 'Price list request' on 2025-06-10, 2025-08-30, and 2025-08-31, plus Arjun's reply on 2026-04-28 promising an updated price list by 2026-05-04. This indicates an ongoing collector inquiry pattern."
         }
       ]
     },
@@ -163,69 +167,66 @@
       "slug": "devendra",
       "mode": "BACKFILL",
       "metrics": {
-        "tp": 1,
+        "tp": 0,
         "fp_unexpected": 0,
         "fp_skip_violations": 0,
-        "fn": 0,
+        "fn": 1,
         "expected_tasks": 1,
-        "actual_tasks": 1,
+        "actual_tasks": 0,
         "expected_skips": 0,
         "expected_topics": 2,
         "precision": 1.0,
-        "recall": 1.0,
-        "f1": 1.0,
+        "recall": 0.0,
+        "f1": 0.0,
         "specificity": 1.0,
-        "pref_coverage": 1.0
+        "pref_coverage": 1.0,
+        "expired_tasks_filtered": 0,
+        "expired_skips_filtered": 0
       },
       "judge": {
-        "task_alignments": [
+        "task_alignments": [],
+        "expected_task_misses": [
           {
-            "actual_task_index": 0,
-            "matched_id": "devendra_nilesh_audit_reply",
-            "kind": "expected_task",
-            "reasoning": "Both refer to replying to Nilesh about the FY25 audit final review and confirming/discussing timing. Suggested surface time is a concrete ISO timestamp, which is appropriate."
+            "id": "devendra_nilesh_audit_reply",
+            "reasoning": "No actual task was surfaced. The agent should have produced a work-email reply task for Nilesh about the FY25 audit final review and confirming a time to discuss."
           }
         ],
-        "expected_task_misses": [],
         "expected_skip_violations": [],
         "preference_topic_hits": [
           {
             "topic": "Nilesh (nilesh@patelassociates.com) is the primary work-email contact for firm/audit matters",
-            "actual_pref_index": 0,
-            "reasoning": "The preference update states Nilesh is a recurring primary work contact and business partner who handles audit-review coordination and firm matters, which matches the expected topic."
+            "actual_pref_index": 1,
+            "reasoning": "Actual preference update 1 explicitly says Nilesh is a primary recurring professional contact for audit review/finalisation work, which semantically matches the expected topic."
           },
           {
             "topic": "Cricinfo IPL Updates newsletter is content the user keeps reading (cricket fan per profile) — NOT an unsubscribe candidate",
-            "actual_pref_index": 2,
-            "reasoning": "The preference update explicitly says Cricinfo IPL updates are likely kept/read and should not be treated as unsubscribe noise, matching the expected topic."
+            "actual_pref_index": 3,
+            "reasoning": "Actual preference update 3 states Cricinfo IPL updates are a mailing list Devendra appears to keep as signal and ties this to his cricket interest, matching the expected non-unsubscribe preference."
           }
         ],
         "preference_topic_misses": []
       },
-      "actual_tasks": [
-        {
-          "title": "Reply to Nilesh about the FY25 audit review",
-          "action": "Reply to Nilesh about the FY25 audit review",
-          "rationale": "Recent work email from nilesh@patelassociates.com with subject 'Final review of FY25 Audit' says 'Discuss tomorrow?', which is a direct professional reply ask from a recurring work contact.",
-          "suggested_surface_time": "2026-05-01T09:00:00+05:30",
-          "sub_agent": "email_triage"
-        }
-      ],
+      "actual_tasks": [],
       "actual_prefs": [
         {
           "section": "relationships",
-          "content": "Nilesh (nilesh@patelassociates.com) is a recurring primary work contact and business partner who emails about audit-review coordination and firm matters.",
-          "reason": "Evidence: nilesh@patelassociates.com sent 'Final review of FY25 Audit' on 2026-04-30; profile also names Nilesh as business partner. Current mailbox evidence shows recurring professional contact around audit work, at least periodically during review cycles."
+          "content": "Hetal Patel (wife) is an occasional but durable personal email contact at hetal.patel.ca@gmail.com; their email topics include personal health follow-through such as annual checkup reminders.",
+          "reason": "Evidence: thread with hetal.patel.ca@gmail.com, subject pattern 'Re: Annual checkup' on 2026-04-15. This is a personal/family correspondence pattern, albeit infrequent."
         },
         {
-          "section": "services",
-          "content": "Iscon Gathiya (orders@iscongathiya.com) is a recurring personal vendor in Devendra's orbit, typically sending order confirmations for Gathiya/Jalebi Sunday breakfast orders.",
-          "reason": "Evidence: repeated emails from orders@iscongathiya.com with recurring subject 'Your Iscon Gathiya Order Confirmation' on 2025-05-04, 2025-07-27, 2025-10-19, and 2026-01-11 — roughly every few months in sampled history, consistent with a durable Sunday breakfast pattern."
+          "section": "work_contacts",
+          "content": "Nilesh at Patel & Associates (nilesh@patelassociates.com) is a primary recurring professional email contact for audit review and finalisation work, especially during tax/audit season.",
+          "reason": "Evidence: nilesh@patelassociates.com sent 'Final review of FY25 Audit' on 2026-04-30, with Devendra's reply on 2026-04-29 promising marked-up comments by May 4. Subject pattern centers on audit review/finalisation and indicates recurring work coordination."
         },
         {
-          "section": "newsletters",
-          "content": "Cricinfo IPL updates from news@cricinfo.com are a mailing list Devendra likely keeps reading and should not be treated as unsubscribe noise.",
-          "reason": "Evidence: recurring subject 'IPL Update' from news@cricinfo.com appeared about 8 times in the sampled 12-month window (including 2025-05-13, 2025-07-04, 2025-08-03, 2025-08-09, 2025-12-07, 2026-01-30, 2026-02-05, 2026-04-18). This aligns with the profile stating he is a die-hard cricket fan and regularly watches cricket on Sundays."
+          "section": "service_providers",
+          "content": "Iscon Gathiya (orders@iscongathiya.com) is a recurring vendor in Devendra's orbit, sending repeat order confirmations for Gathiya/Jalebi breakfast orders.",
+          "reason": "Evidence: repeated emails from orders@iscongathiya.com with subject 'Your Iscon Gathiya Order Confirmation' on 2025-05-04, 2025-07-27, 2025-10-19, and 2026-01-11 — a recurring pattern roughly every 1-3 months in sampled history."
+        },
+        {
+          "section": "mailing_lists",
+          "content": "Cricinfo IPL updates from news@cricinfo.com are a mailing list Devendra appears to keep as signal, consistent with his strong cricket interest.",
+          "reason": "Evidence: repeated subject pattern 'IPL Update' from news@cricinfo.com across the year, including 2025-05-13, 2025-07-04, 2025-08-03, 2025-08-09, 2025-12-07, 2026-01-30, 2026-02-05, and 2026-04-18 (~8 surfaced in 12 months). Profile also states he is a die-hard cricket fan."
         }
       ]
     },
@@ -245,7 +246,9 @@
         "recall": 1.0,
         "f1": 1.0,
         "specificity": 1.0,
-        "pref_coverage": 1.0
+        "pref_coverage": 1.0,
+        "expired_tasks_filtered": 0,
+        "expired_skips_filtered": 0
       },
       "judge": {
         "task_alignments": [],

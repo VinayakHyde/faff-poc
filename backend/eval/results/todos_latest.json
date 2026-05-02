@@ -1,0 +1,252 @@
+{
+  "agent": "todos",
+  "macro_avg": {
+    "precision": 1.0,
+    "recall": 0.875,
+    "f1": 0.9166666666666666,
+    "specificity": 1.0,
+    "pref_coverage": 1.0
+  },
+  "personas": [
+    {
+      "slug": "aditi",
+      "mode": "STEADY-STATE",
+      "metrics": {
+        "tp": 2,
+        "fp_unexpected": 0,
+        "fp_skip_violations": 0,
+        "fn": 0,
+        "expected_tasks": 2,
+        "actual_tasks": 2,
+        "expected_skips": 6,
+        "expected_topics": 0,
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0,
+        "specificity": 1.0,
+        "pref_coverage": 1.0,
+        "expired_tasks_filtered": 0,
+        "expired_skips_filtered": 0
+      },
+      "judge": {
+        "task_alignments": [
+          {
+            "actual_task_index": 0,
+            "matched_id": "aditi_qspec_due_monday",
+            "kind": "expected_task",
+            "reasoning": "This matches the outbound self-made commitment to deliver the finalised Q2 product spec to leadership by Monday, May 4. Action verb and timing are aligned; suggested surface time is about 24h ahead."
+          },
+          {
+            "actual_task_index": 1,
+            "matched_id": "aditi_photos_due_sunday",
+            "kind": "expected_task",
+            "reasoning": "This matches the outbound self-made commitment to send Mira's birthday photo album to Priya by Sunday, May 3. Action verb and timing are aligned; suggested surface time is appropriately 24h ahead on Saturday morning."
+          }
+        ],
+        "expected_task_misses": [],
+        "expected_skip_violations": [],
+        "preference_topic_hits": [],
+        "preference_topic_misses": []
+      },
+      "actual_tasks": [
+        {
+          "title": "Send Q2 product spec doc to leadership",
+          "action": "Send product spec doc to leadership by 2026-05-04 EOD",
+          "rationale": "In outbound email \"Re: Q2 Product Spec\" sent from aditi.sharma91@gmail.com on 2026-04-30, Aditi committed: \"I'll send you the finalised Q2 product spec doc by EOD Monday, May 4.\"",
+          "suggested_surface_time": "2026-05-03T18:00:00+05:30",
+          "sub_agent": "todos"
+        },
+        {
+          "title": "Send Mira birthday photo album to Priya",
+          "action": "Send photo album to Priya by 2026-05-03",
+          "rationale": "In outbound email \"Re: Mira's pictures\" sent from aditi.sharma91@gmail.com on 2026-04-30, Aditi committed: \"I'll send you the full Mira birthday photo album by Sunday May 3.\"",
+          "suggested_surface_time": "2026-05-02T09:00:00+05:30",
+          "sub_agent": "todos"
+        }
+      ],
+      "actual_prefs": []
+    },
+    {
+      "slug": "arjun",
+      "mode": "BACKFILL",
+      "metrics": {
+        "tp": 2,
+        "fp_unexpected": 0,
+        "fp_skip_violations": 0,
+        "fn": 0,
+        "expected_tasks": 2,
+        "actual_tasks": 2,
+        "expected_skips": 5,
+        "expected_topics": 1,
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0,
+        "specificity": 1.0,
+        "pref_coverage": 1.0,
+        "expired_tasks_filtered": 0,
+        "expired_skips_filtered": 0
+      },
+      "judge": {
+        "task_alignments": [
+          {
+            "actual_task_index": 0,
+            "matched_id": "arjun_pricelist_due_monday",
+            "kind": "expected_task",
+            "reasoning": "This matches the expected self-made deliverable commitment: sending the updated price list to art-collector@yahoo.com by May 4 based on Arjun's own outbound email. Surface time is appropriately 24h ahead."
+          },
+          {
+            "actual_task_index": 1,
+            "matched_id": "arjun_rina_overdue_followup",
+            "kind": "expected_task",
+            "reasoning": "This matches the expected overdue self-commitment check-in: Arjun had promised Rina the show price list by Apr 25, it is now overdue by more than 3 days, and the task uses the allowed 'Follow up with' action shape. The action is slightly less explicit about delivering or renegotiating, but the underlying intent matches the overdue follow-up expectation."
+          }
+        ],
+        "expected_task_misses": [],
+        "expected_skip_violations": [],
+        "preference_topic_hits": [
+          {
+            "topic": "Arjun has a pattern of committing to gallery / collector deliverables (price lists, catalogue items) with explicit dates",
+            "actual_pref_index": 0,
+            "reasoning": "This update directly captures the expected topic by describing recurring explicit, date-bound commitments around gallery/collector materials such as price lists and image packets, with evidence from both outbound emails."
+          }
+        ],
+        "preference_topic_misses": []
+      },
+      "actual_tasks": [
+        {
+          "title": "Send updated price list to collector",
+          "action": "Send price list to art-collector@yahoo.com by 2026-05-04",
+          "rationale": "Outbound email from arjun.banerjee.art@gmail.com on 2026-04-28, subject 'Re: Price list request': he wrote, \"I'll send you the updated price list ... by Monday, May 4\" and said it would include high-resolution images. This deadline is within 48 hours.",
+          "suggested_surface_time": "2026-05-03T09:00:00+05:30",
+          "sub_agent": "todos"
+        },
+        {
+          "title": "Follow up with Rina on promised show price list",
+          "action": "Follow up with Rina on price list for the works you're bringing to the show",
+          "rationale": "Outbound email from arjun.banerjee.art@gmail.com to rina@modernart.com on 2026-04-18, subject 'Re: Upcoming Show': he wrote, \"I'll send you the price list for the works I'm bringing by April 25 so you can finalise the catalogue.\" That deadline is now overdue by more than 3 days, and no later delivery email from the user appeared in the searched results.",
+          "suggested_surface_time": "2026-05-01T09:00:00+05:30",
+          "sub_agent": "todos"
+        }
+      ],
+      "actual_prefs": [
+        {
+          "section": "Commitment style",
+          "content": "Frequently makes concrete professional commitments around gallery sales materials, especially price lists and image packets for collectors or partner galleries.",
+          "reason": "Evidence from outbound sent emails: on 2026-04-28 to art-collector@yahoo.com, he wrote \"I'll send you the updated price list ... by Monday, May 4\" and promised high-resolution images; on 2026-04-18 to rina@modernart.com, he wrote \"I'll send you the price list ... by April 25\" for catalogue finalisation. These are both art-business deliverables, suggesting a recurring commitment category."
+        },
+        {
+          "section": "Commitment style",
+          "content": "Typically gives himself short lead times of about one week for outbound deliverables.",
+          "reason": "In the 2026-04-28 collector email, he committed on Apr 28 to send by May 4 (~6 days). In the 2026-04-18 Rina email, he committed on Apr 18 to send by Apr 25 (~7 days). Both commitments are explicit and date-bound."
+        },
+        {
+          "section": "Relationships",
+          "content": "Shows strongest accountability in formal gallery-business correspondence, using warm but professional tone when making commitments to collectors and peer gallery owners.",
+          "reason": "In both outbound commitment emails, he used formal/warm language while making explicit dated promises: \"Dear Sir ... Warm regards\" to the collector and \"Hi Rina ... Best\" to Rina. This pattern appeared in professional contacts rather than casual personal mail in the searched history."
+        }
+      ]
+    },
+    {
+      "slug": "devendra",
+      "mode": "BACKFILL",
+      "metrics": {
+        "tp": 1,
+        "fp_unexpected": 0,
+        "fp_skip_violations": 0,
+        "fn": 1,
+        "expected_tasks": 2,
+        "actual_tasks": 1,
+        "expected_skips": 4,
+        "expected_topics": 1,
+        "precision": 1.0,
+        "recall": 0.5,
+        "f1": 0.6666666666666666,
+        "specificity": 1.0,
+        "pref_coverage": 1.0,
+        "expired_tasks_filtered": 0,
+        "expired_skips_filtered": 0
+      },
+      "judge": {
+        "task_alignments": [
+          {
+            "actual_task_index": 0,
+            "matched_id": "devendra_audit_due_monday",
+            "kind": "expected_task",
+            "reasoning": "This directly matches the expected self-made deliverable commitment: sending marked-up FY25 audit comments to Nilesh by Monday May 4, sourced from Devendra's own outbound email. Suggested surface time on Sunday morning is also appropriate."
+          }
+        ],
+        "expected_task_misses": [
+          {
+            "id": "devendra_hetal_checkup_overdue",
+            "reasoning": "No actual task surfaces the overdue follow-up on the annual checkup booking, despite the expected overdue self-commitment from Devendra's Apr 15 outbound email."
+          }
+        ],
+        "expected_skip_violations": [],
+        "preference_topic_hits": [
+          {
+            "topic": "Devendra reliably commits to FY-audit deliverables to his partner Nilesh with explicit dates",
+            "actual_pref_index": 0,
+            "reasoning": "The first preference update explicitly states that in work email he makes deliverable commitments with concrete dates, and cites the outbound FY25 audit email to Nilesh as evidence."
+          }
+        ],
+        "preference_topic_misses": []
+      },
+      "actual_tasks": [
+        {
+          "title": "Send marked-up comments to Nilesh",
+          "action": "Send marked-up comments to Nilesh by 2026-05-04",
+          "rationale": "Outbound email from devendra.patel.ca@gmail.com to nilesh@patelassociates.com on 2026-04-29, subject \"Re: Final review of FY25 Audit,\" states: \"I'll send you my marked-up comments on the FY25 audit draft by EOD Monday, May 4 so we can finalise on Tuesday morning.\" This is a user-made deliverable commitment with a concrete date, and the deadline is within 48 hours of today (2026-05-01).",
+          "suggested_surface_time": "2026-05-03T09:00:00+05:30",
+          "sub_agent": "todos"
+        }
+      ],
+      "actual_prefs": [
+        {
+          "section": "Commitments style",
+          "content": "In work email, he tends to make explicit deliverable commitments with concrete dates rather than vague promises.",
+          "reason": "Outbound email to Nilesh on 2026-04-29 (subject: \"Re: Final review of FY25 Audit\") says, \"I'll send you my marked-up comments on the FY25 audit draft by EOD Monday, May 4,\" showing specific deliverable-plus-deadline phrasing."
+        },
+        {
+          "section": "Relationships",
+          "content": "Nilesh appears to be a high-accountability recipient for professional commitments; Devendra uses respectful tone and firm deadlines with him.",
+          "reason": "In the 2026-04-29 outbound audit email to Nilesh, Devendra writes \"Nilesh ji\" and commits to send marked-up comments \"by EOD Monday, May 4,\" indicating formal tone and prompt accountability in that relationship."
+        },
+        {
+          "section": "Commitments style",
+          "content": "Personal health/admin commitments are more likely to slip than professional deliverables.",
+          "reason": "Outbound email to Hetal on 2026-04-15 (subject: \"Re: Annual checkup\") says, \"You are right, I have been delaying it. I'll book the annual checkup with Dr. Shah and have the appointment confirmed by April 25.\" By 2026-05-01, that date has passed, and the backfill searches surfaced no later completion email."
+        }
+      ]
+    },
+    {
+      "slug": "meera",
+      "mode": "BACKFILL",
+      "metrics": {
+        "tp": 0,
+        "fp_unexpected": 0,
+        "fp_skip_violations": 0,
+        "fn": 0,
+        "expected_tasks": 0,
+        "actual_tasks": 0,
+        "expected_skips": 0,
+        "expected_topics": 0,
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0,
+        "specificity": 1.0,
+        "pref_coverage": 1.0,
+        "expired_tasks_filtered": 0,
+        "expired_skips_filtered": 0
+      },
+      "judge": {
+        "task_alignments": [],
+        "expected_task_misses": [],
+        "expected_skip_violations": [],
+        "preference_topic_hits": [],
+        "preference_topic_misses": []
+      },
+      "actual_tasks": [],
+      "actual_prefs": []
+    }
+  ]
+}

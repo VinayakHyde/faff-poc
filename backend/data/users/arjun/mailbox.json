@@ -881,6 +881,32 @@
         "Personal"
       ],
       "received_at": "2026-04-30T19:30:00+05:30"
+    },
+    {
+      "id": "msg_arjun_pricelist_out",
+      "thread_id": "thr_arjun_collector_2026",
+      "from": "arjun.banerjee.art@gmail.com",
+      "to": "art-collector@yahoo.com",
+      "subject": "Re: Price list request",
+      "snippet": "I'll send the updated price list by Mon May 4.",
+      "body": "Dear Sir,\n\nThank you for your continued interest. I'll send you the updated price list with the new Baroda-based artist's pieces by Monday, May 4. Will include high-resolution images for the three works you asked about.\n\nWarm regards,\nArjun Banerjee",
+      "labels": [
+        "SENT"
+      ],
+      "received_at": "2026-04-28T18:30:00+05:30"
+    },
+    {
+      "id": "msg_arjun_rina_overdue",
+      "thread_id": "thr_arjun_rina_show",
+      "from": "arjun.banerjee.art@gmail.com",
+      "to": "rina@modernart.com",
+      "subject": "Re: Upcoming Show",
+      "snippet": "I'll send the price list by Apr 25.",
+      "body": "Hi Rina,\n\nThanks for the show invitation, looking forward to it. I'll send you the price list for the works I'm bringing by April 25 so you can finalise the catalogue.\n\nBest,\nArjun",
+      "labels": [
+        "SENT"
+      ],
+      "received_at": "2026-04-18T11:00:00+05:30"
     }
   ]
 }
