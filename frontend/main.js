@@ -35,6 +35,11 @@ const state = {
   calendarCache: new Map(), // slug → events[]
 };
 
+// ---- sidebar resize constants (must be declared before init() IIFE) ----
+
+const SIDEBAR_KEY = "sidebarWidthPx";
+const COMPACT_THRESHOLD = 140; // px below which we collapse to icon-only
+
 // ---- bootstrap ----
 
 (async function init() {
@@ -44,11 +49,6 @@ const state = {
   await loadPersonas();
   $("#run-btn").addEventListener("click", runStream);
 })();
-
-// ---- sidebar resize ----
-
-const SIDEBAR_KEY = "sidebarWidthPx";
-const COMPACT_THRESHOLD = 140; // px below which we collapse to icon-only
 
 function initSidebarResize() {
   // Restore saved width.
