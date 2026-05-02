@@ -166,10 +166,24 @@ def _apply_filter(scored: list[ScoredTask]) -> list[ScoredTask]:
 async def run(
     daily_input: DailyInput,
     profile: PreferencesProfile,
+    *,
+    event_queue: asyncio.Queue | None = None,
 ) -> OrchestratorResult:
+    """Run the full daily pipeline.
+
+    If `event_queue` is provided, every TraceEvent is also pushed onto it as
+    it's emitted — lets a streaming endpoint forward events to a client over
+    SSE while the orchestrator is still running. The synchronous return
+    value is unchanged.
+    """
     trace: list[TraceEvent] = []
 
-    trace.append(
+    def _emit(event: TraceEvent) -> None:
+        trace.append(event)
+        if event_queue is not None:
+            event_queue.put_nowait(event)
+
+    _emit(
         TraceEvent(
             type="orchestrator_started",
             sub_agent="orchestrator",
@@ -179,10 +193,10 @@ async def run(
 
     # ---- 1. Fan-out ----
     async def _run_one(agent) -> SubAgentResult:
-        trace.append(TraceEvent(type="subagent_started", sub_agent=agent.NAME))
+        _emit(TraceEvent(type="subagent_started", sub_agent=agent.NAME))
         try:
             r = await agent.run(daily_input, profile)
-            trace.append(
+            _emit(
                 TraceEvent(
                     type="subagent_returned",
                     sub_agent=agent.NAME,
@@ -194,7 +208,7 @@ async def run(
             )
             return r
         except Exception as e:
-            trace.append(
+            _emit(
                 TraceEvent(
                     type="subagent_returned",
                     sub_agent=agent.NAME,
@@ -224,7 +238,7 @@ async def run(
             {"sub_agent": all_tasks[i].sub_agent, "title": all_tasks[i].title}
             for i in g.drop_indices
         ]
-        trace.append(
+        _emit(
             TraceEvent(
                 type="dedup_decision",
                 sub_agent="orchestrator",
@@ -238,7 +252,7 @@ async def run(
 
     # ---- 4. Merge prefs (POC: just collect; LLM-based pref dedup is later work) ----
     for p in all_prefs:
-        trace.append(
+        _emit(
             TraceEvent(
                 type="preference_merged",
                 sub_agent="orchestrator",
@@ -249,7 +263,7 @@ async def run(
     # ---- 5. Score ----
     scored = await asyncio.gather(*(score_task(t, profile) for t in deduped))
     for s in scored:
-        trace.append(
+        _emit(
             TraceEvent(
                 type="task_scored",
                 sub_agent="rubric",
@@ -267,7 +281,7 @@ async def run(
     for s in scored:
         key = (s.task.title, s.task.sub_agent)
         if key in final_titles:
-            trace.append(
+            _emit(
                 TraceEvent(
                     type="task_emitted",
                     sub_agent=s.task.sub_agent,
@@ -275,7 +289,7 @@ async def run(
                 )
             )
         else:
-            trace.append(
+            _emit(
                 TraceEvent(
                     type="task_filtered",
                     sub_agent="orchestrator",
@@ -295,7 +309,7 @@ async def run(
             await asyncio.gather(*(draft_message(s, profile) for s in final))
         )
         for m in final_messages:
-            trace.append(
+            _emit(
                 TraceEvent(
                     type="message_drafted",
                     sub_agent="messenger",
@@ -308,7 +322,7 @@ async def run(
                 )
             )
 
-    trace.append(
+    _emit(
         TraceEvent(
             type="orchestrator_finished",
             sub_agent="orchestrator",
