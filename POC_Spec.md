@@ -34,7 +34,7 @@ A web interface split into stable context (left) vs. live daily input + agent ou
 - An input box at the top where I manually paste the day's JSON payload — i.e. what the cron job would have fetched from the Gmail + Calendar APIs for that day.
 - Below it, a chat-style stream of the agent's response: the automations it identified, the steps it took, and what it's doing under the hood, rendered as HTML trace components (Andrew Ng AI-agents-course / ag-ui style).
 - Each new JSON input produces a fresh agent run rendered in the same panel.
-- **Sub-agent filter** — a single run produces a lot of trace nodes (orchestrator + 8 sub-agents, each with their own tool calls, candidate tasks, and preference updates), so the panel includes a filter dropdown at the top of the trace stream. The dropdown lists every sub-agent (Calendar, Email, Food, Travel, Bills, Dates, Shopping, To-dos, plus Orchestrator and Rubric) with a toggle next to each — all enabled by default. Untoggling an agent hides its trace nodes so the user can isolate one agent's trace end-to-end. Pure client-side hide/show on already-rendered nodes (each node carries a `data-agent` attribute) — no re-running, no backend round-trip.
+- **Sub-agent filter** — a single run produces a lot of trace nodes (orchestrator + 9 sub-agents, each with their own tool calls, candidate tasks, and preference updates), so the panel includes a filter dropdown at the top of the trace stream. The dropdown lists every sub-agent (Calendar, Email, Food, Travel, Bills, Dates, Shopping, To-dos, Events, plus Orchestrator and Rubric) with a toggle next to each — all enabled by default. Untoggling an agent hides its trace nodes so the user can isolate one agent's trace end-to-end. Pure client-side hide/show on already-rendered nodes (each node carries a `data-agent` attribute) — no re-running, no backend round-trip.
 
 ## Daily flow (cron-triggered)
 
@@ -105,6 +105,11 @@ Grounded in what Poke and similar proactive assistants actually ship as hero use
    - Looks at preferences + email + calendar for things the user said they'd do ("I'll send you X by Friday", action items from meeting notes).
    - Surfaces: deadline-approaching reminders for self-made commitments.
 
+9. **Events & discovery agent**
+   - Looks at preferences (favourite artists, genres, music/cinema/theatre hobbies, bucket-list artists, alma-mater fests) + email (ticket-platform mailers and confirmations from BookMyShow / District / Paytm Insider, artist newsletters, venue announcements) + calendar (free-time windows and stated routine blocks to surface only conflict-free options).
+   - Surfaces: concert / show announcements by favourite artists in the user's city, sale-window nudges the moment a high-signal date drops (e.g. user follows Anuv Jain → Aria Tour Mumbai date drops → ticket-buy nudge before tickets sell out), recurring festival reminders the user actually attends (Mood Indigo, Bacardi NH7 Weekender, Dover Lane Music Conference, Magnetic Fields, college alma-mater fests), and "saved you the FOMO" flags when a candidate event clashes with stated routines or existing calendar blocks.
+   - **Edge case handled here:** if no event-attendance history exists in the profile, this agent's first job is to mine 6 months of email for ticket confirmations and platform receipts → infer attended artists / venues / genres / city circuits → write back to preferences (so future runs have it).
+
 All sub-agents are invoked on every run — there is no orchestrator-level pruning. Each sub-agent decides for itself whether it has anything to surface; if its slice of today's input is empty, it returns no candidate tasks. Always-on fan-out keeps the orchestrator simple and ensures we never miss a category by mis-routing. (See the stretch section for the latency optimisation of pruning idle sub-agents — explicitly out of scope for the POC.) New sub-agents can be added later — Health, Home automation, Developer/PR — but v1 sticks to this set since it covers the bulk of what a human assistant would handle.
 
 #### Preference-update edge cases at the sub-agent layer
@@ -114,6 +119,7 @@ Some sub-agents double as **preference enrichment agents** when the relevant pre
 - Food agent → no food preferences → mine 6 months of order emails → write preferences.
 - Travel agent → no travel patterns → mine flight/hotel emails → infer home airport, frequent destinations, preferred airlines.
 - Dates agent → birthdays missing → mine email greetings/calendar recurring events.
+- Events agent → no event-attendance history → mine BookMyShow / District / Paytm Insider ticket confirmations → infer attended artists, venues, genres, festival circuits.
 
 All sub-agents share the same write path into the preferences profile — preference updates are simply one of two outputs each sub-agent produces.
 
@@ -136,6 +142,7 @@ Candidate criteria (each worth +1, to be finalised):
   - **Travel (e.g. cab to airport, web check-in)**: one-shot. If suggested once and the user didn't take it up, do **not** suggest again for the same trip.
   - **Bills / subscriptions**: re-nudge as the deadline approaches (e.g. day -3, day -1) even if previously nudged, because the criticality rises.
   - **Birthdays / occasions**: one nudge ahead of time is enough; don't re-spam.
+  - **Events / concerts**: one-shot per specific show. If the user ignored the Anuv Jain Mumbai sale-window nudge, do **not** re-nudge for that same show. A new show by the same artist (different city or different tour) IS a fresh nudge. Festival lineups are an exception — if a high-signal artist is added to a festival the user is already considering, re-nudge once with the lineup change.
     The subjectiveness here is real, so the rubric prompt must enumerate these category rules explicitly rather than relying on the judge to infer them.
 - Matches user-stated preference category (vs. inferred / weak).
 - The proposed surface-time is well-justified (not just "9am default").
@@ -206,7 +213,7 @@ Two additional pages to support the demo. **No buttons or nav on the main page**
 
 0. Sample personas + fake daily JSON fixtures.
 1. First sub-agent + pydantic contracts (shape gets pinned here, carried forward).
-2. Remaining 7 sub-agents.
+2. Remaining 8 sub-agents.
 3. Orchestrator (routing + parallel fan-out + preference merge).
 4. Rubric scorer + filter (min/max/cutoff/per-agent cap).
 5. Final LLM pass — reframes filtered tasks into user-facing copy. Trace UI itself is dumb rendering, no LLM there.

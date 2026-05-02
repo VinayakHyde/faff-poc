@@ -7,6 +7,7 @@ from app.agents import (
     calendar,
     dates,
     email_triage,
+    events,
     finance,
     food,
     shopping,
@@ -23,6 +24,7 @@ ALL_AGENTS = [
     dates,
     shopping,
     todos,
+    events,
 ]
 
 
@@ -31,6 +33,7 @@ __all__ = [
     "calendar",
     "dates",
     "email_triage",
+    "events",
     "finance",
     "food",
     "shopping",

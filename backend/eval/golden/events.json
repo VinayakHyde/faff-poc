@@ -1,0 +1,324 @@
+{
+  "agent": "events",
+  "schema_version": 2,
+  "evaluation_date": "2026-05-01",
+  "scope": {
+    "in_scope_categories": [
+      "sale_window_nudge",
+      "tickets_open_countdown",
+      "festival_lineup_update"
+    ],
+    "out_of_scope_examples": [
+      "Bills, subscriptions, payment portals (finance lane)",
+      "Birthday / anniversary / festival gifting (dates lane)",
+      "Trip blocks, flight bookings, hotel itineraries (travel lane)",
+      "Food orders / restaurant plans (food lane)",
+      "Reply-to-this-email nudges or social-coordination plans (email_triage lane)",
+      "Existing concert events on the calendar — leave-now / prep / post-event are calendar's lane",
+      "Speculative 'might like' suggestions for artists not named in the profile",
+      "Generic ticket-platform digests with no profile-named artist hit"
+    ],
+    "surface_time_rules": {
+      "sale_window_nudge": "as soon as the sale-open email is processed (sale is live)",
+      "tickets_open_countdown": "2–6 hours before the announced sale-open time",
+      "festival_lineup_update": "the day the lineup change email lands"
+    },
+    "trigger_requirements": {
+      "must_combine": "profile-named artist/festival/circuit + a real signal in the live slice (ticket-platform email, artist newsletter, calendar event, or profile-listed festival inside its 7–14-day prep window)",
+      "profile_alone_insufficient": "Naming an artist in the profile is necessary but NOT sufficient. There has to be a concrete trigger in today's mailbox / calendar / festival window."
+    }
+  },
+  "personas": [
+    {
+      "slug": "aditi",
+      "mode": "STEADY-STATE",
+      "fixture_path": "backend/data/users/aditi/fixtures/2026-05-01.json",
+      "fixture_summary": "Today = Fri 2026-05-01. Mailbox: mom check-in (msg_mom_1), HR holiday FYI (msg_hr_1), Dad insurance forward (msg_dad_1). Calendar: Date Night Toit + recurring Indiranagar routines + outside-window meetings. ZERO ticket-platform emails. ZERO mentions of profile-named artists (Kendrick, Frank Ocean, Prateek Kuhad, Anuv Jain, AP Dhillon, FKJ, SZA, Diljit Dosanjh) anywhere in the slice or calendar. Profile bucket-list and top-artists exist but no live signal triggers any of them.",
+      "expected_tasks": [],
+      "expected_tasks_note": "Silence is the only correct output. The events agent's trigger contract requires (profile-named artist OR profile-listed festival) AND (real email/calendar/festival-window signal). Profile alone is not a trigger. Bucket-list artists like Kendrick / Frank Ocean / AP Dhillon are not actionable until a real sale-open or announcement email lands.",
+      "expected_skips": [
+        {
+          "id": "aditi_skip_insurance_as_ticket_task",
+          "summary": "Do NOT reframe Dad's insurance renewal email as `Buy tickets ...` or any other event task. Insurance is finance lane; the email has no ticket / artist / venue content.",
+          "evidence_email_ids": [
+            "msg_dad_1"
+          ],
+          "category": "off_lane_finance",
+          "valid_until": null,
+          "profile_md_lines": [],
+          "mailbox_json_lines": [],
+          "calendar_json_lines": []
+        },
+        {
+          "id": "aditi_skip_hr_holiday_as_event",
+          "summary": "Do NOT reframe the HR public-holiday FYI as a discovery / event task. It is an FYI announcement with no ticket signal.",
+          "evidence_email_ids": [
+            "msg_hr_1"
+          ],
+          "category": "fyi_no_action",
+          "valid_until": null,
+          "profile_md_lines": [],
+          "mailbox_json_lines": [],
+          "calendar_json_lines": []
+        },
+        {
+          "id": "aditi_skip_mom_email_as_event",
+          "summary": "Do NOT generate any events task from Mom's relational check-in. No event signal; reply belongs to email_triage.",
+          "evidence_email_ids": [
+            "msg_mom_1"
+          ],
+          "category": "off_lane_email",
+          "valid_until": null,
+          "profile_md_lines": [],
+          "mailbox_json_lines": [],
+          "calendar_json_lines": []
+        },
+        {
+          "id": "aditi_skip_speculative_kendrick_tour",
+          "summary": "Do NOT emit `Buy tickets for Kendrick Lamar` / `Watch for Kendrick tour news` / `Save the date for Kendrick Asia tour` despite Kendrick being on Aditi's bucket list. No sale-open email landed; profile alone is not a trigger.",
+          "evidence_email_ids": [],
+          "category": "speculative_no_signal",
+          "notes": "Most tempting failure mode for this agent: profile names a high-emotion bucket-list artist, agent invents a task without a live signal.",
+          "valid_until": null,
+          "profile_md_lines": [],
+          "mailbox_json_lines": [],
+          "calendar_json_lines": []
+        },
+        {
+          "id": "aditi_skip_speculative_frank_ocean_tour",
+          "summary": "Do NOT emit any task about Frank Ocean. He's on Aditi's bucket list but no announcement email exists in the slice.",
+          "evidence_email_ids": [],
+          "category": "speculative_no_signal",
+          "valid_until": null,
+          "profile_md_lines": [],
+          "mailbox_json_lines": [],
+          "calendar_json_lines": []
+        },
+        {
+          "id": "aditi_skip_speculative_ap_dhillon_arena",
+          "summary": "Do NOT emit `Buy tickets for AP Dhillon arena show` etc. The bucket-list entry is real but no concrete sale-open / announcement email exists.",
+          "evidence_email_ids": [],
+          "category": "speculative_no_signal",
+          "valid_until": null,
+          "profile_md_lines": [],
+          "mailbox_json_lines": [],
+          "calendar_json_lines": []
+        },
+        {
+          "id": "aditi_skip_generic_bookmyshow_browse",
+          "summary": "Do NOT emit `Look for upcoming concerts on BookMyShow` or `Plan a concert outing this weekend`. No specific artist, no specific city, no concrete trigger — vague filler.",
+          "evidence_email_ids": [],
+          "category": "filler_vague_action",
+          "valid_until": null,
+          "profile_md_lines": [],
+          "mailbox_json_lines": [],
+          "calendar_json_lines": []
+        },
+        {
+          "id": "aditi_skip_recurring_routine_as_event",
+          "summary": "Do NOT reframe Sat pottery / Sun yoga / Sun brunch / Fri date-night as event-agent tasks. They are profile-stated routines; pottery/yoga are not concerts; date night is the calendar agent's lane if anything.",
+          "evidence_event_ids": [
+            "ev_561abd2fe028",
+            "ev_540946863ce8",
+            "ev_may3_brunch",
+            "ev_may1_date"
+          ],
+          "category": "off_lane_calendar",
+          "valid_until": null,
+          "profile_md_lines": [],
+          "mailbox_json_lines": [],
+          "calendar_json_lines": []
+        }
+      ],
+      "expected_preference_topics": []
+    },
+    {
+      "slug": "arjun",
+      "mode": "BACKFILL",
+      "fixture_path": "backend/data/users/arjun/fixtures/2026-05-01.json",
+      "fixture_summary": "Onboarded today (2026-05-01) → BACKFILL. Calendar fixture empty. Mailbox slice: Sudipto bridge invite, Mitali breakfast email. Mailbox history (63 messages) has ZERO ticket-platform emails (BookMyShow / District / Insider) and ZERO mentions of profile-named artists (Tagore / Ravi Shankar / Vilayat Khan / Kishori Amonkar / Miles Davis / Coltrane / Beatles / Floyd) or festivals (Dover Lane).",
+      "expected_tasks": [],
+      "expected_tasks_note": "Backfill with zero ticket-platform mail history → no patterns to act on, no upcoming-show events, no profile-festival inside window. Dover Lane Music Conference is December — outside the 7–14 day prep window. The two personal emails are coordination, not events.",
+      "expected_skips": [
+        {
+          "id": "arjun_skip_bridge_as_event",
+          "summary": "Do NOT reframe Sudipto's bridge invitation as a `Buy tickets for ...` or similar event task. Bridge at the Saturday Club is not a ticketed event; the email is social coordination owned by email_triage.",
+          "evidence_email_ids": [
+            "msg_bbeb109a3ff1"
+          ],
+          "category": "off_lane_email",
+          "valid_until": null,
+          "profile_md_lines": [],
+          "mailbox_json_lines": [],
+          "calendar_json_lines": []
+        },
+        {
+          "id": "arjun_skip_breakfast_as_event",
+          "summary": "Do NOT reframe Mitali's Sunday breakfast email as an event task. Breakfast is food / social coordination; not a ticketed event.",
+          "evidence_email_ids": [
+            "msg_9995f6f04ae9"
+          ],
+          "category": "off_lane_email",
+          "valid_until": null,
+          "profile_md_lines": [],
+          "mailbox_json_lines": [],
+          "calendar_json_lines": []
+        },
+        {
+          "id": "arjun_skip_dover_lane_outside_window",
+          "summary": "Do NOT emit `Lineup update — Dover Lane Music Conference` or `Tickets open for Dover Lane`. Dover Lane is in December; today is May 1. Outside the 7–14-day prep window for festivals. Wait until ~10 days before.",
+          "evidence_email_ids": [],
+          "category": "outside_window",
+          "valid_until": null,
+          "profile_md_lines": [],
+          "mailbox_json_lines": [],
+          "calendar_json_lines": []
+        },
+        {
+          "id": "arjun_skip_speculative_jazz_europe",
+          "summary": "Do NOT emit `Watch for European jazz festivals` or similar. Profile lists this as bucket-list but with no London/Europe trip in the live calendar and no announcement email, this is speculation.",
+          "evidence_email_ids": [],
+          "category": "speculative_no_signal",
+          "valid_until": null,
+          "profile_md_lines": [],
+          "mailbox_json_lines": [],
+          "calendar_json_lines": []
+        },
+        {
+          "id": "arjun_skip_profile_echo_pref_update",
+          "summary": "Do NOT emit a preference_update that just restates the profile's stated artists or 'attends Dover Lane every year.' BACKFILL preference_updates must come from mailbox/calendar evidence the profile doesn't already capture; not from re-summarising the profile.",
+          "evidence_email_ids": [],
+          "category": "profile_echo",
+          "valid_until": null,
+          "profile_md_lines": [],
+          "mailbox_json_lines": [],
+          "calendar_json_lines": []
+        }
+      ],
+      "expected_preference_topics": []
+    },
+    {
+      "slug": "devendra",
+      "mode": "STEADY-STATE",
+      "fixture_path": "backend/data/users/devendra/fixtures/2026-05-01.json",
+      "fixture_summary": "Steady-state (onboarded 2026-01-20). Calendar empty. Mailbox slice: 1 work email from Nilesh about FY25 audit. Mailbox history (44 messages) has ZERO ticket-platform mails. Profile is cricket-heavy: bucket list 'live match at Lord's or MCG'; London trip July 2026 already booked and includes a cricket match. No music-concert interests.",
+      "expected_tasks": [],
+      "expected_tasks_note": "No live event signal. The cricket-match-in-London entry is already on the calendar / travel itinerary; that's calendar/travel's lane. No sale-open email for any cricket match in the live slice.",
+      "expected_skips": [
+        {
+          "id": "devendra_skip_audit_as_event",
+          "summary": "Do NOT reframe Nilesh's audit email as an event task. Work coordination, not a ticketed event.",
+          "evidence_email_ids": [
+            "fix_msg_1"
+          ],
+          "category": "off_lane_email",
+          "valid_until": null,
+          "profile_md_lines": [],
+          "mailbox_json_lines": [],
+          "calendar_json_lines": []
+        },
+        {
+          "id": "devendra_skip_speculative_world_cup",
+          "summary": "Do NOT emit `Buy tickets for ICC World Cup 2026` or any speculative cricket-tournament task. No sale-open email; profile alone is not a trigger.",
+          "evidence_email_ids": [],
+          "category": "speculative_no_signal",
+          "valid_until": null,
+          "profile_md_lines": [],
+          "mailbox_json_lines": [],
+          "calendar_json_lines": []
+        },
+        {
+          "id": "devendra_skip_london_cricket_already_booked",
+          "summary": "Do NOT surface a `Buy tickets for London cricket match` task. The London trip + match is already booked and on the calendar. Repeating it is duplication; any pre-trip prep belongs to travel/calendar agents.",
+          "evidence_email_ids": [],
+          "category": "duplication_other_lane",
+          "valid_until": null,
+          "profile_md_lines": [],
+          "mailbox_json_lines": [],
+          "calendar_json_lines": []
+        },
+        {
+          "id": "devendra_skip_profile_echo_pref_update",
+          "summary": "Do NOT emit a preference_update that restates 'user is a cricket fan' or 'user has a London trip booked.' Both are already in the profile; BACKFILL/STEADY-STATE preference_updates require new evidence from mail history, not a re-summary.",
+          "evidence_email_ids": [],
+          "category": "profile_echo",
+          "valid_until": null,
+          "profile_md_lines": [],
+          "mailbox_json_lines": [],
+          "calendar_json_lines": []
+        }
+      ],
+      "expected_preference_topics": []
+    },
+    {
+      "slug": "meera",
+      "mode": "BACKFILL",
+      "fixture_path": "backend/data/users/meera/fixtures/2026-05-01.json",
+      "fixture_summary": "Onboarded today (2026-05-01) → BACKFILL. Empty calendar fixture, empty mailbox (0 messages), empty calendar.json. Profile note: Meera has not granted Gmail / Calendar access yet — assistant works profile-only. Profile bucket list includes BTS reunion, IU India show, Frank Ocean; 'Currently saving for' Anuv Jain Aria Tour Mumbai; Mood Indigo + KEM cultural fest are cheap-concert highlights.",
+      "expected_tasks": [],
+      "expected_tasks_note": "Total silence is the only correct output. No mailbox to mine, no calendar events, no live signal. The profile names many high-emotion bucket-list items (BTS, IU, Anuv Jain, Frank Ocean) but the events agent's trigger contract requires a real signal in the live slice. Profile-only personas with no OAuth → 0 tasks AND 0 preference_updates.",
+      "expected_skips": [
+        {
+          "id": "meera_skip_speculative_anuv_jain_mumbai",
+          "summary": "Do NOT emit `Buy tickets for Anuv Jain Mumbai` despite the profile saying she's actively saving for it. No sale-open email landed (mailbox is empty). Bucket-list + savings jar = NOT a trigger; an actual ticket-platform email is the trigger.",
+          "evidence_email_ids": [],
+          "category": "speculative_no_signal",
+          "notes": "Highest-temptation skip target for this persona — profile signals high intent, but the agent must wait for a real announcement email.",
+          "valid_until": null,
+          "profile_md_lines": [],
+          "mailbox_json_lines": [],
+          "calendar_json_lines": []
+        },
+        {
+          "id": "meera_skip_speculative_bts_iu",
+          "summary": "Do NOT emit BTS / IU / Frank Ocean tasks. All bucket-list, none have a live signal.",
+          "evidence_email_ids": [],
+          "category": "speculative_no_signal",
+          "valid_until": null,
+          "profile_md_lines": [],
+          "mailbox_json_lines": [],
+          "calendar_json_lines": []
+        },
+        {
+          "id": "meera_skip_mood_indigo_outside_window",
+          "summary": "Do NOT emit a Mood Indigo task today. Mood Indigo is in December; today is May 1 — far outside the 7–14-day festival prep window.",
+          "evidence_email_ids": [],
+          "category": "outside_window",
+          "valid_until": null,
+          "profile_md_lines": [],
+          "mailbox_json_lines": [],
+          "calendar_json_lines": []
+        },
+        {
+          "id": "meera_skip_profile_only_pref_updates",
+          "summary": "Do NOT emit preference_updates for a profile-only persona with no OAuth-granted mail/calendar to mine. Echoing 'user loves BTS' or 'user attends Mood Indigo' restates the profile — not a discovery.",
+          "evidence_email_ids": [],
+          "category": "profile_echo",
+          "valid_until": null,
+          "profile_md_lines": [],
+          "mailbox_json_lines": [],
+          "calendar_json_lines": []
+        }
+      ],
+      "expected_preference_topics": []
+    }
+  ],
+  "evaluation_method": {
+    "task_alignment": "For each surfaced task, the LLM judge classifies it as: matches an expected_task (TP — there are none in this golden set), matches an expected_skip (skip violation — high-severity), or unexpected (plain FP). Matching is semantic: title + action + rationale should align with the expected summary. Skip targets enumerate the real-world failure modes (admin emails reframed, social emails reframed, speculative bucket-list tasks with no live signal, outside-window festival nudges, generic-platform browsing, profile-only-persona over-reach).",
+    "lane_discipline_check": "Skip targets explicitly cover: finance / dates / travel / food / email_triage / calendar lane leaks. The agent must NOT reframe insurance, birthdays, trip-blocks, food, replies, or routine calendar events as events tasks.",
+    "speculation_check": "The most distinctive failure mode for this agent is profile-without-signal speculation — emitting `Buy tickets for X bucket-list artist` or `Watch for X tour news` when the profile names an artist but the live slice has no email or calendar trigger. These skip targets are explicit per persona.",
+    "outside_window_check": "Festival prep lead window is 7–14 days. Mood Indigo / Dover Lane / Onam etc. fired in May for December events are skip violations.",
+    "verb_prefix_check": "The agent's prompt restricts action prefixes to `Buy tickets for `, `Tickets open `, `Lineup update — `. Any actual task whose action begins with `Watch for`, `Save the date`, `Look for`, `Plan`, `Suggest`, `Track`, etc. is at minimum a quality flag — call it out in `reasoning`.",
+    "silence_correctness": "When expected_tasks is empty (every persona in this golden set), zero actual tasks scores 1.0 silence. Each surfaced task is at least an unexpected FP, often a skip violation.",
+    "preference_topic_coverage": "Every persona has expected_preference_topics = []. The agent should NOT emit preference_updates that just restate the profile (echoes) or that drift into other lanes (Food / Bills / Travel / etc.). Profile-only personas with no mailbox to mine should emit zero updates.",
+    "metrics": {
+      "task_recall": "TP / (TP + FN); N/A when expected_tasks is empty",
+      "task_precision": "TP / (TP + FP_unexpected + FP_skip_violation)",
+      "task_f1": "2*P*R / (P+R), with the same N/A rule",
+      "specificity": "expected_skips_correctly_omitted / total_expected_skips",
+      "pref_coverage": "topics_matched / total_expected_topics; N/A when topic list empty",
+      "silence_rate": "1.0 if expected_tasks=[] AND actual_tasks=[]; degrades with every surfaced task"
+    },
+    "judge_prompt_hint": "Tell the judge: 'The events agent's hardest property is resisting profile-without-signal speculation. A bucket-list entry is NOT a trigger — only a real email, calendar event, or profile-listed festival inside its 7–14-day prep window is a trigger. Bucket-list speculation, generic platform browsing, lane reframings, and outside-window festival nudges are all skip violations. Reward silence when the slice has no concrete trigger.'"
+  }
+}
