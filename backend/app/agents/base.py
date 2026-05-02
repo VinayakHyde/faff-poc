@@ -5,8 +5,11 @@ delegates to `run_subagent` here. Keeps each agent file ~5 lines of code
 plus the prompt. The orchestrator (step 3) iterates `ALL_AGENTS`.
 """
 
+import json
 from typing import Protocol
 
+import openai._compat as _openai_compat
+import openai.lib._parsing._completions as _openai_parse_completions
 from langchain_openai import ChatOpenAI
 from langgraph.prebuilt import create_react_agent
 from pydantic import BaseModel, Field
@@ -20,6 +23,29 @@ from app.models import (
     SubAgentResult,
 )
 from app.tools import make_tools_for_persona
+
+
+# Some chat models occasionally emit a valid JSON object followed by trailing
+# prose / a stray newline, which Pydantic's strict `model_validate_json`
+# rejects. The OpenAI structured-output path goes through
+# `_openai_compat.model_parse_json`, so we monkey-patch it to fall back to
+# parsing just the first JSON object via `JSONDecoder.raw_decode` when strict
+# parsing fails. Strict parsing remains the default; this only kicks in on
+# malformed-trailing-content errors.
+_orig_model_parse_json = _openai_compat.model_parse_json
+
+
+def _lenient_model_parse_json(model, data):  # type: ignore[no-untyped-def]
+    try:
+        return _orig_model_parse_json(model, data)
+    except Exception:
+        text = data.decode() if isinstance(data, (bytes, bytearray)) else str(data)
+        obj, _idx = json.JSONDecoder().raw_decode(text.lstrip())
+        return model.model_validate(obj)
+
+
+_openai_compat.model_parse_json = _lenient_model_parse_json
+_openai_parse_completions.model_parse_json = _lenient_model_parse_json
 
 
 class SubAgentModule(Protocol):
@@ -59,10 +85,14 @@ def _format_emails(daily_input: DailyInput) -> str:
 def _format_calendar(daily_input: DailyInput) -> str:
     if not daily_input.calendar:
         return "_(no events on calendar)_"
-    return "\n".join(
-        f"- {e.start} → {e.end} | {e.summary} ({e.location or 'no location'})"
-        for e in daily_input.calendar
-    )
+    lines = []
+    for e in daily_input.calendar:
+        attendees = f" | attendees: {', '.join(e.attendees)}" if e.attendees else ""
+        lines.append(
+            f"- [id: {e.id}] {e.start} → {e.end} | {e.summary} "
+            f"({e.location or 'no location'}){attendees}"
+        )
+    return "\n".join(lines)
 
 
 def build_user_message(daily_input: DailyInput, profile: PreferencesProfile) -> str:
@@ -105,13 +135,30 @@ async def run_subagent(
         ),
         tools=make_tools_for_persona(profile.meta.slug),
         prompt=system_prompt,
-        response_format=_Output,
+        # langgraph's structured-response node makes a SEPARATE LLM call that
+        # only receives `state["messages"]` — the agent's system prompt is
+        # NOT prepended to that call by default. Passing response_format as
+        # a (system_prompt, schema) tuple makes langgraph prepend our prompt
+        # to that call too, which is critical for prompt-driven discipline
+        # (lane rules, silence, etc.) on the final output.
+        response_format=(system_prompt, _Output),
         name=name,
     )
 
-    result = await agent.ainvoke(
-        {"messages": [("user", build_user_message(daily_input, profile))]}
-    )
+    # Retry once on transient structured-output parse errors (some models
+    # occasionally emit a valid JSON object followed by trailing whitespace
+    # or a stray line, which the strict OpenAI parser rejects).
+    last_err: Exception | None = None
+    for _ in range(2):
+        try:
+            result = await agent.ainvoke(
+                {"messages": [("user", build_user_message(daily_input, profile))]}
+            )
+            break
+        except Exception as e:
+            last_err = e
+    else:
+        raise last_err  # type: ignore[misc]
 
     out: _Output | None = result.get("structured_response")
     if out is None:
