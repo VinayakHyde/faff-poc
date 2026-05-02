@@ -14,21 +14,7 @@
         "INBOX",
         "Personal"
       ],
-      "received_at": "2026-04-30T09:45:00+05:30"
-    },
-    {
-      "id": "msg_hr_1",
-      "thread_id": "thr_hr_1",
-      "from": "hr@karman.in",
-      "to": "aditi.sharma91@gmail.com",
-      "subject": "Holiday on May 1st",
-      "snippet": "Office will be closed for Labor Day.",
-      "body": "Enjoy the long weekend!",
-      "labels": [
-        "INBOX",
-        "Work"
-      ],
-      "received_at": "2026-04-30T14:00:00+05:30"
+      "received_at": "2026-05-02T09:45:00+05:30"
     },
     {
       "id": "msg_dad_1",
@@ -42,7 +28,7 @@
         "INBOX",
         "Personal"
       ],
-      "received_at": "2026-04-30T16:20:00+05:30"
+      "received_at": "2026-05-02T16:20:00+05:30"
     },
     {
       "id": "msg_aditi_qspec_out",
@@ -51,12 +37,12 @@
       "to": "leadership@karman.in",
       "subject": "Re: Q2 Product Spec",
       "snippet": "Will send the finalised spec doc by EOD Mon May 4.",
-      "body": "Hi team,\n\nThanks for the patience. I'll send you the finalised Q2 product spec doc by EOD Monday, May 4 \u2014 incorporating the design-review feedback from this Wednesday's session.\n\nBest,\nAditi",
+      "body": "Hi team,\n\nThanks for the patience. I'll send you the finalised Q2 product spec doc by EOD Monday, May 4 — incorporating the design-review feedback from this Wednesday's session.\n\nBest,\nAditi",
       "labels": [
         "SENT",
         "Work"
       ],
-      "received_at": "2026-04-30T19:30:00+05:30"
+      "received_at": "2026-05-02T19:30:00+05:30"
     },
     {
       "id": "msg_aditi_photos_out",
@@ -65,27 +51,15 @@
       "to": "priya.sharma@gmail.com",
       "subject": "Re: Mira's pictures",
       "snippet": "I'll send the full birthday album by Sunday.",
-      "body": "Priya, sorry it's taken me forever! I'll send you the full Mira birthday photo album by Sunday May 3. Big hugs to her from her bua.\n\n\u2014 Aditi",
+      "body": "Priya, sorry it's taken me forever! I'll send you the full Mira birthday photo album by Sunday May 3. Big hugs to her from her bua.\n\n— Aditi",
       "labels": [
         "SENT",
         "Personal"
       ],
-      "received_at": "2026-04-30T20:15:00+05:30"
+      "received_at": "2026-05-02T20:15:00+05:30"
     }
   ],
   "calendar": [
-    {
-      "id": "ev_may1_date",
-      "summary": "Date Night: Toit",
-      "start": "2026-05-01T20:00:00+05:30",
-      "end": "2026-05-01T23:00:00+05:30",
-      "location": "Toit Indiranagar",
-      "attendees": [
-        "Karan Malhotra"
-      ],
-      "description": "Friday night ritual",
-      "all_day": false
-    },
     {
       "id": "ev_561abd2fe028",
       "summary": "Pottery Class at Clay Story",
