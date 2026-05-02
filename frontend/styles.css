@@ -624,6 +624,7 @@ body:not(.has-persona) .profile-panel {
 .filter-dropdown {
   position: relative;
   display: inline-block;
+  margin-left: auto;
 }
 .filter-trigger {
   display: inline-flex;
@@ -678,7 +679,7 @@ body:not(.has-persona) .profile-panel {
 .filter-popover {
   position: absolute;
   top: calc(100% + 6px);
-  left: 0;
+  right: 0;
   z-index: 50;
   min-width: 220px;
   background: var(--panel);

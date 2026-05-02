@@ -84,12 +84,13 @@
           </div>
           <div class="input-actions">
             <button id="run-btn" disabled>Simulate daily cron job</button>
+            <span id="run-status" class="run-status muted"></span>
             <div class="filter-dropdown" id="filter-dropdown">
               <button class="filter-trigger" id="filter-trigger" type="button" aria-haspopup="true" aria-expanded="false">
                 <svg class="filter-icon" viewBox="0 0 16 16" aria-hidden="true">
                   <path fill="currentColor" d="M2 3h12l-4.5 6v4l-3 1V9z"/>
                 </svg>
-                <span class="filter-trigger-label">Filter agents</span>
+                <span class="filter-trigger-label">Filter output</span>
                 <span class="filter-count" id="filter-count">12</span>
                 <svg class="filter-chevron" viewBox="0 0 12 12" aria-hidden="true">
                   <path fill="none" stroke="currentColor" stroke-width="1.5" d="M3 4.5l3 3 3-3"/>
@@ -106,7 +107,6 @@
                 <div class="filter-popover-body" id="filter-toggles"></div>
               </div>
             </div>
-            <span id="run-status" class="run-status muted"></span>
           </div>
         </div>
 
