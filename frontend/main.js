@@ -192,6 +192,7 @@ function renderPersonaList(personas) {
 async function selectPersona(slug) {
   if (state.running) return;
   state.selected = slug;
+  document.body.classList.add("has-persona");
   $$(".persona-list li").forEach((li) => {
     li.classList.toggle("active", li.dataset.slug === slug);
   });

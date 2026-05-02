@@ -73,10 +73,15 @@ body {
   --sidebar-w: 240px;
   --sidebar-min: 60px;
   --sidebar-max: 480px;
-  grid-template-columns: var(--sidebar-w) 4px minmax(0, 1fr) minmax(0, 1.4fr);
+  grid-template-columns: var(--sidebar-w) 4px minmax(0, 1fr);
   height: calc(100vh - 50px);
   overflow: hidden;
 }
+body.has-persona .layout {
+  grid-template-columns: var(--sidebar-w) 4px minmax(0, 1fr) minmax(0, 1.4fr);
+}
+.run-panel { display: none; }
+body.has-persona .run-panel { display: flex; }
 
 .resize-handle {
   cursor: col-resize;
@@ -97,11 +102,12 @@ body {
 body.resizing { cursor: col-resize; user-select: none; }
 
 @media (max-width: 1100px) {
-  .layout {
+  .layout,
+  body.has-persona .layout {
     grid-template-columns: 220px 4px 1fr;
     grid-template-rows: 1fr auto;
   }
-  .run-panel { grid-column: 1 / -1; }
+  body.has-persona .run-panel { grid-column: 1 / -1; }
 }
 
 /* ---------------- sidebar ---------------- */
@@ -357,7 +363,6 @@ body.resizing { cursor: col-resize; user-select: none; }
 /* ---------------- run panel ---------------- */
 
 .run-panel {
-  display: flex;
   flex-direction: column;
   overflow: hidden;
   background: var(--bg);
