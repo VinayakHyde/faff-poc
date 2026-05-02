@@ -172,11 +172,41 @@ body.resizing { cursor: col-resize; user-select: none; }
   scrollbar-width: none;
 }
 .profile-panel::-webkit-scrollbar { width: 0; height: 0; display: none; }
+/* When no persona is picked, profile-panel hosts only the empty state — center it. */
+body:not(.has-persona) .profile-panel {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 .empty-state {
   color: var(--muted);
   text-align: center;
-  padding: 60px 20px;
-  font-size: 13px;
+  padding: 40px 24px;
+  max-width: 460px;
+}
+.empty-logo {
+  width: 56px;
+  height: 56px;
+  opacity: 0.85;
+  margin-bottom: 18px;
+}
+.empty-state h2 {
+  margin: 0 0 10px;
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--text);
+  letter-spacing: -0.01em;
+}
+.empty-state p {
+  margin: 0 0 12px;
+  font-size: 14px;
+  line-height: 1.55;
+}
+.empty-state .empty-sub {
+  font-size: 12px;
+  line-height: 1.6;
+  color: var(--muted);
+  opacity: 0.85;
 }
 .profile-header {
   display: flex;
