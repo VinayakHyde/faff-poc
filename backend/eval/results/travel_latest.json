@@ -5,7 +5,7 @@
     "recall": 1.0,
     "f1": 1.0,
     "specificity": 1.0,
-    "pref_coverage": 0.6666666666666667
+    "pref_coverage": 0.9583333333333334
   },
   "personas": [
     {
@@ -18,13 +18,15 @@
         "fn": 0,
         "expected_tasks": 0,
         "actual_tasks": 0,
-        "expected_skips": 5,
+        "expected_skips": 9,
         "expected_topics": 0,
         "precision": 1.0,
         "recall": 1.0,
         "f1": 1.0,
         "specificity": 1.0,
-        "pref_coverage": 1.0
+        "pref_coverage": 1.0,
+        "expired_tasks_filtered": 0,
+        "expired_skips_filtered": 0
       },
       "judge": {
         "task_alignments": [],
@@ -46,13 +48,15 @@
         "fn": 0,
         "expected_tasks": 0,
         "actual_tasks": 0,
-        "expected_skips": 3,
+        "expected_skips": 5,
         "expected_topics": 6,
         "precision": 1.0,
         "recall": 1.0,
         "f1": 1.0,
         "specificity": 1.0,
-        "pref_coverage": 0.16666666666666666
+        "pref_coverage": 0.8333333333333334,
+        "expired_tasks_filtered": 0,
+        "expired_skips_filtered": 0
       },
       "judge": {
         "task_alignments": [],
@@ -60,31 +64,35 @@
         "expected_skip_violations": [],
         "preference_topic_hits": [
           {
-            "topic": "Taj hotels are the user's go-to for Mumbai stays",
+            "topic": "Home airport CCU (Kolkata)",
             "actual_pref_index": 0,
-            "reasoning": "The preference update states 'Preferred hotel chain: Taj Hotels' based on the Taj Mahal Palace, Mumbai reservation, which semantically covers Taj as the user's recurring Mumbai stay preference."
+            "reasoning": "Preference update explicitly states home airport is CCU (Netaji Subhash Chandra Bose Intl)."
+          },
+          {
+            "topic": "Preferred airlines: Air India / Vistara",
+            "actual_pref_index": 1,
+            "reasoning": "Preference update captures Air India as a preferred airline, partially covering the expected preferred-airlines topic; Vistara is not named but the topic is semantically addressed."
+          },
+          {
+            "topic": "Taj hotels are the user's go-to for Mumbai stays",
+            "actual_pref_index": 4,
+            "reasoning": "Preference update says the user prefers premium heritage/luxury properties for Mumbai work travel and cites an upcoming Taj Mahal Palace stay, semantically covering Taj as the Mumbai stay preference."
+          },
+          {
+            "topic": "London is the periodic family / art-auction destination",
+            "actual_pref_index": 3,
+            "reasoning": "Preference update explicitly says London is a family-and-art-auction destination, roughly once every two years."
+          },
+          {
+            "topic": "Upcoming booked: Mumbai trip with Taj Mahal Palace stay June 10-15, 2026",
+            "actual_pref_index": 4,
+            "reasoning": "Preference update explicitly records the upcoming Taj Mahal Palace, Mumbai stay for 2026-06-10 to 2026-06-15."
           }
         ],
         "preference_topic_misses": [
           {
-            "topic": "Home airport CCU (Kolkata)",
-            "reasoning": "No actual preference update mentions Kolkata/CCU as the user's home airport."
-          },
-          {
-            "topic": "Preferred airlines: Air India / Vistara",
-            "reasoning": "No actual preference update mentions airline preferences."
-          },
-          {
             "topic": "Mumbai is a recurring work destination (gallery / art-fair business)",
-            "reasoning": "No actual preference update mentions Mumbai as a recurring work destination or the gallery/art-fair context."
-          },
-          {
-            "topic": "London is the periodic family / art-auction destination",
-            "reasoning": "No actual preference update mentions London as a recurring family or art-auction destination."
-          },
-          {
-            "topic": "Upcoming booked: Mumbai trip with Taj Mahal Palace stay June 10-15, 2026",
-            "reasoning": "The actual preference update mentions the Taj Mahal Palace reservation date indirectly in its reason, but it does not surface the upcoming booked trip itself as a durable preference/update topic."
+            "reasoning": "No preference update states Mumbai itself is a recurring work destination tied to gallery/art-fair business; the only recurring destination mentioned is Delhi, and the Mumbai note references a single upcoming work trip/hotel preference rather than a repeat travel pattern."
           }
         ]
       },
@@ -92,14 +100,34 @@
       "actual_prefs": [
         {
           "section": "Travel",
-          "content": "Preferred hotel chain: Taj Hotels — seen in reservation confirmation for Taj Mahal Palace, Mumbai.",
-          "reason": "Derived from reservations@tajhotels.com 'Booking Confirmed: Taj Mahal Palace, Mumbai' received 2026-04-20. BACKFILL allows mining durable travel preferences from past and future booking confirmations; no imminent task is warranted because check-in is 2026-06-10, outside the today/tomorrow hotel window."
+          "content": "Home airport: CCU (Netaji Subhash Chandra Bose Intl) — matches the profile and is consistent with the confirmed Air India itinerary from Kolkata.",
+          "reason": "Anchored by reservations@airindia.in 'E-Ticket: Kolkata to London' received 2025-09-15; enriched by profile line 'Home airport: CCU (Netaji Subhash Chandra Bose Intl)'."
+        },
+        {
+          "section": "Travel",
+          "content": "Preferred airline: Air India — repeatable preference signal from profile, with a confirmed Air India long-haul booking in the last 12 months.",
+          "reason": "Anchored by reservations@airindia.in 'E-Ticket: Kolkata to London' received 2025-09-15; enriched by profile line 'Preferred airline: Air India / Vistara'."
+        },
+        {
+          "section": "Travel",
+          "content": "Delhi is a recurring art-fair destination — annual India Art Fair travel pattern.",
+          "reason": "Anchored by tickets@indiaartfair.in 'India Art Fair 2026 Tickets' received 2026-01-10; enriched by profile line 'Frequent destinations: Delhi (India Art Fair, annual)'."
+        },
+        {
+          "section": "Travel",
+          "content": "London is a family-and-art-auction destination, roughly once every two years.",
+          "reason": "Anchored by reservations@airindia.in 'E-Ticket: Kolkata to London' received 2025-09-15; enriched by profile line 'Frequent destinations: London (family, art auctions, once in 2 years)'."
+        },
+        {
+          "section": "Travel",
+          "content": "Hotel preference: premium heritage/luxury properties for Mumbai work travel; upcoming stay at Taj Mahal Palace, Mumbai from 2026-06-10 to 2026-06-15.",
+          "reason": "Anchored by reservations@tajhotels.com 'Booking Confirmed: Taj Mahal Palace, Mumbai' received 2026-04-20; enriched by profile lines 'Hotels: The Taj Bengal (Kolkata), boutique heritage hotels elsewhere' and 'Upcoming booked: Mumbai — June 2026 for a gallery collaboration (flight/hotel booked)'."
         }
       ]
     },
     {
       "slug": "devendra",
-      "mode": "BACKFILL",
+      "mode": "STEADY-STATE",
       "metrics": {
         "tp": 0,
         "fp_unexpected": 0,
@@ -107,68 +135,25 @@
         "fn": 0,
         "expected_tasks": 0,
         "actual_tasks": 0,
-        "expected_skips": 4,
-        "expected_topics": 6,
+        "expected_skips": 6,
+        "expected_topics": 0,
         "precision": 1.0,
         "recall": 1.0,
         "f1": 1.0,
         "specificity": 1.0,
-        "pref_coverage": 0.5
+        "pref_coverage": 1.0,
+        "expired_tasks_filtered": 0,
+        "expired_skips_filtered": 0
       },
       "judge": {
         "task_alignments": [],
         "expected_task_misses": [],
         "expected_skip_violations": [],
-        "preference_topic_hits": [
-          {
-            "topic": "Home airport AMD (Ahmedabad)",
-            "actual_pref_index": 0,
-            "reasoning": "Actual preference update explicitly states home airport is AMD (Ahmedabad)."
-          },
-          {
-            "topic": "Preferred airlines: IndiGo and Air India",
-            "actual_pref_index": 1,
-            "reasoning": "Actual preference update explicitly identifies IndiGo and Air India as preferred/frequent airlines."
-          },
-          {
-            "topic": "Upcoming booked: Mumbai conference (AMD→BOM IndiGo) — flight ticket received April 15",
-            "actual_pref_index": 2,
-            "reasoning": "The frequent-destinations update cites the specific AMD→BOM IndiGo booking received 2026-04-15, capturing that there is an upcoming booked Mumbai trip from that ticket email."
-          }
-        ],
-        "preference_topic_misses": [
-          {
-            "topic": "Mumbai is a recurring work destination (4x/yr)",
-            "reasoning": "Actual updates mention Mumbai as a frequent destination but do not capture the work-purpose recurrence or the 4x/year pattern."
-          },
-          {
-            "topic": "US (EWR / New Jersey) is the annual family destination — daughter Riya lives there",
-            "reasoning": "Actual updates mention Newark/US as a frequent destination but do not capture that it is an annual family trip tied to daughter Riya living there."
-          },
-          {
-            "topic": "Palitana is a recurring pilgrimage destination (Jain, twice a year)",
-            "reasoning": "Actual updates mention Palitana as a destination from one booking but do not capture the pilgrimage/Jain purpose or twice-yearly recurrence."
-          }
-        ]
+        "preference_topic_hits": [],
+        "preference_topic_misses": []
       },
       "actual_tasks": [],
-      "actual_prefs": [
-        {
-          "section": "Travel",
-          "content": "Home airport: AMD (Ahmedabad) — all flight confirmations found in the last 12 months originate from Ahmedabad.",
-          "reason": "Derived from booking emails including confirmations@indigo.in 'Flight Ticket - AMD to BOM' received 2026-04-15 and bookings@airindia.in 'Flight Confirmation: AMD to EWR' received 2025-06-15."
-        },
-        {
-          "section": "Travel",
-          "content": "Preferred airlines: IndiGo and Air India (IndiGo appears more frequent in available booking history).",
-          "reason": "Derived from flight-confirmation emails from confirmations@indigo.in and bookings@airindia.in in the last 12 months."
-        },
-        {
-          "section": "Travel",
-          "content": "Frequent destinations: Mumbai, Newark/US, and Palitana.",
-          "reason": "Derived from specific booking confirmations: confirmations@indigo.in 'Flight Ticket - AMD to BOM' (2026-04-15), bookings@airindia.in 'Flight Confirmation: AMD to EWR' (2025-06-15), and reservations@palitanaretreat.com 'Booking Confirmation' for Nov 12-15 (2025-10-20)."
-        }
-      ]
+      "actual_prefs": []
     },
     {
       "slug": "meera",
@@ -186,7 +171,9 @@
         "recall": 1.0,
         "f1": 1.0,
         "specificity": 1.0,
-        "pref_coverage": 1.0
+        "pref_coverage": 1.0,
+        "expired_tasks_filtered": 0,
+        "expired_skips_filtered": 0
       },
       "judge": {
         "task_alignments": [],

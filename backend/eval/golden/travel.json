@@ -39,7 +39,20 @@
             141,
             142
           ],
-          "calendar_json_lines": []
+          "calendar_json_lines": [
+            530,
+            531,
+            532,
+            533,
+            534,
+            535,
+            536,
+            537,
+            538,
+            539,
+            540,
+            541
+          ]
         },
         {
           "id": "aditi_skip_bali_airbnb_premature",
@@ -69,7 +82,20 @@
             1163,
             1164
           ],
-          "calendar_json_lines": []
+          "calendar_json_lines": [
+            530,
+            531,
+            532,
+            533,
+            534,
+            535,
+            536,
+            537,
+            538,
+            539,
+            540,
+            541
+          ]
         },
         {
           "id": "aditi_skip_pondicherry_past_flight",
@@ -141,7 +167,20 @@
             89
           ],
           "mailbox_json_lines": [],
-          "calendar_json_lines": []
+          "calendar_json_lines": [
+            572,
+            573,
+            574,
+            575,
+            576,
+            577,
+            578,
+            579,
+            580,
+            581,
+            582,
+            583
+          ]
         },
         {
           "id": "aditi_skip_japan_hotels_pending_destination_prep",
@@ -158,7 +197,20 @@
             89
           ],
           "mailbox_json_lines": [],
-          "calendar_json_lines": []
+          "calendar_json_lines": [
+            572,
+            573,
+            574,
+            575,
+            576,
+            577,
+            578,
+            579,
+            580,
+            581,
+            582,
+            583
+          ]
         },
         {
           "id": "aditi_skip_bali_evoa_too_early",
@@ -171,7 +223,20 @@
             88
           ],
           "mailbox_json_lines": [],
-          "calendar_json_lines": []
+          "calendar_json_lines": [
+            530,
+            531,
+            532,
+            533,
+            534,
+            535,
+            536,
+            537,
+            538,
+            539,
+            540,
+            541
+          ]
         },
         {
           "id": "aditi_skip_japan_evisa_too_early",
@@ -181,10 +246,24 @@
           "valid_until": "2026-08-25",
           "source_url": "https://www.evisa.mofa.go.jp/",
           "profile_md_lines": [
-            48
+            48,
+            89
           ],
           "mailbox_json_lines": [],
-          "calendar_json_lines": []
+          "calendar_json_lines": [
+            572,
+            573,
+            574,
+            575,
+            576,
+            577,
+            578,
+            579,
+            580,
+            581,
+            582,
+            583
+          ]
         },
         {
           "id": "aditi_skip_japan_restaurants_30day_premature",
@@ -193,10 +272,37 @@
           "as_of": "2026-05-02",
           "valid_until": "2026-09-01",
           "profile_md_lines": [
-            86
+            86,
+            88,
+            89
           ],
           "mailbox_json_lines": [],
-          "calendar_json_lines": []
+          "calendar_json_lines": [
+            530,
+            531,
+            532,
+            533,
+            534,
+            535,
+            536,
+            537,
+            538,
+            539,
+            540,
+            541,
+            572,
+            573,
+            574,
+            575,
+            576,
+            577,
+            578,
+            579,
+            580,
+            581,
+            582,
+            583
+          ]
         }
       ],
       "expected_preference_topics": [],

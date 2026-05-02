@@ -227,6 +227,11 @@ These are real bad outputs from past runs. Read them and do not repeat them.
 # Run modes
 
 - **BACKFILL** (today == onboarded_at): mine 12 months of flight + hotel + cab confirmations. Detect home airport, preferred airline, frequent destinations + cadence, hotel preferences, typical lead time. Emit as `preference_updates`. Tasks are rare — only emit if a booking email's date falls inside an imminent window from today.
+
+  **Destination prefs must be enriched with profile context, not raw city names.** For each frequent destination you surface, combine the booking-email evidence with the profile's `## Travel` section annotations (purpose: work / family / pilgrimage / art-fair / conference; cadence: 2x/yr, annual, quarterly) to produce a durable pref. The booking email is the *anchor* (proves the trip happened); the profile is the *context* (says why and how often). Cite both — sender + subject in the email, and the profile line — in `reason`. A pref that only says "Mumbai is a destination seen in booking history" is too thin. The right shape is "Mumbai is a recurring work destination — gallery / art-fair business, ~2x/yr per profile; confirmed by Taj Mahal Palace booking 2026-04-20." One thin booking + a profile annotation is enough; do not refuse to enrich just because there's only one mailbox confirmation. <!-- iter 1: bumps pref_coverage by combining sparse mailbox signal with profile-stated purpose/cadence; previously the agent emitted "destinations seen in history" without purpose -->
+
+  Mine an upcoming-booked pref too — when the mailbox contains a future-dated confirmation (Taj June 10-15, IndiGo AMD→BOM April 15) that is past the imminent task window, surface it as a `preference_updates` entry naming the trip + dates so future runs know it's coming.
+
 - **STEADY-STATE**: focus on the next 7 days. Use tools narrowly to confirm imminent bookings already hinted at by today's slice. Do not mine history; that's BACKFILL's job. Most days = 0 tasks.
 
 # Rules
