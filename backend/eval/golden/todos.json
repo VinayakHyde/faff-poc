@@ -99,7 +99,7 @@
         }
       ],
       "expected_preference_topics": [],
-      "notes": "STEADY-STATE Friday 2026-05-01. Slice now contains TWO outbound commitments from Aditi (Q2 spec to leadership due Mon, Mira's photos to Priya due Sun) PLUS the same lane-bleed temptations (dad insurance, mom check-in, HR holiday, Karan 1:1, profile-only patterns). Agent should surface 2 tasks AND skip 6 traps."
+      "notes": "STEADY-STATE Saturday 2026-05-02. Slice now contains TWO outbound commitments from Aditi (Q2 spec to leadership due Mon, Mira's photos to Priya due Sun) PLUS the same lane-bleed temptations (dad insurance, mom check-in, HR holiday, Karan 1:1, profile-only patterns). Agent should surface 2 tasks AND skip 6 traps."
     },
     {
       "slug": "arjun",
@@ -190,7 +190,7 @@
     },
     {
       "slug": "devendra",
-      "mode": "BACKFILL",
+      "mode": "STEADY-STATE",
       "expected_tasks": [
         {
           "id": "devendra_audit_due_monday",
@@ -258,9 +258,7 @@
           "calendar_json_lines": []
         }
       ],
-      "expected_preference_topics": [
-        "Devendra reliably commits to FY-audit deliverables to his partner Nilesh with explicit dates"
-      ],
+      "expected_preference_topics": [],
       "expected_preference_topics_note": "BACKFILL with two outbound commitments visible (audit comments to Nilesh + checkup booking to Hetal). Audit-deliverable cadence is the cleaner pattern; the personal-health overdue is a one-off, not a pattern."
     },
     {

@@ -36,7 +36,7 @@
     {
       "slug": "aditi",
       "mode": "STEADY-STATE",
-      "fixture_path": "backend/data/users/aditi/fixtures/2026-05-01.json",
+      "fixture_path": "backend/data/users/aditi/fixtures/2026-05-02.json",
       "fixture_summary": "Today = Sat 2026-05-02. Mailbox: mom check-in (msg_mom_1), HR holiday FYI (msg_hr_1), Dad insurance forward (msg_dad_1). Calendar: Date Night Toit + Indiranagar routines. Profile top-artists: Kendrick Lamar, Frank Ocean, Prateek Kuhad, Anuv Jain, AP Dhillon, FKJ, SZA, Diljit Dosanjh. Travel anchors in window: Bali Jul 2026, Japan Oct 2026.",
       "expected_tasks": [
         {
@@ -212,7 +212,7 @@
     {
       "slug": "arjun",
       "mode": "BACKFILL",
-      "fixture_path": "backend/data/users/arjun/fixtures/2026-05-01.json",
+      "fixture_path": "backend/data/users/arjun/fixtures/2026-05-02.json",
       "fixture_summary": "Onboarded today (2026-05-02) → BACKFILL. Calendar empty, mailbox slice has Sudipto bridge + Mitali breakfast emails. Profile top-traditions: Rabindra Sangeet, Pt. Ravi Shankar / Vilayat Khan / Kishori Amonkar, Satyajit Ray cinema, jazz (Miles Davis, Coltrane, ECM), Beatles/Floyd tributes. Travel: Mumbai Jun 2026, Darjeeling Sep 2026. Annual: Dover Lane (Jan), Durga Puja (Sep/Oct).",
       "expected_tasks": [
         {
@@ -385,7 +385,7 @@
     {
       "slug": "devendra",
       "mode": "STEADY-STATE",
-      "fixture_path": "backend/data/users/devendra/fixtures/2026-05-01.json",
+      "fixture_path": "backend/data/users/devendra/fixtures/2026-05-02.json",
       "fixture_summary": "Steady-state. Calendar empty, mailbox slice: Nilesh audit. Profile: cricket fan (Lord's/MCG bucket-list), bhajans (Anup Jalota), old Hindi (Rafi/Kishore tributes), Gujarati Dayro, numismatics, Gujarati Sahitya Parishad. London Jul trip booked (with one cricket match already booked). Mumbai May conference trip booked.",
       "expected_tasks": [
         {
@@ -569,7 +569,7 @@
     {
       "slug": "meera",
       "mode": "BACKFILL",
-      "fixture_path": "backend/data/users/meera/fixtures/2026-05-01.json",
+      "fixture_path": "backend/data/users/meera/fixtures/2026-05-02.json",
       "fixture_summary": "Onboarded today (2026-05-02) → BACKFILL. Empty calendar fixture, empty mailbox, empty calendar.json. Profile note: no Gmail/Calendar OAuth granted. Profile top-artists (Indian indie): Anuv Jain (saving for Aria Tour Mumbai), Prateek Kuhad, Ritviz, Lifafa, Anirudh Varma; (K-pop): BTS, IU, V, NewJeans, LE SSERAFIM; (South Indian): Vineeth Sreenivasan, K.S. Chithra, Shreya Ghoshal, Arijit Singh.",
       "expected_tasks": [
         {

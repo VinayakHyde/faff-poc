@@ -89,7 +89,7 @@
     },
     {
       "slug": "devendra",
-      "mode": "BACKFILL",
+      "mode": "STEADY-STATE",
       "expected_tasks": [
         {
           "id": "devendra_nilesh_audit_reply",
@@ -105,10 +105,7 @@
         }
       ],
       "expected_skips": [],
-      "expected_preference_topics": [
-        "Nilesh (nilesh@patelassociates.com) is the primary work-email contact for firm/audit matters",
-        "Cricinfo IPL Updates newsletter is content the user keeps reading (cricket fan per profile) — NOT an unsubscribe candidate"
-      ]
+      "expected_preference_topics": []
     },
     {
       "slug": "meera",

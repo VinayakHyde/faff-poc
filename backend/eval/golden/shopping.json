@@ -303,7 +303,7 @@
     },
     {
       "slug": "devendra",
-      "mode": "BACKFILL",
+      "mode": "STEADY-STATE",
       "expected_tasks": [
         {
           "id": "devendra_buy_wilson_golf_set",
@@ -414,7 +414,7 @@
         }
       ],
       "expected_preference_topics": [],
-      "notes": "BACKFILL — empty calendar. Mailbox: bills, food orders, Cricinfo IPL Updates newsletter, travel bookings, work email. Zero shopping-domain emails. The expected_tasks below are sourced from a Gemini Deep Research run on 2026-05-02 (see backend/eval/deep_research_prompts.md → Shopping Prompt 10 → 'Result' block). They depend on web_search hitting the same retailer pages — re-verify when valid_until expires."
+      "notes": "STEADY-STATE — Mailbox slice has no shopping-domain emails. The 4 expected_tasks are sourced from a Gemini Deep Research run on 2026-05-02 (see backend/eval/deep_research_prompts.md → Shopping Prompt 10) and depend on web_search hitting the same retailer pages — re-verify when valid_until expires."
     },
     {
       "slug": "meera",

@@ -182,7 +182,7 @@
     },
     {
       "slug": "devendra",
-      "mode": "BACKFILL",
+      "mode": "STEADY-STATE",
       "fixture_summary": "Onboarded today (2026-05-02) → BACKFILL. Calendar fixture and history are empty. Mailbox slice has 1 work email from Nilesh (FY25 Audit). Mailbox history shows monthly Airtel/Torrent Power bills, recurring Swati Snacks + Iscon Gathiya weekend orders, Cricinfo IPL updates, flight/hotel confirmations — NO e-card / gift / greeting threads. Profile lists important dates: Hetal (wife) Oct 5, Riya (daughter, US) Dec 18, Krish (son) Apr 10 (21 days past), Anniversary Jan 25, Mom June 22, Brother Mukesh Mar 5 (past), Best friend Nilesh July 15, Paryushan (Aug/Sep), Diwali (Nov). Strict Jain — diet & festival nuances matter. Active festivals: Paryushan, Diwali, Vikram Samvat New Year.",
       "expected_tasks": [],
       "expected_tasks_note": "No profile-stated date falls inside today's lead window. Krish's birthday (Apr 10) is 21 days past — out of window. Mom's June 22 is ~7 weeks out. Nilesh's July 15 is ~10 weeks. Nilesh's audit email is work content, not a relationship-revival trigger. Tasks empty.",
@@ -236,14 +236,7 @@
           "calendar_json_lines": []
         }
       ],
-      "expected_preference_topics": [
-        "Hetal (wife) birthday October 5 — gifting cues: Taneira sarees, gold jewelry, religious books",
-        "Riya (daughter, US-based) birthday December 18 — international shipping needs longer lead",
-        "Anniversary Devendra + Hetal January 25",
-        "Mom birthday June 22",
-        "Paryushan (Aug/Sep) — strict Jain festival; the assistant must avoid surfacing travel / lavish suggestions during this period",
-        "Diwali / Vikram Samvat New Year (Nov) — major family festival the user actively celebrates"
-      ],
+      "expected_preference_topics": [],
       "expected_preference_topics_note": "BACKFILL captures the durable date + gifting / cultural context. Paryushan in particular matters as a *constraint* that future-month runs must respect. Empty calendar / no e-card history means quantitative grounding isn't yet possible — credit faithful capture of the date + cue."
     },
     {

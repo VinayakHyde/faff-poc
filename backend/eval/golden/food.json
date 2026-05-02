@@ -86,7 +86,7 @@
     },
     {
       "slug": "devendra",
-      "mode": "BACKFILL",
+      "mode": "STEADY-STATE",
       "expected_tasks": [],
       "expected_skips": [
         {
@@ -102,11 +102,8 @@
           "calendar_json_lines": []
         }
       ],
-      "expected_preference_topics": [
-        "Saturday ~6:15pm Swati Snacks order — Jain Panki + Handvo, recurring (~4 orders in 12 months)",
-        "Sunday ~8:30am Iscon Gathiya order — Gathiya (500g) + Jalebi (250g), recurring (~4 orders in 12 months)"
-      ],
-      "notes": "BACKFILL — onboarded today. Empty calendar. Two clean weekend ordering patterns in mailbox: Swati Snacks every ~quarter on Saturday evening and Iscon Gathiya every ~quarter on Sunday morning. Profile narrative mentions both but email confirms specific dishes + cadence. No tasks expected — today is Friday, profile has no Friday food pattern, no in-slice food signal."
+      "expected_preference_topics": [],
+      "notes": "STEADY-STATE — Today's slice has no food-order emails. The single skip tests specificity (Mumbai-trip dietary planning is travel's lane). Preference topics dropped — weekly cadence patterns (Swati / Iscon Gathiya) are BACKFILL mining outputs that require 6 months of order history."
     },
     {
       "slug": "meera",

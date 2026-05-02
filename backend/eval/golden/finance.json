@@ -231,7 +231,7 @@
     },
     {
       "slug": "devendra",
-      "mode": "BACKFILL",
+      "mode": "STEADY-STATE",
       "expected_tasks": [],
       "expected_skips": [
         {
@@ -297,10 +297,7 @@
           "calendar_json_lines": []
         }
       ],
-      "expected_preference_topics": [
-        "Airtel postpaid bill arrives ~5th of every month, paid via Airtel Thanks app",
-        "Torrent Power electricity bill arrives ~10th of every month, due ~20th, monthly cadence"
-      ]
+      "expected_preference_topics": []
     },
     {
       "slug": "meera",

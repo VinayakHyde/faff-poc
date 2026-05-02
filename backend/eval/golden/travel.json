@@ -187,7 +187,7 @@
     },
     {
       "slug": "devendra",
-      "mode": "BACKFILL",
+      "mode": "STEADY-STATE",
       "expected_tasks": [],
       "expected_skips": [
         {
@@ -257,14 +257,7 @@
           "calendar_json_lines": []
         }
       ],
-      "expected_preference_topics": [
-        "Home airport AMD (Ahmedabad)",
-        "Preferred airlines: IndiGo and Air India",
-        "Mumbai is a recurring work destination (4x/yr)",
-        "US (EWR / New Jersey) is the annual family destination — daughter Riya lives there",
-        "Palitana is a recurring pilgrimage destination (Jain, twice a year)",
-        "Upcoming booked: Mumbai conference (AMD→BOM IndiGo) — flight ticket received April 15"
-      ]
+      "expected_preference_topics": []
     },
     {
       "slug": "meera",
