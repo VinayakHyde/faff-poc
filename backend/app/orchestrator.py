@@ -15,9 +15,11 @@ from pydantic import BaseModel, Field
 
 from app.agents import ALL_AGENTS
 from app.config import get_settings
+from app.messenger import draft_message
 from app.models import (
     CandidateTask,
     DailyInput,
+    DeliverableMessage,
     OrchestratorResult,
     PreferencesProfile,
     ScoredTask,
@@ -286,12 +288,33 @@ async def run(
                 )
             )
 
+    # ---- 7. Final messenger pass ----
+    final_messages: list[DeliverableMessage] = []
+    if final:
+        final_messages = list(
+            await asyncio.gather(*(draft_message(s, profile) for s in final))
+        )
+        for m in final_messages:
+            trace.append(
+                TraceEvent(
+                    type="message_drafted",
+                    sub_agent="messenger",
+                    payload={
+                        "title": m.scored_task.task.title,
+                        "agent": m.scored_task.task.sub_agent,
+                        "message": m.message,
+                        "surface_time": m.surface_time,
+                    },
+                )
+            )
+
     trace.append(
         TraceEvent(
             type="orchestrator_finished",
             sub_agent="orchestrator",
             payload={
                 "tasks_emitted": len(final),
+                "messages_drafted": len(final_messages),
                 "preference_updates": len(all_prefs),
                 "duration_event_count": len(trace) + 1,
             },
@@ -305,5 +328,6 @@ async def run(
         merged_preference_updates=all_prefs,
         scored_tasks=scored,
         final_tasks=final,
+        final_messages=final_messages,
         trace_events=trace,
     )

@@ -119,6 +119,19 @@ class ScoredTask(BaseModel):
 
 
 # ---------------------------------------------------------------------------
+# Final messenger — Step 5 in the build plan
+# ---------------------------------------------------------------------------
+
+
+class DeliverableMessage(BaseModel):
+    """Final user-facing copy for one filtered task, plus the time we'd surface it."""
+
+    scored_task: ScoredTask
+    message: str
+    surface_time: str  # ISO 8601 — carried forward from the sub-agent's suggestion
+
+
+# ---------------------------------------------------------------------------
 # Trace events — pinned shape, used in step 5/6 by the streaming UI
 # ---------------------------------------------------------------------------
 
@@ -132,6 +145,7 @@ TraceEventType = Literal[
     "task_scored",
     "task_filtered",
     "task_emitted",
+    "message_drafted",
     "orchestrator_finished",
 ]
 
@@ -152,4 +166,5 @@ class OrchestratorResult(BaseModel):
     merged_preference_updates: list[PreferenceUpdate] = []
     scored_tasks: list[ScoredTask] = []
     final_tasks: list[ScoredTask] = []
+    final_messages: list[DeliverableMessage] = []
     trace_events: list[TraceEvent] = []

@@ -45,8 +45,21 @@ def _render_persona(r: OrchestratorResult, mode: str, fixture_summary: str) -> s
         f"- **Preference updates:** {len(r.merged_preference_updates)}\n\n"
     )
 
-    # Final emitted tasks (top of section — most important)
-    out.append("### Final emitted tasks (post-filter)\n\n")
+    # User-facing messages (top of section — what the user actually sees)
+    out.append("### Final user-facing messages\n\n")
+    if not r.final_messages:
+        out.append("_(no message — none cleared cutoff=4 / per-agent-cap=2 / max=5)_\n")
+    else:
+        for m in r.final_messages:
+            t = m.scored_task.task
+            out.append(
+                f"- **`{t.sub_agent}`** *(score {m.scored_task.total_score}/7, "
+                f"surface at `{m.surface_time}`)*\n"
+                f"  > {m.message}\n\n"
+            )
+
+    # Final emitted tasks (the underlying ScoredTask + rubric)
+    out.append("### Final emitted tasks (post-filter, pre-messenger)\n\n")
     if not r.final_tasks:
         out.append("_(none cleared cutoff=4 / per-agent-cap=2 / max=5)_\n")
     else:
