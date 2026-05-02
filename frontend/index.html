@@ -14,17 +14,20 @@
 
     <main class="layout">
       <!-- Left sidebar: persona selector -->
-      <aside class="sidebar">
-        <h2>Personas</h2>
+      <aside class="sidebar" id="sidebar">
+        <h2 class="sidebar-title">Personas</h2>
         <ul id="persona-list" class="persona-list">
           <li class="persona-loading">loading…</li>
         </ul>
       </aside>
 
-      <!-- Middle: persistent profile (Markdown) -->
+      <!-- Drag-handle between sidebar and profile panel -->
+      <div class="resize-handle" id="resize-sidebar" title="Drag to resize"></div>
+
+      <!-- Middle: persistent profile (tabs: Profile / Email / Calendar) -->
       <section class="profile-panel">
         <div id="profile-empty" class="empty-state">
-          ← pick a persona to view their preferences profile
+          ← pick a persona to view their data
         </div>
         <div id="profile-content-wrapper" hidden>
           <div class="profile-header">
@@ -34,7 +37,18 @@
               <p id="profile-meta" class="muted"></p>
             </div>
           </div>
-          <article id="profile-markdown" class="markdown-body"></article>
+
+          <div class="tab-bar" role="tablist">
+            <button class="tab active" data-tab="profile" role="tab">Profile</button>
+            <button class="tab" data-tab="email" role="tab">Email</button>
+            <button class="tab" data-tab="calendar" role="tab">Calendar</button>
+          </div>
+
+          <div class="tab-views">
+            <article class="tab-view markdown-body" data-tab="profile" id="tab-profile"></article>
+            <div class="tab-view" data-tab="email" id="tab-email" hidden></div>
+            <div class="tab-view" data-tab="calendar" id="tab-calendar" hidden></div>
+          </div>
         </div>
       </section>
 

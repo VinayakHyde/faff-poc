@@ -63,14 +63,35 @@ body {
 
 .layout {
   display: grid;
-  grid-template-columns: 240px minmax(0, 1fr) minmax(0, 1.4fr);
+  --sidebar-w: 240px;
+  --sidebar-min: 60px;
+  --sidebar-max: 480px;
+  grid-template-columns: var(--sidebar-w) 4px minmax(0, 1fr) minmax(0, 1.4fr);
   height: calc(100vh - 50px);
   overflow: hidden;
 }
 
+.resize-handle {
+  cursor: col-resize;
+  background: var(--border);
+  transition: background 0.1s;
+  position: relative;
+}
+.resize-handle::after {
+  /* fatter hit-target for easier grabbing */
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: -3px;
+  right: -3px;
+}
+.resize-handle:hover, .resize-handle.dragging { background: var(--accent); }
+body.resizing { cursor: col-resize; user-select: none; }
+
 @media (max-width: 1100px) {
   .layout {
-    grid-template-columns: 220px 1fr;
+    grid-template-columns: 220px 4px 1fr;
     grid-template-rows: 1fr auto;
   }
   .run-panel { grid-column: 1 / -1; }
@@ -121,6 +142,13 @@ body {
 }
 .persona-loading { color: var(--muted); padding: 8px; }
 
+/* Compact mode: when sidebar is narrow enough, hide name/meta — avatars only */
+.sidebar.compact { padding: 12px 6px; }
+.sidebar.compact .sidebar-title { display: none; }
+.sidebar.compact .persona-list li { justify-content: center; padding: 6px 0; gap: 0; }
+.sidebar.compact .persona-list li > div { display: none; }
+.sidebar.compact .persona-list .avatar { width: 36px; height: 36px; }
+
 /* ---------------- profile panel ---------------- */
 
 .profile-panel {
@@ -152,6 +180,147 @@ body {
 }
 #profile-name { margin: 0; font-size: 18px; }
 #profile-meta { margin: 4px 0 0; font-size: 12px; }
+
+/* ---------------- tab bar ---------------- */
+
+.tab-bar {
+  display: flex;
+  gap: 2px;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 16px;
+  position: sticky;
+  top: 0;
+  background: var(--panel);
+  z-index: 1;
+}
+.tab {
+  background: none;
+  border: none;
+  padding: 8px 14px;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--muted);
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -1px;
+}
+.tab:hover { color: var(--text); }
+.tab.active {
+  color: var(--accent);
+  border-bottom-color: var(--accent);
+}
+
+.tab-views { /* container only */ }
+.tab-view[hidden] { display: none; }
+
+/* ---------------- email tab ---------------- */
+
+.email-empty, .calendar-empty {
+  color: var(--muted);
+  padding: 40px 20px;
+  text-align: center;
+  font-size: 13px;
+}
+.email-search {
+  width: 100%;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: var(--bg);
+  color: var(--text);
+  padding: 6px 10px;
+  font-size: 12px;
+  margin-bottom: 12px;
+}
+.email-card {
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  margin-bottom: 6px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: border-color 0.1s;
+}
+.email-card:hover { border-color: var(--muted); }
+.email-card.expanded { border-color: var(--accent); }
+.email-row {
+  display: grid;
+  grid-template-columns: 1fr 90px;
+  gap: 8px;
+  padding: 8px 12px;
+  font-size: 12px;
+}
+.email-from-subj { min-width: 0; overflow: hidden; }
+.email-from {
+  font-weight: 500;
+  color: var(--text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.email-subject {
+  color: var(--muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: 12px;
+}
+.email-date {
+  color: var(--muted);
+  font-family: ui-monospace, monospace;
+  font-size: 11px;
+  text-align: right;
+  white-space: nowrap;
+}
+.email-body {
+  display: none;
+  padding: 0 12px 10px;
+  font-size: 12px;
+  white-space: pre-wrap;
+  border-top: 1px solid var(--border);
+  padding-top: 10px;
+  margin-top: 4px;
+  color: var(--muted);
+}
+.email-card.expanded .email-body { display: block; }
+
+/* ---------------- calendar tab ---------------- */
+
+.calendar-day {
+  margin-bottom: 14px;
+}
+.calendar-day-header {
+  font-weight: 600;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--muted);
+  padding: 4px 0;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 6px;
+}
+.calendar-event {
+  display: grid;
+  grid-template-columns: 90px 1fr;
+  gap: 12px;
+  padding: 6px 4px;
+  font-size: 12px;
+}
+.calendar-time {
+  color: var(--muted);
+  font-family: ui-monospace, monospace;
+  font-size: 11px;
+}
+.calendar-summary { color: var(--text); }
+.calendar-loc {
+  color: var(--muted);
+  font-size: 11px;
+  margin-top: 2px;
+}
+.calendar-event.all-day {
+  background: var(--code-bg);
+  border-radius: 4px;
+}
+
+/* ---------------- markdown ---------------- */
 
 .markdown-body { font-size: 13px; }
 .markdown-body h1, .markdown-body h2, .markdown-body h3 {

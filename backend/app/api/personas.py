@@ -106,6 +106,26 @@ async def get_avatar(slug: str):
     return FileResponse(p, media_type="image/png")
 
 
+@router.get("/{slug}/mailbox")
+async def get_mailbox(slug: str) -> dict:
+    """Return the persona's full historical mailbox (for the Email tab)."""
+    path = DATA_DIR / slug / "mailbox.json"
+    if not path.exists():
+        raise HTTPException(status_code=404, detail=f"no mailbox for {slug}")
+    import json
+    return json.loads(path.read_text())
+
+
+@router.get("/{slug}/calendar")
+async def get_calendar(slug: str) -> dict:
+    """Return the persona's full calendar (for the Calendar tab)."""
+    path = DATA_DIR / slug / "calendar.json"
+    if not path.exists():
+        raise HTTPException(status_code=404, detail=f"no calendar for {slug}")
+    import json
+    return json.loads(path.read_text())
+
+
 @router.get("/{slug}/fixtures")
 async def list_fixtures(slug: str) -> dict:
     """List available fixture dates for a persona."""
