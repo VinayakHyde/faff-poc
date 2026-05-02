@@ -29,7 +29,7 @@ CRITERIA_ORDER = [
     "time_sensitive",
     "recurring_pattern_match",
     "concrete_action",
-    "low_risk_if_ignored",
+    "high_stakes_if_missed",
     "non_redundant",
     "matches_stated_preference",
     "well_justified_surface_time",
@@ -54,7 +54,7 @@ You evaluate ONE candidate task at a time against 7 independent criteria. For ea
 
 3. **concrete_action** — the `action` describes a specific executable step (place an order, send a draft, book a cab, pay a bill, call a person). Vague "follow up" / "consider" / "review" with no specific output → False.
 
-4. **low_risk_if_ignored** — if the user ignores or rejects this, consequences are reversible / minor. Bill nudges, gift suggestions, food orders → True. Flight check-in / hospital duty alerts where missing it has hard consequences → False.
+4. **high_stakes_if_missed** — if the user ignores or doesn't see this, the consequences are real and matter. Late fees on a bill, a missed flight check-in, a forgotten anniversary, a dropped work commitment, a missed shift — all True. "Try this new restaurant" / "FYI a sale is on" / "consider replying to a non-urgent newsletter" — all False (nothing happens if missed). The bar: would a careful human assistant feel bad if the user missed this?
 
 5. **non_redundant** — the task is not already covered by something noted in the profile as recently handled. Default to True unless the profile clearly indicates this exact thing was just done. (POC: there's no notification log yet, so True is the right default in absence of evidence.)
 

@@ -130,7 +130,7 @@ Candidate criteria (each worth +1, to be finalised):
 - Time-sensitive — has a hard deadline within 24h.
 - Recurring pattern match — the task lines up with an established preference/history pattern.
 - Has a concrete executable action (not just an FYI).
-- Reversible / low-risk if the user ignores or rejects it.
+- High stakes if missed — ignoring this would have real consequences (late fee, missed flight, forgotten birthday, dropped commitment). FYIs and "try this new thing" suggestions score False here.
 - **Avoids redundancy — category-aware**. Whether a task counts as "already nudged" is **not** a one-size rule; the prompt to the LLM-judge must spell out the per-category logic. Examples that need to be in the prompt:
   - **Food ordering**: weekly recurrence is fine. Re-suggesting next week even if the user ignored last week is correct.
   - **Travel (e.g. cab to airport, web check-in)**: one-shot. If suggested once and the user didn't take it up, do **not** suggest again for the same trip.
