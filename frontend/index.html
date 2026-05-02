@@ -5,11 +5,68 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Faff POC</title>
     <link rel="stylesheet" href="./styles.css" />
+    <script src="https://cdn.jsdelivr.net/npm/marked@12.0.2/marked.min.js"></script>
   </head>
   <body>
-    <main id="app">
-      <!-- left: profile selector + profile markdown; right: daily input + trace stream -->
+    <header class="app-header">
+      <h1>Faff <span class="muted">— daily personal assistant POC</span></h1>
+    </header>
+
+    <main class="layout">
+      <!-- Left sidebar: persona selector -->
+      <aside class="sidebar">
+        <h2>Personas</h2>
+        <ul id="persona-list" class="persona-list">
+          <li class="persona-loading">loading…</li>
+        </ul>
+      </aside>
+
+      <!-- Middle: persistent profile (Markdown) -->
+      <section class="profile-panel">
+        <div id="profile-empty" class="empty-state">
+          ← pick a persona to view their preferences profile
+        </div>
+        <div id="profile-content-wrapper" hidden>
+          <div class="profile-header">
+            <img id="profile-avatar" alt="" />
+            <div>
+              <h2 id="profile-name"></h2>
+              <p id="profile-meta" class="muted"></p>
+            </div>
+          </div>
+          <article id="profile-markdown" class="markdown-body"></article>
+        </div>
+      </section>
+
+      <!-- Right: daily input + trace stream + final tasks -->
+      <section class="run-panel">
+        <div class="input-area">
+          <label for="daily-input-json">Daily input JSON <span class="muted">— paste, or click a persona to preload its fixture</span></label>
+          <textarea id="daily-input-json" rows="10" spellcheck="false"
+            placeholder='{"date": "2026-05-02", "user_slug": "aditi", "gmail": [...], "calendar": [...]}'></textarea>
+          <div class="input-actions">
+            <button id="run-btn" disabled>Run</button>
+            <span id="run-status" class="run-status muted"></span>
+          </div>
+        </div>
+
+        <div id="filter-bar" class="filter-bar" hidden>
+          <span class="filter-label">Show:</span>
+          <span id="filter-toggles" class="filter-toggles"></span>
+        </div>
+
+        <div id="final-tasks" class="final-tasks" hidden>
+          <h3>Surfaced for the user</h3>
+          <div id="final-tasks-list"></div>
+        </div>
+
+        <div id="trace-stream" class="trace-stream" hidden>
+          <h3>Agent trace</h3>
+          <div id="trace-list"></div>
+        </div>
+      </section>
     </main>
+
     <script type="module" src="./main.js"></script>
   </body>
 </html>
