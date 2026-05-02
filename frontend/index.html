@@ -59,12 +59,14 @@
             <button class="tab active" data-tab="profile" role="tab">Profile</button>
             <button class="tab" data-tab="email" role="tab">Email</button>
             <button class="tab" data-tab="calendar" role="tab">Calendar</button>
+            <button class="tab" data-tab="golden" role="tab">Golden</button>
           </div>
 
           <div class="tab-views">
             <article class="tab-view markdown-body" data-tab="profile" id="tab-profile"></article>
             <div class="tab-view" data-tab="email" id="tab-email" hidden></div>
             <div class="tab-view" data-tab="calendar" id="tab-calendar" hidden></div>
+            <div class="tab-view" data-tab="golden" id="tab-golden" hidden></div>
           </div>
         </div>
       </section>
@@ -82,13 +84,30 @@
           </div>
           <div class="input-actions">
             <button id="run-btn" disabled>Simulate daily cron job</button>
+            <div class="filter-dropdown" id="filter-dropdown">
+              <button class="filter-trigger" id="filter-trigger" type="button" aria-haspopup="true" aria-expanded="false">
+                <svg class="filter-icon" viewBox="0 0 16 16" aria-hidden="true">
+                  <path fill="currentColor" d="M2 3h12l-4.5 6v4l-3 1V9z"/>
+                </svg>
+                <span class="filter-trigger-label">Filter agents</span>
+                <span class="filter-count" id="filter-count">12</span>
+                <svg class="filter-chevron" viewBox="0 0 12 12" aria-hidden="true">
+                  <path fill="none" stroke="currentColor" stroke-width="1.5" d="M3 4.5l3 3 3-3"/>
+                </svg>
+              </button>
+              <div class="filter-popover" id="filter-popover" hidden>
+                <div class="filter-popover-header">
+                  <span class="filter-popover-title">Show agents</span>
+                  <div class="filter-popover-actions">
+                    <button class="filter-link" id="filter-all" type="button">All</button>
+                    <button class="filter-link" id="filter-none" type="button">None</button>
+                  </div>
+                </div>
+                <div class="filter-popover-body" id="filter-toggles"></div>
+              </div>
+            </div>
             <span id="run-status" class="run-status muted"></span>
           </div>
-        </div>
-
-        <div id="filter-bar" class="filter-bar" hidden>
-          <span class="filter-label">Show:</span>
-          <span id="filter-toggles" class="filter-toggles"></span>
         </div>
 
         <div id="final-tasks" class="final-tasks" hidden>

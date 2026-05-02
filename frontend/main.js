@@ -35,6 +35,7 @@ const state = {
   // Per-persona caches so switching tabs doesn't refetch.
   emailCache: new Map(),    // slug → messages[]
   calendarCache: new Map(), // slug → events[]
+  goldenCache: new Map(),   // slug → { items, agents }
 };
 
 // ---- sidebar resize constants (must be declared before init() IIFE) ----
@@ -151,6 +152,7 @@ function selectTab(name) {
   if (!state.selected) return;
   if (name === "email") loadEmailTab(state.selected);
   if (name === "calendar") loadCalendarTab(state.selected);
+  if (name === "golden") loadGoldenTab(state.selected);
 }
 
 // ---- persona sidebar ----
@@ -201,6 +203,7 @@ async function selectPersona(slug) {
   selectTab("profile");
   $("#tab-email").innerHTML = "";
   $("#tab-calendar").innerHTML = "";
+  $("#tab-golden").innerHTML = "";
 
   await Promise.all([loadProfile(slug), loadFixtureIntoInput(slug)]);
   $("#run-btn").disabled = false;
@@ -416,23 +419,261 @@ function renderCalendarTab(events) {
   }
 }
 
+// ---- golden tab ----
+
+async function loadGoldenTab(slug) {
+  const wrap = $("#tab-golden");
+  if (state.goldenCache.has(slug)) {
+    renderGoldenTab(state.goldenCache.get(slug));
+    return;
+  }
+  wrap.innerHTML = `<div class="email-empty">loading golden set…</div>`;
+  try {
+    const r = await fetch(`/api/personas/${slug}/golden`);
+    if (!r.ok) {
+      wrap.innerHTML = `<div class="email-empty">no golden set found.</div>`;
+      state.goldenCache.set(slug, { items: [], agents: [] });
+      return;
+    }
+    const data = await r.json();
+    state.goldenCache.set(slug, data);
+    renderGoldenTab(data);
+  } catch (err) {
+    wrap.innerHTML = `<div class="email-empty">failed to load: ${escapeHtml(err.message)}</div>`;
+  }
+}
+
+// Stable order for agent rows (mirrors the AGENTS list above + alphabetises anything else).
+const AGENT_ORDER = AGENTS.map((a) => a.slug);
+
+function renderGoldenTab(data) {
+  const wrap = $("#tab-golden");
+  const items = data.items || [];
+  if (!items.length) {
+    wrap.innerHTML = `<div class="email-empty">no golden set entries for this persona.</div>`;
+    return;
+  }
+
+  // Sort: by agent (per AGENT_ORDER), then by kind (task → skip → pref_topic),
+  // then by category, then by id. Stable order means consecutive same-agent
+  // items naturally cluster into one merged block.
+  const kindRank = { expected_task: 0, expected_skip: 1, expected_pref_topic: 2 };
+  const agentRank = (a) => {
+    const i = AGENT_ORDER.indexOf(a);
+    return i === -1 ? 1000 : i;
+  };
+  const sorted = [...items].sort((a, b) => {
+    if (agentRank(a.agent) !== agentRank(b.agent)) return agentRank(a.agent) - agentRank(b.agent);
+    if ((kindRank[a.kind] ?? 99) !== (kindRank[b.kind] ?? 99)) return (kindRank[a.kind] ?? 99) - (kindRank[b.kind] ?? 99);
+    return String(a.id || "").localeCompare(String(b.id || ""));
+  });
+
+  // Group consecutive same-agent items into one block.
+  const blocks = [];
+  for (const item of sorted) {
+    const last = blocks[blocks.length - 1];
+    if (last && last.agent === item.agent) {
+      last.items.push(item);
+      for (const eid of item.evidence_email_ids || []) last.evidenceSet.add(eid);
+    } else {
+      blocks.push({
+        agent: item.agent,
+        items: [item],
+        evidenceSet: new Set(item.evidence_email_ids || []),
+      });
+    }
+  }
+
+  // Programmatic border-style cycling: when block N's evidence overlaps block
+  // N-1's evidence, bump the style to the next in [solid, dashed, dotted].
+  // Otherwise reset to solid.
+  const STYLES = ["solid", "dashed", "dotted"];
+  let styleIdx = 0;
+  for (let i = 0; i < blocks.length; i++) {
+    const prev = blocks[i - 1];
+    if (prev && setsOverlap(prev.evidenceSet, blocks[i].evidenceSet)) {
+      styleIdx = (styleIdx + 1) % STYLES.length;
+    } else {
+      styleIdx = 0;
+    }
+    blocks[i].borderStyle = STYLES[styleIdx];
+  }
+
+  // Detect identical-summary items between consecutive different-agent blocks
+  // (covers "if multiple agent boxes are the exact same, space the text and
+  // list the agents") — collapse them by tagging items with `mergedAgents`.
+  const mergedKey = (it) => `${it.kind}|${(it.summary || "").trim()}`;
+  for (let i = 1; i < blocks.length; i++) {
+    const prev = blocks[i - 1];
+    const cur = blocks[i];
+    for (const item of [...cur.items]) {
+      const key = mergedKey(item);
+      const twin = prev.items.find((p) => mergedKey(p) === key && !p.mergedAgents);
+      if (twin) {
+        twin.mergedAgents = twin.mergedAgents || [twin._origAgent || prev.agent];
+        twin.mergedAgents.push(cur.agent);
+        cur.items = cur.items.filter((x) => x !== item);
+      }
+    }
+  }
+
+  // Render.
+  wrap.innerHTML = `
+    <div class="golden-summary">
+      <span class="golden-stat"><b>${items.length}</b> total entries</span>
+      <span class="golden-stat"><b>${data.agents.length}</b> agents</span>
+      <span class="golden-stat"><b>${blocks.length}</b> blocks</span>
+    </div>
+    <div class="golden-blocks" id="golden-blocks"></div>
+  `;
+  const host = $("#golden-blocks");
+  for (const block of blocks) {
+    if (!block.items.length) continue; // entirely merged into a previous block
+    host.appendChild(renderGoldenBlock(block));
+  }
+}
+
+function renderGoldenBlock(block) {
+  const el = document.createElement("div");
+  el.className = `golden-block border-${block.borderStyle}`;
+  el.dataset.agent = block.agent;
+  el.style.setProperty("--block-color", `var(--c-${block.agent}, var(--accent))`);
+
+  const head = document.createElement("div");
+  head.className = "golden-block-head";
+  head.innerHTML = `
+    <span class="agent-tag ${block.agent}">${agentLabel(block.agent)}</span>
+    <span class="golden-block-meta">${block.items.length} ${block.items.length === 1 ? "entry" : "entries"}</span>
+  `;
+  el.appendChild(head);
+
+  const body = document.createElement("div");
+  body.className = "golden-block-body";
+  for (const item of block.items) {
+    body.appendChild(renderGoldenItem(item, block.agent));
+  }
+  el.appendChild(body);
+  return el;
+}
+
+function renderGoldenItem(item, primaryAgent) {
+  const row = document.createElement("div");
+  row.className = `golden-item kind-${item.kind}`;
+  const kindLabels = {
+    expected_task: "task",
+    expected_skip: "skip",
+    expected_pref_topic: "pref",
+  };
+  const agents = item.mergedAgents && item.mergedAgents.length > 1
+    ? item.mergedAgents
+    : null;
+
+  let evidenceHtml = "";
+  if (item.evidence_email_ids && item.evidence_email_ids.length) {
+    evidenceHtml = `<div class="golden-evidence">${
+      item.evidence_email_ids.map((id) => `<code>${escapeHtml(id)}</code>`).join(" ")
+    }</div>`;
+  }
+
+  let chips = "";
+  if (item.category) chips += `<span class="golden-chip">${escapeHtml(item.category)}</span>`;
+  if (item.valid_until) chips += `<span class="golden-chip golden-chip-time">until ${escapeHtml(item.valid_until)}</span>`;
+
+  let agentLabels = "";
+  if (agents) {
+    agentLabels = `<div class="golden-merged-agents">${
+      agents.map((a) => `<span class="agent-tag ${a}" style="--block-color: var(--c-${a}, var(--accent))">${agentLabel(a)}</span>`).join("")
+    }<span class="golden-merged-note">same expectation across these agents</span></div>`;
+  }
+
+  row.innerHTML = `
+    <div class="golden-item-head">
+      <span class="golden-kind kind-${item.kind}">${kindLabels[item.kind] || item.kind}</span>
+      ${item.id ? `<code class="golden-id">${escapeHtml(item.id)}</code>` : ""}
+      ${chips}
+    </div>
+    <div class="golden-summary-text">${escapeHtml(item.summary || "")}</div>
+    ${evidenceHtml}
+    ${agentLabels}
+  `;
+  return row;
+}
+
+function setsOverlap(a, b) {
+  for (const x of a) if (b.has(x)) return true;
+  return false;
+}
+
+function agentLabel(slug) {
+  const a = AGENTS.find((x) => x.slug === slug);
+  return a ? a.label : slug;
+}
+
 // ---- filter bar ----
 
 function buildFilterBar() {
   const host = $("#filter-toggles");
   host.innerHTML = "";
   for (const a of AGENTS) {
-    const lbl = document.createElement("label");
-    lbl.dataset.agent = a.slug;
-    lbl.innerHTML = `<input type="checkbox" data-agent="${a.slug}" checked /> ${a.label}`;
-    lbl.querySelector("input").addEventListener("change", (e) => {
+    const row = document.createElement("label");
+    row.className = "filter-row";
+    row.dataset.agent = a.slug;
+    row.innerHTML = `
+      <input type="checkbox" data-agent="${a.slug}" checked />
+      <span class="filter-swatch" style="background: var(--c-${a.slug});"></span>
+      <span class="filter-row-label">${a.label}</span>
+    `;
+    row.querySelector("input").addEventListener("change", (e) => {
       const slug = e.target.dataset.agent;
       const on = e.target.checked;
-      lbl.classList.toggle("off", !on);
+      row.classList.toggle("off", !on);
       $$(`.trace-node[data-agent="${slug}"]`).forEach((n) => n.classList.toggle("hidden", !on));
+      updateFilterCount();
     });
-    host.appendChild(lbl);
+    host.appendChild(row);
   }
+
+  const trigger = $("#filter-trigger");
+  const popover = $("#filter-popover");
+  trigger.addEventListener("click", (e) => {
+    e.stopPropagation();
+    setFilterOpen(popover.hidden);
+  });
+  popover.addEventListener("click", (e) => e.stopPropagation());
+  document.addEventListener("click", () => setFilterOpen(false));
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") setFilterOpen(false);
+  });
+
+  $("#filter-all").addEventListener("click", () => bulkSetFilter(true));
+  $("#filter-none").addEventListener("click", () => bulkSetFilter(false));
+
+  updateFilterCount();
+}
+
+function setFilterOpen(open) {
+  const popover = $("#filter-popover");
+  const trigger = $("#filter-trigger");
+  popover.hidden = !open;
+  trigger.setAttribute("aria-expanded", String(open));
+  trigger.classList.toggle("open", open);
+}
+
+function bulkSetFilter(on) {
+  $$('#filter-toggles input[type="checkbox"]').forEach((cb) => {
+    if (cb.checked === on) return;
+    cb.checked = on;
+    cb.dispatchEvent(new Event("change", { bubbles: true }));
+  });
+}
+
+function updateFilterCount() {
+  const total = AGENTS.length;
+  const active = $$('#filter-toggles input[type="checkbox"]:checked').length;
+  const el = $("#filter-count");
+  if (!el) return;
+  el.textContent = active === total ? `${total}` : `${active}/${total}`;
+  $("#filter-trigger").classList.toggle("filtered", active !== total);
 }
 
 // ---- run + SSE consumer ----
@@ -446,7 +687,6 @@ async function runStream() {
   const inputRaw = getDailyInputRaw().trim();
 
   // Reset trace + final tasks for a fresh run.
-  $("#filter-bar").hidden = false;
   $("#trace-stream").hidden = false;
   $("#trace-list").innerHTML = "";
   $("#final-tasks").hidden = true;
