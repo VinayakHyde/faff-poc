@@ -776,6 +776,10 @@ body:not(.has-persona) .profile-panel {
   overflow-y: auto;
 }
 .filter-popover[hidden] { display: none; }
+.filter-popover.open-up {
+  top: auto;
+  bottom: calc(100% + 6px);
+}
 
 .filter-popover-header {
   display: flex;

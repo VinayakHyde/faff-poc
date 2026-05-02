@@ -242,7 +242,11 @@ async function loadProfile(slug) {
       `${profile.meta.neighbourhood}, ${profile.meta.city}  ·  onboarded ${profile.meta.onboarded_at}`;
 
     $("#tab-profile").innerHTML = marked.parse(profile.markdown);
-    applyShimToProfileSections(golden.items);
+    // Wrap markdown sections that golden items explicitly anchor to (via
+    // their profile_md_lines field). Each agent's distinct expectation
+    // becomes a concentric wrapper with a cycling border style; identical
+    // (lines, summary) merge with multi-agent tag.
+    applyShimToProfileSections(profile.markdown, golden.allItems);
   } catch (err) {
     $("#profile-empty").hidden = false;
     $("#profile-content-wrapper").hidden = true;
@@ -335,10 +339,14 @@ async function loadEmailTab(slug) {
   }
 }
 
-// Pull the persona's golden set (cached). Returns {items, emailMap} where
-// items is filtered to expected_task only (skips would be noise here — we
-// want "agents that ACT on this thing", not "agents that decided to ignore
-// it") and emailMap is email_id → Set<agent> for the inline-tag lookup.
+// Pull the persona's golden set (cached). Returns:
+//   items     — expected_task only, used for the email/calendar tab shims
+//                (skips would be noise there — we want "agents that ACT
+//                on this thing", not "agents that decided to ignore it")
+//   allItems  — tasks + skips, used for the profile shim where line-number
+//                provenance keeps things scoped tightly enough that skips
+//                are meaningful signal too
+//   emailMap  — email_id → Set<agent>, computed from items.evidence_email_ids
 async function ensureGoldenMap(slug) {
   if (!state.goldenCache.has(slug)) {
     try {
@@ -349,8 +357,8 @@ async function ensureGoldenMap(slug) {
       state.goldenCache.set(slug, { items: [], agents: [] });
     }
   }
-  const all = state.goldenCache.get(slug).items || [];
-  const items = all.filter((i) => i.kind === "expected_task");
+  const allItems = state.goldenCache.get(slug).items || [];
+  const items = allItems.filter((i) => i.kind === "expected_task");
   const emailMap = new Map();
   for (const item of items) {
     for (const eid of item.evidence_email_ids || []) {
@@ -358,7 +366,7 @@ async function ensureGoldenMap(slug) {
       emailMap.get(eid).add(item.agent);
     }
   }
-  return { items, emailMap };
+  return { items, allItems, emailMap };
 }
 
 // Heuristic word-overlap match: does any expected_task summary share a
@@ -782,6 +790,20 @@ function setFilterOpen(open) {
   popover.hidden = !open;
   trigger.setAttribute("aria-expanded", String(open));
   trigger.classList.toggle("open", open);
+  if (open) flipPopoverIfNeeded(trigger, popover);
+}
+
+// Flip the popover above the trigger when there isn't enough room below.
+// We measure after un-hiding so getBoundingClientRect / scrollHeight are valid.
+function flipPopoverIfNeeded(trigger, popover) {
+  popover.classList.remove("open-up");
+  const triggerRect = trigger.getBoundingClientRect();
+  const spaceBelow = window.innerHeight - triggerRect.bottom;
+  const spaceAbove = triggerRect.top;
+  const popoverHeight = popover.scrollHeight;
+  if (spaceBelow < popoverHeight + 12 && spaceAbove > spaceBelow) {
+    popover.classList.add("open-up");
+  }
 }
 
 function bulkSetFilter(on) {
