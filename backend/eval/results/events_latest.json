@@ -1,0 +1,288 @@
+{
+  "agent": "events",
+  "macro_avg": {
+    "precision": 0.875,
+    "recall": 0.22889610389610388,
+    "f1": 0.32936507936507936,
+    "specificity": 1.0,
+    "pref_coverage": 1.0
+  },
+  "personas": [
+    {
+      "slug": "aditi",
+      "mode": "STEADY-STATE",
+      "metrics": {
+        "tp": 1,
+        "fp_unexpected": 0,
+        "fp_skip_violations": 0,
+        "fn": 1,
+        "expected_tasks": 2,
+        "actual_tasks": 1,
+        "expected_skips": 12,
+        "expected_topics": 0,
+        "precision": 1.0,
+        "recall": 0.5,
+        "f1": 0.6666666666666666,
+        "specificity": 1.0,
+        "pref_coverage": 1.0,
+        "expired_tasks_filtered": 0,
+        "expired_skips_filtered": 1
+      },
+      "judge": {
+        "task_alignments": [
+          {
+            "actual_task_index": 0,
+            "matched_id": "aditi_buy_anuv_jain_singapore_jul28",
+            "kind": "expected_task",
+            "reasoning": "This directly matches the expected sale-window nudge: Buy tickets for Anuv Jain at Capitol Theatre Singapore on 2026-07-28, grounded in a live Ticketmaster sale and justified via the Bali regional-hop travel anchor."
+          }
+        ],
+        "expected_task_misses": [
+          {
+            "id": "aditi_buy_anuv_jain_kuala_lumpur_jul29",
+            "reasoning": "No actual task surfaced the separate Kuala Lumpur Anuv Jain show on 2026-07-29, which should also have been surfaced as a valid live-sale option."
+          }
+        ],
+        "expected_skip_violations": [],
+        "preference_topic_hits": [],
+        "preference_topic_misses": []
+      },
+      "actual_tasks": [
+        {
+          "title": "Anuv Jain — Singapore tickets live on Ticketmaster SG",
+          "action": "Buy tickets for Anuv Jain at Capitol Theatre Singapore — 2026-07-28",
+          "rationale": "web_search confirms live sale on Ticketmaster SG for profile top artist Anuv Jain: Capitol Theatre, Singapore, 2026-07-28. Singapore is a valid regional hop from her booked Bali trip in July 2026. Source: https://ticketmaster.sg/activity/detail/26sg_anuvjain",
+          "suggested_surface_time": "2026-05-02T18:00:00+05:30",
+          "sub_agent": "events"
+        }
+      ],
+      "actual_prefs": []
+    },
+    {
+      "slug": "arjun",
+      "mode": "BACKFILL",
+      "metrics": {
+        "tp": 1,
+        "fp_unexpected": 1,
+        "fp_skip_violations": 0,
+        "fn": 6,
+        "expected_tasks": 7,
+        "actual_tasks": 2,
+        "expected_skips": 8,
+        "expected_topics": 0,
+        "precision": 0.5,
+        "recall": 0.14285714285714285,
+        "f1": 0.22222222222222224,
+        "specificity": 1.0,
+        "pref_coverage": 1.0,
+        "expired_tasks_filtered": 0,
+        "expired_skips_filtered": 0
+      },
+      "judge": {
+        "task_alignments": [
+          {
+            "actual_task_index": 0,
+            "matched_id": "arjun_buy_saath_saath_kolkata_may30",
+            "kind": "expected_task",
+            "reasoning": "This directly matches the expected sale-window nudge for Saath Saath in Kolkata on 2026-05-30 featuring Purbayan Chatterjee and Rakesh Chaurasia, with live ticketing in Arjun's home city."
+          },
+          {
+            "actual_task_index": 1,
+            "matched_id": null,
+            "kind": "unexpected",
+            "reasoning": "Although it uses an allowed verb and is profile-aligned Rabindra Sangeet in Kolkata, it does not match any expected_task or expected_skip. The golden set did not expect this specific Chironutan ticketing task for this day, so it counts as an unexpected extra output."
+          }
+        ],
+        "expected_task_misses": [
+          {
+            "id": "arjun_buy_nandikar_meghe_dhaka_ghatak_may31",
+            "reasoning": "No actual task references Nandikar's Meghe Dhaka Ghatak at Academy of Fine Arts Kolkata on 2026-05-31."
+          },
+          {
+            "id": "arjun_buy_sorin_zlat_jazz_jun13",
+            "reasoning": "No actual task references Sorin Zlat Trio at NCPA Mumbai on 2026-06-13."
+          },
+          {
+            "id": "arjun_buy_rajeev_raja_combine_jun21",
+            "reasoning": "No actual task references Rajeev Raja Combine at NCPA Mumbai on 2026-06-21."
+          },
+          {
+            "id": "arjun_save_baishe_srabon_kolkata_aug7",
+            "reasoning": "No actual task surfaces a save-the-date for Baishe Srabon tributes in Kolkata on 2026-08-07."
+          },
+          {
+            "id": "arjun_save_varsha_mangal_shantiniketan_aug15",
+            "reasoning": "No actual task surfaces a save-the-date for Varsha Mangal at Shantiniketan on 2026-08-15 to 16."
+          },
+          {
+            "id": "arjun_save_durga_puja_maddox_oct17",
+            "reasoning": "No actual task surfaces a save-the-date for Maddox Square Durga Puja cultural sessions on 2026-10-17 to 21."
+          }
+        ],
+        "expected_skip_violations": [],
+        "preference_topic_hits": [],
+        "preference_topic_misses": []
+      },
+      "actual_tasks": [
+        {
+          "title": "Purbayan Chatterjee + Rakesh Chaurasia — Kolkata — District",
+          "action": "Buy tickets for Saath Saath India Tour at Dhono Dhanyo Auditorium Kolkata — 2026-05-30",
+          "rationale": "web_search confirms a live District ticket page for a Kolkata date on 2026-05-30 featuring Purbayan Chatterjee and Rakesh Chaurasia, a strong match to the profile’s Pt. Ravi Shankar / sitar-flute classical tradition in Arjun’s home city. Source: https://www.district.in/events/saath-saath-india-tour-kolkata-2026-buy-tickets",
+          "suggested_surface_time": "2026-05-02T16:00:00+05:30",
+          "sub_agent": "events"
+        },
+        {
+          "title": "Rabindra Sangeet tribute — Kolkata — BookMyShow",
+          "action": "Buy tickets for Chironutan (Rabindra Sangeet In a Thousand Voices) Kolkata — 2026-05-10",
+          "rationale": "web_search confirms a live BookMyShow listing for Chironutan on 2026-05-10 in Kolkata, a direct fit with the profile’s Rabindra Sangeet focus (Tagore / Kanika Banerjee / Hemanta Mukherjee tradition) in his home city. Source: https://in.bookmyshow.com/events/chironutan-rabindra-sangeet-in-a-thousand-voices/ET00490024",
+          "suggested_surface_time": "2026-05-02T16:05:00+05:30",
+          "sub_agent": "events"
+        }
+      ],
+      "actual_prefs": []
+    },
+    {
+      "slug": "devendra",
+      "mode": "STEADY-STATE",
+      "metrics": {
+        "tp": 3,
+        "fp_unexpected": 0,
+        "fp_skip_violations": 0,
+        "fn": 8,
+        "expected_tasks": 11,
+        "actual_tasks": 3,
+        "expected_skips": 5,
+        "expected_topics": 0,
+        "precision": 1.0,
+        "recall": 0.2727272727272727,
+        "f1": 0.42857142857142855,
+        "specificity": 1.0,
+        "pref_coverage": 1.0,
+        "expired_tasks_filtered": 0,
+        "expired_skips_filtered": 0
+      },
+      "judge": {
+        "task_alignments": [
+          {
+            "actual_task_index": 0,
+            "matched_id": "devendra_buy_ipl_gt_pbks_may3",
+            "kind": "expected_task",
+            "reasoning": "Same underlying intent: buy tickets now for Gujarat Titans vs Punjab Kings at Narendra Modi Stadium Ahmedabad on May 3, based on a live BookMyShow sale and the user's home-city cricket interest."
+          },
+          {
+            "actual_task_index": 1,
+            "matched_id": "devendra_buy_ipl_gt_srh_may12",
+            "kind": "expected_task",
+            "reasoning": "Same underlying intent: buy tickets now for Gujarat Titans vs Sunrisers Hyderabad at Narendra Modi Stadium Ahmedabad, with a live sale signal and clear profile fit."
+          },
+          {
+            "actual_task_index": 2,
+            "matched_id": "devendra_buy_eng_vs_ind_lords_jul19",
+            "kind": "expected_task",
+            "reasoning": "Same underlying intent: buy tickets for the England vs India Men's ODI at Lord's during the user's booked London trip, matching the bucket-list Lord's preference and live ticketing signal."
+          }
+        ],
+        "expected_task_misses": [
+          {
+            "id": "devendra_tickets_open_ipl_final_may24",
+            "reasoning": "No actual task surfaced the announced May 15 sale-open countdown for the IPL Final in Bengaluru."
+          },
+          {
+            "id": "devendra_buy_eng_w_vs_ind_w_t20_final_jul5",
+            "reasoning": "No actual task referenced buying tickets for the ICC Women's T20 World Cup Final at Lord's on July 5 during the London trip."
+          },
+          {
+            "id": "devendra_buy_carvaan_rafi_kishore_may31",
+            "reasoning": "No actual task referenced the Carvaan Live Mohammed Rafi & Kishore Kumar tribute in Mumbai during the user's May trip."
+          },
+          {
+            "id": "devendra_save_lecture_womens_cricket_may3",
+            "reasoning": "No actual task surfaced the free women's cricket history lecture in Ahmedabad."
+          },
+          {
+            "id": "devendra_save_mumbai_coin_fair_may9",
+            "reasoning": "No actual task surfaced the free Mumbai One-Day Coin Fair during the user's Mumbai trip."
+          },
+          {
+            "id": "devendra_save_vachikam_rajesh_dani_may10",
+            "reasoning": "No actual task surfaced the free Gujarati literary event Vachikam by Rajesh Dani in Ahmedabad."
+          },
+          {
+            "id": "devendra_save_ahmedabad_coin_fair_aug7",
+            "reasoning": "No actual task surfaced the Ahmedabad Coins and Currency Fair as an early free-event save-the-date."
+          },
+          {
+            "id": "devendra_save_paryushan_discourses_sep8",
+            "reasoning": "No actual task surfaced the annual Paryushan Mahaparva discourses as an early save-the-date for a profile-priority observance."
+          }
+        ],
+        "expected_skip_violations": [],
+        "preference_topic_hits": [],
+        "preference_topic_misses": []
+      },
+      "actual_tasks": [
+        {
+          "title": "Gujarat Titans vs Punjab Kings — Ahmedabad — BookMyShow",
+          "action": "Buy tickets for Gujarat Titans vs Punjab Kings at Narendra Modi Stadium Ahmedabad",
+          "rationale": "web_search confirms a live BookMyShow sale page for this home-city IPL match on 2026-05-03: https://in.bookmyshow.com/sports/gujarat-titans-vs-punjab-kings-tata-ipl-2026/ET00491083 . Profile match: die-hard cricket fan; Ahmedabad is home city.",
+          "suggested_surface_time": "2026-05-02T18:00:00+05:30",
+          "sub_agent": "events"
+        },
+        {
+          "title": "Gujarat Titans vs Sunrisers Hyderabad — Ahmedabad — BookMyShow",
+          "action": "Buy tickets for Gujarat Titans vs Sunrisers Hyderabad at Narendra Modi Stadium Ahmedabad",
+          "rationale": "web_search confirms a live BookMyShow sale page for this home-city IPL match on 2026-05-12: https://in.bookmyshow.com/sports/gujarat-titans-vs-sunrisers-hyderabad-tata-ipl-2026/ET00491084 . Profile match: die-hard cricket fan; Ahmedabad is home city.",
+          "suggested_surface_time": "2026-05-02T18:00:00+05:30",
+          "sub_agent": "events"
+        },
+        {
+          "title": "England vs India Men's ODI — Lord's London",
+          "action": "Buy tickets for England vs India Men's ODI at Lord's London",
+          "rationale": "web_search confirms the official Lord's fixture page for England v India Men's ODI on 2026-07-19: https://www.lords.org/lords/match-day/fixtures-and-results/2026/lord-s/international/england-v-india-(men-s) . Profile match: cricket fan, Lord's is explicitly bucket-list, and London travel is booked for July 2026. ECB ticketing guidance is live here: https://www.ecb.co.uk/news/4320302",
+          "suggested_surface_time": "2026-05-02T18:00:00+05:30",
+          "sub_agent": "events"
+        }
+      ],
+      "actual_prefs": []
+    },
+    {
+      "slug": "meera",
+      "mode": "BACKFILL",
+      "metrics": {
+        "tp": 0,
+        "fp_unexpected": 0,
+        "fp_skip_violations": 0,
+        "fn": 2,
+        "expected_tasks": 2,
+        "actual_tasks": 0,
+        "expected_skips": 9,
+        "expected_topics": 0,
+        "precision": 1.0,
+        "recall": 0.0,
+        "f1": 0.0,
+        "specificity": 1.0,
+        "pref_coverage": 1.0,
+        "expired_tasks_filtered": 0,
+        "expired_skips_filtered": 0
+      },
+      "judge": {
+        "task_alignments": [],
+        "expected_task_misses": [
+          {
+            "id": "meera_buy_arijit_singh_navi_mumbai_may15",
+            "reasoning": "No actual task surfaces the live Arijit Singh Navi Mumbai sale-window nudge."
+          },
+          {
+            "id": "meera_buy_bts_arirang_busan_jun12",
+            "reasoning": "No actual task surfaces the live BTS ARIRANG Busan sale-window nudge."
+          }
+        ],
+        "expected_skip_violations": [],
+        "preference_topic_hits": [],
+        "preference_topic_misses": []
+      },
+      "actual_tasks": [],
+      "actual_prefs": []
+    }
+  ]
+}

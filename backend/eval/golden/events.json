@@ -49,7 +49,9 @@
           "source_url": "https://www.ticketmaster.com/anuv-jain-tickets/artist/3118632",
           "notes": "Sourced from Gemini Deep Research (Events Prompt 1). City anchor: Bali-Jul (regional hop from Denpasar).",
           "profile_md_lines": [
-            66
+            66,
+            88,
+            188
           ],
           "mailbox_json_lines": [],
           "calendar_json_lines": []
@@ -64,7 +66,9 @@
           "source_url": "https://concerts50.com/artists/anuv-jain-tour-dates",
           "notes": "Sourced from Gemini Deep Research (Events Prompt 1). City anchor: Bali-Jul (regional hop from Denpasar).",
           "profile_md_lines": [
-            66
+            66,
+            88,
+            188
           ],
           "mailbox_json_lines": [],
           "calendar_json_lines": []
@@ -81,7 +85,7 @@
           "category": "off_lane_finance",
           "valid_until": "2026-05-15",
           "profile_md_lines": [
-            83
+            150
           ],
           "mailbox_json_lines": [
             1249,
@@ -110,7 +114,7 @@
           "category": "fyi_no_action",
           "valid_until": "2026-05-01",
           "profile_md_lines": [
-            88
+            7
           ],
           "mailbox_json_lines": [
             1235,
@@ -139,7 +143,7 @@
           "category": "off_lane_email",
           "valid_until": "2026-05-09",
           "profile_md_lines": [
-            133
+            121
           ],
           "mailbox_json_lines": [
             1221,
@@ -193,7 +197,7 @@
           "category": "speculative_no_signal",
           "valid_until": null,
           "profile_md_lines": [
-            31
+            66
           ],
           "mailbox_json_lines": [],
           "calendar_json_lines": []
@@ -204,6 +208,7 @@
           "category": "speculative_no_signal",
           "valid_until": null,
           "profile_md_lines": [
+            66,
             69
           ],
           "mailbox_json_lines": [],
@@ -239,7 +244,7 @@
           "category": "speculative_no_signal",
           "valid_until": null,
           "profile_md_lines": [
-            78
+            66
           ],
           "mailbox_json_lines": [],
           "calendar_json_lines": []
@@ -263,9 +268,7 @@
           "summary": "Do NOT emit `Lineup update — Sunburn Mumbai Dec 2026`. Outside the 7–14-day prep window for festivals; revisit closer to December.",
           "category": "outside_window",
           "valid_until": "2026-11-15",
-          "profile_md_lines": [
-            3
-          ],
+          "profile_md_lines": [],
           "mailbox_json_lines": [],
           "calendar_json_lines": []
         },
@@ -281,7 +284,10 @@
           "category": "off_lane_calendar",
           "valid_until": null,
           "profile_md_lines": [
-            24
+            23,
+            24,
+            25,
+            49
           ],
           "mailbox_json_lines": [],
           "calendar_json_lines": [
@@ -375,7 +381,8 @@
           "valid_until": "2026-06-13",
           "source_url": "https://www.ncpamumbai.com/event/sorin-zlat-trio-changing-times/",
           "profile_md_lines": [
-            68
+            62,
+            81
           ],
           "mailbox_json_lines": [],
           "calendar_json_lines": []
@@ -388,7 +395,9 @@
           "valid_until": "2026-06-21",
           "source_url": "https://www.ncpamumbai.com/event/rajeev-raja-combine/",
           "profile_md_lines": [
-            62
+            61,
+            62,
+            81
           ],
           "mailbox_json_lines": [],
           "calendar_json_lines": []
@@ -403,8 +412,7 @@
           "notes": "Free-entry event; verb prefix `Save the date for ...` may need to be added to the agent's allowed verb list.",
           "profile_md_lines": [
             61,
-            62,
-            92
+            62
           ],
           "mailbox_json_lines": [],
           "calendar_json_lines": []
@@ -418,7 +426,6 @@
           "source_url": "https://visvabharati.ac.in/",
           "profile_md_lines": [
             61,
-            62,
             76
           ],
           "mailbox_json_lines": [],
@@ -519,7 +526,7 @@
           "valid_until": "2026-08-31",
           "source_url": "https://dagworld.com/exhibitions.html",
           "profile_md_lines": [
-            73
+            81
           ],
           "mailbox_json_lines": [],
           "calendar_json_lines": []
@@ -587,7 +594,8 @@
           "valid_until": "2026-05-03",
           "source_url": "https://www.iplt20.com",
           "profile_md_lines": [
-            23
+            23,
+            67
           ],
           "mailbox_json_lines": [],
           "calendar_json_lines": []
@@ -600,7 +608,8 @@
           "valid_until": "2026-05-12",
           "source_url": "https://www.iplt20.com",
           "profile_md_lines": [
-            29
+            23,
+            67
           ],
           "mailbox_json_lines": [],
           "calendar_json_lines": []
@@ -613,7 +622,9 @@
           "valid_until": "2026-05-24",
           "source_url": "https://www.iplt20.com",
           "profile_md_lines": [
-            22
+            23,
+            67,
+            137
           ],
           "mailbox_json_lines": [],
           "calendar_json_lines": []
@@ -627,7 +638,8 @@
           "source_url": "https://www.icc-cricket.com",
           "profile_md_lines": [
             63,
-            137
+            67,
+            80
           ],
           "mailbox_json_lines": [],
           "calendar_json_lines": []
@@ -641,6 +653,7 @@
           "source_url": "https://www.lords.org",
           "profile_md_lines": [
             63,
+            67,
             80
           ],
           "mailbox_json_lines": [],
@@ -654,7 +667,8 @@
           "valid_until": "2026-05-31",
           "source_url": "https://in.bookmyshow.com",
           "profile_md_lines": [
-            61
+            61,
+            81
           ],
           "mailbox_json_lines": [],
           "calendar_json_lines": []
@@ -667,9 +681,9 @@
           "valid_until": "2026-05-03",
           "source_url": "https://www.gujaratisahitya.org",
           "profile_md_lines": [
-            63,
-            80,
-            138
+            23,
+            67,
+            69
           ],
           "mailbox_json_lines": [],
           "calendar_json_lines": []
@@ -682,7 +696,8 @@
           "valid_until": "2026-05-09",
           "source_url": "http://www.mumbaicoinsociety.org",
           "profile_md_lines": [
-            68
+            68,
+            81
           ],
           "mailbox_json_lines": [],
           "calendar_json_lines": []
@@ -695,7 +710,7 @@
           "valid_until": "2026-05-10",
           "source_url": "https://www.gujaratisahitya.org",
           "profile_md_lines": [
-            29
+            69
           ],
           "mailbox_json_lines": [],
           "calendar_json_lines": []
@@ -721,7 +736,10 @@
           "valid_until": "2026-09-15",
           "source_url": "https://www.rajsaubhag.org",
           "profile_md_lines": [
-            9
+            10,
+            15,
+            92,
+            155
           ],
           "mailbox_json_lines": [],
           "calendar_json_lines": []
@@ -776,8 +794,7 @@
           "valid_until": "2026-07-31",
           "profile_md_lines": [
             63,
-            80,
-            138
+            80
           ],
           "mailbox_json_lines": [],
           "calendar_json_lines": []
@@ -789,9 +806,7 @@
           "as_of": "2026-05-02",
           "valid_until": "2026-09-01",
           "source_url": "https://www.gujarattourism.com",
-          "profile_md_lines": [
-            33
-          ],
+          "profile_md_lines": [],
           "mailbox_json_lines": [],
           "calendar_json_lines": []
         },
@@ -824,6 +839,7 @@
           "source_url": "https://india.wildoak.store/blogs/skincare-ingredients/arijit-singh-live-concert-tour-2025-dates",
           "notes": "Within-stipend GA tier exists. Sourced from Gemini Deep Research (Events Prompt 4).",
           "profile_md_lines": [
+            7,
             67
           ],
           "mailbox_json_lines": [],
@@ -838,6 +854,7 @@
           "source_url": "https://world.nol.com/en/ticket/places/26000398/products/26005547",
           "notes": "Aspirational budget tier (above ₹8K). Bucket-list BTS reunion — first Asia leg after full-group return. Realistic Asia hop if she splurges.",
           "profile_md_lines": [
+            66,
             71
           ],
           "mailbox_json_lines": [],
@@ -854,7 +871,9 @@
           "source_url": "https://www.aninews.in/news/entertainment/music/anuv-jain-announces-his-first-ever-world-tour-see-deets-inside20251117175822",
           "notes": "Highest-temptation skip target — profile signals high intent but the specific show has passed.",
           "profile_md_lines": [
-            70
+            65,
+            70,
+            156
           ],
           "mailbox_json_lines": [],
           "calendar_json_lines": []
@@ -876,8 +895,7 @@
           "category": "speculative_no_signal",
           "valid_until": null,
           "profile_md_lines": [
-            84,
-            86
+            65
           ],
           "mailbox_json_lines": [],
           "calendar_json_lines": []
@@ -899,6 +917,7 @@
           "category": "speculative_no_signal",
           "valid_until": null,
           "profile_md_lines": [
+            66,
             71
           ],
           "mailbox_json_lines": [],
@@ -943,7 +962,7 @@
           "category": "speculative_no_signal",
           "valid_until": null,
           "profile_md_lines": [
-            65
+            78
           ],
           "mailbox_json_lines": [],
           "calendar_json_lines": []
