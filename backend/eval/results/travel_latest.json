@@ -1,0 +1,281 @@
+{
+  "agent": "travel",
+  "macro_avg": {
+    "precision": 0.75,
+    "recall": 1.0,
+    "f1": 0.75,
+    "specificity": 1.0,
+    "pref_coverage": 1.0
+  },
+  "personas": [
+    {
+      "slug": "aditi",
+      "mode": "STEADY-STATE",
+      "metrics": {
+        "tp": 0,
+        "fp_unexpected": 2,
+        "fp_skip_violations": 0,
+        "fn": 0,
+        "expected_tasks": 0,
+        "actual_tasks": 2,
+        "expected_skips": 5,
+        "expected_topics": 0,
+        "precision": 0.0,
+        "recall": 1.0,
+        "f1": 0.0,
+        "specificity": 1.0,
+        "pref_coverage": 1.0
+      },
+      "judge": {
+        "task_alignments": [
+          {
+            "actual_task_index": 0,
+            "matched_id": null,
+            "kind": "unexpected",
+            "reasoning": "This is a finance/admin bill-payment task about an Airtel postpaid bill, not one of the six allowed travel action types and unrelated to any expected travel item or skip."
+          },
+          {
+            "actual_task_index": 1,
+            "matched_id": null,
+            "kind": "unexpected",
+            "reasoning": "This is a generic admin/insurance reminder from Dad, not a travel-logistics task and not semantically related to any expected task or expected skip."
+          }
+        ],
+        "expected_task_misses": [],
+        "expected_skip_violations": [],
+        "preference_topic_hits": [],
+        "preference_topic_misses": []
+      },
+      "actual_tasks": [
+        {
+          "title": "Pay Airtel bill in the next 1–2 days",
+          "action": "Settle the Airtel postpaid bill due around May 2, ideally by tomorrow morning so it doesn’t slip over the long weekend.",
+          "rationale": "Bills are best surfaced ~3 days early for her, and Airtel is a recurring bill due around the 2nd. Today is May 1, so this is in the right window.",
+          "suggested_surface_time": "2026-05-01T18:00:00+05:30",
+          "sub_agent": "travel"
+        },
+        {
+          "title": "Check insurance renewal due next week",
+          "action": "Take a quick look at the insurance renewal Dad mentioned and add a reminder/block for next week if action is needed.",
+          "rationale": "She tends to drop routine admin, and her dad explicitly flagged an insurance renewal due next week. A light pre-emptive nudge fits her preference better than a last-day reminder.",
+          "suggested_surface_time": "2026-05-02T11:00:00+05:30",
+          "sub_agent": "travel"
+        }
+      ],
+      "actual_prefs": []
+    },
+    {
+      "slug": "arjun",
+      "mode": "BACKFILL",
+      "metrics": {
+        "tp": 0,
+        "fp_unexpected": 0,
+        "fp_skip_violations": 0,
+        "fn": 0,
+        "expected_tasks": 0,
+        "actual_tasks": 0,
+        "expected_skips": 3,
+        "expected_topics": 6,
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0,
+        "specificity": 1.0,
+        "pref_coverage": 1.0
+      },
+      "judge": {
+        "task_alignments": [],
+        "expected_task_misses": [],
+        "expected_skip_violations": [],
+        "preference_topic_hits": [
+          {
+            "topic": "Home airport CCU (Kolkata)",
+            "actual_pref_index": 0,
+            "reasoning": "Preference update explicitly states home airport CCU (Kolkata)."
+          },
+          {
+            "topic": "Preferred airlines: Air India / Vistara",
+            "actual_pref_index": 1,
+            "reasoning": "Preference update explicitly identifies Air India as a preferred airline, partially covering the expected airline preference topic."
+          },
+          {
+            "topic": "Taj hotels are the user's go-to for Mumbai stays",
+            "actual_pref_index": 7,
+            "reasoning": "Preference update notes an upcoming booked Mumbai stay at Taj Mahal Palace, which supports Taj hotels as a recurring Mumbai lodging pattern, though phrased less strongly than 'go-to'."
+          },
+          {
+            "topic": "Mumbai is a recurring work destination (gallery / art-fair business)",
+            "actual_pref_index": 2,
+            "reasoning": "Preference update identifies Mumbai as a frequent destination based on booking history, covering the recurring-destination aspect of the topic."
+          },
+          {
+            "topic": "London is the periodic family / art-auction destination",
+            "actual_pref_index": 2,
+            "reasoning": "Preference update identifies London as a frequent destination based on booking history, semantically covering London as a recurring destination pattern, though not the family/art-auction nuance."
+          },
+          {
+            "topic": "Upcoming booked: Mumbai trip with Taj Mahal Palace stay June 10-15, 2026",
+            "actual_pref_index": 7,
+            "reasoning": "Preference update explicitly states the upcoming booked Mumbai stay at Taj Mahal Palace from June 10–15, 2026."
+          }
+        ],
+        "preference_topic_misses": []
+      },
+      "actual_tasks": [],
+      "actual_prefs": [
+        {
+          "section": "Travel",
+          "content": "Home airport: CCU (Kolkata) — supported by the confirmed Air India e-ticket 'E-Ticket: Kolkata to London' from reservations@airindia.in received 2025-09-15.",
+          "reason": "Observed a confirmed flight originating from Kolkata in travel email history."
+        },
+        {
+          "section": "Travel",
+          "content": "Preferred airline: Air India — seen in confirmed flight history ('E-Ticket: Kolkata to London' from reservations@airindia.in, received 2025-09-15).",
+          "reason": "A confirmed Air India booking is present in inbox travel records, reinforcing stated airline preference."
+        },
+        {
+          "section": "Travel",
+          "content": "Frequent destinations: Mumbai and London — supported by 'Booking Confirmed: Taj Mahal Palace, Mumbai' from reservations@tajhotels.com (received 2026-04-20) and 'E-Ticket: Kolkata to London' from reservations@airindia.in (received 2025-09-15).",
+          "reason": "Inbox contains concrete travel bookings tied to both Mumbai and London."
+        },
+        {
+          "section": "Travel",
+          "content": "Hotel preference: premium heritage/luxury hotels — supported by 'Booking Confirmed: Taj Mahal Palace, Mumbai' from reservations@tajhotels.com, received 2026-04-20.",
+          "reason": "Recent hotel booking indicates comfort with high-end heritage/luxury hotel brands."
+        },
+        {
+          "section": "Bills & Subscriptions",
+          "content": "JioFiber monthly bill is consistently INR 999, with bill emails observed on 2025-10-01, 2025-11-01, 2025-12-01, 2026-01-01, 2026-02-01, 2026-03-01, and 2026-04-01.",
+          "reason": "Repeated monthly billing emails from billing@jio.com confirm plan amount and cadence."
+        },
+        {
+          "section": "Bills & Subscriptions",
+          "content": "Airtel Postpaid family/mobile bill is consistently INR 1499, with bill emails observed monthly from 2025-10-02 through 2026-04-02.",
+          "reason": "Repeated monthly billing emails from ebill@airtel.com confirm amount and recurrence."
+        },
+        {
+          "section": "Bills & Subscriptions",
+          "content": "CESC electricity bills for account ending 8892 arrive around the 5th of each month; observed amounts: Oct 2025 INR 4978, Nov 2025 INR 4317, Dec 2025 INR 4331, Jan 2026 INR 3387, Feb 2026 INR 4274, Mar 2026 INR 5670, Apr 2026 INR 5460.",
+          "reason": "Monthly bill emails from billing@cesc.co.in validate cadence, account ending, and typical bill range."
+        },
+        {
+          "section": "Travel",
+          "content": "Upcoming booked travel: Mumbai stay at Taj Mahal Palace from June 10–15, 2026.",
+          "reason": "Confirmed hotel reservation email from reservations@tajhotels.com dated 2026-04-20 provides exact dates."
+        },
+        {
+          "section": "Travel",
+          "content": "Attended/planned art-related travel/event: India Art Fair 2026 Preview Day access was ticketed via email from tickets@indiaartfair.in on 2026-01-10.",
+          "reason": "Ticket email supports annual Delhi art-fair engagement and art-travel pattern."
+        }
+      ]
+    },
+    {
+      "slug": "devendra",
+      "mode": "BACKFILL",
+      "metrics": {
+        "tp": 0,
+        "fp_unexpected": 0,
+        "fp_skip_violations": 0,
+        "fn": 0,
+        "expected_tasks": 0,
+        "actual_tasks": 0,
+        "expected_skips": 4,
+        "expected_topics": 6,
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0,
+        "specificity": 1.0,
+        "pref_coverage": 1.0
+      },
+      "judge": {
+        "task_alignments": [],
+        "expected_task_misses": [],
+        "expected_skip_violations": [],
+        "preference_topic_hits": [
+          {
+            "topic": "Home airport AMD (Ahmedabad)",
+            "actual_pref_index": 0,
+            "reasoning": "Preference update explicitly states home airport AMD (Ahmedabad)."
+          },
+          {
+            "topic": "Preferred airlines: IndiGo and Air India",
+            "actual_pref_index": 1,
+            "reasoning": "Preference update explicitly identifies IndiGo and Air India as preferred airlines."
+          },
+          {
+            "topic": "Mumbai is a recurring work destination (4x/yr)",
+            "actual_pref_index": 2,
+            "reasoning": "Preference update says Mumbai is a frequent destination for work, which semantically covers recurring work travel to Mumbai, though it does not specify the exact 4x/yr cadence."
+          },
+          {
+            "topic": "US (EWR / New Jersey) is the annual family destination — daughter Riya lives there",
+            "actual_pref_index": 2,
+            "reasoning": "Preference update identifies Newark/New Jersey as a frequent family-visit destination, covering the US family destination pattern, though it omits daughter Riya by name."
+          },
+          {
+            "topic": "Palitana is a recurring pilgrimage destination (Jain, twice a year)",
+            "actual_pref_index": 2,
+            "reasoning": "Preference update identifies Palitana as a frequent pilgrimage destination, semantically covering the recurring pilgrimage pattern, though not the Jain/twice-yearly detail."
+          },
+          {
+            "topic": "Upcoming booked: Mumbai conference (AMD→BOM IndiGo) — flight ticket received April 15",
+            "actual_pref_index": 0,
+            "reasoning": "The reason cites the AMD→BOM IndiGo confirmation received 2026-04-15, capturing the upcoming booked Mumbai trip evidence."
+          }
+        ],
+        "preference_topic_misses": []
+      },
+      "actual_tasks": [],
+      "actual_prefs": [
+        {
+          "section": "Travel",
+          "content": "Home airport: AMD (Ahmedabad) — all flight confirmations found in the past 12 months depart from AMD.",
+          "reason": "Inbox travel confirmations include AMD→BOM (IndiGo, received 2026-04-15) and AMD→EWR (Air India, received 2025-06-15)."
+        },
+        {
+          "section": "Travel",
+          "content": "Preferred airlines: IndiGo and Air India, with IndiGo appearing in current domestic travel and Air India in long-haul travel.",
+          "reason": "Observed flight confirmation emails from confirmatons@indigo.in for Mumbai and bookings@airindia.in for Newark."
+        },
+        {
+          "section": "Travel",
+          "content": "Frequent destinations include Mumbai for work, Newark/New Jersey for family visits, and Palitana for pilgrimage.",
+          "reason": "Inbox shows AMD→BOM flight confirmation, AMD→EWR flight confirmation, and a Palitana hotel booking confirmation (Nov 12–15)."
+        },
+        {
+          "section": "Food",
+          "content": "Sunday breakfast pattern confirmed: orders Iscon Gathiya gathiya + jalebi in the morning.",
+          "reason": "Multiple order confirmations from orders@iscongathiya.com across the past year, typically around 8:30am, for Gathiya (500g) and Jalebi (250g)."
+        }
+      ]
+    },
+    {
+      "slug": "meera",
+      "mode": "BACKFILL",
+      "metrics": {
+        "tp": 0,
+        "fp_unexpected": 0,
+        "fp_skip_violations": 0,
+        "fn": 0,
+        "expected_tasks": 0,
+        "actual_tasks": 0,
+        "expected_skips": 0,
+        "expected_topics": 0,
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0,
+        "specificity": 1.0,
+        "pref_coverage": 1.0
+      },
+      "judge": {
+        "task_alignments": [],
+        "expected_task_misses": [],
+        "expected_skip_violations": [],
+        "preference_topic_hits": [],
+        "preference_topic_misses": []
+      },
+      "actual_tasks": [],
+      "actual_prefs": []
+    }
+  ]
+}
