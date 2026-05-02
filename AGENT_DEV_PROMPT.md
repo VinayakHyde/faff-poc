@@ -171,6 +171,15 @@ After splitting, re-run the eval. Each prompt is now smaller and specialised; it
 
 After 3 iterations without F1 improvement AND after trying the split-by-mode escape hatch, stop and write a summary of the remaining failures — likely indicates the scope or the golden need rethinking.
 
+### 6c. Verb-mismatch escalation
+
+If `expected_tasks` in the golden use an action-verb prefix that the agent prompt does NOT currently allow (e.g. golden expects `Save the date for ...` but the prompt's verb list is `Buy tickets for / Tickets open / Lineup update`), the loop must STOP and escalate. Two valid resolutions, both human-judgment calls:
+
+1. Expand the agent's verb list to include the new prefix (one-line addition to Constraint 1 + a new `## N. <category>` section).
+2. Drop / rephrase the affected golden entries to fit the existing verb list.
+
+The loop should never silently pick one — that's a scope decision, not an iteration.
+
 ### 7. Line-number provenance (LAST step — only after metrics are at ceiling)
 
 This step is for **human-reviewer auditability**, not the eval harness. The reviewer should be able to open the golden file, pick any expected entry, and immediately know **which lines in which source file** support it — so a future inspector can trace exactly what's contributing to the agent's good (or bad) behaviour.
@@ -204,6 +213,52 @@ Example after population:
 ```
 
 This step happens **only after** Step 6 has converged (Macro F1 ≥ 0.85 and Macro Specificity = 1.00). Skipping it leaves the golden harder to audit, but doesn't block eval correctness.
+
+---
+
+### 8. Auto-loop driver contract (for non-human iteration)
+
+Steps 5–6 above are written for a human iterator. If you're running this as an autonomous loop (script or agent driving prompt edits + re-runs), follow these additional disciplines so the loop stays attributable, reverts cleanly, and doesn't drift into vacuous wins.
+
+**8a. The improvement function (deterministic).** The loop counts an iteration as an improvement only when:
+
+```python
+def is_improvement(prev: Macro, curr: Macro) -> bool:
+    # F1 strictly up by a meaningful margin
+    if curr.f1 > prev.f1 + 0.005:
+        return True
+    # OR specificity up without F1 dropping more than 0.02
+    if curr.specificity > prev.specificity and curr.f1 >= prev.f1 - 0.02:
+        return True
+    return False
+```
+
+This prevents accepting noise. "3 iterations without improvement" then has a precise meaning.
+
+**8b. Anti-vacuous-win guard.** Specificity = 1.00 is trivially achievable by emitting nothing. An iteration that improves specificity is only valid if `curr.actual_tasks_total >= prev.actual_tasks_total * 0.5` AND `curr.precision >= prev.precision`. If both fail, the iteration was a silence regression dressed up as a specificity win — revert.
+
+**8c. Edit budget per iteration.** At most ONE category section OR TWO additions to `# Negative examples` per iteration. This keeps cause-of-improvement attributable. Each addition must carry an inline comment in the prompt source: `<!-- iter N: <one-line rationale tied to the failure that motivated it> -->`.
+
+**8d. Revert protocol.** Prompts are git-tracked. After each `python -m eval.run <agent>` run, compare macro to the previous row in the agent's `_history.jsonl`:
+- If `is_improvement(prev, curr)` → commit the prompt change.
+- Else if `curr.f1 < prev.f1 - 0.10` → catastrophic regression. `git checkout HEAD~1 -- backend/app/agents/<name>.py` and skip this iteration.
+- Else → leave the prompt as-is, count as "no improvement," try a different change next iteration.
+
+**8e. Stop / escalate triggers.** The loop must halt and surface to a human when ANY of:
+- 3 consecutive iterations without improvement (per 8a).
+- Catastrophic regression two iterations in a row.
+- Verb-mismatch case (Step 6c) — golden expects an action-verb prefix the prompt doesn't allow.
+- > 50% of golden entries have `valid_until < evaluation_date` (refresh the deep-research dump before continuing).
+- Mode-failure-cluster pattern from Step 6b detected — the split-by-mode escape hatch is a scope decision, not an auto-iteration.
+
+**8f. Per-iteration log.** The loop writes one line to `backend/eval/results/<agent>_iter_log.jsonl` per attempt:
+
+```json
+{"iter": 7, "timestamp": "...", "change": "added negative example for Sudipto-bridge-as-event",
+ "macro_before": {...}, "macro_after": {...}, "decision": "kept|reverted|no-improvement"}
+```
+
+This pairs with the existing `_history.jsonl` (which logs one row per *eval run*, not per *iteration attempt*) to give a complete iteration trail.
 
 ---
 
