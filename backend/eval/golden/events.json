@@ -1,7 +1,7 @@
 {
   "agent": "events",
   "schema_version": 2,
-  "evaluation_date": "2026-05-01",
+  "evaluation_date": "2026-05-02",
   "scope": {
     "in_scope_categories": [
       "sale_window_nudge",
@@ -32,14 +32,12 @@
     "as_of_global": "2026-05-02",
     "data_source": "All web-grounded expected_tasks were sourced from Gemini Deep Research runs on 2026-05-02. See backend/eval/deep_research_prompts.md."
   },
-
   "personas": [
     {
       "slug": "aditi",
       "mode": "STEADY-STATE",
       "fixture_path": "backend/data/users/aditi/fixtures/2026-05-01.json",
-      "fixture_summary": "Today = Fri 2026-05-01. Mailbox: mom check-in (msg_mom_1), HR holiday FYI (msg_hr_1), Dad insurance forward (msg_dad_1). Calendar: Date Night Toit + Indiranagar routines. Profile top-artists: Kendrick Lamar, Frank Ocean, Prateek Kuhad, Anuv Jain, AP Dhillon, FKJ, SZA, Diljit Dosanjh. Travel anchors in window: Bali Jul 2026, Japan Oct 2026.",
-
+      "fixture_summary": "Today = Sat 2026-05-02. Mailbox: mom check-in (msg_mom_1), HR holiday FYI (msg_hr_1), Dad insurance forward (msg_dad_1). Calendar: Date Night Toit + Indiranagar routines. Profile top-artists: Kendrick Lamar, Frank Ocean, Prateek Kuhad, Anuv Jain, AP Dhillon, FKJ, SZA, Diljit Dosanjh. Travel anchors in window: Bali Jul 2026, Japan Oct 2026.",
       "expected_tasks": [
         {
           "id": "aditi_buy_anuv_jain_singapore_jul28",
@@ -69,12 +67,13 @@
         }
       ],
       "expected_tasks_note": "Two strong expected_tasks rooted in announced shows by profile top-artist Anuv Jain in Asian cities reachable from her Bali Jul anchor. Kendrick KL (Oct 25) is intentionally an expected_skip today — sale not yet open, only 'announced — dates pending'.",
-
       "expected_skips": [
         {
           "id": "aditi_skip_insurance_as_ticket_task",
           "summary": "Do NOT reframe Dad's insurance renewal email as `Buy tickets ...` or any other event task. Insurance is finance lane.",
-          "evidence_email_ids": ["msg_dad_1"],
+          "evidence_email_ids": [
+            "msg_dad_1"
+          ],
           "category": "off_lane_finance",
           "valid_until": null,
           "profile_md_lines": [],
@@ -84,7 +83,9 @@
         {
           "id": "aditi_skip_hr_holiday_as_event",
           "summary": "Do NOT reframe the HR public-holiday FYI as an event task. FYI announcement, no ticket signal.",
-          "evidence_email_ids": ["msg_hr_1"],
+          "evidence_email_ids": [
+            "msg_hr_1"
+          ],
           "category": "fyi_no_action",
           "valid_until": null,
           "profile_md_lines": [],
@@ -94,7 +95,9 @@
         {
           "id": "aditi_skip_mom_email_as_event",
           "summary": "Do NOT generate any events task from Mom's relational check-in. Reply belongs to email_triage.",
-          "evidence_email_ids": ["msg_mom_1"],
+          "evidence_email_ids": [
+            "msg_mom_1"
+          ],
           "category": "off_lane_email",
           "valid_until": null,
           "profile_md_lines": [],
@@ -191,7 +194,12 @@
         {
           "id": "aditi_skip_recurring_routine_as_event",
           "summary": "Do NOT reframe Sat pottery / Sun yoga / Sun brunch / Fri date-night as event-agent tasks. Profile-stated routines, not concerts.",
-          "evidence_event_ids": ["ev_561abd2fe028", "ev_540946863ce8", "ev_may3_brunch", "ev_may1_date"],
+          "evidence_event_ids": [
+            "ev_561abd2fe028",
+            "ev_540946863ce8",
+            "ev_may3_brunch",
+            "ev_may1_date"
+          ],
           "category": "off_lane_calendar",
           "valid_until": null,
           "profile_md_lines": [],
@@ -201,13 +209,11 @@
       ],
       "expected_preference_topics": []
     },
-
     {
       "slug": "arjun",
       "mode": "BACKFILL",
       "fixture_path": "backend/data/users/arjun/fixtures/2026-05-01.json",
-      "fixture_summary": "Onboarded today (2026-05-01) → BACKFILL. Calendar empty, mailbox slice has Sudipto bridge + Mitali breakfast emails. Profile top-traditions: Rabindra Sangeet, Pt. Ravi Shankar / Vilayat Khan / Kishori Amonkar, Satyajit Ray cinema, jazz (Miles Davis, Coltrane, ECM), Beatles/Floyd tributes. Travel: Mumbai Jun 2026, Darjeeling Sep 2026. Annual: Dover Lane (Jan), Durga Puja (Sep/Oct).",
-
+      "fixture_summary": "Onboarded today (2026-05-02) → BACKFILL. Calendar empty, mailbox slice has Sudipto bridge + Mitali breakfast emails. Profile top-traditions: Rabindra Sangeet, Pt. Ravi Shankar / Vilayat Khan / Kishori Amonkar, Satyajit Ray cinema, jazz (Miles Davis, Coltrane, ECM), Beatles/Floyd tributes. Travel: Mumbai Jun 2026, Darjeeling Sep 2026. Annual: Dover Lane (Jan), Durga Puja (Sep/Oct).",
       "expected_tasks": [
         {
           "id": "arjun_buy_saath_saath_kolkata_may30",
@@ -289,12 +295,13 @@
           "calendar_json_lines": []
         }
       ],
-
       "expected_skips": [
         {
           "id": "arjun_skip_bridge_as_event",
           "summary": "Do NOT reframe Sudipto's bridge invitation as a `Buy tickets for ...` event task. Social coordination, owned by email_triage.",
-          "evidence_email_ids": ["msg_bbeb109a3ff1"],
+          "evidence_email_ids": [
+            "msg_bbeb109a3ff1"
+          ],
           "category": "off_lane_email",
           "valid_until": null,
           "profile_md_lines": [],
@@ -304,7 +311,9 @@
         {
           "id": "arjun_skip_breakfast_as_event",
           "summary": "Do NOT reframe Mitali's Sunday breakfast email as an event task. Food / social coordination, not a ticketed event.",
-          "evidence_email_ids": ["msg_9995f6f04ae9"],
+          "evidence_email_ids": [
+            "msg_9995f6f04ae9"
+          ],
           "category": "off_lane_email",
           "valid_until": null,
           "profile_md_lines": [],
@@ -373,13 +382,11 @@
       ],
       "expected_preference_topics": []
     },
-
     {
       "slug": "devendra",
       "mode": "STEADY-STATE",
       "fixture_path": "backend/data/users/devendra/fixtures/2026-05-01.json",
       "fixture_summary": "Steady-state. Calendar empty, mailbox slice: Nilesh audit. Profile: cricket fan (Lord's/MCG bucket-list), bhajans (Anup Jalota), old Hindi (Rafi/Kishore tributes), Gujarati Dayro, numismatics, Gujarati Sahitya Parishad. London Jul trip booked (with one cricket match already booked). Mumbai May conference trip booked.",
-
       "expected_tasks": [
         {
           "id": "devendra_buy_ipl_gt_pbks_may3",
@@ -503,12 +510,13 @@
           "calendar_json_lines": []
         }
       ],
-
       "expected_skips": [
         {
           "id": "devendra_skip_audit_as_event",
           "summary": "Do NOT reframe Nilesh's audit email as an event task. Work coordination.",
-          "evidence_email_ids": ["fix_msg_1"],
+          "evidence_email_ids": [
+            "fix_msg_1"
+          ],
           "category": "off_lane_email",
           "valid_until": null,
           "profile_md_lines": [],
@@ -558,13 +566,11 @@
       ],
       "expected_preference_topics": []
     },
-
     {
       "slug": "meera",
       "mode": "BACKFILL",
       "fixture_path": "backend/data/users/meera/fixtures/2026-05-01.json",
-      "fixture_summary": "Onboarded today (2026-05-01) → BACKFILL. Empty calendar fixture, empty mailbox, empty calendar.json. Profile note: no Gmail/Calendar OAuth granted. Profile top-artists (Indian indie): Anuv Jain (saving for Aria Tour Mumbai), Prateek Kuhad, Ritviz, Lifafa, Anirudh Varma; (K-pop): BTS, IU, V, NewJeans, LE SSERAFIM; (South Indian): Vineeth Sreenivasan, K.S. Chithra, Shreya Ghoshal, Arijit Singh.",
-
+      "fixture_summary": "Onboarded today (2026-05-02) → BACKFILL. Empty calendar fixture, empty mailbox, empty calendar.json. Profile note: no Gmail/Calendar OAuth granted. Profile top-artists (Indian indie): Anuv Jain (saving for Aria Tour Mumbai), Prateek Kuhad, Ritviz, Lifafa, Anirudh Varma; (K-pop): BTS, IU, V, NewJeans, LE SSERAFIM; (South Indian): Vineeth Sreenivasan, K.S. Chithra, Shreya Ghoshal, Arijit Singh.",
       "expected_tasks": [
         {
           "id": "meera_buy_arijit_singh_navi_mumbai_may15",
@@ -591,7 +597,6 @@
           "calendar_json_lines": []
         }
       ],
-
       "expected_skips": [
         {
           "id": "meera_skip_anuv_jain_dastakhat_concluded",

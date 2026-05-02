@@ -1,7 +1,7 @@
 {
   "agent": "calendar",
   "schema_version": 2,
-  "evaluation_date": "2026-05-01",
+  "evaluation_date": "2026-05-02",
   "scope": {
     "in_scope_categories": [
       "prep_nudge",
@@ -36,7 +36,7 @@
       "slug": "aditi",
       "mode": "STEADY-STATE",
       "fixture_path": "backend/data/users/aditi/fixtures/2026-05-01.json",
-      "fixture_summary": "Today = Fri 2026-05-01. Calendar window contains: Fri 20:00 Date Night at Toit (Indiranagar, walking distance), Sat 16:00 Pottery (Indiranagar), Sun 08:00 Yoga (Indiranagar), Sun 11:00 Brunch at Glen's (Indiranagar). Outside 48h: Mon Standup (skippable), Tue Sprint Planning at ETV, Wed Design Review at ETV, Thu Leadership Sync. Gmail: mom check-in, HR holiday FYI, Dad forwarding insurance renewal.",
+      "fixture_summary": "Today = Sat 2026-05-02. Calendar window contains: Fri 20:00 Date Night at Toit (Indiranagar, walking distance), Sat 16:00 Pottery (Indiranagar), Sun 08:00 Yoga (Indiranagar), Sun 11:00 Brunch at Glen's (Indiranagar). Outside 48h: Mon Standup (skippable), Tue Sprint Planning at ETV, Wed Design Review at ETV, Thu Leadership Sync. Gmail: mom check-in, HR holiday FYI, Dad forwarding insurance renewal.",
       "expected_tasks": [],
       "expected_tasks_note": "All in-window events are recurring routines at walking-distance venues in Indiranagar — no leave-now warranted, no prep materials referenced, no conflicts, no pending RSVPs, no event just ended. The right behaviour is silence. ETV-based meetings (Sprint Planning, Design Review, Leadership Sync) are outside the today+48h window for tasks, so they belong in expected_skips, not expected_tasks.",
       "expected_skips": [
@@ -185,7 +185,7 @@
       "slug": "arjun",
       "mode": "BACKFILL",
       "fixture_path": "backend/data/users/arjun/fixtures/2026-05-01.json",
-      "fixture_summary": "Onboarded today (2026-05-01) → BACKFILL mode. Calendar fixture is empty, calendar.json history is empty. Gmail slice has 2 personal emails: Sudipto inviting Arjun to Saturday bridge, Mitali (wife) suggesting Sunday breakfast at Flurys.",
+      "fixture_summary": "Onboarded today (2026-05-02) → BACKFILL mode. Calendar fixture is empty, calendar.json history is empty. Gmail slice has 2 personal emails: Sudipto inviting Arjun to Saturday bridge, Mitali (wife) suggesting Sunday breakfast at Flurys.",
       "expected_tasks": [],
       "expected_tasks_note": "BACKFILL with no historical calendar data and no in-window events to act on. The two emails are inbound social-coordination — they belong to email_triage. Calendar agent should stay silent on tasks.",
       "expected_skips": [
@@ -246,7 +246,7 @@
       "slug": "meera",
       "mode": "BACKFILL",
       "fixture_path": "backend/data/users/meera/fixtures/2026-05-01.json",
-      "fixture_summary": "Onboarded today (2026-05-01) → BACKFILL. Calendar fixture, calendar.json, and mailbox are all empty. Profile explicitly states Meera has not granted Gmail/Calendar access yet — the assistant works profile-only until she does.",
+      "fixture_summary": "Onboarded today (2026-05-02) → BACKFILL. Calendar fixture, calendar.json, and mailbox are all empty. Profile explicitly states Meera has not granted Gmail/Calendar access yet — the assistant works profile-only until she does.",
       "expected_tasks": [],
       "expected_tasks_note": "Total silence is the correct output. No events, no emails, no history to mine. This persona tests that the calendar agent does not hallucinate tasks from the profile alone — the profile is human-authored standing context, not a source of calendar candidate tasks.",
       "expected_skips": [],

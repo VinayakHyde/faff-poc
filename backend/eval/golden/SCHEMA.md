@@ -11,7 +11,7 @@ P/R/F1/specificity from the alignment.
 {
   "agent": "<agent_name>",
   "schema_version": 2,
-  "evaluation_date": "2026-05-01",
+  "evaluation_date": "2026-05-02",
   "personas": [
     {
       "slug": "aditi",

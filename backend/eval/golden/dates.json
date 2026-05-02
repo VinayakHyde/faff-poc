@@ -1,7 +1,7 @@
 {
   "agent": "dates",
   "schema_version": 2,
-  "evaluation_date": "2026-05-01",
+  "evaluation_date": "2026-05-02",
   "scope": {
     "in_scope_categories": [
       "birthday_anniversary_reminder",
@@ -31,7 +31,7 @@
     {
       "slug": "aditi",
       "mode": "STEADY-STATE",
-      "fixture_summary": "Today = Fri 2026-05-01. Aditi onboarded 2026-02-15 → STEADY-STATE. Mailbox slice has 3 emails: mom relational check-in, HR holiday FYI, dad forwarding ICICI Lombard insurance renewal. Profile-stated important dates within next 7 days (May 1-8): NONE. Riya's birthday April 22 is 9 days past; nearest upcoming is Brother Ayaan June 17 (~6 weeks). Profile says Aditi 'tends to drop gifting nudges — knows the date, forgets to act in time' and prefers gift-buying prompts 5-7 days ahead, not 1 day before. She's actively in touch with Mom (mom emailed today), Karan (emailed Apr 28), Priya (emailed Apr 10). No 'reach out to cold contact' candidates. Festivals: Karva Chauth is October. Diwali is November. Holi is past.",
+      "fixture_summary": "Today = Sat 2026-05-02. Aditi onboarded 2026-02-15 → STEADY-STATE. Mailbox slice has 3 emails: mom relational check-in, HR holiday FYI, dad forwarding ICICI Lombard insurance renewal. Profile-stated important dates within next 7 days (May 1-8): NONE. Riya's birthday April 22 is 9 days past; nearest upcoming is Brother Ayaan June 17 (~6 weeks). Profile says Aditi 'tends to drop gifting nudges — knows the date, forgets to act in time' and prefers gift-buying prompts 5-7 days ahead, not 1 day before. She's actively in touch with Mom (mom emailed today), Karan (emailed Apr 28), Priya (emailed Apr 10). No 'reach out to cold contact' candidates. Festivals: Karva Chauth is October. Diwali is November. Holi is past.",
       "expected_tasks": [],
       "expected_tasks_note": "No profile-stated important date falls inside any lead window today. Silence is the correct output.",
       "expected_skips": [
@@ -105,7 +105,7 @@
     {
       "slug": "arjun",
       "mode": "BACKFILL",
-      "fixture_summary": "Onboarded today (2026-05-01) → BACKFILL. Calendar fixture and history are empty. Mailbox slice has 2 personal emails (Sudipto bridge invite, Mitali Sunday breakfast). Mailbox history shows recurring CESC/Jio/Airtel bills, Flurys/Amber/Kareem's food orders, art-gallery emails (Rina, Kalakriti, India Art Fair) — NO e-card / gift-order / greeting threads. Profile lists important dates: Mitali (wife) Nov 12, Ishaan Aug 5, Maya Feb 20, Mom (Bela) May 15 (14 days out), Dad's death anniversary Sep 10, Anniversary Feb 4, Sister Anjali (London) July 2, Sudipto Mar 28, Durga Puja (Oct), Poila Baisakh Apr 14 (past). Active festivals per profile: Durga Puja, Poila Baisakh.",
+      "fixture_summary": "Onboarded today (2026-05-02) → BACKFILL. Calendar fixture and history are empty. Mailbox slice has 2 personal emails (Sudipto bridge invite, Mitali Sunday breakfast). Mailbox history shows recurring CESC/Jio/Airtel bills, Flurys/Amber/Kareem's food orders, art-gallery emails (Rina, Kalakriti, India Art Fair) — NO e-card / gift-order / greeting threads. Profile lists important dates: Mitali (wife) Nov 12, Ishaan Aug 5, Maya Feb 20, Mom (Bela) May 15 (14 days out), Dad's death anniversary Sep 10, Anniversary Feb 4, Sister Anjali (London) July 2, Sudipto Mar 28, Durga Puja (Oct), Poila Baisakh Apr 14 (past). Active festivals per profile: Durga Puja, Poila Baisakh.",
       "expected_tasks": [],
       "expected_tasks_note": "Mom Bela's birthday is May 15 — 14 days out, outside the 5–7 day gift window (and outside the 7–10 day window even if Kolkata-local). All other dates are 30+ days out. Sudipto's invite and Mitali's breakfast email are inbound social mails — email_triage's lane, not a 'reach out to cold contact' trigger. Tasks should be empty today.",
       "expected_skips": [
@@ -183,7 +183,7 @@
     {
       "slug": "devendra",
       "mode": "BACKFILL",
-      "fixture_summary": "Onboarded today (2026-05-01) → BACKFILL. Calendar fixture and history are empty. Mailbox slice has 1 work email from Nilesh (FY25 Audit). Mailbox history shows monthly Airtel/Torrent Power bills, recurring Swati Snacks + Iscon Gathiya weekend orders, Cricinfo IPL updates, flight/hotel confirmations — NO e-card / gift / greeting threads. Profile lists important dates: Hetal (wife) Oct 5, Riya (daughter, US) Dec 18, Krish (son) Apr 10 (21 days past), Anniversary Jan 25, Mom June 22, Brother Mukesh Mar 5 (past), Best friend Nilesh July 15, Paryushan (Aug/Sep), Diwali (Nov). Strict Jain — diet & festival nuances matter. Active festivals: Paryushan, Diwali, Vikram Samvat New Year.",
+      "fixture_summary": "Onboarded today (2026-05-02) → BACKFILL. Calendar fixture and history are empty. Mailbox slice has 1 work email from Nilesh (FY25 Audit). Mailbox history shows monthly Airtel/Torrent Power bills, recurring Swati Snacks + Iscon Gathiya weekend orders, Cricinfo IPL updates, flight/hotel confirmations — NO e-card / gift / greeting threads. Profile lists important dates: Hetal (wife) Oct 5, Riya (daughter, US) Dec 18, Krish (son) Apr 10 (21 days past), Anniversary Jan 25, Mom June 22, Brother Mukesh Mar 5 (past), Best friend Nilesh July 15, Paryushan (Aug/Sep), Diwali (Nov). Strict Jain — diet & festival nuances matter. Active festivals: Paryushan, Diwali, Vikram Samvat New Year.",
       "expected_tasks": [],
       "expected_tasks_note": "No profile-stated date falls inside today's lead window. Krish's birthday (Apr 10) is 21 days past — out of window. Mom's June 22 is ~7 weeks out. Nilesh's July 15 is ~10 weeks. Nilesh's audit email is work content, not a relationship-revival trigger. Tasks empty.",
       "expected_skips": [
@@ -249,7 +249,7 @@
     {
       "slug": "meera",
       "mode": "BACKFILL",
-      "fixture_summary": "Onboarded today (2026-05-01) → BACKFILL. Profile-only persona — Meera has not granted Gmail or Calendar OAuth. Calendar fixture, calendar.json, and mailbox are all empty. Profile lists important dates: Mom (Lekshmi) July 12, Dad (Raghavan) Nov 5, Brother Arjun Jan 20, Parents' anniversary May 22 (21 days out), Achamma Feb 8, Sneha Sep 17, Onam (Aug/Sep), Vishu Apr 14 (past), Christmas Eve Dec 24, Achan's death anniversary Mar 3, Residency joining anniversary May 1 (today — but this is a self-marker, not relational).",
+      "fixture_summary": "Onboarded today (2026-05-02) → BACKFILL. Profile-only persona — Meera has not granted Gmail or Calendar OAuth. Calendar fixture, calendar.json, and mailbox are all empty. Profile lists important dates: Mom (Lekshmi) July 12, Dad (Raghavan) Nov 5, Brother Arjun Jan 20, Parents' anniversary May 22 (21 days out), Achamma Feb 8, Sneha Sep 17, Onam (Aug/Sep), Vishu Apr 14 (past), Christmas Eve Dec 24, Achan's death anniversary Mar 3, Residency joining anniversary May 1 (today — but this is a self-marker, not relational).",
       "expected_tasks": [],
       "expected_tasks_note": "No profile-stated relational date falls inside today's lead window. Parents' anniversary May 22 is 21 days out — outside the 5–7 day gift / 1–2 day message windows. Residency joining anniversary today is a self-marker, not a relationship date that warrants a `Wish` / `Order gift for` / `Reach out to` task. Profile-only persona with no Gmail/Calendar evidence to ground a 'reach out' trigger. Total silence is correct.",
       "expected_skips": [

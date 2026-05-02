@@ -1,6 +1,6 @@
 # Arjun Banerjee — Preferences Profile
 
-_Last updated: 2026-04-30. Onboarded: 2026-05-01._
+_Last updated: 2026-04-30. Onboarded: 2026-05-02._
 
 ## Identity & Location
 

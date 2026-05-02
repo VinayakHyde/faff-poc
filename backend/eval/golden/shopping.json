@@ -1,9 +1,8 @@
 {
   "agent": "shopping",
   "schema_version": 2,
-  "evaluation_date": "2026-05-01",
+  "evaluation_date": "2026-05-02",
   "data_source": "Web-grounded expected_tasks marked `wishlist_buy_now_web_verified` were sourced from Gemini Deep Research runs on 2026-05-02. See backend/eval/deep_research_prompts.md → Shopping Prompts 8/9/10/11.",
-
   "personas": [
     {
       "slug": "aditi",
@@ -62,7 +61,9 @@
         {
           "id": "aditi_skip_dad_insurance",
           "summary": "Dad's email about ICICI Lombard insurance renewal is admin/finance content — not a shopping trigger; no wishlist item involved. Agent must NOT rephrase as 'Buy a new insurance policy'.",
-          "evidence_email_ids": ["msg_dad_1"],
+          "evidence_email_ids": [
+            "msg_dad_1"
+          ],
           "category": "out_of_lane_admin",
           "valid_until": null,
           "profile_md_lines": [],
@@ -72,7 +73,9 @@
         {
           "id": "aditi_skip_hr_holiday",
           "summary": "HR Labor Day holiday FYI — a long weekend is not a shopping trigger.",
-          "evidence_email_ids": ["msg_hr_1"],
+          "evidence_email_ids": [
+            "msg_hr_1"
+          ],
           "category": "out_of_lane_fyi",
           "valid_until": null,
           "profile_md_lines": [],
@@ -82,7 +85,9 @@
         {
           "id": "aditi_skip_mom_checkin",
           "summary": "Mom's relational check-in is not a shopping trigger.",
-          "evidence_email_ids": ["msg_mom_1"],
+          "evidence_email_ids": [
+            "msg_mom_1"
+          ],
           "category": "out_of_lane_personal",
           "valid_until": null,
           "profile_md_lines": [],
@@ -160,7 +165,6 @@
       "expected_preference_topics": [],
       "notes": "Friday May 1. Three-email slice has zero shopping triggers — but web research surfaces 4 wishlist items on actionable terms (AirPods Max 2 launched, Theragun Mini at floor price, Nothing Phone 3 at -35% MRP, Nicobar Olive in active Ganga Collection). Plus 5 wait/skip targets for items with no current sale window."
     },
-
     {
       "slug": "arjun",
       "mode": "BACKFILL",
@@ -218,7 +222,9 @@
         {
           "id": "arjun_skip_mitali_breakfast",
           "summary": "Mitali's 'Sunday Breakfast Idea' is personal/social. Not a shopping trigger.",
-          "evidence_email_ids": ["msg_9995f6f04ae9"],
+          "evidence_email_ids": [
+            "msg_9995f6f04ae9"
+          ],
           "category": "out_of_lane_personal",
           "valid_until": null,
           "profile_md_lines": [],
@@ -228,7 +234,9 @@
         {
           "id": "arjun_skip_sudipto_bridge",
           "summary": "Sudipto's Saturday bridge invitation is a social plan. Not a shopping trigger.",
-          "evidence_email_ids": ["msg_bbeb109a3ff1"],
+          "evidence_email_ids": [
+            "msg_bbeb109a3ff1"
+          ],
           "category": "out_of_lane_personal",
           "valid_until": null,
           "profile_md_lines": [],
@@ -293,7 +301,6 @@
       ],
       "expected_preference_topics": []
     },
-
     {
       "slug": "devendra",
       "mode": "BACKFILL",
@@ -351,7 +358,9 @@
         {
           "id": "devendra_skip_nilesh_audit",
           "summary": "Nilesh's 'Final review of FY25 Audit' email is professional work correspondence. Not a shopping trigger; no wishlist item involved.",
-          "evidence_email_ids": ["fix_msg_1"],
+          "evidence_email_ids": [
+            "fix_msg_1"
+          ],
           "category": "out_of_lane_work",
           "valid_until": null,
           "profile_md_lines": [],
@@ -407,7 +416,6 @@
       "expected_preference_topics": [],
       "notes": "BACKFILL — empty calendar. Mailbox: bills, food orders, Cricinfo IPL Updates newsletter, travel bookings, work email. Zero shopping-domain emails. The expected_tasks below are sourced from a Gemini Deep Research run on 2026-05-02 (see backend/eval/deep_research_prompts.md → Shopping Prompt 10 → 'Result' block). They depend on web_search hitting the same retailer pages — re-verify when valid_until expires."
     },
-
     {
       "slug": "meera",
       "mode": "BACKFILL",

@@ -135,7 +135,41 @@ After each run, open `backend/eval/results/<agent_name>_latest.json` and look at
 
 - `preference_topic_misses` — for BACKFILL personas, agent didn't detect a pattern. Strengthen the BACKFILL section of the prompt with concrete examples of what to mine.
 
-After 3 iterations without F1 improvement, stop and write a summary of the remaining failures — likely indicates the scope or the golden need rethinking.
+#### 6a. Web-dependent agents — `web_search` tool usage is usually the bottleneck
+
+For `events`, `travel`, and `shopping` (the agents whose `expected_tasks` come from `deep_research_prompts.md`-style web research), the dominant failure mode after 1–2 iterations is rarely "the prompt's scope is wrong" — it's that the agent **isn't using `web_search` correctly**. Three concrete patterns to check before iterating on scope/verbs:
+
+1. **Agent never calls `web_search`.** Symptom: `actual_tasks=[]` even when the deep-research-grounded `expected_tasks` are well-formed. Cause: the agent prompt's "use web_search sparingly" guardrail is too tight, so the model defaults to not searching at all. Fix: rewrite the tools section to say `web_search is REQUIRED for every profile-named artist / wishlist item / festival the user cares about — call it before deciding silence is correct` with an explicit example query (e.g. `web_search("Anuv Jain Mumbai 2026 tour dates site:district.in OR site:bookmyshow.com")`).
+2. **Agent calls `web_search` but on the wrong query.** Symptom: tool calls in the trace, but they're vague (`"upcoming concerts in Bangalore"`) instead of profile-anchored. Fix: in the prompt, give 2–3 example queries that combine profile-named artist + city + ticket platform, and require the agent to formulate queries the same way.
+3. **Agent calls `web_search`, gets results, but ignores them.** Symptom: tool result shows ticket-platform URLs in the trace, but the structured response still emits `tasks: []`. Cause: the structured-output step is dropping signal. Fix: make the prompt require the agent to cite `source_url` from web_search results in the task's `notes` field — if it can't cite, the task didn't survive parsing and you have a downstream bug (likely needing the same `response_format=(prompt, schema)` fix that `base.py` already carries).
+
+These three checks usually move web-dependent agents from F1 0.20–0.40 (silence) to F1 0.80+ (correct discovery) in one iteration.
+
+#### 6b. Escape hatch — split the prompt by mode
+
+If you've made 3 iterations and metrics haven't improved AND the failures cluster differently for BACKFILL vs STEADY-STATE personas (e.g. BACKFILL is firing too many tasks while STEADY-STATE is silent, or vice versa), the single prompt is probably trying to serve two genuinely different jobs. Split it.
+
+Pattern (already shipped in `dates`): replace the single `SYSTEM_PROMPT` constant with two — `BACKFILL_PROMPT` and `STEADY_STATE_PROMPT` — and pick at runtime in the agent's `run()`:
+
+```python
+async def run(daily_input, profile):
+    is_backfill = daily_input.date == profile.meta.onboarded_at
+    prompt = BACKFILL_PROMPT if is_backfill else STEADY_STATE_PROMPT
+    return await run_subagent(NAME, prompt, daily_input, profile)
+```
+
+When to do this:
+- BACKFILL needs to mine 6 months of history aggressively for `preference_updates`; STEADY-STATE needs to mine yesterday's slice and stay quiet.
+- The two modes have different "silence is valid" thresholds (BACKFILL is rarely silent on prefs; STEADY-STATE often is).
+- A single prompt that tries to serve both ends up over-firing on one mode and under-firing on the other.
+
+When NOT to do this:
+- Iteration is moving metrics — keep iterating the single prompt.
+- The two modes' failure modes are similar (verb-prefix discipline, lane leak) — those are scope problems, not mode problems.
+
+After splitting, re-run the eval. Each prompt is now smaller and specialised; iteration should converge faster. See commit `7ef50ff dates: split into STEADY-STATE + BACKFILL prompts → 1.00 across all metrics` for a worked example.
+
+After 3 iterations without F1 improvement AND after trying the split-by-mode escape hatch, stop and write a summary of the remaining failures — likely indicates the scope or the golden need rethinking.
 
 ### 7. Line-number provenance (LAST step — only after metrics are at ceiling)
 
