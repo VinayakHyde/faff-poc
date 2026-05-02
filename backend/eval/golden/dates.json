@@ -1,0 +1,233 @@
+{
+  "agent": "dates",
+  "schema_version": 2,
+  "evaluation_date": "2026-05-01",
+  "scope": {
+    "in_scope_categories": [
+      "birthday_anniversary_reminder",
+      "reach_out_cold_relationship",
+      "festival_reminder"
+    ],
+    "out_of_scope_examples": [
+      "Replying to an inbound personal email (email_triage's lane)",
+      "Buying the actual gift / placing the order (shopping's lane — dates only flags the suggestion)",
+      "Booking an anniversary dinner reservation (food / travel agent)",
+      "Bills / insurance / subscription due-dates (finance agent)",
+      "Trip-block events / web check-in (travel agent)",
+      "Self-marker dates that don't involve another person (e.g. residency joining anniversary)",
+      "Festivals the persona's profile does not say they celebrate"
+    ],
+    "lead_windows": {
+      "gift_local": "5-7 days before the date",
+      "gift_international": "7-10 days before the date",
+      "message_only": "1-2 days before, or morning of the date",
+      "festival_prep": "7-10 days before",
+      "festival_message": "1-2 days before",
+      "reach_out_quarterly": "trigger after 4+ months silent",
+      "reach_out_monthly_plus": "trigger after 3+ months silent"
+    }
+  },
+
+  "personas": [
+    {
+      "slug": "aditi",
+      "mode": "STEADY-STATE",
+      "fixture_summary": "Today = Fri 2026-05-01. Aditi onboarded 2026-02-15 → STEADY-STATE. Mailbox slice has 3 emails: mom relational check-in, HR holiday FYI, dad forwarding ICICI Lombard insurance renewal. Profile-stated important dates within next 7 days (May 1-8): NONE. Riya's birthday April 22 is 9 days past; nearest upcoming is Brother Ayaan June 17 (~6 weeks). Profile says Aditi 'tends to drop gifting nudges — knows the date, forgets to act in time' and prefers gift-buying prompts 5-7 days ahead, not 1 day before. She's actively in touch with Mom (mom emailed today), Karan (emailed Apr 28), Priya (emailed Apr 10). No 'reach out to cold contact' candidates. Festivals: Karva Chauth is October. Diwali is November. Holi is past.",
+
+      "expected_tasks": [],
+      "expected_tasks_note": "No profile-stated important date falls inside any lead window today. Silence is the correct output.",
+
+      "expected_skips": [
+        {
+          "id": "aditi_skip_mom_email_as_reach_out",
+          "summary": "Do NOT reframe mom's 'Thinking of you' relational check-in as a 'Reach out to mom' task. Mom is actively in touch (just emailed today). 'Reach out' applies only to contacts who have gone QUIET. Replying to an inbound message is email_triage's lane.",
+          "evidence_email_ids": ["msg_mom_1"],
+          "category": "off_lane_email_triage"
+        },
+        {
+          "id": "aditi_skip_dad_insurance_as_date",
+          "summary": "Do NOT reframe Dad's ICICI Lombard insurance renewal forward as a date / occasion task. Insurance renewals are finance content, not a relationship date.",
+          "evidence_email_ids": ["msg_dad_1"],
+          "category": "off_lane_finance"
+        },
+        {
+          "id": "aditi_skip_riya_belated",
+          "summary": "Do NOT surface a belated birthday wish for Riya (April 22, 9 days past). Belated wishes are not the agent's job — lead window for messages is 1–2 days BEFORE or on the day morning. The moment has passed.",
+          "category": "outside_lead_window_past"
+        },
+        {
+          "id": "aditi_skip_mom_birthday_too_early",
+          "summary": "Do NOT pre-emptively surface Mom Sunita's birthday (August 23) today. It is ~115 days out — outside the 5–7 day gift window. Surfacing it now is padding.",
+          "category": "outside_lead_window_too_early"
+        },
+        {
+          "id": "aditi_skip_karva_chauth_too_early",
+          "summary": "Do NOT surface a Karva Chauth reminder today. Karva Chauth falls in October — far outside any festival lead window.",
+          "category": "outside_lead_window_too_early"
+        },
+        {
+          "id": "aditi_skip_hr_holiday_as_occasion",
+          "summary": "Do NOT reframe the HR Labor Day office-closure email as a date / occasion task. Labor Day is not a profile-stated festival Aditi celebrates and the email is a pure FYI.",
+          "evidence_email_ids": ["msg_hr_1"],
+          "category": "fyi_no_action"
+        }
+      ],
+
+      "expected_preference_topics": [],
+      "expected_preference_topics_note": "Steady-state persona; profile already encodes all important dates and gifting cues. No new evidence in today's slice that would warrant a preference_update."
+    },
+
+    {
+      "slug": "arjun",
+      "mode": "BACKFILL",
+      "fixture_summary": "Onboarded today (2026-05-01) → BACKFILL. Calendar fixture and history are empty. Mailbox slice has 2 personal emails (Sudipto bridge invite, Mitali Sunday breakfast). Mailbox history shows recurring CESC/Jio/Airtel bills, Flurys/Amber/Kareem's food orders, art-gallery emails (Rina, Kalakriti, India Art Fair) — NO e-card / gift-order / greeting threads. Profile lists important dates: Mitali (wife) Nov 12, Ishaan Aug 5, Maya Feb 20, Mom (Bela) May 15 (14 days out), Dad's death anniversary Sep 10, Anniversary Feb 4, Sister Anjali (London) July 2, Sudipto Mar 28, Durga Puja (Oct), Poila Baisakh Apr 14 (past). Active festivals per profile: Durga Puja, Poila Baisakh.",
+
+      "expected_tasks": [],
+      "expected_tasks_note": "Mom Bela's birthday is May 15 — 14 days out, outside the 5–7 day gift window (and outside the 7–10 day window even if Kolkata-local). All other dates are 30+ days out. Sudipto's invite and Mitali's breakfast email are inbound social mails — email_triage's lane, not a 'reach out to cold contact' trigger. Tasks should be empty today.",
+
+      "expected_skips": [
+        {
+          "id": "arjun_skip_sudipto_as_reach_out",
+          "summary": "Do NOT reframe Sudipto's bridge invitation as a 'Reach out to Sudipto' task. Sudipto literally just emailed an invite — he's actively in touch. Replying is email_triage; 'reach out' only applies when a profile-listed close contact has gone quiet.",
+          "evidence_email_ids": ["msg_bbeb109a3ff1"],
+          "category": "off_lane_email_triage"
+        },
+        {
+          "id": "arjun_skip_mitali_as_reach_out",
+          "summary": "Do NOT reframe Mitali (wife)'s 'Sunday breakfast at Flurys?' email as a relationship task. Mitali is the spouse — not a candidate for 'reach out to cold contact' — and she's actively in touch via email. Replying is email_triage's lane.",
+          "evidence_email_ids": ["msg_9995f6f04ae9"],
+          "category": "off_lane_email_triage"
+        },
+        {
+          "id": "arjun_skip_mom_birthday_too_early",
+          "summary": "Do NOT surface Mom Bela's birthday (May 15) today. It is 14 days out — outside the 5–7 day local gift window. The task should fire on May 8–10, not May 1.",
+          "category": "outside_lead_window_too_early"
+        },
+        {
+          "id": "arjun_skip_durga_puja_too_early",
+          "summary": "Do NOT surface a Durga Puja reminder today. Durga Puja is in October — far outside any festival lead window (~5 months out).",
+          "category": "outside_lead_window_too_early"
+        },
+        {
+          "id": "arjun_skip_anniversary_too_early",
+          "summary": "Do NOT surface Mitali + Arjun's anniversary (Feb 4) today. Outside any lead window — surface only in late January next cycle.",
+          "category": "outside_lead_window_too_early"
+        },
+        {
+          "id": "arjun_skip_poila_baisakh_past",
+          "summary": "Do NOT surface a belated Poila Baisakh reminder. Poila Baisakh was April 14 (17 days past). Belated festival greetings are not the agent's job.",
+          "category": "outside_lead_window_past"
+        }
+      ],
+
+      "expected_preference_topics": [
+        "Mom (Bela) birthday May 15 — gifting cues from profile: gardening, old Bengali movies, knitting for grandkids",
+        "Mitali (wife) birthday November 12 — gifting cues: rare art books, handloom sarees (Jamdani/Baluchari), spa vouchers at The Taj",
+        "Mitali + Arjun anniversary February 4",
+        "Sister Anjali (London) birthday July 2 — international shipping needs longer lead time",
+        "Durga Puja (October) — major Bengali family festival the user actively celebrates",
+        "Dad's death anniversary September 10"
+      ],
+      "expected_preference_topics_note": "BACKFILL captures the durable date+gifting context. Even though these come from the profile, the BACKFILL job is to acknowledge / index them so the system can fire on each in steady state. A preference_update that adds quantitative grounding (e.g. 'last year ordered X via Y on date Z') is preferable but not required — credit a faithful capture of the date + gifting cue. Empty calendar history means there is no email-evidenced cadence to add yet."
+    },
+
+    {
+      "slug": "devendra",
+      "mode": "BACKFILL",
+      "fixture_summary": "Onboarded today (2026-05-01) → BACKFILL. Calendar fixture and history are empty. Mailbox slice has 1 work email from Nilesh (FY25 Audit). Mailbox history shows monthly Airtel/Torrent Power bills, recurring Swati Snacks + Iscon Gathiya weekend orders, Cricinfo IPL updates, flight/hotel confirmations — NO e-card / gift / greeting threads. Profile lists important dates: Hetal (wife) Oct 5, Riya (daughter, US) Dec 18, Krish (son) Apr 10 (21 days past), Anniversary Jan 25, Mom June 22, Brother Mukesh Mar 5 (past), Best friend Nilesh July 15, Paryushan (Aug/Sep), Diwali (Nov). Strict Jain — diet & festival nuances matter. Active festivals: Paryushan, Diwali, Vikram Samvat New Year.",
+
+      "expected_tasks": [],
+      "expected_tasks_note": "No profile-stated date falls inside today's lead window. Krish's birthday (Apr 10) is 21 days past — out of window. Mom's June 22 is ~7 weeks out. Nilesh's July 15 is ~10 weeks. Nilesh's audit email is work content, not a relationship-revival trigger. Tasks empty.",
+
+      "expected_skips": [
+        {
+          "id": "devendra_skip_nilesh_audit_as_relationship",
+          "summary": "Do NOT reframe Nilesh's FY25 audit-review email as a 'Reach out to Nilesh' task. The email is professional / work content; replying is email_triage. 'Reach out' applies only to relationships gone quiet, and Nilesh just emailed.",
+          "evidence_email_ids": ["fix_msg_1"],
+          "category": "off_lane_email_triage"
+        },
+        {
+          "id": "devendra_skip_krish_belated",
+          "summary": "Do NOT surface a belated birthday wish for Krish (April 10, 21 days past). Belated wishes are not the agent's job; the message window is 1–2 days BEFORE or on the day.",
+          "category": "outside_lead_window_past"
+        },
+        {
+          "id": "devendra_skip_paryushan_too_early",
+          "summary": "Do NOT surface a Paryushan reminder today. Paryushan falls in August/September — far outside the festival lead window from May 1.",
+          "category": "outside_lead_window_too_early"
+        },
+        {
+          "id": "devendra_skip_diwali_too_early",
+          "summary": "Do NOT surface a Diwali / Vikram Samvat reminder today. Both fall in November — ~6 months out, far outside any lead window.",
+          "category": "outside_lead_window_too_early"
+        },
+        {
+          "id": "devendra_skip_hetal_birthday_too_early",
+          "summary": "Do NOT surface Hetal's birthday (Oct 5) today. ~5 months out — outside the 5–7 day gift window.",
+          "category": "outside_lead_window_too_early"
+        }
+      ],
+
+      "expected_preference_topics": [
+        "Hetal (wife) birthday October 5 — gifting cues: Taneira sarees, gold jewelry, religious books",
+        "Riya (daughter, US-based) birthday December 18 — international shipping needs longer lead",
+        "Anniversary Devendra + Hetal January 25",
+        "Mom birthday June 22",
+        "Paryushan (Aug/Sep) — strict Jain festival; the assistant must avoid surfacing travel / lavish suggestions during this period",
+        "Diwali / Vikram Samvat New Year (Nov) — major family festival the user actively celebrates"
+      ],
+      "expected_preference_topics_note": "BACKFILL captures the durable date + gifting / cultural context. Paryushan in particular matters as a *constraint* that future-month runs must respect. Empty calendar / no e-card history means quantitative grounding isn't yet possible — credit faithful capture of the date + cue."
+    },
+
+    {
+      "slug": "meera",
+      "mode": "BACKFILL",
+      "fixture_summary": "Onboarded today (2026-05-01) → BACKFILL. Profile-only persona — Meera has not granted Gmail or Calendar OAuth. Calendar fixture, calendar.json, and mailbox are all empty. Profile lists important dates: Mom (Lekshmi) July 12, Dad (Raghavan) Nov 5, Brother Arjun Jan 20, Parents' anniversary May 22 (21 days out), Achamma Feb 8, Sneha Sep 17, Onam (Aug/Sep), Vishu Apr 14 (past), Christmas Eve Dec 24, Achan's death anniversary Mar 3, Residency joining anniversary May 1 (today — but this is a self-marker, not relational).",
+
+      "expected_tasks": [],
+      "expected_tasks_note": "No profile-stated relational date falls inside today's lead window. Parents' anniversary May 22 is 21 days out — outside the 5–7 day gift / 1–2 day message windows. Residency joining anniversary today is a self-marker, not a relationship date that warrants a `Wish` / `Order gift for` / `Reach out to` task. Profile-only persona with no Gmail/Calendar evidence to ground a 'reach out' trigger. Total silence is correct.",
+
+      "expected_skips": [
+        {
+          "id": "meera_skip_residency_anniversary_self_marker",
+          "summary": "Do NOT surface Meera's own residency joining anniversary (May 1 today) as a date task. Self-markers are not relational dates — there is no person to wish, no gift to send, no relationship to revive. The dates agent's three categories are all about OTHERS.",
+          "category": "self_marker_not_relational"
+        },
+        {
+          "id": "meera_skip_parents_anniversary_too_early",
+          "summary": "Do NOT surface Parents' wedding anniversary (May 22) today. 21 days out — outside the 5–7 day gift window. Surface closer to the date.",
+          "category": "outside_lead_window_too_early"
+        },
+        {
+          "id": "meera_skip_onam_too_early",
+          "summary": "Do NOT surface an Onam reminder today. Onam falls in August/September — ~3+ months out.",
+          "category": "outside_lead_window_too_early"
+        },
+        {
+          "id": "meera_skip_vishu_belated",
+          "summary": "Do NOT surface a belated Vishu greeting. Vishu was April 14 (17 days past). Belated festival nudges are not the agent's job.",
+          "category": "outside_lead_window_past"
+        }
+      ],
+
+      "expected_preference_topics": [],
+      "expected_preference_topics_note": "Profile-only persona with no Gmail/Calendar OAuth. The profile already encodes every important date verbatim. Echoing those dates back as `preference_updates` adds no information — that's the wrong move per the dates agent's BACKFILL rule for profile-only personas. Correct behaviour is silence on both tasks AND preference_updates. The agent should resume meaningful work the moment Meera grants OAuth."
+    }
+  ],
+
+  "evaluation_method": {
+    "task_alignment": "For each actual task the agent surfaces, the LLM judge classifies it as one of: matches an expected_task (TP), matches an expected_skip (skip violation — double-bad FP), or unexpected (plain FP). Matching is semantic — title + action + rationale should align with the expected summary. Off-lane reframings (replying-to-mom-email, work-email-as-reach-out, insurance-as-date) all map to the explicit expected_skips listed.",
+    "lane_discipline_check": "Each actual task that matches an expected_skip is a high-severity violation. The skip catalogue enumerates the most tempting failure modes: inbound personal email reframed as 'reach out', admin/work email reframed as a date, dates outside the lead window (too far ahead OR already past), self-marker dates surfaced as relational tasks, festivals not on the persona's profile.",
+    "lead_window_check": "For TP tasks, verify the date trigger sits inside the lead window declared in scope.lead_windows for the matched category. A task fired 30 days early or 5+ days late on a message-only date is a quality flag — record in `reasoning` even if alignment is otherwise correct.",
+    "silence_correctness": "When expected_tasks is empty, the agent should generally produce zero tasks. Each surfaced task in that case is at minimum an unexpected FP, and a match against expected_skips is a skip violation. Profile-only persona (Meera) further requires empty preference_updates.",
+    "preference_topic_coverage": "For each entry in expected_preference_topics, the judge checks whether any of the agent's preference_updates semantically covers the date + gifting cue. Quantitative grounding (e.g. 'last year ordered X via Y') is preferred but a faithful capture of the date + person + cue counts as a hit. Empty expected list → coverage is N/A.",
+    "metrics": {
+      "task_recall": "TP / (TP + FN); undefined and reported as N/A when expected_tasks is empty",
+      "task_precision": "TP / (TP + FP_unexpected + FP_skip_violation)",
+      "task_f1": "2*P*R / (P+R), with the same N/A rule as recall",
+      "specificity": "expected_skips_correctly_omitted / total_expected_skips",
+      "pref_coverage": "topics_matched / total_expected_topics (N/A if list empty)"
+    },
+    "judge_prompt_hint": "The dates agent's hardest property is specificity. Most days produce zero tasks. Be strict about (a) reframing inbound personal emails as 'reach out' tasks (that's email_triage's lane), (b) surfacing dates outside their lead window, and (c) echoing the profile back as preference_updates. Reward silence when no concrete date-driven action exists today."
+  }
+}
