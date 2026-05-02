@@ -62,12 +62,12 @@
           {
             "topic": "Sunday ~9am Flurys breakfast via Swiggy — recurring (~4 orders in 12 months)",
             "actual_pref_index": 0,
-            "reasoning": "The update semantically matches the expected recurring Sunday Flurys breakfast pattern, with email-grounded evidence and approximate 9am timing based on multiple Sunday morning order confirmations."
+            "reasoning": "The update explicitly captures a recurring Sunday around 09:00 Flurys breakfast via Swiggy with email-confirmation evidence, which semantically matches the expected topic despite citing 2 confirmations rather than ~4."
           },
           {
             "topic": "Thursday ~8pm North Indian dinner from Amber or Kareem's — recurring (~6 orders in 12 months, alternating)",
             "actual_pref_index": 1,
-            "reasoning": "The update captures the expected Thursday evening recurring dinner pattern, alternating between Amber and Kareem's, with supporting order-confirmation evidence and the correct evening time window."
+            "reasoning": "The update covers the Thursday around 20:00 North Indian dinner cadence and names Kareem's as one of the expected alternating restaurants. It is lower-confidence and incomplete versus the fuller Amber-or-Kareem's recurring pattern, but it still semantically covers the topic."
           }
         ],
         "preference_topic_misses": []
@@ -76,13 +76,13 @@
       "actual_prefs": [
         {
           "section": "Food",
-          "content": "Recurring pattern confirmed: orders Sunday breakfast from Flurys via Swiggy, typically around 9:10–9:50am.",
-          "reason": "Observed repeated Flurys order confirmations on Sunday mornings: 2025-05-11 09:29, 2025-06-01 09:19, 2025-12-28 09:48, 2026-03-01 09:11; additionally, a personal email on 2026-04-30 suggested 'Flurys?' for Sunday breakfast."
+          "content": "Recurring order pattern: Flurys on Sundays around 09:00 for breakfast; 2 Swiggy confirmations found (2025-12-28 09:48, 2026-03-01 09:11).",
+          "reason": "BACKFILL: email order-history cadence supports the profile-stated Sunday Breakfast pattern with quantitative evidence."
         },
         {
           "section": "Food",
-          "content": "Recurring pattern confirmed: Thursday dinner orders rotate between Amber and Kareem's via Swiggy, typically around 8:00–9:00pm.",
-          "reason": "Observed repeated Thursday evening order confirmations: Amber on 2025-05-15 20:19, 2025-06-19 20:44, 2025-08-14 20:58, 2025-09-11 20:13; Kareem's on 2025-05-22 20:53 and 2026-01-29 20:02."
+          "content": "Possible recurring order pattern: Kareem's on Thursdays around 20:00 for North Indian dinner; 1 Swiggy confirmation found (2026-01-29 20:02).",
+          "reason": "BACKFILL: limited email order-history evidence aligns with the profile-stated Thursday Dinner preference; low confidence until more confirmations appear."
         }
       ]
     },
@@ -112,12 +112,12 @@
           {
             "topic": "Saturday ~6:15pm Swati Snacks order — Jain Panki + Handvo, recurring (~4 orders in 12 months)",
             "actual_pref_index": 1,
-            "reasoning": "The update cites a Swati Snacks order for Jain Panki and Handvo on Saturday evening at 18:15, which semantically matches the expected recurring Saturday ~6:15pm Swati Snacks preference."
+            "reasoning": "This update covers the same restaurant, timing, and dishes: Swati Snacks around 18:15 with Jain Panki and Handvo. Although it understates confidence as only one observed order, it still semantically addresses the expected cadence topic in BACKFILL."
           },
           {
             "topic": "Sunday ~8:30am Iscon Gathiya order — Gathiya (500g) + Jalebi (250g), recurring (~4 orders in 12 months)",
             "actual_pref_index": 0,
-            "reasoning": "The update cites an Iscon Gathiya order for Gathiya (500g) and Jalebi (250g) on Sunday morning at 08:30, which semantically matches the expected recurring Sunday ~8:30am Iscon Gathiya preference."
+            "reasoning": "This update matches the expected topic on venue, meal timing, and items: Sunday around 08:30 from Iscon Gathiya with Gathiya 500g and Jalebi 250g. It notes only early evidence rather than the fuller recurring count, but it still covers the intended preference topic."
           }
         ],
         "preference_topic_misses": []
@@ -126,13 +126,18 @@
       "actual_prefs": [
         {
           "section": "Food",
-          "content": "Observed order confirmation from Iscon Gathiya for Gathiya (500g) and Jalebi (250g) on Sunday morning (2026-01-11 08:30 IST), reinforcing Sunday breakfast preference for Iscon Gathiya.",
-          "reason": "Inbox evidence from orders@iscongathiya.com confirms a Sunday-morning order matching the stated recurring pattern."
+          "content": "Recurring order pattern: Sunday breakfast from Iscon Gathiya — Gathiya (500g) and Jalebi (250g); observed 1 order confirmation on Sunday 2026-01-11 at 08:30 IST. Early evidence only; monitor for repeat Sunday cadence.",
+          "reason": "BACKFILL gmail_search found an Iscon Gathiya order confirmation on Sunday matching the profile-stated recurring food pattern."
         },
         {
           "section": "Food",
-          "content": "Observed order confirmation from Swati Snacks for Jain Panki and Handvo on Saturday evening (2026-01-10 18:15 IST), reinforcing preference for Jain snacks from Swati Snacks on weekend evenings.",
-          "reason": "Inbox evidence from delivery@swatisnacks.com confirms a Jain order aligned with the user's known Swati Snacks preferences."
+          "content": "Possible tax-season Jain snack pattern: Swati Snacks — Jain Panki and Handvo; observed 1 order confirmation on 2026-01-10 at 18:15 IST. Not enough evidence yet for a stable recurring cadence.",
+          "reason": "BACKFILL gmail_search found a Swati Snacks confirmation aligned with the profile note about tax-season late orders, but only one occurrence is available."
+        },
+        {
+          "section": "Food",
+          "content": "Dietary preference reinforced: strict Jain ordering; avoids onion, garlic, potato, and other root vegetables; vegetarian only. Swati order explicitly used Jain items.",
+          "reason": "Profile states strict Jain rules, and BACKFILL food-order evidence is consistent with Jain-specific dishes."
         }
       ]
     },
@@ -162,68 +167,7 @@
         "preference_topic_misses": []
       },
       "actual_tasks": [],
-      "actual_prefs": [
-        {
-          "section": "Food",
-          "content": "Prefers Kerala/South Indian comfort food in Mumbai; specific favorites include Mani's Lunch Home (Matunga), Dakshinayan, Cafe Madras, and Kyani & Co. for post-duty breakfasts.",
-          "reason": "Backfill context from profile indicates strong place-based food preferences that can guide future suggestions."
-        },
-        {
-          "section": "Food",
-          "content": "Dislikes vada pav, sugary drinks, and sweet-spicy Gujarati/Marwari-style food; prefers black coffee.",
-          "reason": "Backfill dietary dislikes/preferences explicitly stated in profile."
-        },
-        {
-          "section": "Food",
-          "content": "Recurring food patterns: post-night-duty breakfast is often Kyani bun-maska or canteen pongal; Sunday free-time Matunga lunch; late-night Zepto runs around 1–2am for staples.",
-          "reason": "Backfill recurring routines useful for timing-sensitive assistance."
-        },
-        {
-          "section": "Food",
-          "content": "Common quick-order staples include Maggi, Nescafé Gold, milk, bread, eggs, bananas, curd, peanut butter, Parle-G, and paracetamol.",
-          "reason": "Backfill shopping preferences from profile."
-        },
-        {
-          "section": "Schedule",
-          "content": "Typical work cadence: 7:30am ward rounds, unpredictable finish usually 8–9pm, with 24–36 hour duties 2–3 times weekly.",
-          "reason": "Backfill core daily rhythm and workload constraints from profile."
-        },
-        {
-          "section": "Schedule",
-          "content": "Academic recurring commitments: Tuesday 8:30 Grand Rounds, Thursday 14:00 Departmental Seminar, and last Saturday of the month Mortality & Morbidity meeting.",
-          "reason": "Backfill standing schedule information from profile despite no calendar access."
-        },
-        {
-          "section": "Schedule",
-          "content": "Study time usually happens post-midnight or on rare free Sunday afternoons.",
-          "reason": "Backfill realistic study windows from profile."
-        },
-        {
-          "section": "Identity & Location",
-          "content": "Junior Resident Doctor (MD Medicine Year 1) at KEM Hospital, Mumbai; lives in the Residents' Hostel in Parel, about a 7-minute walk to the ward block.",
-          "reason": "Backfill identity and commute context from profile."
-        },
-        {
-          "section": "Identity & Location",
-          "content": "Originally from Kochi, Kerala (Panampilly Nagar); completed MBBS at Government Medical College, Thiruvananthapuram; moved to Mumbai for residency in May 2025.",
-          "reason": "Backfill hometown and training history from profile."
-        },
-        {
-          "section": "Notes for the assistant",
-          "content": "User prefers warm, terse, slightly maternal communication; Hinglish-Malayalam mix is welcome.",
-          "reason": "Backfill communication style preference from profile."
-        },
-        {
-          "section": "Notes for the assistant",
-          "content": "High bar for proactive nudges; user values silence over filler because mental bandwidth is scarce.",
-          "reason": "Backfill explicit notification preference from profile."
-        },
-        {
-          "section": "Notes for the assistant",
-          "content": "Do not proactively surface clinical details from hospital life; user is privacy-conscious about work.",
-          "reason": "Backfill explicit privacy boundary from profile."
-        }
-      ]
+      "actual_prefs": []
     }
   ]
 }
