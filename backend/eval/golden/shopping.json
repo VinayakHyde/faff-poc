@@ -16,7 +16,11 @@
           "valid_until": "2026-09-01",
           "source_url": "https://www.apple.com/in/shop/buy-airpods/airpods-max-2",
           "notes": "Re-verify when iPhone 18 / next major Apple event nears — pricing stable until then.",
-          "profile_md_lines": [],
+          "profile_md_lines": [
+            159,
+            164,
+            172
+          ],
           "mailbox_json_lines": [],
           "calendar_json_lines": []
         },
@@ -28,7 +32,9 @@
           "valid_until": "2026-06-15",
           "source_url": "https://pricehistory.app/p/theragun-mini-therabody-3rd-generation-ultra-portable-aJFtitce",
           "notes": "Time-sensitive — the price-floor anomaly is fragile.",
-          "profile_md_lines": [],
+          "profile_md_lines": [
+            73
+          ],
           "mailbox_json_lines": [],
           "calendar_json_lines": []
         },
@@ -40,7 +46,9 @@
           "valid_until": "2026-09-01",
           "source_url": "https://pricehistory.app/p/nothing-phone-3-black-12gb-256gb-cLJlZDIm",
           "notes": "Stable at current price; further drops minimal until end-of-life.",
-          "profile_md_lines": [],
+          "profile_md_lines": [
+            167
+          ],
           "mailbox_json_lines": [],
           "calendar_json_lines": []
         },
@@ -52,7 +60,12 @@
           "valid_until": "2026-07-31",
           "source_url": "https://www.nicobar.com/collections/linen-shirts",
           "notes": "Independent label — rapid size depletion expected on new-collection drops; no markdowns on new-season items.",
-          "profile_md_lines": [],
+          "profile_md_lines": [
+            156,
+            157,
+            161,
+            168
+          ],
           "mailbox_json_lines": [],
           "calendar_json_lines": []
         }
@@ -66,8 +79,26 @@
           ],
           "category": "out_of_lane_admin",
           "valid_until": null,
-          "profile_md_lines": [],
-          "mailbox_json_lines": [],
+          "profile_md_lines": [
+            150,
+            152
+          ],
+          "mailbox_json_lines": [
+            1249,
+            1250,
+            1251,
+            1252,
+            1253,
+            1254,
+            1255,
+            1256,
+            1257,
+            1258,
+            1259,
+            1260,
+            1261,
+            1262
+          ],
           "calendar_json_lines": []
         },
         {
@@ -78,8 +109,25 @@
           ],
           "category": "out_of_lane_fyi",
           "valid_until": null,
-          "profile_md_lines": [],
-          "mailbox_json_lines": [],
+          "profile_md_lines": [
+            14
+          ],
+          "mailbox_json_lines": [
+            1235,
+            1236,
+            1237,
+            1238,
+            1239,
+            1240,
+            1241,
+            1242,
+            1243,
+            1244,
+            1245,
+            1246,
+            1247,
+            1248
+          ],
           "calendar_json_lines": []
         },
         {
@@ -90,8 +138,25 @@
           ],
           "category": "out_of_lane_personal",
           "valid_until": null,
-          "profile_md_lines": [],
-          "mailbox_json_lines": [],
+          "profile_md_lines": [
+            133
+          ],
+          "mailbox_json_lines": [
+            1221,
+            1222,
+            1223,
+            1224,
+            1225,
+            1226,
+            1227,
+            1228,
+            1229,
+            1230,
+            1231,
+            1232,
+            1233,
+            1234
+          ],
           "calendar_json_lines": []
         },
         {
@@ -101,7 +166,9 @@
           "as_of": "2026-05-02",
           "valid_until": null,
           "source_url": "https://lemillindia.com/products/mini-puzzle-edge-bag-1",
-          "profile_md_lines": [],
+          "profile_md_lines": [
+            163
+          ],
           "mailbox_json_lines": [],
           "calendar_json_lines": []
         },
@@ -112,7 +179,9 @@
           "as_of": "2026-05-02",
           "valid_until": null,
           "source_url": "https://luxury.tatacliq.com/le-creuset-cherry-red-iron-24-cm-evo-round-cast-iron-casserole/p-mp000000008469687",
-          "profile_md_lines": [],
+          "profile_md_lines": [
+            166
+          ],
           "mailbox_json_lines": [],
           "calendar_json_lines": []
         },
@@ -123,7 +192,9 @@
           "as_of": "2026-05-02",
           "valid_until": "2026-05-24",
           "source_url": "https://www.gyftr.com/blog/upcoming-myntra-sale-2026/",
-          "profile_md_lines": [],
+          "profile_md_lines": [
+            172
+          ],
           "mailbox_json_lines": [],
           "calendar_json_lines": []
         },
@@ -134,7 +205,9 @@
           "as_of": "2026-05-02",
           "valid_until": "2026-09-01",
           "source_url": "https://www.shopbop.com/sale",
-          "profile_md_lines": [],
+          "profile_md_lines": [
+            99
+          ],
           "mailbox_json_lines": [],
           "calendar_json_lines": []
         },
@@ -145,7 +218,10 @@
           "as_of": "2026-05-02",
           "valid_until": "2026-09-25",
           "source_url": "https://www.aboutamazon.in/news/retail/amazon-great-summer-sale",
-          "profile_md_lines": [],
+          "profile_md_lines": [
+            48,
+            172
+          ],
           "mailbox_json_lines": [],
           "calendar_json_lines": []
         },
@@ -157,7 +233,11 @@
           "valid_until": "2026-09-30",
           "source_url": "https://www.apple.com/in-edu/store",
           "notes": "Tempting to suggest 'wait for back-to-school' but mechanically wrong for her standalone AirPods Max 2 purchase.",
-          "profile_md_lines": [],
+          "profile_md_lines": [
+            159,
+            164,
+            172
+          ],
           "mailbox_json_lines": [],
           "calendar_json_lines": []
         }
@@ -177,7 +257,9 @@
           "valid_until": "2026-08-02",
           "source_url": "https://leica-store.in/products/leica-q3-black",
           "notes": "Profile wishlist: Leica Q3. Q3 43 (₹7,60,000) and Q3 Monochrom (₹7,75,000) are alternates worth considering at the dealer visit.",
-          "profile_md_lines": [],
+          "profile_md_lines": [
+            144
+          ],
           "mailbox_json_lines": [],
           "calendar_json_lines": []
         },
@@ -189,7 +271,9 @@
           "valid_until": "2026-08-02",
           "source_url": "https://www.boseindia.com/products/bose-quietcomfort-ultra-headphones-2nd-gen",
           "notes": "Domestic warranty + service network justifies premium over $399 US price.",
-          "profile_md_lines": [],
+          "profile_md_lines": [
+            147
+          ],
           "mailbox_json_lines": [],
           "calendar_json_lines": []
         },
@@ -201,7 +285,9 @@
           "valid_until": "2026-09-30",
           "source_url": "https://www.forestessentialsindia.com/collections/mysore-sandalwood.html",
           "notes": "Brand under Estée Lauder global acquisition closing H2 2026 — inventory may tighten.",
-          "profile_md_lines": [],
+          "profile_md_lines": [
+            139
+          ],
           "mailbox_json_lines": [],
           "calendar_json_lines": []
         },
@@ -213,7 +299,10 @@
           "valid_until": "2026-07-31",
           "source_url": "https://www.goodearth.in/collection/naadia_397/",
           "notes": "Diwali home/resin drops typically late Aug-Sep — handle as separate skip.",
-          "profile_md_lines": [],
+          "profile_md_lines": [
+            137,
+            154
+          ],
           "mailbox_json_lines": [],
           "calendar_json_lines": []
         }
@@ -227,8 +316,26 @@
           ],
           "category": "out_of_lane_personal",
           "valid_until": null,
-          "profile_md_lines": [],
-          "mailbox_json_lines": [],
+          "profile_md_lines": [
+            32,
+            44
+          ],
+          "mailbox_json_lines": [
+            871,
+            872,
+            873,
+            874,
+            875,
+            876,
+            877,
+            878,
+            879,
+            880,
+            881,
+            882,
+            883,
+            884
+          ],
           "calendar_json_lines": []
         },
         {
@@ -239,8 +346,26 @@
           ],
           "category": "out_of_lane_personal",
           "valid_until": null,
-          "profile_md_lines": [],
-          "mailbox_json_lines": [],
+          "profile_md_lines": [
+            20,
+            118
+          ],
+          "mailbox_json_lines": [
+            857,
+            858,
+            859,
+            860,
+            861,
+            862,
+            863,
+            864,
+            865,
+            866,
+            867,
+            868,
+            869,
+            870
+          ],
           "calendar_json_lines": []
         },
         {
@@ -250,7 +375,12 @@
           "as_of": "2026-05-02",
           "valid_until": null,
           "source_url": "https://www.bidcurios.com/product/very-rare-autograph-book-of-satyajit-ray-signed-by-the-master-himself-autograph/",
-          "profile_md_lines": [],
+          "profile_md_lines": [
+            55,
+            61,
+            71,
+            145
+          ],
           "mailbox_json_lines": [],
           "calendar_json_lines": []
         },
@@ -261,7 +391,10 @@
           "as_of": "2026-05-02",
           "valid_until": null,
           "source_url": "https://www.vadehraart.com/",
-          "profile_md_lines": [],
+          "profile_md_lines": [
+            10,
+            81
+          ],
           "mailbox_json_lines": [],
           "calendar_json_lines": []
         },
@@ -272,7 +405,9 @@
           "as_of": "2026-05-02",
           "valid_until": "2026-05-21",
           "source_url": "https://www.christies.com/en/departments/south-asian-modern-contemporary-art",
-          "profile_md_lines": [],
+          "profile_md_lines": [
+            76
+          ],
           "mailbox_json_lines": [],
           "calendar_json_lines": []
         },
@@ -283,7 +418,10 @@
           "as_of": "2026-05-02",
           "valid_until": "2026-09-15",
           "source_url": "https://forestessentialsindia.worthepenny.com/coupon/",
-          "profile_md_lines": [],
+          "profile_md_lines": [
+            81,
+            139
+          ],
           "mailbox_json_lines": [],
           "calendar_json_lines": []
         },
@@ -294,7 +432,9 @@
           "as_of": "2026-05-02",
           "valid_until": "2026-11-15",
           "source_url": "https://indiaartfair.in/",
-          "profile_md_lines": [],
+          "profile_md_lines": [
+            76
+          ],
           "mailbox_json_lines": [],
           "calendar_json_lines": []
         }
@@ -313,7 +453,9 @@
           "valid_until": "2026-08-02",
           "source_url": "https://golfmartindia.com/product/wilson-profile-xd-mens-graphite-complete-golf-set/",
           "notes": "Sourced from Gemini Deep Research (Shopping Prompt 10). Comparable retailers price it ₹55K–59K, so Golf Mart India is the best current arbitrage. Re-verify in Aug 2026.",
-          "profile_md_lines": [],
+          "profile_md_lines": [
+            136
+          ],
           "mailbox_json_lines": [],
           "calendar_json_lines": []
         },
@@ -325,7 +467,9 @@
           "valid_until": "2026-08-02",
           "source_url": "https://fotocart.in/products/vortex-optics-diamondback-10x42-roof-prism-binocular-b004803ytw",
           "notes": "Bushnell Legend (~₹35,921 incl GST) and Nikon Monarch M7 (~₹45,950) are the alternates. Vortex hits the optimal price/optics intersection. Re-verify in Aug 2026.",
-          "profile_md_lines": [],
+          "profile_md_lines": [
+            138
+          ],
           "mailbox_json_lines": [],
           "calendar_json_lines": []
         },
@@ -337,7 +481,9 @@
           "valid_until": "2026-09-01",
           "source_url": "https://www.apple.com/in/shop/buy-iphone/iphone-17",
           "notes": "iPhone 18 expected Sept 2026 — once announced, the 17's price will move and this expectation should be re-pulled. Trade-in via Apple's program adds ₹3.1K–₹62.7K depending on legacy device.",
-          "profile_md_lines": [],
+          "profile_md_lines": [
+            132
+          ],
           "mailbox_json_lines": [],
           "calendar_json_lines": []
         },
@@ -349,7 +495,10 @@
           "valid_until": "2026-07-31",
           "source_url": "https://jadeblue.com/pages/sale",
           "notes": "Spring Summer Sale window is currently active — confirmed end date varies by year, conservatively assume late July. Jade Blue's regional retail strategy uses aggressive mid-year liquidation, contrasted with Manyavar's Diwali-only discount window.",
-          "profile_md_lines": [],
+          "profile_md_lines": [
+            93,
+            130
+          ],
           "mailbox_json_lines": [],
           "calendar_json_lines": []
         }
@@ -363,8 +512,24 @@
           ],
           "category": "out_of_lane_work",
           "valid_until": null,
-          "profile_md_lines": [],
-          "mailbox_json_lines": [],
+          "profile_md_lines": [
+            126
+          ],
+          "mailbox_json_lines": [
+            570,
+            571,
+            572,
+            573,
+            574,
+            575,
+            576,
+            577,
+            578,
+            579,
+            580,
+            581,
+            582
+          ],
           "calendar_json_lines": []
         },
         {
@@ -375,7 +540,12 @@
           "valid_until": "2027-10-01",
           "source_url": "https://www.icc-cricket.com/",
           "notes": "Profile bucket-list: live cricket at Lord's / MCG. London-Jul-2026 trip already includes a booked match. The 2027 World Cup is the next bucket-list opportunity but not on sale yet. Re-evaluate when ICC announces ballot dates.",
-          "profile_md_lines": [],
+          "profile_md_lines": [
+            63,
+            78,
+            80,
+            137
+          ],
           "mailbox_json_lines": [],
           "calendar_json_lines": []
         },
@@ -387,7 +557,9 @@
           "valid_until": "2026-09-15",
           "source_url": "https://www.manyavar.com/en-in/men/new-arrivals",
           "notes": "Re-evaluate around 2026-09-15 when Manyavar's pre-Diwali window typically opens.",
-          "profile_md_lines": [],
+          "profile_md_lines": [
+            10
+          ],
           "mailbox_json_lines": [],
           "calendar_json_lines": []
         },
@@ -399,7 +571,9 @@
           "valid_until": "2026-06-28",
           "source_url": "https://namasteindiaevents.com/india-jewellery-show",
           "notes": "Could become a calendar/events expected_task; stays a skip in shopping until a specific item-to-buy is identified.",
-          "profile_md_lines": [],
+          "profile_md_lines": [
+            126
+          ],
           "mailbox_json_lines": [],
           "calendar_json_lines": []
         },
@@ -408,7 +582,9 @@
           "summary": "Profile lists wishlist items beyond what deep research surfaced (e.g. specific HDFC Diners Club Black points-eligible items). For wishlist items WITHOUT a current sale-alert / price-drop / restock email AND WITHOUT a web_search-verified buy-now status, the agent must NOT surface buy nudges from the wishlist alone. Only the four web-verified items above (golf set, binoculars, iPhone 17, Jade Blue sale) are valid triggers today.",
           "category": "profile_only_no_trigger",
           "valid_until": null,
-          "profile_md_lines": [],
+          "profile_md_lines": [
+            130
+          ],
           "mailbox_json_lines": [],
           "calendar_json_lines": []
         }
@@ -428,7 +604,12 @@
           "valid_until": "2026-06-15",
           "source_url": "https://www.skechers.in/women-landing.html",
           "notes": "Stipend-friendly tier (₹3K-10K, needs saving). Sale liquidation is time-sensitive.",
-          "profile_md_lines": [],
+          "profile_md_lines": [
+            12,
+            37,
+            70,
+            154
+          ],
           "mailbox_json_lines": [],
           "calendar_json_lines": []
         },
@@ -440,7 +621,9 @@
           "valid_until": "2026-07-31",
           "source_url": "https://www.nykaa.com/laneige-lip-sleeping-mask-berry/p/15227410",
           "notes": "Comfortable monthly tier (₹500-3K).",
-          "profile_md_lines": [],
+          "profile_md_lines": [
+            155
+          ],
           "mailbox_json_lines": [],
           "calendar_json_lines": []
         }
@@ -454,7 +637,11 @@
           "valid_until": "2026-09-26",
           "source_url": "https://www.amazon.in/s?k=3m+littmann+cardiology+iv",
           "notes": "Stipend-tight; ₹21K is a major purchase. Wait for GIF or dedicated medical-supplier sale.",
-          "profile_md_lines": [],
+          "profile_md_lines": [
+            12,
+            152,
+            160
+          ],
           "mailbox_json_lines": [],
           "calendar_json_lines": []
         },
@@ -465,7 +652,9 @@
           "as_of": "2026-05-02",
           "valid_until": "2026-06-15",
           "source_url": "https://www.apple.com/in/shop/buy-ipad/ipad-air",
-          "profile_md_lines": [],
+          "profile_md_lines": [
+            153
+          ],
           "mailbox_json_lines": [],
           "calendar_json_lines": []
         },
@@ -476,7 +665,10 @@
           "valid_until": null,
           "source_url": "https://www.premiertickets.co/event/anuv-jain-dastakhat-india-tour-mumbai/",
           "notes": "Cross-references with events.json's matching skip target.",
-          "profile_md_lines": [],
+          "profile_md_lines": [
+            70,
+            156
+          ],
           "mailbox_json_lines": [],
           "calendar_json_lines": []
         },
@@ -487,7 +679,10 @@
           "as_of": "2026-05-02",
           "valid_until": "2026-11-10",
           "source_url": "https://www.nykaa.com/pink-friday-sale-25-season-s-hottest-offers-price-reveal/c/87199",
-          "profile_md_lines": [],
+          "profile_md_lines": [
+            147,
+            160
+          ],
           "mailbox_json_lines": [],
           "calendar_json_lines": []
         },
@@ -498,7 +693,9 @@
           "as_of": "2026-05-02",
           "valid_until": "2026-05-29",
           "source_url": "https://www2.hm.com/en_in/sale/women/last-chance-up-to-70--off.html",
-          "profile_md_lines": [],
+          "profile_md_lines": [
+            115
+          ],
           "mailbox_json_lines": [],
           "calendar_json_lines": []
         },
@@ -509,7 +706,9 @@
           "as_of": "2026-05-02",
           "valid_until": "2026-09-25",
           "source_url": "https://www.amazon.in",
-          "profile_md_lines": [],
+          "profile_md_lines": [
+            160
+          ],
           "mailbox_json_lines": [],
           "calendar_json_lines": []
         },
@@ -520,7 +719,9 @@
           "as_of": "2026-05-02",
           "valid_until": "2026-06-15",
           "source_url": "https://www.apple.com/in-edu/shop/back-to-school",
-          "profile_md_lines": [],
+          "profile_md_lines": [
+            9
+          ],
           "mailbox_json_lines": [],
           "calendar_json_lines": []
         },
@@ -530,7 +731,9 @@
           "category": "vague_no_specific_item",
           "valid_until": null,
           "source_url": "https://www.decathlon.in/clearance",
-          "profile_md_lines": [],
+          "profile_md_lines": [
+            160
+          ],
           "mailbox_json_lines": [],
           "calendar_json_lines": []
         }

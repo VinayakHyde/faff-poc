@@ -43,8 +43,25 @@
           ],
           "category": "off_lane_email_triage",
           "valid_until": null,
-          "profile_md_lines": [],
-          "mailbox_json_lines": [],
+          "profile_md_lines": [
+            179
+          ],
+          "mailbox_json_lines": [
+            1221,
+            1222,
+            1223,
+            1224,
+            1225,
+            1226,
+            1227,
+            1228,
+            1229,
+            1230,
+            1231,
+            1232,
+            1233,
+            1234
+          ],
           "calendar_json_lines": []
         },
         {
@@ -55,8 +72,26 @@
           ],
           "category": "off_lane_finance",
           "valid_until": null,
-          "profile_md_lines": [],
-          "mailbox_json_lines": [],
+          "profile_md_lines": [
+            150,
+            193
+          ],
+          "mailbox_json_lines": [
+            1249,
+            1250,
+            1251,
+            1252,
+            1253,
+            1254,
+            1255,
+            1256,
+            1257,
+            1258,
+            1259,
+            1260,
+            1261,
+            1262
+          ],
           "calendar_json_lines": []
         },
         {
@@ -64,7 +99,10 @@
           "summary": "Do NOT surface a belated birthday wish for Riya (April 22, 9 days past). Belated wishes are not the agent's job — lead window for messages is 1–2 days BEFORE or on the day morning. The moment has passed.",
           "category": "outside_lead_window_past",
           "valid_until": null,
-          "profile_md_lines": [],
+          "profile_md_lines": [
+            103,
+            104
+          ],
           "mailbox_json_lines": [],
           "calendar_json_lines": []
         },
@@ -73,7 +111,9 @@
           "summary": "Do NOT pre-emptively surface Mom Sunita's birthday (August 23) today. It is ~115 days out — outside the 5–7 day gift window. Surfacing it now is padding.",
           "category": "outside_lead_window_too_early",
           "valid_until": null,
-          "profile_md_lines": [],
+          "profile_md_lines": [
+            96
+          ],
           "mailbox_json_lines": [],
           "calendar_json_lines": []
         },
@@ -82,7 +122,9 @@
           "summary": "Do NOT surface a Karva Chauth reminder today. Karva Chauth falls in October — far outside any festival lead window.",
           "category": "outside_lead_window_too_early",
           "valid_until": null,
-          "profile_md_lines": [],
+          "profile_md_lines": [
+            107
+          ],
           "mailbox_json_lines": [],
           "calendar_json_lines": []
         },
@@ -94,8 +136,25 @@
           ],
           "category": "fyi_no_action",
           "valid_until": null,
-          "profile_md_lines": [],
-          "mailbox_json_lines": [],
+          "profile_md_lines": [
+            1
+          ],
+          "mailbox_json_lines": [
+            1235,
+            1236,
+            1237,
+            1238,
+            1239,
+            1240,
+            1241,
+            1242,
+            1243,
+            1244,
+            1245,
+            1246,
+            1247,
+            1248
+          ],
           "calendar_json_lines": []
         }
       ],
@@ -117,8 +176,25 @@
           ],
           "category": "off_lane_email_triage",
           "valid_until": null,
-          "profile_md_lines": [],
-          "mailbox_json_lines": [],
+          "profile_md_lines": [
+            118
+          ],
+          "mailbox_json_lines": [
+            857,
+            858,
+            859,
+            860,
+            861,
+            862,
+            863,
+            864,
+            865,
+            866,
+            867,
+            868,
+            869,
+            870
+          ],
           "calendar_json_lines": []
         },
         {
@@ -129,8 +205,26 @@
           ],
           "category": "off_lane_email_triage",
           "valid_until": null,
-          "profile_md_lines": [],
-          "mailbox_json_lines": [],
+          "profile_md_lines": [
+            32,
+            44
+          ],
+          "mailbox_json_lines": [
+            871,
+            872,
+            873,
+            874,
+            875,
+            876,
+            877,
+            878,
+            879,
+            880,
+            881,
+            882,
+            883,
+            884
+          ],
           "calendar_json_lines": []
         },
         {
@@ -138,7 +232,9 @@
           "summary": "Do NOT surface Mom Bela's birthday (May 15) today. It is 14 days out — outside the 5–7 day local gift window. The task should fire on May 8–10, not May 1.",
           "category": "outside_lead_window_too_early",
           "valid_until": null,
-          "profile_md_lines": [],
+          "profile_md_lines": [
+            91
+          ],
           "mailbox_json_lines": [],
           "calendar_json_lines": []
         },
@@ -147,7 +243,10 @@
           "summary": "Do NOT surface a Durga Puja reminder today. Durga Puja is in October — far outside any festival lead window (~5 months out).",
           "category": "outside_lead_window_too_early",
           "valid_until": null,
-          "profile_md_lines": [],
+          "profile_md_lines": [
+            95,
+            165
+          ],
           "mailbox_json_lines": [],
           "calendar_json_lines": []
         },
@@ -156,7 +255,9 @@
           "summary": "Do NOT surface Mitali + Arjun's anniversary (Feb 4) today. Outside any lead window — surface only in late January next cycle.",
           "category": "outside_lead_window_too_early",
           "valid_until": null,
-          "profile_md_lines": [],
+          "profile_md_lines": [
+            93
+          ],
           "mailbox_json_lines": [],
           "calendar_json_lines": []
         },
@@ -165,7 +266,9 @@
           "summary": "Do NOT surface a belated Poila Baisakh reminder. Poila Baisakh was April 14 (17 days past). Belated festival greetings are not the agent's job.",
           "category": "outside_lead_window_past",
           "valid_until": null,
-          "profile_md_lines": [],
+          "profile_md_lines": [
+            96
+          ],
           "mailbox_json_lines": [],
           "calendar_json_lines": []
         }
@@ -195,8 +298,24 @@
           ],
           "category": "off_lane_email_triage",
           "valid_until": null,
-          "profile_md_lines": [],
-          "mailbox_json_lines": [],
+          "profile_md_lines": [
+            7
+          ],
+          "mailbox_json_lines": [
+            570,
+            571,
+            572,
+            573,
+            574,
+            575,
+            576,
+            577,
+            578,
+            579,
+            580,
+            581,
+            582
+          ],
           "calendar_json_lines": []
         },
         {
@@ -204,7 +323,9 @@
           "summary": "Do NOT surface a belated birthday wish for Krish (April 10, 21 days past). Belated wishes are not the agent's job; the message window is 1–2 days BEFORE or on the day.",
           "category": "outside_lead_window_past",
           "valid_until": null,
-          "profile_md_lines": [],
+          "profile_md_lines": [
+            89
+          ],
           "mailbox_json_lines": [],
           "calendar_json_lines": []
         },
@@ -213,7 +334,9 @@
           "summary": "Do NOT surface a Paryushan reminder today. Paryushan falls in August/September — far outside the festival lead window from May 1.",
           "category": "outside_lead_window_too_early",
           "valid_until": null,
-          "profile_md_lines": [],
+          "profile_md_lines": [
+            92
+          ],
           "mailbox_json_lines": [],
           "calendar_json_lines": []
         },
@@ -222,7 +345,9 @@
           "summary": "Do NOT surface a Diwali / Vikram Samvat reminder today. Both fall in November — ~6 months out, far outside any lead window.",
           "category": "outside_lead_window_too_early",
           "valid_until": null,
-          "profile_md_lines": [],
+          "profile_md_lines": [
+            93
+          ],
           "mailbox_json_lines": [],
           "calendar_json_lines": []
         },
@@ -231,7 +356,9 @@
           "summary": "Do NOT surface Hetal's birthday (Oct 5) today. ~5 months out — outside the 5–7 day gift window.",
           "category": "outside_lead_window_too_early",
           "valid_until": null,
-          "profile_md_lines": [],
+          "profile_md_lines": [
+            87
+          ],
           "mailbox_json_lines": [],
           "calendar_json_lines": []
         }
@@ -251,7 +378,10 @@
           "summary": "Do NOT surface Meera's own residency joining anniversary (May 1 today) as a date task. Self-markers are not relational dates — there is no person to wish, no gift to send, no relationship to revive. The dates agent's three categories are all about OTHERS.",
           "category": "self_marker_not_relational",
           "valid_until": null,
-          "profile_md_lines": [],
+          "profile_md_lines": [
+            107,
+            115
+          ],
           "mailbox_json_lines": [],
           "calendar_json_lines": []
         },
@@ -260,7 +390,9 @@
           "summary": "Do NOT surface Parents' wedding anniversary (May 22) today. 21 days out — outside the 5–7 day gift window. Surface closer to the date.",
           "category": "outside_lead_window_too_early",
           "valid_until": null,
-          "profile_md_lines": [],
+          "profile_md_lines": [
+            101
+          ],
           "mailbox_json_lines": [],
           "calendar_json_lines": []
         },
@@ -269,7 +401,9 @@
           "summary": "Do NOT surface an Onam reminder today. Onam falls in August/September — ~3+ months out.",
           "category": "outside_lead_window_too_early",
           "valid_until": null,
-          "profile_md_lines": [],
+          "profile_md_lines": [
+            91
+          ],
           "mailbox_json_lines": [],
           "calendar_json_lines": []
         },
@@ -278,7 +412,9 @@
           "summary": "Do NOT surface a belated Vishu greeting. Vishu was April 14 (17 days past). Belated festival nudges are not the agent's job.",
           "category": "outside_lead_window_past",
           "valid_until": null,
-          "profile_md_lines": [],
+          "profile_md_lines": [
+            105
+          ],
           "mailbox_json_lines": [],
           "calendar_json_lines": []
         }

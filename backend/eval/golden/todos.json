@@ -15,7 +15,10 @@
           ],
           "category": "self_made_deliverable_commitment",
           "valid_until": null,
-          "profile_md_lines": [],
+          "profile_md_lines": [
+            7,
+            77
+          ],
           "mailbox_json_lines": [],
           "calendar_json_lines": []
         },
@@ -27,7 +30,9 @@
           ],
           "category": "self_made_deliverable_commitment",
           "valid_until": null,
-          "profile_md_lines": [],
+          "profile_md_lines": [
+            103
+          ],
           "mailbox_json_lines": [],
           "calendar_json_lines": []
         }
@@ -41,8 +46,25 @@
           ],
           "category": "lane_bleed_finance",
           "valid_until": null,
-          "profile_md_lines": [],
-          "mailbox_json_lines": [],
+          "profile_md_lines": [
+            150
+          ],
+          "mailbox_json_lines": [
+            1249,
+            1250,
+            1251,
+            1252,
+            1253,
+            1254,
+            1255,
+            1256,
+            1257,
+            1258,
+            1259,
+            1260,
+            1261,
+            1262
+          ],
           "calendar_json_lines": []
         },
         {
@@ -53,8 +75,25 @@
           ],
           "category": "lane_bleed_email_triage",
           "valid_until": null,
-          "profile_md_lines": [],
-          "mailbox_json_lines": [],
+          "profile_md_lines": [
+            1
+          ],
+          "mailbox_json_lines": [
+            1221,
+            1222,
+            1223,
+            1224,
+            1225,
+            1226,
+            1227,
+            1228,
+            1229,
+            1230,
+            1231,
+            1232,
+            1233,
+            1234
+          ],
           "calendar_json_lines": []
         },
         {
@@ -65,8 +104,25 @@
           ],
           "category": "fyi_no_commitment",
           "valid_until": null,
-          "profile_md_lines": [],
-          "mailbox_json_lines": [],
+          "profile_md_lines": [
+            1
+          ],
+          "mailbox_json_lines": [
+            1235,
+            1236,
+            1237,
+            1238,
+            1239,
+            1240,
+            1241,
+            1242,
+            1243,
+            1244,
+            1245,
+            1246,
+            1247,
+            1248
+          ],
           "calendar_json_lines": []
         },
         {
@@ -75,7 +131,10 @@
           "category": "lane_bleed_email_triage",
           "notes": "From mailbox, msg dated 2026-04-28. Tempting because it has a 'let me know' phrasing, but the speaker is Karan, not the user.",
           "valid_until": null,
-          "profile_md_lines": [],
+          "profile_md_lines": [
+            102,
+            106
+          ],
           "mailbox_json_lines": [],
           "calendar_json_lines": []
         },
@@ -84,7 +143,9 @@
           "summary": "Profile mentions Aditi 'always files reimbursement claims at work last-minute' as a drop-tendency. This is a pattern, not a deadline. Must NOT manufacture a 'Deliver April reimbursements' todo with no email/calendar source.",
           "category": "profile_only_no_source",
           "valid_until": null,
-          "profile_md_lines": [],
+          "profile_md_lines": [
+            182
+          ],
           "mailbox_json_lines": [],
           "calendar_json_lines": []
         },
@@ -93,7 +154,9 @@
           "summary": "Profile mentions 'annual checkup is overdue' as a stated drop-tendency. No email/calendar trigger exists in the slice. Must NOT manufacture a 'Send to doctor for appointment' or 'Follow up on annual checkup' todo from profile narrative alone.",
           "category": "profile_only_no_source",
           "valid_until": null,
-          "profile_md_lines": [],
+          "profile_md_lines": [
+            181
+          ],
           "mailbox_json_lines": [],
           "calendar_json_lines": []
         }
@@ -113,8 +176,24 @@
           ],
           "category": "self_made_deliverable_commitment",
           "valid_until": null,
-          "profile_md_lines": [],
-          "mailbox_json_lines": [],
+          "profile_md_lines": [
+            146
+          ],
+          "mailbox_json_lines": [
+            885,
+            886,
+            887,
+            888,
+            889,
+            890,
+            891,
+            892,
+            893,
+            894,
+            895,
+            896,
+            897
+          ],
           "calendar_json_lines": []
         },
         {
@@ -125,8 +204,24 @@
           ],
           "category": "overdue_self_commitment_checkin",
           "valid_until": null,
-          "profile_md_lines": [],
-          "mailbox_json_lines": [],
+          "profile_md_lines": [
+            128
+          ],
+          "mailbox_json_lines": [
+            898,
+            899,
+            900,
+            901,
+            902,
+            903,
+            904,
+            905,
+            906,
+            907,
+            908,
+            909,
+            910
+          ],
           "calendar_json_lines": []
         }
       ],
@@ -139,8 +234,25 @@
           ],
           "category": "lane_bleed_email_triage",
           "valid_until": null,
-          "profile_md_lines": [],
-          "mailbox_json_lines": [],
+          "profile_md_lines": [
+            118
+          ],
+          "mailbox_json_lines": [
+            857,
+            858,
+            859,
+            860,
+            861,
+            862,
+            863,
+            864,
+            865,
+            866,
+            867,
+            868,
+            869,
+            870
+          ],
           "calendar_json_lines": []
         },
         {
@@ -151,8 +263,27 @@
           ],
           "category": "lane_bleed_email_triage",
           "valid_until": null,
-          "profile_md_lines": [],
-          "mailbox_json_lines": [],
+          "profile_md_lines": [
+            32,
+            44,
+            93
+          ],
+          "mailbox_json_lines": [
+            871,
+            872,
+            873,
+            874,
+            875,
+            876,
+            877,
+            878,
+            879,
+            880,
+            881,
+            882,
+            883,
+            884
+          ],
           "calendar_json_lines": []
         },
         {
@@ -160,7 +291,9 @@
           "summary": "Kalakriti gallery 'Framing Status' updates are inbound vendor status emails — no Arjun commitment, no deliverable owned by Arjun. Must NOT be turned into a follow-up todo.",
           "category": "fyi_no_commitment",
           "valid_until": null,
-          "profile_md_lines": [],
+          "profile_md_lines": [
+            7
+          ],
           "mailbox_json_lines": [],
           "calendar_json_lines": []
         },
@@ -169,7 +302,9 @@
           "summary": "Taj Mahal Palace Mumbai booking confirmation is a travel reservation — belongs to travel agent. No Arjun-side commitment with a deliverable. Must NOT appear as a todo.",
           "category": "lane_bleed_travel",
           "valid_until": null,
-          "profile_md_lines": [],
+          "profile_md_lines": [
+            1
+          ],
           "mailbox_json_lines": [],
           "calendar_json_lines": []
         },
@@ -178,7 +313,9 @@
           "summary": "Profile mentions Arjun tends to drop 'tracking school fee deadlines'. Pattern only — no email/calendar trigger in the slice. Must NOT manufacture a 'Deliver school fee by date X' todo from profile narrative.",
           "category": "profile_only_no_source",
           "valid_until": null,
-          "profile_md_lines": [],
+          "profile_md_lines": [
+            156
+          ],
           "mailbox_json_lines": [],
           "calendar_json_lines": []
         }
@@ -200,8 +337,25 @@
           ],
           "category": "self_made_deliverable_commitment",
           "valid_until": null,
-          "profile_md_lines": [],
-          "mailbox_json_lines": [],
+          "profile_md_lines": [
+            19,
+            33
+          ],
+          "mailbox_json_lines": [
+            583,
+            584,
+            585,
+            586,
+            587,
+            588,
+            589,
+            590,
+            591,
+            592,
+            593,
+            594,
+            595
+          ],
           "calendar_json_lines": []
         },
         {
@@ -212,8 +366,25 @@
           ],
           "category": "overdue_self_commitment_checkin",
           "valid_until": null,
-          "profile_md_lines": [],
-          "mailbox_json_lines": [],
+          "profile_md_lines": [
+            90,
+            146
+          ],
+          "mailbox_json_lines": [
+            596,
+            597,
+            598,
+            599,
+            600,
+            601,
+            602,
+            603,
+            604,
+            605,
+            606,
+            607,
+            608
+          ],
           "calendar_json_lines": []
         }
       ],
@@ -226,8 +397,24 @@
           ],
           "category": "lane_bleed_email_triage_or_calendar",
           "valid_until": null,
-          "profile_md_lines": [],
-          "mailbox_json_lines": [],
+          "profile_md_lines": [
+            1
+          ],
+          "mailbox_json_lines": [
+            570,
+            571,
+            572,
+            573,
+            574,
+            575,
+            576,
+            577,
+            578,
+            579,
+            580,
+            581,
+            582
+          ],
           "calendar_json_lines": []
         },
         {
@@ -235,7 +422,9 @@
           "summary": "Airtel and Torrent Power monthly bills are finance-domain reminders — no Devendra commitment, no self-made deliverable. Must NOT be reframed as 'Deliver Airtel payment by 20th'.",
           "category": "lane_bleed_finance",
           "valid_until": null,
-          "profile_md_lines": [],
+          "profile_md_lines": [
+            117
+          ],
           "mailbox_json_lines": [],
           "calendar_json_lines": []
         },
@@ -244,7 +433,9 @@
           "summary": "IndiGo AMD-BOM e-ticket is a travel booking — travel agent's lane. Must NOT manufacture a 'Deliver Mumbai conference prep' todo from a flight ticket.",
           "category": "lane_bleed_travel",
           "valid_until": null,
-          "profile_md_lines": [],
+          "profile_md_lines": [
+            81
+          ],
           "mailbox_json_lines": [],
           "calendar_json_lines": []
         },
@@ -253,7 +444,9 @@
           "summary": "Profile mentions Devendra 'forgets what he's subscribed to'. Pattern only — no email/calendar trigger. Must NOT manufacture a 'Deliver subscription audit' todo from profile narrative.",
           "category": "profile_only_no_source",
           "valid_until": null,
-          "profile_md_lines": [],
+          "profile_md_lines": [
+            145
+          ],
           "mailbox_json_lines": [],
           "calendar_json_lines": []
         }
