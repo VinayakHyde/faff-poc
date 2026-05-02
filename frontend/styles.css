@@ -608,11 +608,9 @@ body:not(.has-persona) .profile-panel {
   background: var(--panel);  /* match input-area so no awkward gap below */
 }
 .input-area {
-  flex: 1 0 auto;            /* stretch to fill space when nothing follows */
-  display: flex;
-  flex-direction: column;
   padding: 16px 20px;
   background: var(--panel);
+  flex-shrink: 0;
 }
 .input-area .input-label {
   display: block;
@@ -625,10 +623,6 @@ body:not(.has-persona) .profile-panel {
 
 /* JSON editor card — always-dark VS Code-ish look, regardless of app theme */
 .editor-card {
-  flex: 1;                  /* fill the input-area when it has stretched */
-  display: flex;
-  flex-direction: column;
-  min-height: 280px;
   border-radius: 8px;
   overflow: hidden;
   border: 1px solid #3a3a3a;
@@ -648,11 +642,15 @@ body:not(.has-persona) .profile-panel {
 .editor-filename { color: #ccc; }
 .editor-hint { color: #888; font-size: 10px; }
 .editor-pre {
-  flex: 1;                              /* fill the editor-card height */
   margin: 0;
   background: #2d2d2d !important;       /* override prism-tomorrow theme bg */
   padding: 0 !important;
-  min-height: 200px;
+  min-height: 100px;
+  /* Editor sizes to content; only when content would push past the viewport
+     does it cap and become internally scrollable. Header (~50px) +
+     input-area padding (~32px) + label (~30px) + action-bar (~50px) +
+     small breathing room ≈ 220px, hence the calc subtraction. */
+  max-height: calc(100vh - 220px);
   overflow: auto;
 }
 #daily-input-editor {
