@@ -10,28 +10,45 @@
         {
           "id": "aditi_mom_reply",
           "summary": "Reply to mom (Sunita) about her relational check-in; ideally suggest a weekend call.",
-          "evidence_email_ids": ["msg_mom_1"],
+          "evidence_email_ids": [
+            "msg_mom_1"
+          ],
           "category": "personal_social_emotional",
-          "notes": "Profile says Aditi tends to drop non-urgent personal emails — a nudge fits her stated tendency."
+          "notes": "Profile says Aditi tends to drop non-urgent personal emails — a nudge fits her stated tendency.",
+          "valid_until": null,
+          "profile_md_lines": [],
+          "mailbox_json_lines": [],
+          "calendar_json_lines": []
         }
       ],
       "expected_skips": [
         {
           "id": "aditi_skip_hr_holiday",
           "summary": "HR public-holiday FYI — pure announcement, no reply or follow-up needed.",
-          "evidence_email_ids": ["msg_hr_1"],
-          "category": "fyi_announcement"
+          "evidence_email_ids": [
+            "msg_hr_1"
+          ],
+          "category": "fyi_announcement",
+          "valid_until": null,
+          "profile_md_lines": [],
+          "mailbox_json_lines": [],
+          "calendar_json_lines": []
         },
         {
           "id": "aditi_skip_dad_insurance",
           "summary": "Dad's email is administrative (insurance renewal) wrapped in a personal sender. The actual task is renewing the insurance, not replying to dad — out of email_triage scope.",
-          "evidence_email_ids": ["msg_dad_1"],
-          "category": "admin_from_family_sender"
+          "evidence_email_ids": [
+            "msg_dad_1"
+          ],
+          "category": "admin_from_family_sender",
+          "valid_until": null,
+          "profile_md_lines": [],
+          "mailbox_json_lines": [],
+          "calendar_json_lines": []
         }
       ],
       "expected_preference_topics": []
     },
-
     {
       "slug": "arjun",
       "mode": "BACKFILL",
@@ -39,14 +56,26 @@
         {
           "id": "arjun_sudipto_bridge_reply",
           "summary": "Reply to Sudipto about Saturday bridge plans (yes/no + time).",
-          "evidence_email_ids": ["msg_bbeb109a3ff1"],
-          "category": "personal_social_emotional"
+          "evidence_email_ids": [
+            "msg_bbeb109a3ff1"
+          ],
+          "category": "personal_social_emotional",
+          "valid_until": null,
+          "profile_md_lines": [],
+          "mailbox_json_lines": [],
+          "calendar_json_lines": []
         },
         {
           "id": "arjun_mitali_breakfast_reply",
           "summary": "Reply to Mitali (wife) about Sunday breakfast — confirm or counter-propose.",
-          "evidence_email_ids": ["msg_9995f6f04ae9"],
-          "category": "personal_social_emotional"
+          "evidence_email_ids": [
+            "msg_9995f6f04ae9"
+          ],
+          "category": "personal_social_emotional",
+          "valid_until": null,
+          "profile_md_lines": [],
+          "mailbox_json_lines": [],
+          "calendar_json_lines": []
         }
       ],
       "expected_skips": [],
@@ -58,7 +87,6 @@
         "Art collectors send 'Price list request' inquiries periodically"
       ]
     },
-
     {
       "slug": "devendra",
       "mode": "BACKFILL",
@@ -66,8 +94,14 @@
         {
           "id": "devendra_nilesh_audit_reply",
           "summary": "Reply to Nilesh about the FY25 audit final review — confirm a time to discuss.",
-          "evidence_email_ids": ["fix_msg_1"],
-          "category": "professional_work_correspondence"
+          "evidence_email_ids": [
+            "fix_msg_1"
+          ],
+          "category": "professional_work_correspondence",
+          "valid_until": null,
+          "profile_md_lines": [],
+          "mailbox_json_lines": [],
+          "calendar_json_lines": []
         }
       ],
       "expected_skips": [],
@@ -76,7 +110,6 @@
         "Cricinfo IPL Updates newsletter is content the user keeps reading (cricket fan per profile) — NOT an unsubscribe candidate"
       ]
     },
-
     {
       "slug": "meera",
       "mode": "BACKFILL",

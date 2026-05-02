@@ -11,37 +11,64 @@
         {
           "id": "aditi_skip_bali_postcard_premature",
           "summary": "The Postcard Bali booking confirmation (Aug 2025) for the July 2026 mother-daughter trip — trip is >2 months out, FAR outside the imminent windows. No web check-in / hotel check-in / destination prep is appropriate now.",
-          "evidence_email_ids": ["msg_643a96ca0bf5"],
-          "category": "premature_hotel_nudge"
+          "evidence_email_ids": [
+            "msg_643a96ca0bf5"
+          ],
+          "category": "premature_hotel_nudge",
+          "valid_until": null,
+          "profile_md_lines": [],
+          "mailbox_json_lines": [],
+          "calendar_json_lines": []
         },
         {
           "id": "aditi_skip_bali_airbnb_premature",
           "summary": "Airbnb Seminyak reservation (received Apr 15) for the July 2026 Bali trip — trip is 10+ weeks out. Surfacing destination prep / hotel check-in now is premature.",
-          "evidence_email_ids": ["msg_48caafeb4ab8"],
-          "category": "premature_hotel_nudge"
+          "evidence_email_ids": [
+            "msg_48caafeb4ab8"
+          ],
+          "category": "premature_hotel_nudge",
+          "valid_until": null,
+          "profile_md_lines": [],
+          "mailbox_json_lines": [],
+          "calendar_json_lines": []
         },
         {
           "id": "aditi_skip_pondicherry_past_flight",
           "summary": "BLR→PNY IndiGo e-ticket from Feb 20 — Pondicherry trip already happened in March 2026. No actions remain on a past flight.",
-          "evidence_email_ids": ["msg_70d6f31e41ba"],
-          "category": "past_trip"
+          "evidence_email_ids": [
+            "msg_70d6f31e41ba"
+          ],
+          "category": "past_trip",
+          "valid_until": null,
+          "profile_md_lines": [],
+          "mailbox_json_lines": [],
+          "calendar_json_lines": []
         },
         {
           "id": "aditi_skip_pondicherry_past_hotel",
           "summary": "Booking.com Pondicherry stay confirmation — past stay (March 2026). No actions remain.",
-          "evidence_email_ids": ["msg_9a723fee065b"],
-          "category": "past_trip"
+          "evidence_email_ids": [
+            "msg_9a723fee065b"
+          ],
+          "category": "past_trip",
+          "valid_until": null,
+          "profile_md_lines": [],
+          "mailbox_json_lines": [],
+          "calendar_json_lines": []
         },
         {
           "id": "aditi_skip_japan_premature",
           "summary": "Profile mentions Japan trip with Karan in October 2026 (calendar block confirms). Trip is >5 months away. No travel actions appropriate.",
-          "category": "premature_calendar_block"
+          "category": "premature_calendar_block",
+          "valid_until": null,
+          "profile_md_lines": [],
+          "mailbox_json_lines": [],
+          "calendar_json_lines": []
         }
       ],
       "expected_preference_topics": [],
       "notes": "STEADY-STATE: today's slice has zero travel emails (mom check-in, HR holiday, dad insurance only). The closest booked trip is Bali in July 2026 — 10+ weeks out. Correct behaviour: silence. No tasks, no preference_updates (BACKFILL job)."
     },
-
     {
       "slug": "arjun",
       "mode": "BACKFILL",
@@ -50,19 +77,35 @@
         {
           "id": "arjun_skip_taj_mumbai_premature",
           "summary": "Taj Mahal Palace, Mumbai booking (Apr 20 email) for June 10-15, 2026 stay. Today is May 1 — stay is 40+ days away, well outside the hotel check-in / destination prep window.",
-          "evidence_email_ids": ["msg_279d949744ee"],
-          "category": "premature_hotel_nudge"
+          "evidence_email_ids": [
+            "msg_279d949744ee"
+          ],
+          "category": "premature_hotel_nudge",
+          "valid_until": null,
+          "profile_md_lines": [],
+          "mailbox_json_lines": [],
+          "calendar_json_lines": []
         },
         {
           "id": "arjun_skip_london_past",
           "summary": "Air India Kolkata→London e-ticket from Sep 15, 2025 — flight in October 2025 already happened. No actions on a past flight.",
-          "evidence_email_ids": ["msg_3c0bf91b2cb3"],
-          "category": "past_trip"
+          "evidence_email_ids": [
+            "msg_3c0bf91b2cb3"
+          ],
+          "category": "past_trip",
+          "valid_until": null,
+          "profile_md_lines": [],
+          "mailbox_json_lines": [],
+          "calendar_json_lines": []
         },
         {
           "id": "arjun_skip_darjeeling_profile_only",
           "summary": "Profile mentions Darjeeling family trip in September 2026 — no booking email evidence in the mailbox. Profile-only travel mentions are not a valid task source.",
-          "category": "profile_only_no_email"
+          "category": "profile_only_no_email",
+          "valid_until": null,
+          "profile_md_lines": [],
+          "mailbox_json_lines": [],
+          "calendar_json_lines": []
         }
       ],
       "expected_preference_topics": [
@@ -74,7 +117,6 @@
         "Upcoming booked: Mumbai trip with Taj Mahal Palace stay June 10-15, 2026"
       ]
     },
-
     {
       "slug": "devendra",
       "mode": "BACKFILL",
@@ -83,25 +125,47 @@
         {
           "id": "devendra_skip_us_past",
           "summary": "Air India AMD→EWR e-ticket from Jun 15, 2025 — US trip to visit daughter Riya in August 2025 already happened. No actions on a past trip.",
-          "evidence_email_ids": ["msg_us_1"],
-          "category": "past_trip"
+          "evidence_email_ids": [
+            "msg_us_1"
+          ],
+          "category": "past_trip",
+          "valid_until": null,
+          "profile_md_lines": [],
+          "mailbox_json_lines": [],
+          "calendar_json_lines": []
         },
         {
           "id": "devendra_skip_palitana_past",
           "summary": "Palitana retreat booking from Oct 2025 — past pilgrimage, no actions remain.",
-          "evidence_email_ids": ["msg_palitana_1"],
-          "category": "past_trip"
+          "evidence_email_ids": [
+            "msg_palitana_1"
+          ],
+          "category": "past_trip",
+          "valid_until": null,
+          "profile_md_lines": [],
+          "mailbox_json_lines": [],
+          "calendar_json_lines": []
         },
         {
           "id": "devendra_skip_mumbai_no_date",
           "summary": "IndiGo AMD→BOM e-ticket received Apr 15, 2026 — body has no specific departure date. Profile says 'Mumbai conference May 2026' but the imminent window cannot be confirmed without a concrete date. Surfacing a web check-in or itinerary recap now would be a guess.",
-          "evidence_email_ids": ["msg_mumbai_1"],
-          "category": "ambiguous_date_no_imminent_signal"
+          "evidence_email_ids": [
+            "msg_mumbai_1"
+          ],
+          "category": "ambiguous_date_no_imminent_signal",
+          "valid_until": null,
+          "profile_md_lines": [],
+          "mailbox_json_lines": [],
+          "calendar_json_lines": []
         },
         {
           "id": "devendra_skip_london_profile_only",
           "summary": "Profile mentions London family + cricket trip July 2026 — no booking email evidence. Profile-only mentions are not a task source.",
-          "category": "profile_only_no_email"
+          "category": "profile_only_no_email",
+          "valid_until": null,
+          "profile_md_lines": [],
+          "mailbox_json_lines": [],
+          "calendar_json_lines": []
         }
       ],
       "expected_preference_topics": [
@@ -113,7 +177,6 @@
         "Upcoming booked: Mumbai conference (AMD→BOM IndiGo) — flight ticket received April 15"
       ]
     },
-
     {
       "slug": "meera",
       "mode": "BACKFILL",

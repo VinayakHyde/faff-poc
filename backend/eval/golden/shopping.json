@@ -11,31 +11,52 @@
         {
           "id": "aditi_skip_dad_insurance",
           "summary": "Dad's email about ICICI Lombard insurance renewal is admin/finance content — not a shopping trigger; no wishlist item involved. Agent must NOT rephrase as 'Buy a new insurance policy'.",
-          "evidence_email_ids": ["msg_dad_1"],
-          "category": "out_of_lane_admin"
+          "evidence_email_ids": [
+            "msg_dad_1"
+          ],
+          "category": "out_of_lane_admin",
+          "valid_until": null,
+          "profile_md_lines": [],
+          "mailbox_json_lines": [],
+          "calendar_json_lines": []
         },
         {
           "id": "aditi_skip_hr_holiday",
           "summary": "HR Labor Day holiday FYI — a long weekend is not a shopping trigger. Agent must NOT turn this into 'Buy yourself a long-weekend treat' or similar.",
-          "evidence_email_ids": ["msg_hr_1"],
-          "category": "out_of_lane_fyi"
+          "evidence_email_ids": [
+            "msg_hr_1"
+          ],
+          "category": "out_of_lane_fyi",
+          "valid_until": null,
+          "profile_md_lines": [],
+          "mailbox_json_lines": [],
+          "calendar_json_lines": []
         },
         {
           "id": "aditi_skip_mom_checkin",
           "summary": "Mom's relational check-in ('Thinking of you') is not a shopping trigger. Agent must NOT turn this into 'Buy mom a card' or 'Buy mom flowers'.",
-          "evidence_email_ids": ["msg_mom_1"],
-          "category": "out_of_lane_personal"
+          "evidence_email_ids": [
+            "msg_mom_1"
+          ],
+          "category": "out_of_lane_personal",
+          "valid_until": null,
+          "profile_md_lines": [],
+          "mailbox_json_lines": [],
+          "calendar_json_lines": []
         },
         {
           "id": "aditi_skip_profile_only_wishlist",
           "summary": "Profile lists 6 active wishlist items (Loewe Puzzle bag, AirPods Max next-gen, Theragun Mini, Le Creuset Dutch oven cerise 4.5L, Nothing Phone 3, Nicobar olive linen shirts). The wishlist alone is NOT a trigger — without a sale-alert / price-drop / restock email or a web_search-verified price drop, the agent must NOT surface 'Buy <wishlist item> — wishlist item' style nudges.",
-          "category": "profile_only_no_trigger"
+          "category": "profile_only_no_trigger",
+          "valid_until": null,
+          "profile_md_lines": [],
+          "mailbox_json_lines": [],
+          "calendar_json_lines": []
         }
       ],
       "expected_preference_topics": [],
-      "notes": "Friday May 1 (Labor Day, WFH). Slice contains exactly 3 emails — none is a shopping trigger. Mailbox history is dominated by Swiggy food orders + bills + travel; zero sale-alert / price-drop / restock / cart / abandoned-cart / brand-newsletter emails. Profile names a rich wishlist and explicitly tracks Myntra EORS / ShopBop / Amazon Great Indian Festival / Apple back-to-school, but none of those events is firing today and no related email exists. Correct behaviour is silence on tasks. The four expected_skips are the four most-likely-confusion failure modes to test specificity: (a) admin email rephrased as a buy, (b) FYI rephrased as a buy, (c) social email rephrased as a gifting buy, (d) profile-only wishlist nudge with no trigger."
+      "notes": "Friday May 1 (Labor Day, WFH). Slice contains exactly 3 emails — none is a shopping trigger. Mailbox history is dominated by Swiggy food orders + bills + travel; zero sale-alert / price-drop / restock / cart / abandoned-cart / brand-newsletter emails. Profile names a rich wishlist and explicitly tracks Myntra EORS / ShopBop / Amazon Great Indian Festival / Apple back-to-school, but none of those events is firing today and no related email exists. Correct behaviour is silence on tasks. The four expected_skips are the four most-likely-confusion failure modes to test specificity. NOTE: a future deep-research run for Aditi (see backend/eval/deep_research_prompts.md → Shopping Prompt 8) will populate expected_tasks here with current Loewe / AirPods Max / etc. statuses."
     },
-
     {
       "slug": "arjun",
       "mode": "BACKFILL",
@@ -44,53 +65,162 @@
         {
           "id": "arjun_skip_mitali_breakfast",
           "summary": "Mitali's 'Sunday Breakfast Idea — Flurys?' is a personal/social invitation. Not a shopping trigger; no wishlist item involved. Agent must NOT turn this into 'Buy a brunch gift card for Mitali' or similar.",
-          "evidence_email_ids": ["msg_9995f6f04ae9"],
-          "category": "out_of_lane_personal"
+          "evidence_email_ids": [
+            "msg_9995f6f04ae9"
+          ],
+          "category": "out_of_lane_personal",
+          "valid_until": null,
+          "profile_md_lines": [],
+          "mailbox_json_lines": [],
+          "calendar_json_lines": []
         },
         {
           "id": "arjun_skip_sudipto_bridge",
           "summary": "Sudipto's Saturday bridge invitation is a social plan. Not a shopping trigger; no wishlist item involved.",
-          "evidence_email_ids": ["msg_bbeb109a3ff1"],
-          "category": "out_of_lane_personal"
+          "evidence_email_ids": [
+            "msg_bbeb109a3ff1"
+          ],
+          "category": "out_of_lane_personal",
+          "valid_until": null,
+          "profile_md_lines": [],
+          "mailbox_json_lines": [],
+          "calendar_json_lines": []
         },
         {
           "id": "arjun_skip_profile_only_wishlist",
           "summary": "Profile lists wishlist items (Leica Q3 camera, a Satyajit Ray first edition, Bose noise-cancelling headphones, a specific Baroda-based artist's piece). Mailbox has zero sale-alert / price-drop / restock / brand-newsletter / cart emails. Without a trigger event, the agent must NOT surface buy nudges from the wishlist alone.",
-          "category": "profile_only_no_trigger"
+          "category": "profile_only_no_trigger",
+          "valid_until": null,
+          "profile_md_lines": [],
+          "mailbox_json_lines": [],
+          "calendar_json_lines": []
         }
       ],
       "expected_preference_topics": [],
       "notes": "BACKFILL — onboarded today. Empty calendar. Mailbox is filled with gallery business (Kalakriti framing-status updates, Rina/modernart show invitations, art-collector price-list inquiries), bills (Jio / Airtel / CESC), Swiggy food orders (Flurys / Amber / Kareem's), India Art Fair tickets, an Air India Kolkata→London ticket, and a Taj Mahal Palace Mumbai booking. Zero shopping-domain emails — no Myntra, no Amazon-sale, no Loewe / Apple / Bose / Leica brand newsletters, no abandoned-cart mails. There is no shopping cadence to mine, so expected_preference_topics is intentionally empty: a BACKFILL preference_update that simply restates the profile's wishlist (without quantitative email evidence) is not a topic hit. Tasks empty — no triggers in slice or history. Expected_skips test specificity against the two personal-invitation emails and the temptation to surface profile-only wishlist nudges."
     },
-
     {
       "slug": "devendra",
       "mode": "BACKFILL",
-      "expected_tasks": [],
+      "expected_tasks": [
+        {
+          "id": "devendra_buy_wilson_golf_set",
+          "summary": "Buy the Wilson Profile XD Men's Graphite Complete Set from Golf Mart India at ₹49,490 — best current price for an all-graphite beginner-suitable configuration. Profile says he's considering taking up golf; the all-graphite shaft is biomechanically appropriate for a 55-year-old beginner.",
+          "category": "wishlist_buy_now_web_verified",
+          "as_of": "2026-05-02",
+          "valid_until": "2026-08-02",
+          "source_url": "https://golfmartindia.com/product/wilson-profile-xd-mens-graphite-complete-golf-set/",
+          "notes": "Sourced from Gemini Deep Research (Shopping Prompt 10). Comparable retailers price it ₹55K–59K, so Golf Mart India is the best current arbitrage. Re-verify in Aug 2026.",
+          "profile_md_lines": [],
+          "mailbox_json_lines": [],
+          "calendar_json_lines": []
+        },
+        {
+          "id": "devendra_buy_vortex_binoculars",
+          "summary": "Buy Vortex Diamondback HD 10x42 binoculars from Fotocart at ₹28,000 — best current price; HD multi-coated optics are well-matched to live cricket viewing under day-night floodlight transitions. Profile lists 'high-quality binoculars for cricket matches' on wishlist.",
+          "category": "wishlist_buy_now_web_verified",
+          "as_of": "2026-05-02",
+          "valid_until": "2026-08-02",
+          "source_url": "https://fotocart.in/products/vortex-optics-diamondback-10x42-roof-prism-binocular-b004803ytw",
+          "notes": "Bushnell Legend (~₹35,921 incl GST) and Nikon Monarch M7 (~₹45,950) are the alternates. Vortex hits the optimal price/optics intersection. Re-verify in Aug 2026.",
+          "profile_md_lines": [],
+          "mailbox_json_lines": [],
+          "calendar_json_lines": []
+        },
+        {
+          "id": "devendra_buy_iphone_17",
+          "summary": "Buy the iPhone 17 (256GB) from Apple India at ₹82,900 — current flagship on A19 silicon. Profile says he buys the latest iPhone but only uses basic apps; the baseline 17 (not 17 Pro) matches that usage and the 17e is a step-down with weaker thermal/neural specs.",
+          "category": "wishlist_buy_now_web_verified",
+          "as_of": "2026-05-02",
+          "valid_until": "2026-09-01",
+          "source_url": "https://www.apple.com/in/shop/buy-iphone/iphone-17",
+          "notes": "iPhone 18 expected Sept 2026 — once announced, the 17's price will move and this expectation should be re-pulled. Trade-in via Apple's program adds ₹3.1K–₹62.7K depending on legacy device.",
+          "profile_md_lines": [],
+          "mailbox_json_lines": [],
+          "calendar_json_lines": []
+        },
+        {
+          "id": "devendra_buy_jadeblue_spring_summer_sale",
+          "summary": "Buy traditional ethnic wear from Jade Blue's active Spring Summer Sale (up to 50% off). Profile lists Jade Blue as a primary brand (formals + festive). Use prepaid online for an additional 5% structural discount.",
+          "category": "active_sale_window_web_verified",
+          "as_of": "2026-05-02",
+          "valid_until": "2026-07-31",
+          "source_url": "https://jadeblue.com/pages/sale",
+          "notes": "Spring Summer Sale window is currently active — confirmed end date varies by year, conservatively assume late July. Jade Blue's regional retail strategy uses aggressive mid-year liquidation, contrasted with Manyavar's Diwali-only discount window.",
+          "profile_md_lines": [],
+          "mailbox_json_lines": [],
+          "calendar_json_lines": []
+        }
+      ],
       "expected_skips": [
         {
           "id": "devendra_skip_nilesh_audit",
           "summary": "Nilesh's 'Final review of FY25 Audit' email is professional work correspondence. Not a shopping trigger; no wishlist item involved.",
-          "evidence_email_ids": ["fix_msg_1"],
-          "category": "out_of_lane_work"
+          "evidence_email_ids": [
+            "fix_msg_1"
+          ],
+          "category": "out_of_lane_work",
+          "valid_until": null,
+          "profile_md_lines": [],
+          "mailbox_json_lines": [],
+          "calendar_json_lines": []
+        },
+        {
+          "id": "devendra_skip_world_cup_2027_tickets_not_on_sale",
+          "summary": "Do NOT surface 'Buy ICC World Cup 2027 tickets' or any tickets-on-sale buy task today — the official ballot has not opened (typically opens 12–18 months before tournament; tournament is Oct/Nov 2027 in Africa). Pre-registration with travel syndicates is itself NOT a shopping buy action. Wait for the public ballot.",
+          "category": "wishlist_not_yet_purchasable",
+          "as_of": "2026-05-02",
+          "valid_until": "2027-10-01",
+          "source_url": "https://www.icc-cricket.com/",
+          "notes": "Profile bucket-list: live cricket at Lord's / MCG. London-Jul-2026 trip already includes a booked match. The 2027 World Cup is the next bucket-list opportunity but not on sale yet. Re-evaluate when ICC announces ballot dates.",
+          "profile_md_lines": [],
+          "mailbox_json_lines": [],
+          "calendar_json_lines": []
+        },
+        {
+          "id": "devendra_skip_manyavar_sale_outside_window",
+          "summary": "Do NOT surface 'Buy from Manyavar pre-Diwali sale' today. Manyavar runs a strict scarcity model and discounts only open in late Sept / early Oct 2026. Today is May — far outside the sale window. Defer.",
+          "category": "sale_outside_window",
+          "as_of": "2026-05-02",
+          "valid_until": "2026-09-15",
+          "source_url": "https://www.manyavar.com/en-in/men/new-arrivals",
+          "notes": "Re-evaluate around 2026-09-15 when Manyavar's pre-Diwali window typically opens.",
+          "profile_md_lines": [],
+          "mailbox_json_lines": [],
+          "calendar_json_lines": []
+        },
+        {
+          "id": "devendra_skip_ijs_jewellery_exhibition_as_shopping_buy",
+          "summary": "Do NOT surface 'Buy at IJS Ahmedabad jewellery exhibition (Jun 26–28, 2026)' as a shopping-agent task. Attending an exhibition is calendar/events lane; the actual buy decision happens at the booth. Shopping agent should NOT pre-create a buy nudge for an exhibition that hasn't started.",
+          "category": "out_of_lane_event",
+          "as_of": "2026-05-02",
+          "valid_until": "2026-06-28",
+          "source_url": "https://namasteindiaevents.com/india-jewellery-show",
+          "notes": "Could become a calendar/events expected_task; stays a skip in shopping until a specific item-to-buy is identified.",
+          "profile_md_lines": [],
+          "mailbox_json_lines": [],
+          "calendar_json_lines": []
         },
         {
           "id": "devendra_skip_profile_only_wishlist",
-          "summary": "Profile lists wishlist items (a new set of golf clubs, premium next-World-Cup cricket tickets, high-quality cricket binoculars). Mailbox has zero sale-alert / price-drop / restock / brand-newsletter / cart emails. Without a trigger event, the agent must NOT surface buy nudges from the wishlist alone.",
-          "category": "profile_only_no_trigger"
+          "summary": "Profile lists wishlist items beyond what deep research surfaced (e.g. specific HDFC Diners Club Black points-eligible items). For wishlist items WITHOUT a current sale-alert / price-drop / restock email AND WITHOUT a web_search-verified buy-now status, the agent must NOT surface buy nudges from the wishlist alone. Only the four web-verified items above (golf set, binoculars, iPhone 17, Jade Blue sale) are valid triggers today.",
+          "category": "profile_only_no_trigger",
+          "valid_until": null,
+          "profile_md_lines": [],
+          "mailbox_json_lines": [],
+          "calendar_json_lines": []
         }
       ],
       "expected_preference_topics": [],
-      "notes": "BACKFILL — onboarded today. Empty calendar. Mailbox: bills (Airtel postpaid, Torrent Power), food orders (Swati Snacks, Iscon Gathiya), Cricinfo IPL Updates newsletter (informational, not a buy trigger), travel bookings (Air India AMD↔EWR, Indigo AMD↔BOM, Palitana retreat), and one work email from Nilesh. Zero shopping-domain emails. No cadence to mine. Tasks should be empty. Expected_skips test specificity against the work email and the temptation to surface profile-only wishlist nudges."
+      "notes": "BACKFILL — empty calendar. Mailbox: bills (Airtel postpaid, Torrent Power), food orders (Swati Snacks, Iscon Gathiya), Cricinfo IPL Updates newsletter (informational, not a buy trigger), travel bookings (Air India AMD↔EWR, Indigo AMD↔BOM, Palitana retreat), and one work email from Nilesh. Zero shopping-domain emails. The expected_tasks below are sourced from a Gemini Deep Research run on 2026-05-02 (see backend/eval/deep_research_prompts.md → Shopping Prompt 10 → 'Result' block). They depend on web_search hitting the same retailer pages — re-verify when valid_until expires. Expected_skips test specificity: (a) work email reframed as buy, (b) future-dated ticket sales, (c) future-dated brand sales, (d) exhibition reframed as buy, (e) profile-only fallback for items not in the deep-research set."
     },
-
     {
       "slug": "meera",
       "mode": "BACKFILL",
       "expected_tasks": [],
       "expected_skips": [],
       "expected_preference_topics": [],
-      "notes": "Profile-only persona — Meera has not granted Gmail or Calendar access. Empty mailbox + empty fixture + empty calendar. Correct behaviour is total silence: 0 tasks, 0 preference_updates. Even though the profile is rich with wishlist items (3M Littmann Cardiology IV stethoscope, iPad Air with Pencil, Skechers Arch Fit, Laneige Lip Sleeping Mask, Anuv Jain Mumbai concert ticket) and explicitly tracked sales (Nykaa Pink Friday, H&M EOSS, Amazon Great Indian Festival, Decathlon clearance), the shopping agent's BACKFILL job depends on email evidence — there is none to mine. Profile alone is not a trigger."
+      "notes": "Profile-only persona — Meera has not granted Gmail or Calendar access. Empty mailbox + empty fixture + empty calendar. Correct behaviour is total silence: 0 tasks, 0 preference_updates. Even though the profile is rich with wishlist items (3M Littmann Cardiology IV stethoscope, iPad Air with Pencil, Skechers Arch Fit, Laneige Lip Sleeping Mask, Anuv Jain Mumbai concert ticket) and explicitly tracked sales (Nykaa Pink Friday, H&M EOSS, Amazon Great Indian Festival, Decathlon clearance), the shopping agent's BACKFILL job depends on email evidence — there is none to mine. Profile alone is not a trigger. NOTE: a future deep-research run for Meera (see backend/eval/deep_research_prompts.md → Shopping Prompt 11) may populate expected_tasks once we accept that web_search is also a valid trigger source for stipend-friendly items."
     }
   ]
 }

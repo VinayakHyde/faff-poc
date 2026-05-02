@@ -31,163 +31,230 @@
       "BACKFILL": "mine 6 months of calendar history via tools; tasks unlikely unless something falls in next 48h"
     }
   },
-
   "personas": [
     {
       "slug": "aditi",
       "mode": "STEADY-STATE",
       "fixture_path": "backend/data/users/aditi/fixtures/2026-05-01.json",
       "fixture_summary": "Today = Fri 2026-05-01. Calendar window contains: Fri 20:00 Date Night at Toit (Indiranagar, walking distance), Sat 16:00 Pottery (Indiranagar), Sun 08:00 Yoga (Indiranagar), Sun 11:00 Brunch at Glen's (Indiranagar). Outside 48h: Mon Standup (skippable), Tue Sprint Planning at ETV, Wed Design Review at ETV, Thu Leadership Sync. Gmail: mom check-in, HR holiday FYI, Dad forwarding insurance renewal.",
-
       "expected_tasks": [],
       "expected_tasks_note": "All in-window events are recurring routines at walking-distance venues in Indiranagar — no leave-now warranted, no prep materials referenced, no conflicts, no pending RSVPs, no event just ended. The right behaviour is silence. ETV-based meetings (Sprint Planning, Design Review, Leadership Sync) are outside the today+48h window for tasks, so they belong in expected_skips, not expected_tasks.",
-
       "expected_skips": [
         {
           "id": "aditi_skip_insurance_renewal_as_calendar_block",
           "summary": "Do NOT reframe Dad's forwarded ICICI Lombard insurance renewal email as a calendar reminder/block. Insurance/bill due-dates belong to the finance agent, not a calendar event.",
-          "evidence_email_ids": ["msg_dad_1"],
+          "evidence_email_ids": [
+            "msg_dad_1"
+          ],
           "category": "off_lane_finance",
-          "notes": "Common failure mode: any 'do X by Y' admin email gets converted into a calendar reminder. Calendar agent's lane discipline must hold."
+          "notes": "Common failure mode: any 'do X by Y' admin email gets converted into a calendar reminder. Calendar agent's lane discipline must hold.",
+          "valid_until": null,
+          "profile_md_lines": [],
+          "mailbox_json_lines": [],
+          "calendar_json_lines": []
         },
         {
           "id": "aditi_skip_hr_holiday_block",
           "summary": "Do NOT create a calendar block for the May 1 office-holiday HR email. It's a pure FYI announcement, the day is already today, and there is no event-prep / leave-now / RSVP / follow-up action.",
-          "evidence_email_ids": ["msg_hr_1"],
-          "category": "fyi_no_action"
+          "evidence_email_ids": [
+            "msg_hr_1"
+          ],
+          "category": "fyi_no_action",
+          "valid_until": null,
+          "profile_md_lines": [],
+          "mailbox_json_lines": [],
+          "calendar_json_lines": []
         },
         {
           "id": "aditi_skip_mom_call_event",
           "summary": "Do NOT schedule a 'call with mom' calendar event from her relational check-in. Reply nudges for personal emails are email_triage's lane; the user can choose to schedule a call themselves but the calendar agent shouldn't pre-create the event.",
-          "evidence_email_ids": ["msg_mom_1"],
-          "category": "off_lane_email"
+          "evidence_email_ids": [
+            "msg_mom_1"
+          ],
+          "category": "off_lane_email",
+          "valid_until": null,
+          "profile_md_lines": [],
+          "mailbox_json_lines": [],
+          "calendar_json_lines": []
         },
         {
           "id": "aditi_skip_toit_walking_leave_now",
           "summary": "Do NOT emit a leave-now alert for tonight's 20:00 Date Night at Toit Indiranagar. Profile states 12th Main is walking distance to Toit — there is no travel-time computation that produces a meaningful leave-by alert.",
-          "evidence_event_ids": ["ev_may1_date"],
+          "evidence_event_ids": [
+            "ev_may1_date"
+          ],
           "category": "walking_distance",
-          "notes": "Tempting because Date Night is a marquee event today. The skip is correct because location + profile rule out travel-time alerts."
+          "notes": "Tempting because Date Night is a marquee event today. The skip is correct because location + profile rule out travel-time alerts.",
+          "valid_until": null,
+          "profile_md_lines": [],
+          "mailbox_json_lines": [],
+          "calendar_json_lines": []
         },
         {
           "id": "aditi_skip_pottery_filler_reminder",
           "summary": "Do NOT surface a generic 'Saturday 4pm pottery class' reminder. It is a long-running weekly routine (week 7 of 12 per profile) at a 5-minute walk in Indiranagar; restating the calendar fails the 'concrete action + specific reason' bar.",
-          "evidence_event_ids": ["ev_561abd2fe028"],
-          "category": "filler_routine"
+          "evidence_event_ids": [
+            "ev_561abd2fe028"
+          ],
+          "category": "filler_routine",
+          "valid_until": null,
+          "profile_md_lines": [],
+          "mailbox_json_lines": [],
+          "calendar_json_lines": []
         },
         {
           "id": "aditi_skip_yoga_filler_reminder",
           "summary": "Do NOT surface a generic 'Sunday 8am yoga at SARVA Studio' reminder. Established weekly routine, walking distance, no prep, no conflict.",
-          "evidence_event_ids": ["ev_540946863ce8"],
-          "category": "filler_routine"
+          "evidence_event_ids": [
+            "ev_540946863ce8"
+          ],
+          "category": "filler_routine",
+          "valid_until": null,
+          "profile_md_lines": [],
+          "mailbox_json_lines": [],
+          "calendar_json_lines": []
         },
         {
           "id": "aditi_skip_brunch_filler_reminder",
           "summary": "Do NOT surface a 'Sunday brunch at Glen's' reminder. Walking distance, recurring social ritual, no concrete calendar action.",
-          "evidence_event_ids": ["ev_may3_brunch"],
-          "category": "filler_routine"
+          "evidence_event_ids": [
+            "ev_may3_brunch"
+          ],
+          "category": "filler_routine",
+          "valid_until": null,
+          "profile_md_lines": [],
+          "mailbox_json_lines": [],
+          "calendar_json_lines": []
         },
         {
           "id": "aditi_skip_standup_skippable_reminder",
           "summary": "Do NOT push a Mon 10am engineering-standup reminder. Profile explicitly marks it skippable, the event is over Google Meet (no leave-now), and Mon is outside the today+48h window from Fri.",
-          "evidence_event_ids": ["ev_may4_standup"],
-          "category": "outside_window_or_filler"
+          "evidence_event_ids": [
+            "ev_may4_standup"
+          ],
+          "category": "outside_window_or_filler",
+          "valid_until": null,
+          "profile_md_lines": [],
+          "mailbox_json_lines": [],
+          "calendar_json_lines": []
         },
         {
           "id": "aditi_skip_sprint_planning_friday_for_tuesday",
           "summary": "Do NOT generate a Friday leave-now or prep alert for Tuesday's 11am Sprint Planning at Embassy Tech Village. Tuesday is 4 days out — outside the today+48h window. Leave-by alerts fire on the day, not days in advance.",
-          "evidence_event_ids": ["ev_0248e337c228"],
+          "evidence_event_ids": [
+            "ev_0248e337c228"
+          ],
           "category": "outside_window",
-          "notes": "ETV is ~25 min from Indiranagar so a leave-now alert IS the canonical case for this event — but only when fired on the day itself, not pre-emptively from Friday."
+          "notes": "ETV is ~25 min from Indiranagar so a leave-now alert IS the canonical case for this event — but only when fired on the day itself, not pre-emptively from Friday.",
+          "valid_until": null,
+          "profile_md_lines": [],
+          "mailbox_json_lines": [],
+          "calendar_json_lines": []
         },
         {
           "id": "aditi_skip_design_review_friday_for_wednesday",
           "summary": "Do NOT emit a Wednesday design-review prep nudge today (Friday). Outside the today+48h window for tasks; the prep nudge is correct only on Wed itself, 30–60 min before 16:00.",
-          "evidence_event_ids": ["ev_may6_design"],
-          "category": "outside_window"
+          "evidence_event_ids": [
+            "ev_may6_design"
+          ],
+          "category": "outside_window",
+          "valid_until": null,
+          "profile_md_lines": [],
+          "mailbox_json_lines": [],
+          "calendar_json_lines": []
         },
         {
           "id": "aditi_skip_leadership_sync_friday_for_thursday",
           "summary": "Do NOT emit a Thursday leadership-sync alert today. Outside today+48h window; bi-weekly recurring meeting requires no advance prep from the agent.",
-          "evidence_event_ids": ["ev_may7_sync"],
-          "category": "outside_window"
+          "evidence_event_ids": [
+            "ev_may7_sync"
+          ],
+          "category": "outside_window",
+          "valid_until": null,
+          "profile_md_lines": [],
+          "mailbox_json_lines": [],
+          "calendar_json_lines": []
         }
       ],
-
       "expected_preference_topics": [
         "karan.r@karman.in is a Karman tech-team attendee — a colleague named Karan, distinct from partner Karan Malhotra"
       ],
       "expected_preference_topics_note": "Stretch expectation. The slice introduces karan.r@karman.in as a Sprint-Planning attendee — a name collision with her partner Karan that's worth saving so future runs don't conflate the two. Calendar agent's preference-update remit explicitly covers 'frequent attendees and what's discussed.' Borderline case: a strong agent surfaces this; a weaker one stays silent. Both are defensible — the topic just measures attendee-disambiguation capability."
     },
-
     {
       "slug": "arjun",
       "mode": "BACKFILL",
       "fixture_path": "backend/data/users/arjun/fixtures/2026-05-01.json",
       "fixture_summary": "Onboarded today (2026-05-01) → BACKFILL mode. Calendar fixture is empty, calendar.json history is empty. Gmail slice has 2 personal emails: Sudipto inviting Arjun to Saturday bridge, Mitali (wife) suggesting Sunday breakfast at Flurys.",
-
       "expected_tasks": [],
       "expected_tasks_note": "BACKFILL with no historical calendar data and no in-window events to act on. The two emails are inbound social-coordination — they belong to email_triage. Calendar agent should stay silent on tasks.",
-
       "expected_skips": [
         {
           "id": "arjun_skip_bridge_calendar_block",
           "summary": "Do NOT preemptively create a Saturday bridge calendar event from Sudipto's invitation. Replying with yes/no/time is email_triage's job; the event materialises only after confirmation. Calendar agent must not pre-create speculative events.",
-          "evidence_email_ids": ["msg_bbeb109a3ff1"],
-          "category": "off_lane_email"
+          "evidence_email_ids": [
+            "msg_bbeb109a3ff1"
+          ],
+          "category": "off_lane_email",
+          "valid_until": null,
+          "profile_md_lines": [],
+          "mailbox_json_lines": [],
+          "calendar_json_lines": []
         },
         {
           "id": "arjun_skip_sunday_breakfast_calendar_block",
           "summary": "Do NOT preemptively create a Sunday-breakfast-at-Flurys event from Mitali's email. Spousal coordination over email → email_triage. The event is created only when the time is mutually agreed.",
-          "evidence_email_ids": ["msg_9995f6f04ae9"],
-          "category": "off_lane_email"
+          "evidence_email_ids": [
+            "msg_9995f6f04ae9"
+          ],
+          "category": "off_lane_email",
+          "valid_until": null,
+          "profile_md_lines": [],
+          "mailbox_json_lines": [],
+          "calendar_json_lines": []
         }
       ],
-
       "expected_preference_topics": [],
       "expected_preference_topics_note": "Backfill of a brand-new persona with empty calendar.json. The calendar_search tool returns no historical events, so there are no recurring meetings, time-of-day patterns, or frequent attendees to extract. Inferring patterns from the profile markdown alone (Mon 12:00 staff briefing, Wed 15:00 artists, Fri 18:00 sitar, Sat 18:30 Saturday Club) is the wrong move — those are already in the profile, and the calendar agent should not echo them back as preference updates. Correct behaviour: zero preference updates."
     },
-
     {
       "slug": "devendra",
       "mode": "STEADY-STATE",
       "fixture_path": "backend/data/users/devendra/fixtures/2026-05-01.json",
       "fixture_summary": "Steady-state (onboarded 2026-01-20). Calendar fixture is empty. Gmail slice has one work email from Nilesh: 'Final review of FY25 Audit — Discuss tomorrow?'",
-
       "expected_tasks": [],
       "expected_tasks_note": "No calendar events in the slice → no event-driven actions possible. The Nilesh email is a vague time request; replying to propose a slot is email_triage. The calendar agent does not pre-create speculative events from such emails.",
-
       "expected_skips": [
         {
           "id": "devendra_skip_audit_calendar_block",
           "summary": "Do NOT block a calendar slot for 'Discuss FY25 audit with Nilesh tomorrow' based on the email alone. There is no agreed time, no event, and no leave-now / prep / RSVP / follow-up action. Replying to coordinate is email_triage; the event is created when the time is fixed.",
-          "evidence_email_ids": ["fix_msg_1"],
+          "evidence_email_ids": [
+            "fix_msg_1"
+          ],
           "category": "off_lane_email",
-          "notes": "Tempting because the audit is high-priority and the email mentions 'tomorrow' — but pre-emptive event creation from vague time requests is exactly the lane discipline the calendar prompt forbids."
+          "notes": "Tempting because the audit is high-priority and the email mentions 'tomorrow' — but pre-emptive event creation from vague time requests is exactly the lane discipline the calendar prompt forbids.",
+          "valid_until": null,
+          "profile_md_lines": [],
+          "mailbox_json_lines": [],
+          "calendar_json_lines": []
         }
       ],
-
       "expected_preference_topics": [],
       "expected_preference_topics_note": "Empty calendar slice + 1 email with no calendar pattern in it. Nothing for the calendar agent to extract."
     },
-
     {
       "slug": "meera",
       "mode": "BACKFILL",
       "fixture_path": "backend/data/users/meera/fixtures/2026-05-01.json",
       "fixture_summary": "Onboarded today (2026-05-01) → BACKFILL. Calendar fixture, calendar.json, and mailbox are all empty. Profile explicitly states Meera has not granted Gmail/Calendar access yet — the assistant works profile-only until she does.",
-
       "expected_tasks": [],
       "expected_tasks_note": "Total silence is the correct output. No events, no emails, no history to mine. This persona tests that the calendar agent does not hallucinate tasks from the profile alone — the profile is human-authored standing context, not a source of calendar candidate tasks.",
-
       "expected_skips": [],
       "expected_skips_note": "No tempting items in the slice — there is nothing in the slice. This persona is a pure silence test.",
-
       "expected_preference_topics": [],
       "expected_preference_topics_note": "Empty calendar history → calendar_search returns nothing → no patterns to extract. The profile already encodes Tue 8:30 Grand Rounds, Thu 14:00 Departmental Seminar, last-Sat M&M meeting; the calendar agent should NOT re-emit these as preference updates because (a) they're already in the profile and (b) no calendar event has confirmed them."
     }
   ],
-
   "evaluation_method": {
     "task_alignment": "For each actual task the agent surfaces, the LLM judge classifies it as one of: matches an expected_task (TP), matches an expected_skip (skip violation — double-bad FP), or unexpected (plain FP). Matching is semantic — title + action + rationale should align with the expected summary. For tasks tied to a specific event/email, evidence_event_ids / evidence_email_ids in the expected item are the provenance check.",
     "surface_time_check": "For TP tasks, verify that the agent's suggested_surface_time falls inside the window in scope.surface_time_rules for the matched category (e.g. a leave_now_alert TP must have suggested_surface_time within 5–15 min before computed leave-by). Out-of-window timing on an otherwise-correct task is a partial failure — recorded separately from precision/recall.",

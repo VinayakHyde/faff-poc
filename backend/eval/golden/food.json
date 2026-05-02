@@ -11,26 +11,43 @@
         {
           "id": "aditi_skip_mom_email",
           "summary": "Mom's relational check-in is not a food task — it's email_triage's lane.",
-          "evidence_email_ids": ["msg_mom_1"],
-          "category": "out_of_lane_personal"
+          "evidence_email_ids": [
+            "msg_mom_1"
+          ],
+          "category": "out_of_lane_personal",
+          "valid_until": null,
+          "profile_md_lines": [],
+          "mailbox_json_lines": [],
+          "calendar_json_lines": []
         },
         {
           "id": "aditi_skip_hr_holiday",
           "summary": "HR Labor Day FYI announcement — no food action; not for the food agent.",
-          "evidence_email_ids": ["msg_hr_1"],
-          "category": "out_of_lane_fyi"
+          "evidence_email_ids": [
+            "msg_hr_1"
+          ],
+          "category": "out_of_lane_fyi",
+          "valid_until": null,
+          "profile_md_lines": [],
+          "mailbox_json_lines": [],
+          "calendar_json_lines": []
         },
         {
           "id": "aditi_skip_dad_insurance",
           "summary": "Dad's insurance renewal email is admin/finance, not food. food.py prompt calls this out explicitly as a skip.",
-          "evidence_email_ids": ["msg_dad_1"],
-          "category": "out_of_lane_admin"
+          "evidence_email_ids": [
+            "msg_dad_1"
+          ],
+          "category": "out_of_lane_admin",
+          "valid_until": null,
+          "profile_md_lines": [],
+          "mailbox_json_lines": [],
+          "calendar_json_lines": []
         }
       ],
       "expected_preference_topics": [],
       "notes": "Friday May 1 (Labor Day, WFH). Profile food patterns are all satisfied by today's calendar: Friday date-night → Toit already booked 20:00; Sunday brunch → Glen's already booked May 3. Wednesday-14:00 Meghana's biryani fires on May 6, not today. No food signal in slice. Correct behaviour is silence on tasks — the persona tests lane discipline against three out-of-lane emails."
     },
-
     {
       "slug": "arjun",
       "mode": "BACKFILL",
@@ -39,14 +56,26 @@
         {
           "id": "arjun_skip_mitali_flurys",
           "summary": "Mitali's 'Sunday Breakfast Idea — Flurys?' email is a personal/social invitation that goes to email_triage. Food agent must NOT convert this into a 'Order Flurys this Sunday' task — the recurring Sunday-9am Flurys pattern fires on its own day-of-week trigger.",
-          "evidence_email_ids": ["msg_9995f6f04ae9"],
-          "category": "in_domain_looking_sender_off_domain_intent"
+          "evidence_email_ids": [
+            "msg_9995f6f04ae9"
+          ],
+          "category": "in_domain_looking_sender_off_domain_intent",
+          "valid_until": null,
+          "profile_md_lines": [],
+          "mailbox_json_lines": [],
+          "calendar_json_lines": []
         },
         {
           "id": "arjun_skip_sudipto_bridge",
           "summary": "Sudipto's Saturday bridge invitation is social, not food — even though Saturday Club has snacks/drinks, the food agent should not surface anything off this email.",
-          "evidence_email_ids": ["msg_bbeb109a3ff1"],
-          "category": "out_of_lane_personal"
+          "evidence_email_ids": [
+            "msg_bbeb109a3ff1"
+          ],
+          "category": "out_of_lane_personal",
+          "valid_until": null,
+          "profile_md_lines": [],
+          "mailbox_json_lines": [],
+          "calendar_json_lines": []
         }
       ],
       "expected_preference_topics": [
@@ -55,7 +84,6 @@
       ],
       "notes": "BACKFILL — onboarded today. Empty calendar. Mailbox shows two clean recurring patterns the agent should mine and emit as preference_updates with quantitative confidence (order counts + day-of-week + ~time). Profile narrative already mentions both restaurants but the BACKFILL job is to confirm cadence from email evidence. No grocery/Instamart emails exist in mailbox so no staple-cadence preferences are expected. Tasks should be empty: today is Friday, profile has no Friday food pattern, and even Mitali's Flurys mention should be skipped (social invitation, not an order trigger)."
     },
-
     {
       "slug": "devendra",
       "mode": "BACKFILL",
@@ -64,8 +92,14 @@
         {
           "id": "devendra_skip_nilesh_audit",
           "summary": "Nilesh's FY25 audit-review email is professional work correspondence, not food — even though it says 'Discuss tomorrow?' it is not a meal/order signal.",
-          "evidence_email_ids": ["fix_msg_1"],
-          "category": "out_of_lane_work"
+          "evidence_email_ids": [
+            "fix_msg_1"
+          ],
+          "category": "out_of_lane_work",
+          "valid_until": null,
+          "profile_md_lines": [],
+          "mailbox_json_lines": [],
+          "calendar_json_lines": []
         }
       ],
       "expected_preference_topics": [
@@ -74,7 +108,6 @@
       ],
       "notes": "BACKFILL — onboarded today. Empty calendar. Two clean weekend ordering patterns in mailbox: Swati Snacks every ~quarter on Saturday evening and Iscon Gathiya every ~quarter on Sunday morning. Profile narrative mentions both but email confirms specific dishes + cadence. No tasks expected — today is Friday, profile has no Friday food pattern, no in-slice food signal."
     },
-
     {
       "slug": "meera",
       "mode": "BACKFILL",
