@@ -15,7 +15,7 @@
           ],
           "category": "bill_due_nudge",
           "notes": "Tempting failure mode is to surface this as a 'reply to dad' (email_triage's lane) or a calendar block. Finance correctly owns this because the underlying content is an insurance-renewal money action, regardless of the personal sender wrapping it.",
-          "valid_until": null,
+          "valid_until": "2026-05-15",
           "profile_md_lines": [
             148,
             150,
@@ -49,7 +49,7 @@
             "msg_mom_1"
           ],
           "category": "off_lane_personal",
-          "valid_until": null,
+          "valid_until": "2026-05-09",
           "profile_md_lines": [
             129
           ],
@@ -78,7 +78,7 @@
             "msg_hr_1"
           ],
           "category": "off_lane_fyi",
-          "valid_until": null,
+          "valid_until": "2026-05-01",
           "profile_md_lines": [
             129
           ],
@@ -107,7 +107,7 @@
             "msg_91b20b117edc"
           ],
           "category": "stale_bill",
-          "valid_until": null,
+          "valid_until": "2026-05-15",
           "profile_md_lines": [
             76
           ],
@@ -136,7 +136,7 @@
             "msg_981ae79ae147"
           ],
           "category": "stale_bill",
-          "valid_until": null,
+          "valid_until": "2026-05-10",
           "profile_md_lines": [
             140
           ],
@@ -165,7 +165,7 @@
             "msg_ca7fc25f5a85"
           ],
           "category": "stale_bill",
-          "valid_until": null,
+          "valid_until": "2026-05-20",
           "profile_md_lines": [
             104
           ],
@@ -281,7 +281,7 @@
             "msg_dad_1"
           ],
           "category": "wrong_action_verb",
-          "valid_until": null,
+          "valid_until": "2026-05-15",
           "profile_md_lines": [
             129
           ],
@@ -316,7 +316,7 @@
           "summary": "Do NOT surface the April CESC electricity bill (received 2026-04-05, due ~April 15, account 8892) as a current task. Today is May 1 — its due date passed 16 days ago; the May bill hasn't arrived yet (will arrive ~May 5).",
           "evidence_email_ids": [],
           "category": "stale_bill",
-          "valid_until": null,
+          "valid_until": "2026-05-15",
           "profile_md_lines": [
             123
           ],
@@ -328,7 +328,7 @@
           "summary": "Do NOT surface April's Airtel Postpaid bill as a current task. Past its nudge window; May bill not yet in inbox.",
           "evidence_email_ids": [],
           "category": "stale_bill",
-          "valid_until": null,
+          "valid_until": "2026-05-10",
           "profile_md_lines": [
             126
           ],
@@ -340,7 +340,7 @@
           "summary": "Do NOT surface April's JioFiber bill as a current task. Past its nudge window.",
           "evidence_email_ids": [],
           "category": "stale_bill",
-          "valid_until": null,
+          "valid_until": "2026-05-15",
           "profile_md_lines": [
             96
           ],
@@ -354,7 +354,7 @@
             "msg_bbeb109a3ff1"
           ],
           "category": "off_lane_personal",
-          "valid_until": null,
+          "valid_until": "2026-05-02",
           "profile_md_lines": [
             118
           ],
@@ -383,7 +383,7 @@
             "msg_9995f6f04ae9"
           ],
           "category": "off_lane_personal",
-          "valid_until": null,
+          "valid_until": "2026-05-03",
           "profile_md_lines": [
             32,
             44
@@ -411,7 +411,7 @@
           "summary": "Do NOT surface the Taj Mumbai booking confirmation as a finance task. Travel itinerary belongs to the travel agent.",
           "evidence_email_ids": [],
           "category": "off_lane_travel",
-          "valid_until": null,
+          "valid_until": "2026-06-15",
           "profile_md_lines": [
             73
           ],
@@ -461,7 +461,7 @@
           "summary": "Do NOT surface the March Torrent Power electricity bill (received 2026-03-10, due ~March 20) as a current task. The most recent Torrent Power email is more than 50 days old — well past any useful nudge window.",
           "evidence_email_ids": [],
           "category": "stale_bill",
-          "valid_until": null,
+          "valid_until": "2026-05-20",
           "profile_md_lines": [
             117
           ],
@@ -473,7 +473,7 @@
           "summary": "Do NOT surface the March Airtel Postpaid bill (received 2026-03-05) as a current task. Past its nudge window by ~50 days.",
           "evidence_email_ids": [],
           "category": "stale_bill",
-          "valid_until": null,
+          "valid_until": "2026-05-10",
           "profile_md_lines": [
             118
           ],
@@ -487,7 +487,7 @@
             "fix_msg_1"
           ],
           "category": "off_lane_work",
-          "valid_until": null,
+          "valid_until": "2026-05-09",
           "profile_md_lines": [
             7
           ],
@@ -540,7 +540,7 @@
           "summary": "Do NOT surface the AMD-BOM flight ticket confirmation as a finance task. Flight bookings belong to the travel agent.",
           "evidence_email_ids": [],
           "category": "off_lane_travel",
-          "valid_until": null,
+          "valid_until": "2026-05-31",
           "profile_md_lines": [
             72
           ],
@@ -560,7 +560,7 @@
           "evidence_email_ids": [],
           "category": "bill_due_nudge_profile_fallback",
           "notes": "This is the canonical profile-only fallback case: the persona has clear bill metadata in the profile but no inbox to mine, so the agent must lean on the profile to nudge meaningful bills. Profile also explicitly says 'Money / bill due reminders 2 days before' work on her — a 2-day-out surface time is the right call.",
-          "valid_until": null,
+          "valid_until": "2026-05-04",
           "profile_md_lines": [
             127,
             132,

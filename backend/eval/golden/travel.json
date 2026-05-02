@@ -17,7 +17,7 @@
             "msg_643a96ca0bf5"
           ],
           "category": "premature_hotel_nudge",
-          "valid_until": null,
+          "valid_until": "2026-06-15",
           "profile_md_lines": [
             85,
             88,
@@ -48,7 +48,7 @@
             "msg_48caafeb4ab8"
           ],
           "category": "premature_hotel_nudge",
-          "valid_until": null,
+          "valid_until": "2026-06-15",
           "profile_md_lines": [
             85,
             88
@@ -135,7 +135,7 @@
           "id": "aditi_skip_japan_premature",
           "summary": "Profile mentions Japan trip with Karan in October 2026 (calendar block confirms). Trip is >5 months away. No travel actions appropriate.",
           "category": "premature_calendar_block",
-          "valid_until": null,
+          "valid_until": "2026-09-15",
           "profile_md_lines": [
             86,
             89
@@ -214,7 +214,7 @@
             "msg_279d949744ee"
           ],
           "category": "premature_hotel_nudge",
-          "valid_until": null,
+          "valid_until": "2026-05-25",
           "profile_md_lines": [
             81
           ],
@@ -389,7 +389,7 @@
             "msg_mumbai_1"
           ],
           "category": "ambiguous_date_no_imminent_signal",
-          "valid_until": null,
+          "valid_until": "2026-05-31",
           "profile_md_lines": [
             76
           ],

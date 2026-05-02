@@ -14,7 +14,7 @@
             "msg_aditi_qspec_out"
           ],
           "category": "self_made_deliverable_commitment",
-          "valid_until": null,
+          "valid_until": "2026-05-04",
           "profile_md_lines": [
             7,
             77
@@ -29,7 +29,7 @@
             "msg_aditi_photos_out"
           ],
           "category": "self_made_deliverable_commitment",
-          "valid_until": null,
+          "valid_until": "2026-05-03",
           "profile_md_lines": [
             103
           ],
@@ -45,7 +45,7 @@
             "msg_dad_1"
           ],
           "category": "lane_bleed_finance",
-          "valid_until": null,
+          "valid_until": "2026-05-15",
           "profile_md_lines": [
             150
           ],
@@ -74,7 +74,7 @@
             "msg_mom_1"
           ],
           "category": "lane_bleed_email_triage",
-          "valid_until": null,
+          "valid_until": "2026-05-09",
           "profile_md_lines": [
             1
           ],
@@ -103,7 +103,7 @@
             "msg_hr_1"
           ],
           "category": "fyi_no_commitment",
-          "valid_until": null,
+          "valid_until": "2026-05-01",
           "profile_md_lines": [
             1
           ],
@@ -130,7 +130,7 @@
           "summary": "Karan's email 'Let me know if you are up for it' is an inbound coordination message, not a self-made Aditi commitment. Replying is email_triage. Must NOT be reframed as 'Follow up with Karan on 1:1'.",
           "category": "lane_bleed_email_triage",
           "notes": "From mailbox, msg dated 2026-04-28. Tempting because it has a 'let me know' phrasing, but the speaker is Karan, not the user.",
-          "valid_until": null,
+          "valid_until": "2026-05-09",
           "profile_md_lines": [
             102,
             106
@@ -175,7 +175,7 @@
             "msg_arjun_pricelist_out"
           ],
           "category": "self_made_deliverable_commitment",
-          "valid_until": null,
+          "valid_until": "2026-05-04",
           "profile_md_lines": [
             146
           ],
@@ -203,7 +203,7 @@
             "msg_arjun_rina_overdue"
           ],
           "category": "overdue_self_commitment_checkin",
-          "valid_until": null,
+          "valid_until": "2026-05-15",
           "profile_md_lines": [
             128
           ],
@@ -233,7 +233,7 @@
             "msg_bbeb109a3ff1"
           ],
           "category": "lane_bleed_email_triage",
-          "valid_until": null,
+          "valid_until": "2026-05-02",
           "profile_md_lines": [
             118
           ],
@@ -262,7 +262,7 @@
             "msg_9995f6f04ae9"
           ],
           "category": "lane_bleed_email_triage",
-          "valid_until": null,
+          "valid_until": "2026-05-03",
           "profile_md_lines": [
             32,
             44,
@@ -301,7 +301,7 @@
           "id": "arjun_skip_taj_booking",
           "summary": "Taj Mahal Palace Mumbai booking confirmation is a travel reservation — belongs to travel agent. No Arjun-side commitment with a deliverable. Must NOT appear as a todo.",
           "category": "lane_bleed_travel",
-          "valid_until": null,
+          "valid_until": "2026-06-15",
           "profile_md_lines": [
             1
           ],
@@ -336,7 +336,7 @@
             "msg_devendra_audit_out"
           ],
           "category": "self_made_deliverable_commitment",
-          "valid_until": null,
+          "valid_until": "2026-05-04",
           "profile_md_lines": [
             19,
             33
@@ -365,7 +365,7 @@
             "msg_devendra_hetal_overdue"
           ],
           "category": "overdue_self_commitment_checkin",
-          "valid_until": null,
+          "valid_until": "2026-05-15",
           "profile_md_lines": [
             90,
             146
@@ -396,7 +396,7 @@
             "fix_msg_1"
           ],
           "category": "lane_bleed_email_triage_or_calendar",
-          "valid_until": null,
+          "valid_until": "2026-05-09",
           "profile_md_lines": [
             1
           ],
@@ -432,7 +432,7 @@
           "id": "devendra_skip_indigo_mumbai",
           "summary": "IndiGo AMD-BOM e-ticket is a travel booking — travel agent's lane. Must NOT manufacture a 'Deliver Mumbai conference prep' todo from a flight ticket.",
           "category": "lane_bleed_travel",
-          "valid_until": null,
+          "valid_until": "2026-05-31",
           "profile_md_lines": [
             81
           ],

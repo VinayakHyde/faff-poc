@@ -42,7 +42,7 @@
             "msg_mom_1"
           ],
           "category": "off_lane_email_triage",
-          "valid_until": null,
+          "valid_until": "2026-05-09",
           "profile_md_lines": [
             179
           ],
@@ -71,7 +71,7 @@
             "msg_dad_1"
           ],
           "category": "off_lane_finance",
-          "valid_until": null,
+          "valid_until": "2026-05-15",
           "profile_md_lines": [
             150,
             193
@@ -98,7 +98,7 @@
           "id": "aditi_skip_riya_belated",
           "summary": "Do NOT surface a belated birthday wish for Riya (April 22, 9 days past). Belated wishes are not the agent's job — lead window for messages is 1–2 days BEFORE or on the day morning. The moment has passed.",
           "category": "outside_lead_window_past",
-          "valid_until": null,
+          "valid_until": "2026-05-22",
           "profile_md_lines": [
             103,
             104
@@ -110,7 +110,7 @@
           "id": "aditi_skip_mom_birthday_too_early",
           "summary": "Do NOT pre-emptively surface Mom Sunita's birthday (August 23) today. It is ~115 days out — outside the 5–7 day gift window. Surfacing it now is padding.",
           "category": "outside_lead_window_too_early",
-          "valid_until": null,
+          "valid_until": "2026-08-15",
           "profile_md_lines": [
             96
           ],
@@ -121,7 +121,7 @@
           "id": "aditi_skip_karva_chauth_too_early",
           "summary": "Do NOT surface a Karva Chauth reminder today. Karva Chauth falls in October — far outside any festival lead window.",
           "category": "outside_lead_window_too_early",
-          "valid_until": null,
+          "valid_until": "2026-10-01",
           "profile_md_lines": [
             107
           ],
@@ -135,7 +135,7 @@
             "msg_hr_1"
           ],
           "category": "fyi_no_action",
-          "valid_until": null,
+          "valid_until": "2026-05-01",
           "profile_md_lines": [
             1
           ],
@@ -175,7 +175,7 @@
             "msg_bbeb109a3ff1"
           ],
           "category": "off_lane_email_triage",
-          "valid_until": null,
+          "valid_until": "2026-05-30",
           "profile_md_lines": [
             118
           ],
@@ -204,7 +204,7 @@
             "msg_9995f6f04ae9"
           ],
           "category": "off_lane_email_triage",
-          "valid_until": null,
+          "valid_until": "2026-05-30",
           "profile_md_lines": [
             32,
             44
@@ -231,7 +231,7 @@
           "id": "arjun_skip_mom_birthday_too_early",
           "summary": "Do NOT surface Mom Bela's birthday (May 15) today. It is 14 days out — outside the 5–7 day local gift window. The task should fire on May 8–10, not May 1.",
           "category": "outside_lead_window_too_early",
-          "valid_until": null,
+          "valid_until": "2026-05-08",
           "profile_md_lines": [
             91
           ],
@@ -242,7 +242,7 @@
           "id": "arjun_skip_durga_puja_too_early",
           "summary": "Do NOT surface a Durga Puja reminder today. Durga Puja is in October — far outside any festival lead window (~5 months out).",
           "category": "outside_lead_window_too_early",
-          "valid_until": null,
+          "valid_until": "2026-10-07",
           "profile_md_lines": [
             95,
             165
@@ -254,7 +254,7 @@
           "id": "arjun_skip_anniversary_too_early",
           "summary": "Do NOT surface Mitali + Arjun's anniversary (Feb 4) today. Outside any lead window — surface only in late January next cycle.",
           "category": "outside_lead_window_too_early",
-          "valid_until": null,
+          "valid_until": "2027-01-28",
           "profile_md_lines": [
             93
           ],
@@ -265,7 +265,7 @@
           "id": "arjun_skip_poila_baisakh_past",
           "summary": "Do NOT surface a belated Poila Baisakh reminder. Poila Baisakh was April 14 (17 days past). Belated festival greetings are not the agent's job.",
           "category": "outside_lead_window_past",
-          "valid_until": null,
+          "valid_until": "2027-04-01",
           "profile_md_lines": [
             96
           ],
@@ -297,7 +297,7 @@
             "fix_msg_1"
           ],
           "category": "off_lane_email_triage",
-          "valid_until": null,
+          "valid_until": "2026-05-09",
           "profile_md_lines": [
             7
           ],
@@ -322,7 +322,7 @@
           "id": "devendra_skip_krish_belated",
           "summary": "Do NOT surface a belated birthday wish for Krish (April 10, 21 days past). Belated wishes are not the agent's job; the message window is 1–2 days BEFORE or on the day.",
           "category": "outside_lead_window_past",
-          "valid_until": null,
+          "valid_until": "2026-05-10",
           "profile_md_lines": [
             89
           ],
@@ -333,7 +333,7 @@
           "id": "devendra_skip_paryushan_too_early",
           "summary": "Do NOT surface a Paryushan reminder today. Paryushan falls in August/September — far outside the festival lead window from May 1.",
           "category": "outside_lead_window_too_early",
-          "valid_until": null,
+          "valid_until": "2026-08-25",
           "profile_md_lines": [
             92
           ],
@@ -344,7 +344,7 @@
           "id": "devendra_skip_diwali_too_early",
           "summary": "Do NOT surface a Diwali / Vikram Samvat reminder today. Both fall in November — ~6 months out, far outside any lead window.",
           "category": "outside_lead_window_too_early",
-          "valid_until": null,
+          "valid_until": "2026-10-25",
           "profile_md_lines": [
             93
           ],
@@ -355,7 +355,7 @@
           "id": "devendra_skip_hetal_birthday_too_early",
           "summary": "Do NOT surface Hetal's birthday (Oct 5) today. ~5 months out — outside the 5–7 day gift window.",
           "category": "outside_lead_window_too_early",
-          "valid_until": null,
+          "valid_until": "2026-09-28",
           "profile_md_lines": [
             87
           ],
@@ -389,7 +389,7 @@
           "id": "meera_skip_parents_anniversary_too_early",
           "summary": "Do NOT surface Parents' wedding anniversary (May 22) today. 21 days out — outside the 5–7 day gift window. Surface closer to the date.",
           "category": "outside_lead_window_too_early",
-          "valid_until": null,
+          "valid_until": "2026-05-15",
           "profile_md_lines": [
             101
           ],
@@ -400,7 +400,7 @@
           "id": "meera_skip_onam_too_early",
           "summary": "Do NOT surface an Onam reminder today. Onam falls in August/September — ~3+ months out.",
           "category": "outside_lead_window_too_early",
-          "valid_until": null,
+          "valid_until": "2026-08-20",
           "profile_md_lines": [
             91
           ],
@@ -411,7 +411,7 @@
           "id": "meera_skip_vishu_belated",
           "summary": "Do NOT surface a belated Vishu greeting. Vishu was April 14 (17 days past). Belated festival nudges are not the agent's job.",
           "category": "outside_lead_window_past",
-          "valid_until": null,
+          "valid_until": "2027-04-01",
           "profile_md_lines": [
             105
           ],

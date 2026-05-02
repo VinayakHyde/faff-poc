@@ -15,7 +15,7 @@
           ],
           "category": "personal_social_emotional",
           "notes": "Profile says Aditi tends to drop non-urgent personal emails — a nudge fits her stated tendency.",
-          "valid_until": null,
+          "valid_until": "2026-05-09",
           "profile_md_lines": [
             179,
             193
@@ -47,7 +47,7 @@
             "msg_hr_1"
           ],
           "category": "fyi_announcement",
-          "valid_until": null,
+          "valid_until": "2026-05-01",
           "profile_md_lines": [
             78
           ],
@@ -76,7 +76,7 @@
             "msg_dad_1"
           ],
           "category": "admin_from_family_sender",
-          "valid_until": null,
+          "valid_until": "2026-05-15",
           "profile_md_lines": [
             179
           ],
@@ -112,7 +112,7 @@
             "msg_bbeb109a3ff1"
           ],
           "category": "personal_social_emotional",
-          "valid_until": null,
+          "valid_until": "2026-05-02",
           "profile_md_lines": [
             118
           ],
@@ -141,7 +141,7 @@
             "msg_9995f6f04ae9"
           ],
           "category": "personal_social_emotional",
-          "valid_until": null,
+          "valid_until": "2026-05-03",
           "profile_md_lines": [
             32,
             44
@@ -185,7 +185,7 @@
             "fix_msg_1"
           ],
           "category": "professional_work_correspondence",
-          "valid_until": null,
+          "valid_until": "2026-05-09",
           "profile_md_lines": [
             7
           ],
