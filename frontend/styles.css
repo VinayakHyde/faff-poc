@@ -362,6 +362,73 @@ body:not(.has-persona) .profile-panel {
   border-radius: 4px;
 }
 
+/* ---------------- shimmer overlay for items present in any agent's golden set ---------------- */
+
+@keyframes golden-shim-pulse {
+  0%, 100% { box-shadow: 0 0 0 1px rgba(255,196,77,0.55), 0 0 10px rgba(255,196,77,0.18); }
+  50%      { box-shadow: 0 0 0 1px rgba(255,224,138,0.85), 0 0 22px rgba(255,196,77,0.45); }
+}
+@keyframes golden-shim-sheen {
+  0%   { background-position: -180% 0; }
+  100% { background-position:  280% 0; }
+}
+.golden-shim {
+  position: relative;
+  overflow: visible !important;
+  border-color: rgba(255,196,77,0.55) !important;
+  margin-top: 22px !important;
+  animation: golden-shim-pulse 6s ease-in-out infinite;
+}
+.golden-shim::after {
+  content: "";
+  pointer-events: none;
+  position: absolute; inset: 0;
+  border-radius: inherit;
+  background: linear-gradient(110deg,
+    transparent 35%,
+    rgba(255,232,170,0.10) 48%,
+    rgba(255,232,170,0.22) 50%,
+    rgba(255,232,170,0.10) 52%,
+    transparent 65%);
+  background-size: 220% 100%;
+  animation: golden-shim-sheen 8s linear infinite;
+  mix-blend-mode: screen;
+}
+/* Profile-section variant: needs explicit padding + radius since it wraps
+   raw markdown nodes (h2 + p + ul + …) rather than an existing card. */
+.profile-shim-section {
+  border: 1px solid rgba(255,196,77,0.55);
+  border-radius: 10px;
+  padding: 4px 16px 14px;
+  margin: 32px 0 18px !important;
+  background: rgba(255,196,77,0.035);
+}
+.profile-shim-section > h2 {
+  margin-top: 8px !important;
+  border-bottom: 1px solid rgba(255,196,77,0.25) !important;
+}
+
+.golden-shim-tag {
+  position: absolute;
+  top: -10px;
+  right: 8px;
+  max-width: calc(100% - 16px);
+  background: linear-gradient(90deg, #c9892b, #f3c456 55%, #fde79a);
+  color: #1a1306;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.4px;
+  text-transform: uppercase;
+  padding: 2px 9px;
+  border-radius: 999px;
+  border: 1px solid rgba(255,232,170,0.7);
+  box-shadow: 0 1px 3px rgba(0,0,0,0.35), 0 0 8px rgba(255,196,77,0.35);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  z-index: 2;
+}
+
 /* ---------------- golden tab ---------------- */
 
 .golden-summary {
@@ -536,12 +603,15 @@ body:not(.has-persona) .profile-panel {
 
 .run-panel {
   flex-direction: column;
-  overflow: hidden;
-  background: var(--bg);
+  overflow-y: auto;          /* run-panel is the single scroll container */
+  overflow-x: hidden;
+  background: var(--panel);  /* match input-area so no awkward gap below */
 }
 .input-area {
+  flex: 1 0 auto;            /* stretch to fill space when nothing follows */
+  display: flex;
+  flex-direction: column;
   padding: 16px 20px;
-  border-bottom: 1px solid var(--border);
   background: var(--panel);
 }
 .input-area .input-label {
@@ -555,6 +625,10 @@ body:not(.has-persona) .profile-panel {
 
 /* JSON editor card — always-dark VS Code-ish look, regardless of app theme */
 .editor-card {
+  flex: 1;                  /* fill the input-area when it has stretched */
+  display: flex;
+  flex-direction: column;
+  min-height: 280px;
   border-radius: 8px;
   overflow: hidden;
   border: 1px solid #3a3a3a;
@@ -574,11 +648,11 @@ body:not(.has-persona) .profile-panel {
 .editor-filename { color: #ccc; }
 .editor-hint { color: #888; font-size: 10px; }
 .editor-pre {
+  flex: 1;                              /* fill the editor-card height */
   margin: 0;
   background: #2d2d2d !important;       /* override prism-tomorrow theme bg */
   padding: 0 !important;
-  max-height: 280px;
-  min-height: 100px;
+  min-height: 200px;
   overflow: auto;
 }
 #daily-input-editor {
@@ -599,11 +673,21 @@ body:not(.has-persona) .profile-panel {
   color: #666;
   font-style: italic;
 }
-.input-actions {
-  margin-top: 8px;
+.action-bar {
+  position: sticky;
+  top: 0;
+  z-index: 5;
   display: flex;
   gap: 12px;
   align-items: center;
+  padding: 10px 20px;
+  background: var(--panel);
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  flex-shrink: 0;
+}
+.action-bar.is-stuck {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
 }
 #run-btn {
   background: var(--accent);
@@ -751,6 +835,7 @@ body:not(.has-persona) .profile-panel {
   padding: 16px 20px;
   border-bottom: 1px solid var(--border);
   background: var(--panel);
+  flex-shrink: 0;
 }
 .final-tasks h3 {
   font-size: 11px;
@@ -778,9 +863,8 @@ body:not(.has-persona) .profile-panel {
 /* ---------------- trace stream ---------------- */
 
 .trace-stream {
-  flex: 1;
-  overflow-y: auto;
   padding: 16px 20px;
+  flex-shrink: 0;
 }
 .trace-stream h3 {
   font-size: 11px;

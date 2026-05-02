@@ -82,30 +82,31 @@
             </div>
             <pre class="editor-pre"><code id="daily-input-editor" class="language-json" spellcheck="false"></code></pre>
           </div>
-          <div class="input-actions">
-            <button id="run-btn" disabled>Simulate daily cron job</button>
-            <span id="run-status" class="run-status muted"></span>
-            <div class="filter-dropdown" id="filter-dropdown">
-              <button class="filter-trigger" id="filter-trigger" type="button" aria-haspopup="true" aria-expanded="false">
-                <svg class="filter-icon" viewBox="0 0 16 16" aria-hidden="true">
-                  <path fill="currentColor" d="M2 3h12l-4.5 6v4l-3 1V9z"/>
-                </svg>
-                <span class="filter-trigger-label">Filter output</span>
-                <span class="filter-count" id="filter-count">12</span>
-                <svg class="filter-chevron" viewBox="0 0 12 12" aria-hidden="true">
-                  <path fill="none" stroke="currentColor" stroke-width="1.5" d="M3 4.5l3 3 3-3"/>
-                </svg>
-              </button>
-              <div class="filter-popover" id="filter-popover" hidden>
-                <div class="filter-popover-header">
-                  <span class="filter-popover-title">Show agents</span>
-                  <div class="filter-popover-actions">
-                    <button class="filter-link" id="filter-all" type="button">All</button>
-                    <button class="filter-link" id="filter-none" type="button">None</button>
-                  </div>
+        </div>
+
+        <div class="action-bar" id="action-bar">
+          <button id="run-btn" disabled>Simulate daily cron job</button>
+          <span id="run-status" class="run-status muted"></span>
+          <div class="filter-dropdown" id="filter-dropdown">
+            <button class="filter-trigger" id="filter-trigger" type="button" aria-haspopup="true" aria-expanded="false">
+              <svg class="filter-icon" viewBox="0 0 16 16" aria-hidden="true">
+                <path fill="currentColor" d="M2 3h12l-4.5 6v4l-3 1V9z"/>
+              </svg>
+              <span class="filter-trigger-label">Filter output</span>
+              <span class="filter-count" id="filter-count">12</span>
+              <svg class="filter-chevron" viewBox="0 0 12 12" aria-hidden="true">
+                <path fill="none" stroke="currentColor" stroke-width="1.5" d="M3 4.5l3 3 3-3"/>
+              </svg>
+            </button>
+            <div class="filter-popover" id="filter-popover" hidden>
+              <div class="filter-popover-header">
+                <span class="filter-popover-title">Show agents</span>
+                <div class="filter-popover-actions">
+                  <button class="filter-link" id="filter-all" type="button">All</button>
+                  <button class="filter-link" id="filter-none" type="button">None</button>
                 </div>
-                <div class="filter-popover-body" id="filter-toggles"></div>
               </div>
+              <div class="filter-popover-body" id="filter-toggles"></div>
             </div>
           </div>
         </div>

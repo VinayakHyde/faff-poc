@@ -52,9 +52,23 @@ let jsonEditor = null;
   initJsonEditor();
   buildFilterBar();
   initTabs();
+  initStickyActionBar();
   await loadPersonas();
   $("#run-btn").addEventListener("click", runStream);
 })();
+
+// Toggle .is-stuck on the action-bar when it pins to the top of the run-panel
+// scroll. Uses the classic IntersectionObserver "shrink root by 1px" trick.
+function initStickyActionBar() {
+  const bar = document.getElementById("action-bar");
+  const panel = document.querySelector(".run-panel");
+  if (!bar || !panel || !("IntersectionObserver" in window)) return;
+  const obs = new IntersectionObserver(
+    ([entry]) => bar.classList.toggle("is-stuck", entry.intersectionRatio < 1),
+    { root: panel, threshold: [1], rootMargin: "-1px 0px 0px 0px" }
+  );
+  obs.observe(bar);
+}
 
 // ---- JSON editor (CodeJar + Prism) ----
 
@@ -213,7 +227,10 @@ async function selectPersona(slug) {
 
 async function loadProfile(slug) {
   try {
-    const profile = await fetchJSON(`/api/personas/${slug}`);
+    const [profile, golden] = await Promise.all([
+      fetchJSON(`/api/personas/${slug}`),
+      ensureGoldenMap(slug),
+    ]);
     $("#profile-empty").hidden = true;
     $("#profile-content-wrapper").hidden = false;
 
@@ -225,10 +242,45 @@ async function loadProfile(slug) {
       `${profile.meta.neighbourhood}, ${profile.meta.city}  ·  onboarded ${profile.meta.onboarded_at}`;
 
     $("#tab-profile").innerHTML = marked.parse(profile.markdown);
+    applyShimToProfileSections(golden.items);
   } catch (err) {
     $("#profile-empty").hidden = false;
     $("#profile-content-wrapper").hidden = true;
     $("#profile-empty").textContent = `failed: ${err.message}`;
+  }
+}
+
+// Walk every h2 section in the rendered profile markdown. For each, gather
+// the section's text (heading + following siblings until the next h2) and
+// run the heuristic match. If any agent's expected_task summary shares a
+// 4+ char token with the section text, wrap the section in a `golden-shim`
+// div with the agent labels as a tag.
+function applyShimToProfileSections(goldenItems) {
+  const root = $("#tab-profile");
+  if (!root || !goldenItems.length) return;
+  const h2s = [...root.querySelectorAll("h2")];
+  for (let i = 0; i < h2s.length; i++) {
+    const h2 = h2s[i];
+    const next = h2s[i + 1] || null;
+    const sectionNodes = [h2];
+    let cur = h2.nextSibling;
+    while (cur && cur !== next) {
+      sectionNodes.push(cur);
+      cur = cur.nextSibling;
+    }
+    const sectionText = sectionNodes.map((n) => n.textContent || "").join(" ");
+    const agents = matchAgentsByText(sectionText, goldenItems);
+    if (!agents.size) continue;
+    const wrap = document.createElement("div");
+    wrap.className = "golden-shim profile-shim-section";
+    h2.parentNode.insertBefore(wrap, h2);
+    sectionNodes.forEach((n) => wrap.appendChild(n));
+    const tag = document.createElement("span");
+    tag.className = "golden-shim-tag";
+    const labels = [...agents].map(agentLabel);
+    tag.textContent = labels.join(" · ");
+    tag.title = `In golden set of: ${labels.join(", ")}`;
+    wrap.appendChild(tag);
   }
 }
 
@@ -259,12 +311,16 @@ async function loadFixtureIntoInput(slug) {
 async function loadEmailTab(slug) {
   const wrap = $("#tab-email");
   if (state.emailCache.has(slug)) {
-    renderEmailTab(state.emailCache.get(slug));
+    const golden = await ensureGoldenMap(slug);
+    renderEmailTab(state.emailCache.get(slug), golden.emailMap);
     return;
   }
   wrap.innerHTML = `<div class="email-empty">loading…</div>`;
   try {
-    const r = await fetch(`/api/personas/${slug}/mailbox`);
+    const [r, golden] = await Promise.all([
+      fetch(`/api/personas/${slug}/mailbox`),
+      ensureGoldenMap(slug),
+    ]);
     if (!r.ok) {
       wrap.innerHTML = `<div class="email-empty">No mailbox for this persona — they haven't granted Gmail access.</div>`;
       state.emailCache.set(slug, []);
@@ -273,22 +329,82 @@ async function loadEmailTab(slug) {
     const data = await r.json();
     const messages = data.messages || [];
     state.emailCache.set(slug, messages);
-    renderEmailTab(messages);
+    renderEmailTab(messages, golden.emailMap);
   } catch (err) {
     wrap.innerHTML = `<div class="email-empty">failed to load: ${escapeHtml(err.message)}</div>`;
   }
 }
 
-function renderEmailTab(messages) {
+// Pull the persona's golden set (cached). Returns {items, emailMap} where
+// items is filtered to expected_task only (skips would be noise here — we
+// want "agents that ACT on this thing", not "agents that decided to ignore
+// it") and emailMap is email_id → Set<agent> for the inline-tag lookup.
+async function ensureGoldenMap(slug) {
+  if (!state.goldenCache.has(slug)) {
+    try {
+      const r = await fetch(`/api/personas/${slug}/golden`);
+      if (r.ok) state.goldenCache.set(slug, await r.json());
+      else state.goldenCache.set(slug, { items: [], agents: [] });
+    } catch {
+      state.goldenCache.set(slug, { items: [], agents: [] });
+    }
+  }
+  const all = state.goldenCache.get(slug).items || [];
+  const items = all.filter((i) => i.kind === "expected_task");
+  const emailMap = new Map();
+  for (const item of items) {
+    for (const eid of item.evidence_email_ids || []) {
+      if (!emailMap.has(eid)) emailMap.set(eid, new Set());
+      emailMap.get(eid).add(item.agent);
+    }
+  }
+  return { items, emailMap };
+}
+
+// Heuristic word-overlap match: does any expected_task summary share a
+// meaningful word (≥4 chars) with the given haystack text? Used for
+// calendar events + profile sections where the schema doesn't yet carry
+// explicit evidence ids.
+function matchAgentsByText(haystack, items) {
+  const norm = (s) => (s || "").toLowerCase();
+  const tokens = (s) =>
+    norm(s).split(/[^\w]+/).filter((w) => w.length >= 4);
+  const haystackTokens = new Set(tokens(haystack));
+  if (!haystackTokens.size) return new Set();
+  const agents = new Set();
+  for (const item of items) {
+    const itemTokens = tokens(`${item.summary} ${item.category || ""}`);
+    if (itemTokens.some((t) => haystackTokens.has(t))) agents.add(item.agent);
+  }
+  return agents;
+}
+
+// Apply the shim class + tag to a card-shaped element.
+function applyShim(el, agents) {
+  if (!agents || !agents.size) return;
+  el.classList.add("golden-shim");
+  const tag = document.createElement("span");
+  tag.className = "golden-shim-tag";
+  const labels = [...agents].map(agentLabel);
+  tag.textContent = labels.join(" · ");
+  tag.title = `In golden set of: ${labels.join(", ")}`;
+  el.appendChild(tag);
+}
+
+function renderEmailTab(messages, goldenMap = new Map()) {
   const wrap = $("#tab-email");
   if (!messages.length) {
     wrap.innerHTML = `<div class="email-empty">No emails yet — this persona is profile-only (no Gmail connected).</div>`;
     return;
   }
-  // Newest first.
-  const sorted = [...messages].sort((a, b) =>
-    (b.received_at || "").localeCompare(a.received_at || "")
-  );
+  // Sort: golden-shimmed ones first (so the shimmer is visible without scrolling),
+  // then newest-first within each group.
+  const sorted = [...messages].sort((a, b) => {
+    const aGolden = goldenMap.has(a.id) ? 0 : 1;
+    const bGolden = goldenMap.has(b.id) ? 0 : 1;
+    if (aGolden !== bGolden) return aGolden - bGolden;
+    return (b.received_at || "").localeCompare(a.received_at || "");
+  });
 
   wrap.innerHTML = "";
   const search = document.createElement("input");
@@ -300,7 +416,7 @@ function renderEmailTab(messages) {
   const list = document.createElement("div");
   wrap.appendChild(list);
 
-  const cards = sorted.map((m) => buildEmailCard(m));
+  const cards = sorted.map((m) => buildEmailCard(m, goldenMap.get(m.id)));
   cards.forEach((c) => list.appendChild(c));
 
   search.addEventListener("input", () => {
@@ -311,9 +427,10 @@ function renderEmailTab(messages) {
   });
 }
 
-function buildEmailCard(m) {
+function buildEmailCard(m, goldenAgents) {
   const card = document.createElement("div");
   card.className = "email-card";
+  applyShim(card, goldenAgents);
   const haystack =
     `${m.from || ""} ${m.subject || ""} ${m.snippet || ""} ${m.body || ""}`.toLowerCase();
   card.dataset.haystack = haystack;
@@ -350,12 +467,16 @@ function buildEmailCard(m) {
 async function loadCalendarTab(slug) {
   const wrap = $("#tab-calendar");
   if (state.calendarCache.has(slug)) {
-    renderCalendarTab(state.calendarCache.get(slug));
+    const golden = await ensureGoldenMap(slug);
+    renderCalendarTab(state.calendarCache.get(slug), golden.items);
     return;
   }
   wrap.innerHTML = `<div class="calendar-empty">loading…</div>`;
   try {
-    const r = await fetch(`/api/personas/${slug}/calendar`);
+    const [r, golden] = await Promise.all([
+      fetch(`/api/personas/${slug}/calendar`),
+      ensureGoldenMap(slug),
+    ]);
     if (!r.ok) {
       wrap.innerHTML = `<div class="calendar-empty">No calendar for this persona — they haven't granted Calendar access.</div>`;
       state.calendarCache.set(slug, []);
@@ -364,13 +485,13 @@ async function loadCalendarTab(slug) {
     const data = await r.json();
     const events = data.events || [];
     state.calendarCache.set(slug, events);
-    renderCalendarTab(events);
+    renderCalendarTab(events, golden.items);
   } catch (err) {
     wrap.innerHTML = `<div class="calendar-empty">failed to load: ${escapeHtml(err.message)}</div>`;
   }
 }
 
-function renderCalendarTab(events) {
+function renderCalendarTab(events, goldenItems = []) {
   const wrap = $("#tab-calendar");
   if (!events.length) {
     wrap.innerHTML = `<div class="calendar-empty">No calendar events yet — this persona is profile-only.</div>`;
@@ -399,6 +520,10 @@ function renderCalendarTab(events) {
     for (const e of list) {
       const ev = document.createElement("div");
       ev.className = "calendar-event" + (e.all_day ? " all-day" : "");
+      // Heuristic: any expected_task whose summary shares a 4+ char word
+      // with this event's summary or description.
+      const haystack = `${e.summary || ""} ${e.description || ""}`;
+      applyShim(ev, matchAgentsByText(haystack, goldenItems));
       const time = document.createElement("div");
       time.className = "calendar-time";
       const start = String(e.start || "");
@@ -798,9 +923,18 @@ function appendTraceNode(traceEvent, startedAt) {
   node.appendChild(body);
   $("#trace-list").appendChild(node);
 
-  // auto-scroll the stream
-  const stream = $("#trace-stream");
-  stream.scrollTop = stream.scrollHeight;
+  autoScrollRunPanel();
+}
+
+// Smart autoscroll: only follow new traces if the user is already near the
+// bottom. If they've scrolled up to inspect, leave them alone.
+function autoScrollRunPanel() {
+  const panel = document.querySelector(".run-panel");
+  if (!panel) return;
+  const distanceFromBottom = panel.scrollHeight - panel.scrollTop - panel.clientHeight;
+  if (distanceFromBottom < 80) {
+    panel.scrollTop = panel.scrollHeight;
+  }
 }
 
 function appendTraceError(msg) {
