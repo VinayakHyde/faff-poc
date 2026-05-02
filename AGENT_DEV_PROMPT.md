@@ -80,13 +80,26 @@ Be strict. The bar is "what would a careful human assistant for this user actual
 Save as `backend/eval/golden/<agent_name>.json`. Follow the v2 schema in `backend/eval/golden/SCHEMA.md`. Required fields per persona:
 
 - `slug`, `mode`
-- `expected_tasks`: list of `{id, summary, evidence_email_ids?, category?, notes?}`
-- `expected_skips`: list of same shape
+- `expected_tasks`: list of ExpectedItem (see below)
+- `expected_skips`: list of ExpectedItem
 - `expected_preference_topics`: list of short strings
 
-Each `id` must be unique within the file. The `summary` is what the LLM judge will semantically compare against the agent's output, so write it as a description of the task (not the exact wording).
+**ExpectedItem fields** (the schema is shared across `expected_tasks` and `expected_skips`):
+
+- `id` (required) — unique within the file. The judge alignment maps actual-task → this id.
+- `summary` (required) — semantic description; the LLM judge compares actual `title + action + rationale` against this.
+- `evidence_email_ids` (optional) — fixture email / mailbox message ids that ground the expectation.
+- `category` (optional) — per-agent scope label.
+- `as_of` (optional) — ISO date when the underlying real-world fact was sourced. Required when the entry is grounded in live web data (deep-research run output).
+- `valid_until` (optional) — ISO date past which this expectation should NOT be evaluated. The harness filters entries with `valid_until < evaluation_date` and treats them as N/A. Use for any item grounded in time-bound external state (current sale prices, ticket sale windows, festival prep windows). Set to `null` for profile-driven items that don't decay (most items in the email_triage / calendar / dates / finance / todos golden sets).
+- `source_url` (optional) — source link for items grounded in external research; strongly recommended whenever `valid_until` is set.
+- `notes` (optional) — free-text for human reviewers.
+
+**The standard convention:** every entry in every golden file MUST include `valid_until`. Use `null` when the entry doesn't decay; use an ISO date (`"2026-08-02"`) when it does.
 
 Hard rule: don't include items that aren't truly your agent's domain. The golden is *your* call about correctness — be willing to defend each entry.
+
+**For agents that depend on the live web** (currently `events`, `travel`, `shopping`): use the deep-research prompts in `backend/eval/deep_research_prompts.md` to ground `expected_tasks` in real, currently-announced facts. Always include `as_of`, `valid_until`, and `source_url` for those entries. For agents that work entirely off the user's own data (`calendar`, `email_triage`, `finance`, `dates`, `todos`, `food`), most entries will have `valid_until: null`.
 
 ### 4. Write the judge prompt
 
@@ -108,6 +121,8 @@ python -m eval.run <agent_name>
 
 Output: a metrics table per persona + macro-averaged P / R / F1 / Specificity / Pref Coverage. Full alignments dumped to `backend/eval/results/<agent_name>_latest.json`.
 
+The harness filters out any `expected_tasks` / `expected_skips` whose `valid_until` is strictly before `evaluation_date`, and prints a one-line summary per persona when entries are dropped (e.g. `[devendra] filtered expired golden: -2 tasks / -0 skips (valid_until < 2026-09-01)`). When you bump `evaluation_date` forward, expired entries are silently skipped — refresh them by re-running the relevant deep-research prompt and updating `as_of` / `valid_until` / `source_url`.
+
 ### 6. Iterate the prompt
 
 After each run, open `backend/eval/results/<agent_name>_latest.json` and look at:
@@ -122,6 +137,40 @@ After each run, open `backend/eval/results/<agent_name>_latest.json` and look at
 
 After 3 iterations without F1 improvement, stop and write a summary of the remaining failures — likely indicates the scope or the golden need rethinking.
 
+### 7. Line-number provenance (LAST step — only after metrics are at ceiling)
+
+This step is for **human-reviewer auditability**, not the eval harness. The reviewer should be able to open the golden file, pick any expected entry, and immediately know **which lines in which source file** support it — so a future inspector can trace exactly what's contributing to the agent's good (or bad) behaviour.
+
+For every entry in `expected_tasks` and `expected_skips` of the agent's golden file, fill in the three provenance line-number fields:
+
+- **`profile_md_lines`** — line numbers (1-indexed) in `backend/data/users/{slug}/profile.md` that ground this expectation. Empty list if the entry isn't profile-driven.
+- **`mailbox_json_lines`** — line numbers in `backend/data/users/{slug}/mailbox.json` that anchor the email(s) triggering the entry. Empty if no mailbox provenance.
+- **`calendar_json_lines`** — line numbers in `backend/data/users/{slug}/calendar.json` that anchor the event(s) triggering the entry. Empty if no calendar provenance.
+
+Workflow:
+
+1. Open the persona's `profile.md`, `mailbox.json`, `calendar.json` side by side with the golden file.
+2. For each expected entry, identify the **minimum-sufficient** lines in each source file that justify the expectation (typically 1–4 lines per source). Don't dump whole sections — pick the load-bearing lines.
+3. Update the three `*_lines` fields. Empty list (`[]`) is the correct value when a source doesn't apply.
+4. Re-run the eval to confirm the metrics haven't regressed (they shouldn't — these fields are metadata, not eval inputs).
+
+Example after population:
+
+```json
+{
+  "id": "aditi_mom_reply",
+  "summary": "Reply to mom (Sunita) about her relational check-in.",
+  "evidence_email_ids": ["msg_mom_1"],
+  "category": "personal_social_emotional",
+  "profile_md_lines": [121, 195],
+  "mailbox_json_lines": [4, 17],
+  "calendar_json_lines": [],
+  "valid_until": null
+}
+```
+
+This step happens **only after** Step 6 has converged (Macro F1 ≥ 0.85 and Macro Specificity = 1.00). Skipping it leaves the golden harder to audit, but doesn't block eval correctness.
+
 ---
 
 ## Acceptance criteria
@@ -131,6 +180,7 @@ After 3 iterations without F1 improvement, stop and write a summary of the remai
 - Macro precision ≥ 0.80.
 - Vacuous-perfect personas (e.g. Meera if mailbox/calendar empty) score 1.00 on every metric — the agent must stay silent when there's no source data.
 - Each iteration's prompt change is justified by a specific failure in the previous run's alignments.
+- After metrics meet the bar, **Step 7 (line-number provenance) is fully populated** — every entry in `expected_tasks` and `expected_skips` has its `profile_md_lines`, `mailbox_json_lines`, `calendar_json_lines` filled in (empty lists where a source doesn't apply, real line numbers where it does).
 
 ---
 
