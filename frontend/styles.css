@@ -368,24 +368,60 @@ body.resizing { cursor: col-resize; user-select: none; }
   border-bottom: 1px solid var(--border);
   background: var(--panel);
 }
-.input-area label {
+.input-area .input-label {
   display: block;
   font-size: 11px;
   text-transform: uppercase;
   letter-spacing: 0.08em;
   color: var(--muted);
-  margin-bottom: 6px;
+  margin-bottom: 8px;
 }
-#daily-input-json {
-  width: 100%;
-  border: 1px solid var(--border);
-  border-radius: 6px;
-  background: var(--bg);
-  color: var(--text);
-  font-family: ui-monospace, SFMono-Regular, monospace;
+
+/* JSON editor card — always-dark VS Code-ish look, regardless of app theme */
+.editor-card {
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid #3a3a3a;
+  background: #2d2d2d;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+.editor-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #383838;
+  padding: 6px 12px;
   font-size: 11px;
-  padding: 8px;
-  resize: vertical;
+  border-bottom: 1px solid #444;
+  font-family: ui-monospace, SFMono-Regular, monospace;
+}
+.editor-filename { color: #ccc; }
+.editor-hint { color: #888; font-size: 10px; }
+.editor-pre {
+  margin: 0;
+  background: #2d2d2d !important;       /* override prism-tomorrow theme bg */
+  padding: 0 !important;
+  max-height: 280px;
+  min-height: 100px;
+  overflow: auto;
+}
+#daily-input-editor {
+  display: block;
+  outline: none;
+  padding: 10px 12px !important;
+  white-space: pre !important;
+  font-family: ui-monospace, SFMono-Regular, monospace !important;
+  font-size: 11px !important;
+  line-height: 1.5 !important;
+  color: #ddd !important;
+  background: transparent !important;
+  min-height: 80px;
+  caret-color: #ddd;
+}
+#daily-input-editor:empty::before {
+  content: 'paste a daily JSON payload here…';
+  color: #666;
+  font-style: italic;
 }
 .input-actions {
   margin-top: 8px;

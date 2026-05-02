@@ -6,6 +6,8 @@
 // (POST /api/personas/{slug}/run/stream) → trace nodes with per-agent
 // filter toggles → final user-facing task cards.
 
+import { CodeJar } from "https://cdn.jsdelivr.net/npm/codejar@3.7.0/codejar.min.js";
+
 const $ = (sel) => document.querySelector(sel);
 const $$ = (sel) => document.querySelectorAll(sel);
 
@@ -42,13 +44,46 @@ const COMPACT_THRESHOLD = 140; // px below which we collapse to icon-only
 
 // ---- bootstrap ----
 
+let jsonEditor = null;
+
 (async function init() {
   initSidebarResize();
+  initJsonEditor();
   buildFilterBar();
   initTabs();
   await loadPersonas();
   $("#run-btn").addEventListener("click", runStream);
 })();
+
+// ---- JSON editor (CodeJar + Prism) ----
+
+function initJsonEditor() {
+  const el = document.getElementById("daily-input-editor");
+  if (!el || !window.Prism) {
+    console.warn("Prism not loaded; daily-input editor will be plain text.");
+    return;
+  }
+  jsonEditor = CodeJar(
+    el,
+    (editor) => Prism.highlightElement(editor),
+    { tab: "  ", indentOn: /[\[{]$/ }
+  );
+}
+
+function getDailyInputRaw() {
+  if (jsonEditor) return jsonEditor.toString();
+  const el = document.getElementById("daily-input-editor");
+  return el ? el.textContent : "";
+}
+
+function setDailyInput(text) {
+  if (jsonEditor) {
+    jsonEditor.updateCode(text);
+  } else {
+    const el = document.getElementById("daily-input-editor");
+    if (el) el.textContent = text;
+  }
+}
 
 function initSidebarResize() {
   // Restore saved width.
@@ -204,14 +239,14 @@ async function loadFixtureIntoInput(slug) {
       const idx = await fetchJSON(`/api/personas/${slug}/fixtures`);
       const dates = idx.available_dates || [];
       if (dates.length === 0) {
-        $("#daily-input-json").value = "";
+        setDailyInput("");
         return;
       }
       fixture = await fetchJSON(`/api/personas/${slug}/fixtures/${dates[dates.length - 1]}`);
     }
-    $("#daily-input-json").value = JSON.stringify(fixture, null, 2);
+    setDailyInput(JSON.stringify(fixture, null, 2));
   } catch (err) {
-    $("#daily-input-json").value = "";
+    setDailyInput("");
   }
 }
 
@@ -407,7 +442,7 @@ async function runStream() {
   $("#run-btn").disabled = true;
 
   const slug = state.selected;
-  const inputRaw = $("#daily-input-json").value.trim();
+  const inputRaw = getDailyInputRaw().trim();
 
   // Reset trace + final tasks for a fresh run.
   $("#filter-bar").hidden = false;
