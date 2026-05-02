@@ -2,8 +2,8 @@
   "agent": "email_triage",
   "macro_avg": {
     "precision": 0.875,
-    "recall": 0.75,
-    "f1": 0.6666666666666666,
+    "recall": 1.0,
+    "f1": 0.9166666666666666,
     "specificity": 0.875,
     "pref_coverage": 0.725
   },
@@ -32,13 +32,13 @@
             "actual_task_index": 0,
             "matched_id": "aditi_mom_reply",
             "kind": "expected_task",
-            "reasoning": "This clearly matches the expected personal reply to mom's relational check-in. Same sender, same underlying action of replying, and similar social intent. Suggested weekend call is omitted, but the core reply task is present."
+            "reasoning": "This clearly matches the expected task to reply to mom Sunita's relational check-in. The recipient, social context, and reply action all align."
           },
           {
             "actual_task_index": 1,
             "matched_id": "aditi_skip_dad_insurance",
             "kind": "expected_skip",
-            "reasoning": "This corresponds to the dad insurance email, which is explicitly out of scope for email triage because it is family administrative content. The surfaced action is also not a reply/draft/unsubscribe but a reminder-style admin follow-up."
+            "reasoning": "This surfaces Dad's insurance-renewal email, which is family-sender admin. The action is to handle the insurance task, not send a personal/professional/recruiter reply or justified unsubscribe, so it matches the expected skip."
           }
         ],
         "expected_task_misses": [],
@@ -46,7 +46,7 @@
           {
             "id": "aditi_skip_dad_insurance",
             "actual_task_index": 1,
-            "reasoning": "Agent surfaced the dad insurance item even though it is an out-of-scope family admin email. It also framed the action as 'check insurance renewal,' which is a set-a-reminder/review-later style task rather than a valid email-triage reply, draft, or unsubscribe action."
+            "reasoning": "Agent surfaced an out-of-scope family admin item from Dad about insurance renewal. Email triage should not surface this thread as a task."
           }
         ],
         "preference_topic_hits": [],
@@ -55,16 +55,16 @@
       "actual_tasks": [
         {
           "title": "Reply to mom’s check-in",
-          "action": "Send a short reply to Sunita saying you’re doing well and eating properly.",
-          "rationale": "She emailed yesterday just to check in; this is a lightweight relationship-maintenance reply and fits your tendency to let non-urgent personal emails sit.",
-          "suggested_surface_time": "2026-05-01T11:30:00+05:30",
+          "action": "Send Sunita a short reply today saying you’re eating fine and all good.",
+          "rationale": "Her note was just a warm personal check-in (“Thinking of you”), and these lightweight family replies are easy to forget but high-value.",
+          "suggested_surface_time": "2026-05-01T11:00:00+05:30",
           "sub_agent": "email_triage"
         },
         {
-          "title": "Check insurance renewal due next week",
-          "action": "Look into the insurance renewal your dad mentioned and note the exact due date/next step.",
-          "rationale": "Your dad flagged that it’s due next week. Since routine admin gets dropped, a light early nudge is useful before it becomes urgent.",
-          "suggested_surface_time": "2026-05-01T12:00:00+05:30",
+          "title": "Handle insurance renewal due next week",
+          "action": "Check which insurance renewal Dad meant and set aside time this weekend to complete or confirm payment before next week.",
+          "rationale": "Rajesh emailed “Insurance renewal” and said it’s due next week. Since routine admin gets delayed sometimes, this is worth surfacing early rather than on the due date.",
+          "suggested_surface_time": "2026-05-02T10:30:00+05:30",
           "sub_agent": "email_triage"
         }
       ],
@@ -94,13 +94,13 @@
             "actual_task_index": 0,
             "matched_id": "arjun_sudipto_bridge_reply",
             "kind": "expected_task",
-            "reasoning": "This directly matches replying to Sudipto about Saturday bridge plans, including a yes/no response about joining."
+            "reasoning": "This matches replying to Sudipto about Saturday bridge plans, including confirming whether Arjun will join."
           },
           {
             "actual_task_index": 1,
             "matched_id": "arjun_mitali_breakfast_reply",
             "kind": "expected_task",
-            "reasoning": "This matches replying to Mitali about Sunday breakfast plans and confirming or counter-proposing the plan."
+            "reasoning": "This matches replying to Mitali about Sunday breakfast plans by confirming or counter-proposing the plan."
           }
         ],
         "expected_task_misses": [],
@@ -109,55 +109,60 @@
           {
             "topic": "Mitali (wife) emails personally about household / weekend plans",
             "actual_pref_index": 1,
-            "reasoning": "The preference update says Sunday breakfast planning is coordinated with Mitali by email, which covers personal household/weekend planning communication from his wife."
+            "reasoning": "The preference update states that Mitali uses email to coordinate weekend family meal plans with Arjun, which covers personal household/weekend planning."
           },
           {
             "topic": "Sudipto sends bridge invitations periodically",
             "actual_pref_index": 0,
-            "reasoning": "The preference update explicitly says Sudipto invites Arjun for Saturday bridge and that it appears to be a recurring social activity."
+            "reasoning": "The preference update says Sudipto actively coordinates bridge plans with Arjun over email, covering recurring bridge invitations."
           }
         ],
         "preference_topic_misses": [
           {
             "topic": "Kalakriti gallery sends 'Framing Status' updates ~quarterly",
-            "reasoning": "No preference update mentions Kalakriti gallery or framing status updates."
+            "reasoning": "No actual preference update mentions Kalakriti gallery or framing status updates."
           },
           {
             "topic": "Rina at modernart sends 'Upcoming Show' invitations periodically",
-            "reasoning": "No preference update mentions Rina, modernart, or upcoming show invitations."
+            "reasoning": "No actual preference update mentions Rina at modernart or upcoming show invitations."
           },
           {
             "topic": "Art collectors send 'Price list request' inquiries periodically",
-            "reasoning": "No preference update mentions art collectors or recurring price list request inquiries."
+            "reasoning": "No actual preference update mentions art collectors or price list request inquiries."
           }
         ]
       },
       "actual_tasks": [
         {
-          "title": "Reply to Sudipto about Saturday bridge",
-          "action": "Send Sudipto a quick yes/no reply on whether you are joining bridge this Saturday.",
-          "rationale": "He emailed asking 'Saturday Bridge?' and this looks like an active social routine worth acknowledging promptly.",
-          "suggested_surface_time": "2026-05-01T11:00:00+05:30",
+          "title": "Respond to Sudipto about Saturday bridge",
+          "action": "Send Sudipto a short reply confirming whether you want to join bridge on Saturday.",
+          "rationale": "He emailed asking, \"Let me know about bridge,\" and this appears to be an active social plan with a close friend.",
+          "suggested_surface_time": "2026-05-01T09:00:00+05:30",
           "sub_agent": "email_triage"
         },
         {
-          "title": "Confirm Sunday breakfast plan with Mitali",
-          "action": "Reply to Mitali about the Sunday breakfast idea and decide whether to go out or order in.",
-          "rationale": "This matches an existing Sunday breakfast pattern and helps lock in a family plan early.",
-          "suggested_surface_time": "2026-05-01T18:00:00+05:30",
+          "title": "Reply to Mitali about Sunday breakfast",
+          "action": "Reply to Mitali with your preference for Sunday breakfast and whether to go out or order in.",
+          "rationale": "She emailed, \"breakfast this Sunday?\" and Sunday breakfast is already a recurring family pattern worth confirming.",
+          "suggested_surface_time": "2026-05-01T09:05:00+05:30",
           "sub_agent": "email_triage"
         }
       ],
       "actual_prefs": [
         {
           "section": "Relationships",
-          "content": "Sudipto is an active personal correspondent who invites Arjun for Saturday bridge; bridge appears to be a recurring social activity with him.",
-          "reason": "Email from Sudipto on 2026-04-30 with subject 'Saturday Bridge?' suggests an ongoing bridge routine and confirms closeness beyond the existing friend note."
+          "content": "Sudipto actively coordinates bridge plans with Arjun over email.",
+          "reason": "Email from Sudipto on 2026-04-30 asked about Saturday bridge, reinforcing that Sudipto is a close social contact and bridge partner."
+        },
+        {
+          "section": "Relationships",
+          "content": "Mitali uses email to coordinate weekend family meal plans with Arjun.",
+          "reason": "Email from Mitali on 2026-04-30 asked about Sunday breakfast plans."
         },
         {
           "section": "Food",
-          "content": "Sunday breakfast planning is actively coordinated with Mitali by email, reinforcing that Sunday breakfast is a regular family ritual rather than an ad hoc habit.",
-          "reason": "Email from Mitali on 2026-04-30 with subject 'Sunday Breakfast Idea' aligns with the existing Flurys/Sunday breakfast pattern and shows shared planning around it."
+          "content": "Sunday breakfast is an actively coordinated weekly routine, sometimes discussed in advance with Mitali.",
+          "reason": "Mitali emailed about Sunday breakfast, which aligns with the existing pattern of Flurys on Sundays."
         }
       ]
     },
@@ -165,54 +170,64 @@
       "slug": "devendra",
       "mode": "BACKFILL",
       "metrics": {
-        "tp": 0,
+        "tp": 1,
         "fp_unexpected": 0,
         "fp_skip_violations": 0,
-        "fn": 1,
+        "fn": 0,
         "expected_tasks": 1,
-        "actual_tasks": 0,
+        "actual_tasks": 1,
         "expected_skips": 0,
         "expected_topics": 2,
         "precision": 1.0,
-        "recall": 0.0,
-        "f1": 0.0,
+        "recall": 1.0,
+        "f1": 1.0,
         "specificity": 1.0,
         "pref_coverage": 0.5
       },
       "judge": {
-        "task_alignments": [],
-        "expected_task_misses": [
+        "task_alignments": [
           {
-            "id": "devendra_nilesh_audit_reply",
-            "reasoning": "No actual task was surfaced. The agent should have produced a reply task to Nilesh about the FY25 audit final review and confirming a time to discuss."
+            "actual_task_index": 0,
+            "matched_id": "devendra_nilesh_audit_reply",
+            "kind": "expected_task",
+            "reasoning": "This matches the expected work-reply task about Nilesh's FY25 audit final review. The intent is the same: reply to Nilesh regarding the audit review and move the discussion forward, which is close enough to confirming a time to discuss. Suggested surface time is a concrete ISO timestamp."
           }
         ],
+        "expected_task_misses": [],
         "expected_skip_violations": [],
         "preference_topic_hits": [
           {
             "topic": "Nilesh (nilesh@patelassociates.com) is the primary work-email contact for firm/audit matters",
             "actual_pref_index": 0,
-            "reasoning": "The first preference update identifies Nilesh as a direct business collaborator on firm audit reviews, which semantically covers him being the key work contact for audit matters."
+            "reasoning": "The preference update states Nilesh is an active work correspondent on Patel & Associates audit matters, which semantically covers him being the primary firm/audit contact."
           }
         ],
         "preference_topic_misses": [
           {
             "topic": "Cricinfo IPL Updates newsletter is content the user keeps reading (cricket fan per profile) — NOT an unsubscribe candidate",
-            "reasoning": "No actual preference update mentions Cricinfo, IPL updates, reading behavior, or that this sender should not be treated as an unsubscribe candidate."
+            "reasoning": "No actual preference_update mentions Cricinfo IPL Updates, cricket-reading behavior, or that this newsletter should not be treated as an unsubscribe candidate."
           }
         ]
       },
-      "actual_tasks": [],
+      "actual_tasks": [
+        {
+          "title": "Respond to Nilesh on FY25 audit review",
+          "action": "Reply to Nilesh about the FY25 Audit final review and confirm next steps.",
+          "rationale": "A work email from Nilesh, his business partner and close friend, arrived on 2026-04-30 at 17:30 IST with subject \"Final review of FY25 Audit.\" Given his disciplined work style and importance of audit season, this likely merits timely follow-up.",
+          "suggested_surface_time": "2026-05-01T10:15:00+05:30",
+          "sub_agent": "email_triage"
+        }
+      ],
       "actual_prefs": [
         {
           "section": "Relationships",
-          "content": "Nilesh is Devendra's business partner and collaborates directly on firm audit reviews; an email from Nilesh on 2026-04-30 concerned the final review of FY25 Audit.",
-          "reason": "Backfill from inbox: confirms active professional coordination with Nilesh and his role in audit review workflows."
+          "content": "Nilesh is both Devendra's business partner and an active work correspondent on Patel & Associates audit matters.",
+          "reason": "Backfilled from email metadata showing direct work coordination from nilesh@patelassociates.com regarding FY25 audit review."
         },
         {
-          "section": "Work",
-          "content": "FY25 audit final review was an active work item around 2026-04-30.",
-          "reason": "Backfill from inbox email subject 'Final review of FY25 Audit' indicates a current professional priority."
+          "section": "Schedule",
+          "content": "Work-related audit review emails are actively handled in the early evening during tax/audit season.",
+          "reason": "Backfilled from receipt of an FY25 audit review email at 17:30 IST, consistent with late-season work activity."
         }
       ]
     },
@@ -245,23 +260,18 @@
       "actual_prefs": [
         {
           "section": "Notes for the assistant",
-          "content": "User has not granted Gmail or Calendar access yet; proactive support must rely on the profile and web only, with a high bar for nudges.",
-          "reason": "Run context explicitly states no Gmail/Calendar access and asks to work entirely off the profile and web until access is granted."
+          "content": "She has not granted Gmail or Calendar access yet, so proactive support must avoid assuming inbox/calendar visibility and rely on profile/web only.",
+          "reason": "Run context explicitly states no Gmail/Calendar access; important operating constraint to preserve privacy and avoid incorrect nudges."
         },
         {
           "section": "Important Dates",
-          "content": "May 1 is the user's residency joining anniversary.",
-          "reason": "Today is 2026-05-01 and the profile lists 'Residency joining anniversary | May 1 (today!)'."
+          "content": "Residency joining anniversary is May 1 (today).",
+          "reason": "Today is the user's joining anniversary; useful for future yearly recognition or gentle reflection prompts."
         },
         {
           "section": "Bills & Subscriptions",
-          "content": "Airtel Postpaid ₹599 plan is due on the 4th of every month; money/bill reminders are most useful 2 days before due dates.",
-          "reason": "Profile lists Airtel due date and states bill due reminders 2 days before work best; this is actionable preference data for future nudges."
-        },
-        {
-          "section": "Commitments style",
-          "content": "User uses WhatsApp self-chat for to-dos and Apple Reminders for hospital deadlines; almost no calendar use.",
-          "reason": "This is core workflow information that should shape future reminder suggestions and task surfaces."
+          "content": "Airtel Postpaid ₹599 plan is due on the 4th of every month, so a 2-day-prior reminder cadence means surfacing on the 2nd if needed.",
+          "reason": "Profile states bill due date and that money/bill reminders 2 days before work well; useful reminder timing preference."
         }
       ]
     }
