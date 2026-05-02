@@ -23,9 +23,26 @@ REPO_ROOT = Path(__file__).resolve().parents[2]
 USERS_DIR = REPO_ROOT / "backend" / "data" / "users"
 PROFILES_DIR = REPO_ROOT / "profiles"
 AVATARS_DIR = REPO_ROOT / "frontend" / "assets" / "avatars"
+GOLDEN_DIR = REPO_ROOT / "backend" / "eval" / "golden"
 OUTPUT_PATH = PROFILES_DIR / "profiles_overview.html"
 
 USER_ORDER = ["aditi", "arjun", "devendra", "meera"]
+
+# Which profile-markdown H2 sections each agent's golden set semantically
+# depends on. Used to drive the "this section is part of <agent>'s golden"
+# shimmer overlay. Only applied for a given persona if that persona has at
+# least one expected_task / expected_skip / preference_topic for the agent.
+AGENT_TO_PROFILE_SECTIONS: dict[str, list[str]] = {
+    "calendar":     ["Schedule"],
+    "dates":        ["Important Dates", "Relationships"],
+    "email_triage": ["Relationships"],
+    "events":       ["Schedule", "Relationships"],
+    "finance":      ["Bills & Subscriptions"],
+    "food":         ["Food"],
+    "shopping":     ["Shopping & Wishlist"],
+    "todos":        ["Commitments style"],
+    "travel":       ["Travel"],
+}
 
 
 def _read_json(path: Path) -> dict:
@@ -48,12 +65,86 @@ def _image_data_uri(path: Path) -> str | None:
     return f"data:{mime};base64,{encoded}"
 
 
+def _golden_files() -> list[Path]:
+    if not GOLDEN_DIR.exists():
+        return []
+    return sorted(p for p in GOLDEN_DIR.glob("*.json") if p.is_file())
+
+
+def build_evidence_map() -> dict[str, dict]:
+    """Build per-persona evidence: which agents' goldens reference each
+    email id, calendar event id, and profile section heading.
+
+    Returns: { slug: { "emails": {id: [agent...]},
+                        "events": {id: [agent...]},
+                        "profile_sections": {heading: [agent...]} } }
+    """
+    out: dict[str, dict] = {}
+    for path in _golden_files():
+        try:
+            data = json.loads(path.read_text(encoding="utf-8"))
+        except Exception:
+            continue
+        agent = data.get("agent")
+        if not agent:
+            continue
+        for persona in data.get("personas", []) or []:
+            slug = persona.get("slug")
+            if not slug:
+                continue
+            bucket = out.setdefault(slug, {"emails": {}, "events": {}, "profile_sections": {}})
+
+            items = list(persona.get("expected_tasks", []) or []) + \
+                    list(persona.get("expected_skips", []) or [])
+            for item in items:
+                for eid in (item.get("evidence_email_ids") or []):
+                    bucket["emails"].setdefault(eid, [])
+                    if agent not in bucket["emails"][eid]:
+                        bucket["emails"][eid].append(agent)
+                for evid in (item.get("evidence_event_ids") or []):
+                    bucket["events"].setdefault(evid, [])
+                    if agent not in bucket["events"][evid]:
+                        bucket["events"][evid].append(agent)
+
+            has_any = bool(items) or bool(persona.get("expected_preference_topics") or [])
+            if has_any:
+                for section in AGENT_TO_PROFILE_SECTIONS.get(agent, []):
+                    bucket["profile_sections"].setdefault(section, [])
+                    if agent not in bucket["profile_sections"][section]:
+                        bucket["profile_sections"][section].append(agent)
+
+    for slug_bucket in out.values():
+        for key in ("emails", "events", "profile_sections"):
+            for k in slug_bucket[key]:
+                slug_bucket[key][k].sort()
+    return out
+
+
 def collect_user(slug: str) -> dict:
     user_dir = USERS_DIR / slug
     meta = _read_json(user_dir / "meta.json")
     profile_md = _read_text(user_dir / "profile.md")
     mailbox = _read_json(user_dir / "mailbox.json").get("messages", [])
     calendar = _read_json(user_dir / "calendar.json").get("events", [])
+
+    # Merge in fixture-only gmail/calendar items (e.g. SENT messages held only
+    # in the daily fixture) so golden-set evidence ids resolve to a visible row.
+    fixtures_dir = user_dir / "fixtures"
+    if fixtures_dir.exists():
+        seen_msg = {m.get("id") for m in mailbox if m.get("id")}
+        seen_evt = {e.get("id") for e in calendar if e.get("id")}
+        for fx_path in sorted(fixtures_dir.glob("*.json")):
+            fx = _read_json(fx_path)
+            for m in fx.get("gmail", []) or []:
+                mid = m.get("id")
+                if mid and mid not in seen_msg:
+                    mailbox.append(m)
+                    seen_msg.add(mid)
+            for e in fx.get("calendar", []) or []:
+                eid = e.get("id")
+                if eid and eid not in seen_evt:
+                    calendar.append(e)
+                    seen_evt.add(eid)
 
     first_name = (meta.get("name") or slug).split(" ")[0]
     portrait_candidates = [
@@ -82,6 +173,7 @@ def collect_user(slug: str) -> dict:
         "calendar": calendar_sorted,
         "portrait": portrait,
         "arch": arch,
+        "evidence": {"emails": {}, "events": {}, "profile_sections": {}},
     }
 
 
@@ -204,6 +296,69 @@ main { padding: 28px 36px; max-width: 1200px; }
 .event .extra .att::before { content: "👥"; }
 
 .empty { color: var(--muted); padding: 30px; text-align: center; border: 1px dashed var(--border); border-radius: 10px; }
+
+/* Golden shimmer overlay — marks elements that appear in an agent's golden set */
+@keyframes golden-shim-pulse {
+  0%, 100% { box-shadow: 0 0 0 1px rgba(255,196,77,0.55), 0 0 10px rgba(255,196,77,0.18); }
+  50%      { box-shadow: 0 0 0 1px rgba(255,224,138,0.85), 0 0 22px rgba(255,196,77,0.45); }
+}
+@keyframes golden-shim-sheen {
+  0%   { background-position: -180% 0; }
+  100% { background-position:  280% 0; }
+}
+.golden-shim {
+  position: relative;
+  overflow: visible;
+  border-color: rgba(255,196,77,0.55) !important;
+  margin-top: 28px !important;
+  animation: golden-shim-pulse 6s ease-in-out infinite;
+}
+.golden-shim::after {
+  content: "";
+  pointer-events: none;
+  position: absolute; inset: 0;
+  border-radius: inherit;
+  background: linear-gradient(110deg,
+    transparent 35%,
+    rgba(255,232,170,0.10) 48%,
+    rgba(255,232,170,0.22) 50%,
+    rgba(255,232,170,0.10) 52%,
+    transparent 65%);
+  background-size: 220% 100%;
+  animation: golden-shim-sheen 8s linear infinite;
+  mix-blend-mode: screen;
+}
+.golden-shim .golden-shim-tag {
+  position: absolute;
+  top: -11px;
+  right: 6px;
+  max-width: calc(100% - 12px);
+  background: linear-gradient(90deg, #c9892b, #f3c456 55%, #fde79a);
+  color: #1a1306;
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 0.4px;
+  text-transform: uppercase;
+  padding: 2px 9px;
+  border-radius: 999px;
+  border: 1px solid rgba(255,232,170,0.7);
+  box-shadow: 0 1px 3px rgba(0,0,0,0.35), 0 0 8px rgba(255,196,77,0.35);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  z-index: 2;
+}
+.markdown .golden-shim {
+  border: 1px solid rgba(255,196,77,0.55);
+  border-radius: 10px;
+  padding: 4px 16px 14px;
+  margin: 32px 0 18px;
+  background: rgba(255,196,77,0.035);
+}
+.markdown .golden-shim > h2 {
+  border-bottom: 1px solid rgba(255,196,77,0.25);
+  margin-top: 8px;
+}
 </style>
 </head>
 <body>
@@ -306,12 +461,20 @@ function renderInbox(u) {
   const senderOpts = ['<option value="">All senders</option>']
     .concat([...senders].sort().map(s => `<option value="${escapeHtml(s)}">${escapeHtml(s)}</option>`)).join('');
 
-  const rows = u.mailbox.map((msg, idx) => `
-    <details class="mail" data-idx="${idx}"
+  const evMap = (u.evidence && u.evidence.emails) || {};
+  const rows = u.mailbox.map((msg, idx) => {
+    const agents = evMap[msg.id] || [];
+    const shim = agents.length ? ' golden-shim' : '';
+    const tag = agents.length
+      ? `<span class="golden-shim-tag" title="In golden set of: ${escapeHtml(agents.join(', '))}">${escapeHtml(agents.join(' · '))}</span>`
+      : '';
+    return `
+    <details class="mail${shim}" data-idx="${idx}"
       data-labels="${escapeHtml((msg.labels || []).join('|'))}"
       data-from="${escapeHtml(msg.from || '')}"
       data-search="${escapeHtml(((msg.subject||'') + ' ' + (msg.from||'') + ' ' + (msg.snippet||'') + ' ' + (msg.body||'')).toLowerCase())}">
       <summary>
+        ${tag}
         <span class="from">${escapeHtml(msg.from || '—')}</span>
         <span class="subject"><b>${escapeHtml(msg.subject || '(no subject)')}</b><span class="snippet"> — ${escapeHtml(msg.snippet || '')}</span></span>
         <span class="date">${escapeHtml(fmtDate(msg.received_at))}</span>
@@ -319,7 +482,8 @@ function renderInbox(u) {
       <div class="body">${escapeHtml(msg.body || '(no body)')}</div>
       <div class="labels">${(msg.labels || []).map(l => `<span class="label-pill">${escapeHtml(l)}</span>`).join('')}</div>
     </details>
-  `).join('');
+  `;
+  }).join('');
 
   return `
     <div class="toolbar">
@@ -334,6 +498,7 @@ function renderInbox(u) {
 
 function renderCalendar(u) {
   if (!u.calendar.length) return '<div class="empty">No calendar events</div>';
+  const evMap = (u.evidence && u.evidence.events) || {};
   const groups = {};
   u.calendar.forEach(ev => {
     const key = monthKey(ev.start);
@@ -354,8 +519,14 @@ function renderCalendar(u) {
           const e = new Date(ev.end);
           return isNaN(e) ? '' : ' – ' + e.toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'});
         })();
+        const agents = evMap[ev.id] || [];
+        const shim = agents.length ? ' golden-shim' : '';
+        const tag = agents.length
+          ? `<span class="golden-shim-tag" title="In golden set of: ${escapeHtml(agents.join(', '))}">${escapeHtml(agents.join(' · '))}</span>`
+          : '';
         return `
-          <div class="event ${ev.all_day ? 'all-day' : ''}">
+          <div class="event ${ev.all_day ? 'all-day' : ''}${shim}">
+            ${tag}
             <div class="when">
               <span class="day">${day}</span>
               <span class="month">${mon}</span>
@@ -411,6 +582,35 @@ function bindMailFilter(root) {
   [search, labelSel, senderSel].forEach(el => el && el.addEventListener('input', apply));
 }
 
+function decorateProfileSections(root, u) {
+  const sectionMap = (u.evidence && u.evidence.profile_sections) || {};
+  if (!Object.keys(sectionMap).length) return;
+  const md = root.querySelector('.panel[data-panel="profile"] .markdown');
+  if (!md) return;
+  const headings = [...md.querySelectorAll('h2')];
+  headings.forEach(h2 => {
+    const text = (h2.textContent || '').trim();
+    const agents = sectionMap[text];
+    if (!agents || !agents.length) return;
+    const wrap = document.createElement('div');
+    wrap.className = 'golden-shim';
+    wrap.setAttribute('data-section', text);
+    const tag = document.createElement('span');
+    tag.className = 'golden-shim-tag';
+    tag.title = 'In golden set of: ' + agents.join(', ');
+    tag.textContent = agents.join(' · ');
+    h2.parentNode.insertBefore(wrap, h2);
+    wrap.appendChild(tag);
+    let node = h2;
+    while (node) {
+      const next = node.nextSibling;
+      wrap.appendChild(node);
+      if (next && next.nodeType === 1 && next.tagName === 'H2') break;
+      node = next;
+    }
+  });
+}
+
 function selectUser(slug) {
   const u = DATA.users.find(x => x.slug === slug) || DATA.users[0];
   document.querySelectorAll('.nav-user').forEach(el => el.classList.toggle('active', el.dataset.slug === u.slug));
@@ -418,6 +618,7 @@ function selectUser(slug) {
   main.innerHTML = renderProfile(u);
   bindTabs(main);
   bindMailFilter(main);
+  decorateProfileSections(main, u);
   history.replaceState(null, '', '#' + u.slug);
 }
 
@@ -439,6 +640,10 @@ def main() -> int:
     if not users:
         print("error: no user data found", file=sys.stderr)
         return 1
+
+    evidence_map = build_evidence_map()
+    for u in users:
+        u["evidence"] = evidence_map.get(u["slug"], {"emails": {}, "events": {}, "profile_sections": {}})
 
     from datetime import datetime
     payload = {"users": users}
