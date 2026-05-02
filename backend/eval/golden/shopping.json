@@ -2,18 +2,67 @@
   "agent": "shopping",
   "schema_version": 2,
   "evaluation_date": "2026-05-01",
+  "data_source": "Web-grounded expected_tasks marked `wishlist_buy_now_web_verified` were sourced from Gemini Deep Research runs on 2026-05-02. See backend/eval/deep_research_prompts.md → Shopping Prompts 8/9/10/11.",
+
   "personas": [
     {
       "slug": "aditi",
       "mode": "STEADY-STATE",
-      "expected_tasks": [],
+      "expected_tasks": [
+        {
+          "id": "aditi_buy_airpods_max_gen2",
+          "summary": "Buy AirPods Max Gen 2 at Apple India for ₹67,900 — launched 16 Mar 2026, deliveries rolled out across India early April. H2 chip, USB-C lossless, Adaptive Audio, Apple Intelligence Live Translation. Profile already deeply in Apple ecosystem; existing AirPods Pro (gen 1).",
+          "category": "wishlist_buy_now_web_verified",
+          "as_of": "2026-05-02",
+          "valid_until": "2026-09-01",
+          "source_url": "https://www.apple.com/in/shop/buy-airpods/airpods-max-2",
+          "notes": "Re-verify when iPhone 18 / next major Apple event nears — pricing stable until then.",
+          "profile_md_lines": [],
+          "mailbox_json_lines": [],
+          "calendar_json_lines": []
+        },
+        {
+          "id": "aditi_buy_theragun_mini",
+          "summary": "Buy Theragun Mini (3rd Gen) on Amazon.in at ₹19,999 — currently at all-time floor price (down from historical high ₹72,844 and 6-month average ₹24,667). Massive 72% market correction; algorithmic anomaly likely to recalibrate upward. Profile lists wishlist + actively trains for TCS World 10K.",
+          "category": "wishlist_buy_now_web_verified",
+          "as_of": "2026-05-02",
+          "valid_until": "2026-06-15",
+          "source_url": "https://pricehistory.app/p/theragun-mini-therabody-3rd-generation-ultra-portable-aJFtitce",
+          "notes": "Time-sensitive — the price-floor anomaly is fragile.",
+          "profile_md_lines": [],
+          "mailbox_json_lines": [],
+          "calendar_json_lines": []
+        },
+        {
+          "id": "aditi_buy_nothing_phone_3",
+          "summary": "Buy Nothing Phone 3 (12GB/256GB Black) on Flipkart/Amazon.in at ₹54,999 — launched 1 Jul 2025 at MRP ₹84,999; current price stabilized at 35% below MRP. Snapdragon 8s Gen 4 flagship, IP68, 5500mAh + Glyph LED. Profile lists as 'curiosity, not replacement' wishlist item.",
+          "category": "wishlist_buy_now_web_verified",
+          "as_of": "2026-05-02",
+          "valid_until": "2026-09-01",
+          "source_url": "https://pricehistory.app/p/nothing-phone-3-black-12gb-256gb-cLJlZDIm",
+          "notes": "Stable at current price; further drops minimal until end-of-life.",
+          "profile_md_lines": [],
+          "mailbox_json_lines": [],
+          "calendar_json_lines": []
+        },
+        {
+          "id": "aditi_buy_nicobar_olive_linen_shirt",
+          "summary": "Buy Nicobar 'Nawab Shirt - Olive' (pure linen) at Nicobar.com for ₹5,750 — currently in stock as part of the active Ganga Collection (May 2026 launch). Profile wishlist explicitly: 'Olive linen shirts from Nicobar'.",
+          "category": "wishlist_buy_now_web_verified",
+          "as_of": "2026-05-02",
+          "valid_until": "2026-07-31",
+          "source_url": "https://www.nicobar.com/collections/linen-shirts",
+          "notes": "Independent label — rapid size depletion expected on new-collection drops; no markdowns on new-season items.",
+          "profile_md_lines": [],
+          "mailbox_json_lines": [],
+          "calendar_json_lines": []
+        }
+      ],
       "expected_skips": [
         {
           "id": "aditi_skip_dad_insurance",
           "summary": "Dad's email about ICICI Lombard insurance renewal is admin/finance content — not a shopping trigger; no wishlist item involved. Agent must NOT rephrase as 'Buy a new insurance policy'.",
-          "evidence_email_ids": [
-            "msg_dad_1"
-          ],
+          "evidence_email_ids": ["msg_dad_1"],
           "category": "out_of_lane_admin",
           "valid_until": null,
           "profile_md_lines": [],
@@ -22,10 +71,8 @@
         },
         {
           "id": "aditi_skip_hr_holiday",
-          "summary": "HR Labor Day holiday FYI — a long weekend is not a shopping trigger. Agent must NOT turn this into 'Buy yourself a long-weekend treat' or similar.",
-          "evidence_email_ids": [
-            "msg_hr_1"
-          ],
+          "summary": "HR Labor Day holiday FYI — a long weekend is not a shopping trigger.",
+          "evidence_email_ids": ["msg_hr_1"],
           "category": "out_of_lane_fyi",
           "valid_until": null,
           "profile_md_lines": [],
@@ -34,10 +81,8 @@
         },
         {
           "id": "aditi_skip_mom_checkin",
-          "summary": "Mom's relational check-in ('Thinking of you') is not a shopping trigger. Agent must NOT turn this into 'Buy mom a card' or 'Buy mom flowers'.",
-          "evidence_email_ids": [
-            "msg_mom_1"
-          ],
+          "summary": "Mom's relational check-in is not a shopping trigger.",
+          "evidence_email_ids": ["msg_mom_1"],
           "category": "out_of_lane_personal",
           "valid_until": null,
           "profile_md_lines": [],
@@ -45,29 +90,135 @@
           "calendar_json_lines": []
         },
         {
-          "id": "aditi_skip_profile_only_wishlist",
-          "summary": "Profile lists 6 active wishlist items (Loewe Puzzle bag, AirPods Max next-gen, Theragun Mini, Le Creuset Dutch oven cerise 4.5L, Nothing Phone 3, Nicobar olive linen shirts). The wishlist alone is NOT a trigger — without a sale-alert / price-drop / restock email or a web_search-verified price drop, the agent must NOT surface 'Buy <wishlist item> — wishlist item' style nudges.",
-          "category": "profile_only_no_trigger",
+          "id": "aditi_skip_loewe_puzzle_no_sale",
+          "summary": "Do NOT emit a buy nudge for the Loewe Puzzle bag (small, tan). Listed at full price ₹3,63,800 at Loewe Mumbai / Le Mill; no markdowns on core continuity colours. Acquisition is personal-liquidity-driven, not retail-calendar-driven.",
+          "category": "wishlist_no_sale_web_verified",
+          "as_of": "2026-05-02",
           "valid_until": null,
+          "source_url": "https://lemillindia.com/products/mini-puzzle-edge-bag-1",
+          "profile_md_lines": [],
+          "mailbox_json_lines": [],
+          "calendar_json_lines": []
+        },
+        {
+          "id": "aditi_skip_le_creuset_no_sale",
+          "summary": "Do NOT emit a buy nudge for the Le Creuset 4.5L Cerise Dutch Oven. Listed at ₹29,500 at Tata CLiQ Luxury; no EOSS/factory-outlet on iconic Cerise. Brand maintains rigid pricing.",
+          "category": "wishlist_no_sale_web_verified",
+          "as_of": "2026-05-02",
+          "valid_until": null,
+          "source_url": "https://luxury.tatacliq.com/le-creuset-cherry-red-iron-24-cm-evo-round-cast-iron-casserole/p-mp000000008469687",
+          "profile_md_lines": [],
+          "mailbox_json_lines": [],
+          "calendar_json_lines": []
+        },
+        {
+          "id": "aditi_skip_myntra_eors_too_early",
+          "summary": "Do NOT emit `Buy via Myntra EORS` today. Sale runs 25 May → 7 Jun 2026; the right action today is wishlist-prep, not buy. Surface as countdown when sale opens.",
+          "category": "sale_outside_window",
+          "as_of": "2026-05-02",
+          "valid_until": "2026-05-24",
+          "source_url": "https://www.gyftr.com/blog/upcoming-myntra-sale-2026/",
+          "profile_md_lines": [],
+          "mailbox_json_lines": [],
+          "calendar_json_lines": []
+        },
+        {
+          "id": "aditi_skip_shopbop_sale_concluded",
+          "summary": "Do NOT emit ShopBop sale tasks today. Spring Style Event concluded mid-April; next event projected late September. Cross-border 40%+ duty makes off-sale ShopBop economically unviable.",
+          "category": "sale_outside_window",
+          "as_of": "2026-05-02",
+          "valid_until": "2026-09-01",
+          "source_url": "https://www.shopbop.com/sale",
+          "profile_md_lines": [],
+          "mailbox_json_lines": [],
+          "calendar_json_lines": []
+        },
+        {
+          "id": "aditi_skip_amazon_gif_too_early",
+          "summary": "Do NOT emit Amazon Great Indian Festival tasks today. Sale runs 27 Sep → 25 Oct 2026 (Prime early access from Sep 26). 5 months out — surface only as the date approaches.",
+          "category": "sale_outside_window",
+          "as_of": "2026-05-02",
+          "valid_until": "2026-09-25",
+          "source_url": "https://www.aboutamazon.in/news/retail/amazon-great-summer-sale",
+          "profile_md_lines": [],
+          "mailbox_json_lines": [],
+          "calendar_json_lines": []
+        },
+        {
+          "id": "aditi_skip_apple_back_to_school_irrelevant",
+          "summary": "Do NOT emit `Wait for Apple Back-to-School to buy AirPods Max 2`. The B2S promo (Jun 17 - end Sep 2026) bundles a free base AirPods/Pencil with a Mac/iPad purchase; it does NOT discount standalone AirPods Max 2. Aditi already owns a MacBook Air and has no Mac/iPad in her wishlist, so the promo provides ZERO leverage.",
+          "category": "sale_irrelevant_for_user",
+          "as_of": "2026-05-02",
+          "valid_until": "2026-09-30",
+          "source_url": "https://www.apple.com/in-edu/store",
+          "notes": "Tempting to suggest 'wait for back-to-school' but mechanically wrong for her standalone AirPods Max 2 purchase.",
           "profile_md_lines": [],
           "mailbox_json_lines": [],
           "calendar_json_lines": []
         }
       ],
       "expected_preference_topics": [],
-      "notes": "Friday May 1 (Labor Day, WFH). Slice contains exactly 3 emails — none is a shopping trigger. Mailbox history is dominated by Swiggy food orders + bills + travel; zero sale-alert / price-drop / restock / cart / abandoned-cart / brand-newsletter emails. Profile names a rich wishlist and explicitly tracks Myntra EORS / ShopBop / Amazon Great Indian Festival / Apple back-to-school, but none of those events is firing today and no related email exists. Correct behaviour is silence on tasks. The four expected_skips are the four most-likely-confusion failure modes to test specificity. NOTE: a future deep-research run for Aditi (see backend/eval/deep_research_prompts.md → Shopping Prompt 8) will populate expected_tasks here with current Loewe / AirPods Max / etc. statuses."
+      "notes": "Friday May 1. Three-email slice has zero shopping triggers — but web research surfaces 4 wishlist items on actionable terms (AirPods Max 2 launched, Theragun Mini at floor price, Nothing Phone 3 at -35% MRP, Nicobar Olive in active Ganga Collection). Plus 5 wait/skip targets for items with no current sale window."
     },
+
     {
       "slug": "arjun",
       "mode": "BACKFILL",
-      "expected_tasks": [],
+      "expected_tasks": [
+        {
+          "id": "arjun_buy_leica_q3",
+          "summary": "Buy Leica Q3 (Black) at Leica India authorized dealer for ₹7,15,000. Domestic procurement is economically + logistically superior to US grey-market import (~₹7,68,660 landed cost after 25-26% duties). Mumbai dealer has constrained inventory; book a visit on his Mumbai Jun trip.",
+          "category": "wishlist_buy_now_web_verified",
+          "as_of": "2026-05-02",
+          "valid_until": "2026-08-02",
+          "source_url": "https://leica-store.in/products/leica-q3-black",
+          "notes": "Profile wishlist: Leica Q3. Q3 43 (₹7,60,000) and Q3 Monochrom (₹7,75,000) are alternates worth considering at the dealer visit.",
+          "profile_md_lines": [],
+          "mailbox_json_lines": [],
+          "calendar_json_lines": []
+        },
+        {
+          "id": "arjun_buy_bose_qc_ultra_gen2",
+          "summary": "Buy Bose QuietComfort Ultra Headphones (2nd Gen) at Bose India for ₹49,900 — launched Q2 2026, H2 chip equivalent + ActiveSense AI noise suppression + BT 5.4 + USB-C 24-bit. Profile wishlist: Bose noise-cancelling for travel.",
+          "category": "wishlist_buy_now_web_verified",
+          "as_of": "2026-05-02",
+          "valid_until": "2026-08-02",
+          "source_url": "https://www.boseindia.com/products/bose-quietcomfort-ultra-headphones-2nd-gen",
+          "notes": "Domestic warranty + service network justifies premium over $399 US price.",
+          "profile_md_lines": [],
+          "mailbox_json_lines": [],
+          "calendar_json_lines": []
+        },
+        {
+          "id": "arjun_buy_forest_essentials_sandalwood_2026",
+          "summary": "Buy Forest Essentials new Sandalwood collection direct from forestessentialsindia.com — 2026 launches include Body Massage Oil Sandalwood & Saffron (₹1,295), Facial Mask Chandan Varnya Lepa (₹1,975), Body Mist Sandalwood & Vetiver (₹2,975 / ₹1,350), Sandalwood & Orange Peel Shaving Cream (₹950). Direct-to-consumer guarantees freshest cold-pressed batches. Profile match: Forest Essentials Sandalwood range explicitly on wishlist.",
+          "category": "wishlist_buy_now_web_verified",
+          "as_of": "2026-05-02",
+          "valid_until": "2026-09-30",
+          "source_url": "https://www.forestessentialsindia.com/collections/mysore-sandalwood.html",
+          "notes": "Brand under Estée Lauder global acquisition closing H2 2026 — inventory may tighten.",
+          "profile_md_lines": [],
+          "mailbox_json_lines": [],
+          "calendar_json_lines": []
+        },
+        {
+          "id": "arjun_buy_good_earth_naadia_apparel",
+          "summary": "Buy from Good Earth's active Naadia Collection (chogas, jackets, kurtas in leaf green / aqua / jade / anaar / aubergine / indigo) at goodearth.in — currently in season for Mitali. Profile: he buys for Mitali at Good Earth.",
+          "category": "wishlist_buy_now_web_verified",
+          "as_of": "2026-05-02",
+          "valid_until": "2026-07-31",
+          "source_url": "https://www.goodearth.in/collection/naadia_397/",
+          "notes": "Diwali home/resin drops typically late Aug-Sep — handle as separate skip.",
+          "profile_md_lines": [],
+          "mailbox_json_lines": [],
+          "calendar_json_lines": []
+        }
+      ],
       "expected_skips": [
         {
           "id": "arjun_skip_mitali_breakfast",
-          "summary": "Mitali's 'Sunday Breakfast Idea — Flurys?' is a personal/social invitation. Not a shopping trigger; no wishlist item involved. Agent must NOT turn this into 'Buy a brunch gift card for Mitali' or similar.",
-          "evidence_email_ids": [
-            "msg_9995f6f04ae9"
-          ],
+          "summary": "Mitali's 'Sunday Breakfast Idea' is personal/social. Not a shopping trigger.",
+          "evidence_email_ids": ["msg_9995f6f04ae9"],
           "category": "out_of_lane_personal",
           "valid_until": null,
           "profile_md_lines": [],
@@ -76,10 +227,8 @@
         },
         {
           "id": "arjun_skip_sudipto_bridge",
-          "summary": "Sudipto's Saturday bridge invitation is a social plan. Not a shopping trigger; no wishlist item involved.",
-          "evidence_email_ids": [
-            "msg_bbeb109a3ff1"
-          ],
+          "summary": "Sudipto's Saturday bridge invitation is a social plan. Not a shopping trigger.",
+          "evidence_email_ids": ["msg_bbeb109a3ff1"],
           "category": "out_of_lane_personal",
           "valid_until": null,
           "profile_md_lines": [],
@@ -87,18 +236,64 @@
           "calendar_json_lines": []
         },
         {
-          "id": "arjun_skip_profile_only_wishlist",
-          "summary": "Profile lists wishlist items (Leica Q3 camera, a Satyajit Ray first edition, Bose noise-cancelling headphones, a specific Baroda-based artist's piece). Mailbox has zero sale-alert / price-drop / restock / brand-newsletter / cart emails. Without a trigger event, the agent must NOT surface buy nudges from the wishlist alone.",
-          "category": "profile_only_no_trigger",
+          "id": "arjun_skip_satyajit_ray_first_edition_research_required",
+          "summary": "Do NOT emit a `Buy ...` task for Satyajit Ray first editions today. Listings range ₹830 (AbeBooks Marie Seton, Cooper, Nyce) to quotation-based for signed Bengali editions on Bidcurios. Without a specific identified copy, the action is 'place watchlist alerts' (out-of-lane: requires manual scout to College Street + auction watchlist), not a direct buy.",
+          "category": "wishlist_research_required",
+          "as_of": "2026-05-02",
           "valid_until": null,
+          "source_url": "https://www.bidcurios.com/product/very-rare-autograph-book-of-satyajit-ray-signed-by-the-master-himself-autograph/",
+          "profile_md_lines": [],
+          "mailbox_json_lines": [],
+          "calendar_json_lines": []
+        },
+        {
+          "id": "arjun_skip_baroda_artist_gallery_visit_only",
+          "summary": "Do NOT emit `Buy [artwork by Shailesh BR / Rekha Rodwittiya / Nataraj Sharma / Rathin Barman / Soumya Sankar Bose]`. Primary-market art acquisition requires direct gallery dialogue (Vadehra Delhi or Experimenter Kolkata/Mumbai), not online buy. The right action is `Book gallery visit on Mumbai Jun trip` — calendar/travel lane, not shopping.",
+          "category": "out_of_lane_calendar",
+          "as_of": "2026-05-02",
+          "valid_until": null,
+          "source_url": "https://www.vadehraart.com/",
+          "profile_md_lines": [],
+          "mailbox_json_lines": [],
+          "calendar_json_lines": []
+        },
+        {
+          "id": "arjun_skip_christies_sothebys_auctions_too_early",
+          "summary": "Do NOT emit auction-buy tasks today. Christie's 'Sublime Shadows' London is 11 Jun 2026; Sotheby's Asia Week is September. Auction acquisition requires watchlist + private treaty discussions, not direct buy. Re-evaluate ~3 weeks before each sale.",
+          "category": "sale_outside_window",
+          "as_of": "2026-05-02",
+          "valid_until": "2026-05-21",
+          "source_url": "https://www.christies.com/en/departments/south-asian-modern-contemporary-art",
+          "profile_md_lines": [],
+          "mailbox_json_lines": [],
+          "calendar_json_lines": []
+        },
+        {
+          "id": "arjun_skip_forest_essentials_diwali_too_early",
+          "summary": "Do NOT emit `Wait for Forest Essentials Diwali sale` today. Diwali festive sale window is October 2026; surface as the date approaches. Summer Sale (June 2026) is a smaller window.",
+          "category": "sale_outside_window",
+          "as_of": "2026-05-02",
+          "valid_until": "2026-09-15",
+          "source_url": "https://forestessentialsindia.worthepenny.com/coupon/",
+          "profile_md_lines": [],
+          "mailbox_json_lines": [],
+          "calendar_json_lines": []
+        },
+        {
+          "id": "arjun_skip_india_art_fair_2027_planning",
+          "summary": "Do NOT emit India Art Fair 2027 tasks today. IAF 18th edition is Feb 4-7, 2027 in New Delhi. VIP Preview access dialogue with galleries opens late 2026; today is too early.",
+          "category": "outside_window",
+          "as_of": "2026-05-02",
+          "valid_until": "2026-11-15",
+          "source_url": "https://indiaartfair.in/",
           "profile_md_lines": [],
           "mailbox_json_lines": [],
           "calendar_json_lines": []
         }
       ],
-      "expected_preference_topics": [],
-      "notes": "BACKFILL — onboarded today. Empty calendar. Mailbox is filled with gallery business (Kalakriti framing-status updates, Rina/modernart show invitations, art-collector price-list inquiries), bills (Jio / Airtel / CESC), Swiggy food orders (Flurys / Amber / Kareem's), India Art Fair tickets, an Air India Kolkata→London ticket, and a Taj Mahal Palace Mumbai booking. Zero shopping-domain emails — no Myntra, no Amazon-sale, no Loewe / Apple / Bose / Leica brand newsletters, no abandoned-cart mails. There is no shopping cadence to mine, so expected_preference_topics is intentionally empty: a BACKFILL preference_update that simply restates the profile's wishlist (without quantitative email evidence) is not a topic hit. Tasks empty — no triggers in slice or history. Expected_skips test specificity against the two personal-invitation emails and the temptation to surface profile-only wishlist nudges."
+      "expected_preference_topics": []
     },
+
     {
       "slug": "devendra",
       "mode": "BACKFILL",
@@ -156,9 +351,7 @@
         {
           "id": "devendra_skip_nilesh_audit",
           "summary": "Nilesh's 'Final review of FY25 Audit' email is professional work correspondence. Not a shopping trigger; no wishlist item involved.",
-          "evidence_email_ids": [
-            "fix_msg_1"
-          ],
+          "evidence_email_ids": ["fix_msg_1"],
           "category": "out_of_lane_work",
           "valid_until": null,
           "profile_md_lines": [],
@@ -212,15 +405,130 @@
         }
       ],
       "expected_preference_topics": [],
-      "notes": "BACKFILL — empty calendar. Mailbox: bills (Airtel postpaid, Torrent Power), food orders (Swati Snacks, Iscon Gathiya), Cricinfo IPL Updates newsletter (informational, not a buy trigger), travel bookings (Air India AMD↔EWR, Indigo AMD↔BOM, Palitana retreat), and one work email from Nilesh. Zero shopping-domain emails. The expected_tasks below are sourced from a Gemini Deep Research run on 2026-05-02 (see backend/eval/deep_research_prompts.md → Shopping Prompt 10 → 'Result' block). They depend on web_search hitting the same retailer pages — re-verify when valid_until expires. Expected_skips test specificity: (a) work email reframed as buy, (b) future-dated ticket sales, (c) future-dated brand sales, (d) exhibition reframed as buy, (e) profile-only fallback for items not in the deep-research set."
+      "notes": "BACKFILL — empty calendar. Mailbox: bills, food orders, Cricinfo IPL Updates newsletter, travel bookings, work email. Zero shopping-domain emails. The expected_tasks below are sourced from a Gemini Deep Research run on 2026-05-02 (see backend/eval/deep_research_prompts.md → Shopping Prompt 10 → 'Result' block). They depend on web_search hitting the same retailer pages — re-verify when valid_until expires."
     },
+
     {
       "slug": "meera",
       "mode": "BACKFILL",
-      "expected_tasks": [],
-      "expected_skips": [],
+      "expected_tasks": [
+        {
+          "id": "meera_buy_skechers_arch_fit_go_walk",
+          "summary": "Buy Skechers GO WALK Arch Fit 2.0 Women's at Skechers India for ₹4,949 — currently 45% off (was ₹8,999). Podiatrist-certified arch support engineered for 14-hour standing shifts. Profile match: Skechers Arch Fit explicitly on wishlist + medical resident on long shifts.",
+          "category": "wishlist_buy_now_web_verified",
+          "as_of": "2026-05-02",
+          "valid_until": "2026-06-15",
+          "source_url": "https://www.skechers.in/women-landing.html",
+          "notes": "Stipend-friendly tier (₹3K-10K, needs saving). Sale liquidation is time-sensitive.",
+          "profile_md_lines": [],
+          "mailbox_json_lines": [],
+          "calendar_json_lines": []
+        },
+        {
+          "id": "meera_buy_laneige_lip_mask_8g",
+          "summary": "Buy Laneige Lip Sleeping Mask (8g Mini, Berry) at Nykaa for ₹540 — currently 10% off; alternative Berry Bliss Lip Duo Mini combo at ₹1,148. Profile match: Laneige Lip Sleeping Mask on wishlist; combats hospital HVAC dehydration.",
+          "category": "wishlist_buy_now_web_verified",
+          "as_of": "2026-05-02",
+          "valid_until": "2026-07-31",
+          "source_url": "https://www.nykaa.com/laneige-lip-sleeping-mask-berry/p/15227410",
+          "notes": "Comfortable monthly tier (₹500-3K).",
+          "profile_md_lines": [],
+          "mailbox_json_lines": [],
+          "calendar_json_lines": []
+        }
+      ],
+      "expected_skips": [
+        {
+          "id": "meera_skip_littmann_full_price_wait",
+          "summary": "Do NOT emit `Buy Littmann Cardiology IV today`. Currently full price ₹21,300 (Smart Medical Buyer / Amazon.in); flag at Amazon Great Indian Festival (Sep 26) for No Cost EMI / sale price. Profile match (wishlist) but not a buy-now today.",
+          "category": "wishlist_no_sale_web_verified",
+          "as_of": "2026-05-02",
+          "valid_until": "2026-09-26",
+          "source_url": "https://www.amazon.in/s?k=3m+littmann+cardiology+iv",
+          "notes": "Stipend-tight; ₹21K is a major purchase. Wait for GIF or dedicated medical-supplier sale.",
+          "profile_md_lines": [],
+          "mailbox_json_lines": [],
+          "calendar_json_lines": []
+        },
+        {
+          "id": "meera_skip_ipad_air_wait_back_to_school",
+          "summary": "Do NOT emit `Buy iPad Air M4 today`. Standard education price ₹59,900 + Apple Pencil Pro ₹10,900 = ₹70,800 — major capital drain. Apple Back-to-School (mid-June 2026) bundles the Apple Pencil Pro free with iPad Air, saving ₹10,900. Wait.",
+          "category": "sale_upcoming_wait",
+          "as_of": "2026-05-02",
+          "valid_until": "2026-06-15",
+          "source_url": "https://www.apple.com/in/shop/buy-ipad/ipad-air",
+          "profile_md_lines": [],
+          "mailbox_json_lines": [],
+          "calendar_json_lines": []
+        },
+        {
+          "id": "meera_skip_anuv_jain_concert_already_passed",
+          "summary": "Do NOT emit Anuv Jain Mumbai concert tasks. The Dastakhat Mumbai date concluded 2026-02-14 — before the eval window. Profile lists 'currently saving for' but the specific show is past.",
+          "category": "event_concluded_no_re_surface",
+          "valid_until": null,
+          "source_url": "https://www.premiertickets.co/event/anuv-jain-dastakhat-india-tour-mumbai/",
+          "notes": "Cross-references with events.json's matching skip target.",
+          "profile_md_lines": [],
+          "mailbox_json_lines": [],
+          "calendar_json_lines": []
+        },
+        {
+          "id": "meera_skip_nykaa_pink_friday_too_early",
+          "summary": "Do NOT emit Nykaa Pink Friday Sale tasks today. Confirmed window 16-25 Nov 2026 (50-60% off major beauty brands). 6 months out — surface only as date approaches.",
+          "category": "sale_outside_window",
+          "as_of": "2026-05-02",
+          "valid_until": "2026-11-10",
+          "source_url": "https://www.nykaa.com/pink-friday-sale-25-season-s-hottest-offers-price-reveal/c/87199",
+          "profile_md_lines": [],
+          "mailbox_json_lines": [],
+          "calendar_json_lines": []
+        },
+        {
+          "id": "meera_skip_h_m_eoss_too_early",
+          "summary": "Do NOT emit H&M EOSS tasks today. Sale starts 30 May 2026 (or mid-June per Meera's source); 4-6 weeks out. Surface as countdown when sale opens.",
+          "category": "sale_outside_window",
+          "as_of": "2026-05-02",
+          "valid_until": "2026-05-29",
+          "source_url": "https://www2.hm.com/en_in/sale/women/last-chance-up-to-70--off.html",
+          "profile_md_lines": [],
+          "mailbox_json_lines": [],
+          "calendar_json_lines": []
+        },
+        {
+          "id": "meera_skip_amazon_gif_too_early",
+          "summary": "Do NOT emit Amazon Great Indian Festival tasks today. Sale Sep 26 → Oct 25 2026 (Prime early access from Sep 26). 5 months out.",
+          "category": "sale_outside_window",
+          "as_of": "2026-05-02",
+          "valid_until": "2026-09-25",
+          "source_url": "https://www.amazon.in",
+          "profile_md_lines": [],
+          "mailbox_json_lines": [],
+          "calendar_json_lines": []
+        },
+        {
+          "id": "meera_skip_apple_back_to_school_too_early",
+          "summary": "Do NOT emit Apple Back-to-School standalone tasks today. Sale launches mid-June 2026 (June 17 projected). Eligible via UNiDAYS for university students.",
+          "category": "sale_outside_window",
+          "as_of": "2026-05-02",
+          "valid_until": "2026-06-15",
+          "source_url": "https://www.apple.com/in-edu/shop/back-to-school",
+          "profile_md_lines": [],
+          "mailbox_json_lines": [],
+          "calendar_json_lines": []
+        },
+        {
+          "id": "meera_skip_decathlon_clearance_continuous_no_specific_buy",
+          "summary": "Do NOT emit a generic `Buy Decathlon clearance` task. Clearance is continuously updated, no specific item-to-buy identified. Becomes a task only when paired with a specific need (e.g. running shoes after a long-run injury).",
+          "category": "vague_no_specific_item",
+          "valid_until": null,
+          "source_url": "https://www.decathlon.in/clearance",
+          "profile_md_lines": [],
+          "mailbox_json_lines": [],
+          "calendar_json_lines": []
+        }
+      ],
       "expected_preference_topics": [],
-      "notes": "Profile-only persona — Meera has not granted Gmail or Calendar access. Empty mailbox + empty fixture + empty calendar. Correct behaviour is total silence: 0 tasks, 0 preference_updates. Even though the profile is rich with wishlist items (3M Littmann Cardiology IV stethoscope, iPad Air with Pencil, Skechers Arch Fit, Laneige Lip Sleeping Mask, Anuv Jain Mumbai concert ticket) and explicitly tracked sales (Nykaa Pink Friday, H&M EOSS, Amazon Great Indian Festival, Decathlon clearance), the shopping agent's BACKFILL job depends on email evidence — there is none to mine. Profile alone is not a trigger. NOTE: a future deep-research run for Meera (see backend/eval/deep_research_prompts.md → Shopping Prompt 11) may populate expected_tasks once we accept that web_search is also a valid trigger source for stipend-friendly items."
+      "notes": "Profile-only persona — no Gmail/Calendar OAuth. Despite empty fixture, deep research surfaces 2 stipend-friendly buy-now items (Skechers ₹4,949 -45%, Laneige ₹540 -10%) and 8 wait/skip targets (Littmann full price, iPad B2S wait, Anuv Jain past, Pink Friday Nov, H&M EOSS late May, Amazon GIF Sep, Apple B2S June, Decathlon vague). Task source = web_search; profile alone is not sufficient (the agent's binding constraint), but for backfill the deep-research-grounded 2 buys are defensible because they reference SPECIFIC profile wishlist items + verifiable current sale prices."
     }
   ]
 }

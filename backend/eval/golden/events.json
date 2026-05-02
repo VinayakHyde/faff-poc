@@ -6,7 +6,8 @@
     "in_scope_categories": [
       "sale_window_nudge",
       "tickets_open_countdown",
-      "festival_lineup_update"
+      "festival_lineup_update",
+      "save_the_date_free_event"
     ],
     "out_of_scope_examples": [
       "Bills, subscriptions, payment portals (finance lane)",
@@ -19,30 +20,61 @@
       "Generic ticket-platform digests with no profile-named artist hit"
     ],
     "surface_time_rules": {
-      "sale_window_nudge": "as soon as the sale-open email is processed (sale is live)",
+      "sale_window_nudge": "as soon as the sale-open is verified",
       "tickets_open_countdown": "2–6 hours before the announced sale-open time",
-      "festival_lineup_update": "the day the lineup change email lands"
+      "festival_lineup_update": "the day the lineup change is announced",
+      "save_the_date_free_event": "7–14 days before the event"
     },
     "trigger_requirements": {
-      "must_combine": "profile-named artist/festival/circuit + a real signal in the live slice (ticket-platform email, artist newsletter, calendar event, or profile-listed festival inside its 7–14-day prep window)",
-      "profile_alone_insufficient": "Naming an artist in the profile is necessary but NOT sufficient. There has to be a concrete trigger in today's mailbox / calendar / festival window."
-    }
+      "must_combine": "profile-named artist/festival/circuit + a real signal (live ticket-platform email, web_search-verified sale-open, or profile-listed festival inside its 7–14-day prep window)",
+      "profile_alone_insufficient": "Naming an artist in the profile is necessary but NOT sufficient — there must be a verifiable announced show or sale window."
+    },
+    "as_of_global": "2026-05-02",
+    "data_source": "All web-grounded expected_tasks were sourced from Gemini Deep Research runs on 2026-05-02. See backend/eval/deep_research_prompts.md."
   },
+
   "personas": [
     {
       "slug": "aditi",
       "mode": "STEADY-STATE",
       "fixture_path": "backend/data/users/aditi/fixtures/2026-05-01.json",
-      "fixture_summary": "Today = Fri 2026-05-01. Mailbox: mom check-in (msg_mom_1), HR holiday FYI (msg_hr_1), Dad insurance forward (msg_dad_1). Calendar: Date Night Toit + recurring Indiranagar routines + outside-window meetings. ZERO ticket-platform emails. ZERO mentions of profile-named artists (Kendrick, Frank Ocean, Prateek Kuhad, Anuv Jain, AP Dhillon, FKJ, SZA, Diljit Dosanjh) anywhere in the slice or calendar. Profile bucket-list and top-artists exist but no live signal triggers any of them.",
-      "expected_tasks": [],
-      "expected_tasks_note": "Silence is the only correct output. The events agent's trigger contract requires (profile-named artist OR profile-listed festival) AND (real email/calendar/festival-window signal). Profile alone is not a trigger. Bucket-list artists like Kendrick / Frank Ocean / AP Dhillon are not actionable until a real sale-open or announcement email lands.",
+      "fixture_summary": "Today = Fri 2026-05-01. Mailbox: mom check-in (msg_mom_1), HR holiday FYI (msg_hr_1), Dad insurance forward (msg_dad_1). Calendar: Date Night Toit + Indiranagar routines. Profile top-artists: Kendrick Lamar, Frank Ocean, Prateek Kuhad, Anuv Jain, AP Dhillon, FKJ, SZA, Diljit Dosanjh. Travel anchors in window: Bali Jul 2026, Japan Oct 2026.",
+
+      "expected_tasks": [
+        {
+          "id": "aditi_buy_anuv_jain_singapore_jul28",
+          "summary": "Buy tickets for Anuv Jain at Capitol Theatre Singapore on 2026-07-28 — sale open since Feb 2026, ₹15,000–16,000 ($183 SGD). Profile top-artist + 2.5h regional hop from her booked Bali Jul 2026 trip.",
+          "evidence_email_ids": [],
+          "category": "sale_window_nudge_web_verified",
+          "as_of": "2026-05-02",
+          "valid_until": "2026-07-28",
+          "source_url": "https://www.ticketmaster.com/anuv-jain-tickets/artist/3118632",
+          "notes": "Sourced from Gemini Deep Research (Events Prompt 1). City anchor: Bali-Jul (regional hop from Denpasar).",
+          "profile_md_lines": [],
+          "mailbox_json_lines": [],
+          "calendar_json_lines": []
+        },
+        {
+          "id": "aditi_buy_anuv_jain_kuala_lumpur_jul29",
+          "summary": "Buy tickets for Anuv Jain at Zepp Kuala Lumpur on 2026-07-29 — sale open since Feb 2026, ₹4,500–5,000 (RM 247). Profile top-artist + KL is a regional hop from her Bali Jul 2026 trip; cheaper alternative to the Singapore date.",
+          "evidence_email_ids": [],
+          "category": "sale_window_nudge_web_verified",
+          "as_of": "2026-05-02",
+          "valid_until": "2026-07-29",
+          "source_url": "https://concerts50.com/artists/anuv-jain-tour-dates",
+          "notes": "Sourced from Gemini Deep Research (Events Prompt 1). City anchor: Bali-Jul (regional hop from Denpasar).",
+          "profile_md_lines": [],
+          "mailbox_json_lines": [],
+          "calendar_json_lines": []
+        }
+      ],
+      "expected_tasks_note": "Two strong expected_tasks rooted in announced shows by profile top-artist Anuv Jain in Asian cities reachable from her Bali Jul anchor. Kendrick KL (Oct 25) is intentionally an expected_skip today — sale not yet open, only 'announced — dates pending'.",
+
       "expected_skips": [
         {
           "id": "aditi_skip_insurance_as_ticket_task",
-          "summary": "Do NOT reframe Dad's insurance renewal email as `Buy tickets ...` or any other event task. Insurance is finance lane; the email has no ticket / artist / venue content.",
-          "evidence_email_ids": [
-            "msg_dad_1"
-          ],
+          "summary": "Do NOT reframe Dad's insurance renewal email as `Buy tickets ...` or any other event task. Insurance is finance lane.",
+          "evidence_email_ids": ["msg_dad_1"],
           "category": "off_lane_finance",
           "valid_until": null,
           "profile_md_lines": [],
@@ -51,10 +83,8 @@
         },
         {
           "id": "aditi_skip_hr_holiday_as_event",
-          "summary": "Do NOT reframe the HR public-holiday FYI as a discovery / event task. It is an FYI announcement with no ticket signal.",
-          "evidence_email_ids": [
-            "msg_hr_1"
-          ],
+          "summary": "Do NOT reframe the HR public-holiday FYI as an event task. FYI announcement, no ticket signal.",
+          "evidence_email_ids": ["msg_hr_1"],
           "category": "fyi_no_action",
           "valid_until": null,
           "profile_md_lines": [],
@@ -63,10 +93,8 @@
         },
         {
           "id": "aditi_skip_mom_email_as_event",
-          "summary": "Do NOT generate any events task from Mom's relational check-in. No event signal; reply belongs to email_triage.",
-          "evidence_email_ids": [
-            "msg_mom_1"
-          ],
+          "summary": "Do NOT generate any events task from Mom's relational check-in. Reply belongs to email_triage.",
+          "evidence_email_ids": ["msg_mom_1"],
           "category": "off_lane_email",
           "valid_until": null,
           "profile_md_lines": [],
@@ -74,30 +102,20 @@
           "calendar_json_lines": []
         },
         {
-          "id": "aditi_skip_speculative_kendrick_tour",
-          "summary": "Do NOT emit `Buy tickets for Kendrick Lamar` / `Watch for Kendrick tour news` / `Save the date for Kendrick Asia tour` despite Kendrick being on Aditi's bucket list. No sale-open email landed; profile alone is not a trigger.",
-          "evidence_email_ids": [],
-          "category": "speculative_no_signal",
-          "notes": "Most tempting failure mode for this agent: profile names a high-emotion bucket-list artist, agent invents a task without a live signal.",
-          "valid_until": null,
+          "id": "aditi_skip_kendrick_kl_dates_pending",
+          "summary": "Do NOT emit `Buy tickets for Kendrick Lamar Kuala Lumpur 2026-10-25` today. The KL leak is 'announced — dates pending'; no concrete sale-open time. Should fire as `Tickets open ...` countdown only when sale opens.",
+          "category": "announcement_no_sale_yet",
+          "as_of": "2026-05-02",
+          "valid_until": "2026-10-25",
+          "source_url": "https://www.livenation.asia/kendrick-lamar-tickets-adp295371",
+          "notes": "Highest-temptation skip target. Bucket-list artist (would fly anywhere in Asia) + Japan Oct trip overlap, but agent must wait for real sale open.",
           "profile_md_lines": [],
           "mailbox_json_lines": [],
           "calendar_json_lines": []
         },
         {
-          "id": "aditi_skip_speculative_frank_ocean_tour",
-          "summary": "Do NOT emit any task about Frank Ocean. He's on Aditi's bucket list but no announcement email exists in the slice.",
-          "evidence_email_ids": [],
-          "category": "speculative_no_signal",
-          "valid_until": null,
-          "profile_md_lines": [],
-          "mailbox_json_lines": [],
-          "calendar_json_lines": []
-        },
-        {
-          "id": "aditi_skip_speculative_ap_dhillon_arena",
-          "summary": "Do NOT emit `Buy tickets for AP Dhillon arena show` etc. The bucket-list entry is real but no concrete sale-open / announcement email exists.",
-          "evidence_email_ids": [],
+          "id": "aditi_skip_frank_ocean_no_tour",
+          "summary": "Do NOT emit any task about Frank Ocean. Bucket-list but no announced 2026 tour anywhere in Asia/India/world.",
           "category": "speculative_no_signal",
           "valid_until": null,
           "profile_md_lines": [],
@@ -105,24 +123,75 @@
           "calendar_json_lines": []
         },
         {
-          "id": "aditi_skip_generic_bookmyshow_browse",
-          "summary": "Do NOT emit `Look for upcoming concerts on BookMyShow` or `Plan a concert outing this weekend`. No specific artist, no specific city, no concrete trigger — vague filler.",
-          "evidence_email_ids": [],
-          "category": "filler_vague_action",
+          "id": "aditi_skip_sza_no_tour",
+          "summary": "Do NOT emit any task about SZA. No upcoming concerts in Japan/Asia/India for the 2026 window.",
+          "category": "speculative_no_signal",
           "valid_until": null,
+          "profile_md_lines": [],
+          "mailbox_json_lines": [],
+          "calendar_json_lines": []
+        },
+        {
+          "id": "aditi_skip_ap_dhillon_no_asia_dates",
+          "summary": "Do NOT emit `Buy tickets for AP Dhillon arena show`. Bucket-list but his 2026 'Out of This World' tour is North America-only; no Asia/India dates in window. Malta show Sep 3-6 is outside her travel cities.",
+          "category": "speculative_no_signal",
+          "valid_until": null,
+          "profile_md_lines": [],
+          "mailbox_json_lines": [],
+          "calendar_json_lines": []
+        },
+        {
+          "id": "aditi_skip_diljit_dosanjh_already_attended_no_new",
+          "summary": "Do NOT emit Diljit Dosanjh tasks. Profile says she attended his Bangalore Nov 2025 show; current 'Aura' tour is North America (no India/Asia in window).",
+          "category": "speculative_no_signal",
+          "valid_until": null,
+          "profile_md_lines": [],
+          "mailbox_json_lines": [],
+          "calendar_json_lines": []
+        },
+        {
+          "id": "aditi_skip_prateek_kuhad_post_tour",
+          "summary": "Do NOT emit Prateek Kuhad tasks. Profile says she attended his Bangalore Mar 2026 show; he's now in post-tour quiet phase (no upcoming dates).",
+          "category": "speculative_no_signal",
+          "valid_until": null,
+          "profile_md_lines": [],
+          "mailbox_json_lines": [],
+          "calendar_json_lines": []
+        },
+        {
+          "id": "aditi_skip_fkj_no_2026_dates",
+          "summary": "Do NOT emit FKJ tasks. Last Asia date was Shanghai Apr 15 2026 (before window); no Japan/India dates in May–Oct 2026.",
+          "category": "speculative_no_signal",
+          "valid_until": null,
+          "profile_md_lines": [],
+          "mailbox_json_lines": [],
+          "calendar_json_lines": []
+        },
+        {
+          "id": "aditi_skip_summer_sonic_no_profile_artist",
+          "summary": "Do NOT emit `Lineup update — Summer Sonic Tokyo/Osaka 14–16 Aug 2026`. None of her 8 top-artists are on the bill (Strokes, Jamiroquai, FKA Twigs, David Byrne announced).",
+          "category": "festival_no_profile_artist",
+          "as_of": "2026-05-02",
+          "valid_until": "2026-08-14",
+          "source_url": "https://www.summersonic.com",
+          "notes": "Festival in her travel city during travel window, but lineup-trigger requires a profile-named artist. None present.",
+          "profile_md_lines": [],
+          "mailbox_json_lines": [],
+          "calendar_json_lines": []
+        },
+        {
+          "id": "aditi_skip_sunburn_mumbai_outside_window",
+          "summary": "Do NOT emit `Lineup update — Sunburn Mumbai Dec 2026`. Outside the 7–14-day prep window for festivals; revisit closer to December.",
+          "category": "outside_window",
+          "valid_until": "2026-11-15",
           "profile_md_lines": [],
           "mailbox_json_lines": [],
           "calendar_json_lines": []
         },
         {
           "id": "aditi_skip_recurring_routine_as_event",
-          "summary": "Do NOT reframe Sat pottery / Sun yoga / Sun brunch / Fri date-night as event-agent tasks. They are profile-stated routines; pottery/yoga are not concerts; date night is the calendar agent's lane if anything.",
-          "evidence_event_ids": [
-            "ev_561abd2fe028",
-            "ev_540946863ce8",
-            "ev_may3_brunch",
-            "ev_may1_date"
-          ],
+          "summary": "Do NOT reframe Sat pottery / Sun yoga / Sun brunch / Fri date-night as event-agent tasks. Profile-stated routines, not concerts.",
+          "evidence_event_ids": ["ev_561abd2fe028", "ev_540946863ce8", "ev_may3_brunch", "ev_may1_date"],
           "category": "off_lane_calendar",
           "valid_until": null,
           "profile_md_lines": [],
@@ -132,20 +201,100 @@
       ],
       "expected_preference_topics": []
     },
+
     {
       "slug": "arjun",
       "mode": "BACKFILL",
       "fixture_path": "backend/data/users/arjun/fixtures/2026-05-01.json",
-      "fixture_summary": "Onboarded today (2026-05-01) → BACKFILL. Calendar fixture empty. Mailbox slice: Sudipto bridge invite, Mitali breakfast email. Mailbox history (63 messages) has ZERO ticket-platform emails (BookMyShow / District / Insider) and ZERO mentions of profile-named artists (Tagore / Ravi Shankar / Vilayat Khan / Kishori Amonkar / Miles Davis / Coltrane / Beatles / Floyd) or festivals (Dover Lane).",
-      "expected_tasks": [],
-      "expected_tasks_note": "Backfill with zero ticket-platform mail history → no patterns to act on, no upcoming-show events, no profile-festival inside window. Dover Lane Music Conference is December — outside the 7–14 day prep window. The two personal emails are coordination, not events.",
+      "fixture_summary": "Onboarded today (2026-05-01) → BACKFILL. Calendar empty, mailbox slice has Sudipto bridge + Mitali breakfast emails. Profile top-traditions: Rabindra Sangeet, Pt. Ravi Shankar / Vilayat Khan / Kishori Amonkar, Satyajit Ray cinema, jazz (Miles Davis, Coltrane, ECM), Beatles/Floyd tributes. Travel: Mumbai Jun 2026, Darjeeling Sep 2026. Annual: Dover Lane (Jan), Durga Puja (Sep/Oct).",
+
+      "expected_tasks": [
+        {
+          "id": "arjun_buy_saath_saath_kolkata_may30",
+          "summary": "Buy tickets for Saath Saath — Purbayan Chatterjee (sitar, Pt. Ravi Shankar tradition) + Rakesh Chaurasia (flute) at Dhono Dhanyo Auditorium Kolkata on 2026-05-30. Sale open on District/BookMyShow ₹999–4,999.",
+          "category": "sale_window_nudge_web_verified",
+          "as_of": "2026-05-02",
+          "valid_until": "2026-05-30",
+          "source_url": "https://www.district.in/events/saath-saath-india-tour-kolkata-2026",
+          "notes": "Profile match: Pt. Ravi Shankar tradition. Sourced from Gemini Deep Research (Events Prompt 2).",
+          "profile_md_lines": [],
+          "mailbox_json_lines": [],
+          "calendar_json_lines": []
+        },
+        {
+          "id": "arjun_buy_nandikar_meghe_dhaka_ghatak_may31",
+          "summary": "Buy tickets for Nandikar's *Meghe Dhaka Ghatak* at Academy of Fine Arts Kolkata on 2026-05-31 (3pm) — sale open via Nandikar.net / Academy box office, ₹200–500. Profile hobby: Bengali theatre at Academy.",
+          "category": "sale_window_nudge_web_verified",
+          "as_of": "2026-05-02",
+          "valid_until": "2026-05-31",
+          "source_url": "https://nandikar.net/shows/",
+          "profile_md_lines": [],
+          "mailbox_json_lines": [],
+          "calendar_json_lines": []
+        },
+        {
+          "id": "arjun_buy_sorin_zlat_jazz_jun13",
+          "summary": "Buy tickets for Sorin Zlat Trio – *Changing Times* at NCPA Mumbai (Experimental Theatre) on 2026-06-13 — sale open via NCPA / BookMyShow, ₹900–1,000. Overlaps Mumbai Jun 2026 trip; profile match: ECM-style jazz.",
+          "category": "sale_window_nudge_web_verified",
+          "as_of": "2026-05-02",
+          "valid_until": "2026-06-13",
+          "source_url": "https://www.ncpamumbai.com/event/sorin-zlat-trio-changing-times/",
+          "profile_md_lines": [],
+          "mailbox_json_lines": [],
+          "calendar_json_lines": []
+        },
+        {
+          "id": "arjun_buy_rajeev_raja_combine_jun21",
+          "summary": "Buy tickets for Rajeev Raja Combine at NCPA Mumbai on 2026-06-21 — jazz fusion (Miles Davis + Indian classical), sale open ₹500–750. Mumbai Jun trip overlap; profile match: jazz + Hindustani classical.",
+          "category": "sale_window_nudge_web_verified",
+          "as_of": "2026-05-02",
+          "valid_until": "2026-06-21",
+          "source_url": "https://www.ncpamumbai.com/event/rajeev-raja-combine/",
+          "profile_md_lines": [],
+          "mailbox_json_lines": [],
+          "calendar_json_lines": []
+        },
+        {
+          "id": "arjun_save_baishe_srabon_kolkata_aug7",
+          "summary": "Save the date for Baishe Srabon (Tagore death anniversary tributes) at Rabindra Sadan / Nandan Complex Kolkata on 2026-08-07 — free entry, peak annual Rabindra Sangeet event. Profile match: Kanika Banerjee / Hemanta Mukherjee tribute tradition.",
+          "category": "save_the_date_free_event",
+          "as_of": "2026-05-02",
+          "valid_until": "2026-08-07",
+          "source_url": "https://www.wb.gov.in/",
+          "notes": "Free-entry event; verb prefix `Save the date for ...` may need to be added to the agent's allowed verb list.",
+          "profile_md_lines": [],
+          "mailbox_json_lines": [],
+          "calendar_json_lines": []
+        },
+        {
+          "id": "arjun_save_varsha_mangal_shantiniketan_aug15",
+          "summary": "Save the date for Varsha Mangal at Visva-Bharati Sangeet Bhavan Shantiniketan on 2026-08-15 to 16 — free entry, Rabindra Sangeet at his stated weekend-retreat venue.",
+          "category": "save_the_date_free_event",
+          "as_of": "2026-05-02",
+          "valid_until": "2026-08-16",
+          "source_url": "https://visvabharati.ac.in/",
+          "profile_md_lines": [],
+          "mailbox_json_lines": [],
+          "calendar_json_lines": []
+        },
+        {
+          "id": "arjun_save_durga_puja_maddox_oct17",
+          "summary": "Save the date for Maddox Square Durga Puja Cultural Sessions, Ballygunge Kolkata, 2026-10-17 to 21 — free entry, Durga Puja sabha events (highest priority per profile).",
+          "category": "save_the_date_free_event",
+          "as_of": "2026-05-02",
+          "valid_until": "2026-10-21",
+          "source_url": "https://ca.trip.com/travel-guide/attraction/kolkata/maddox-square-durga-puja-136999548/",
+          "profile_md_lines": [],
+          "mailbox_json_lines": [],
+          "calendar_json_lines": []
+        }
+      ],
+
       "expected_skips": [
         {
           "id": "arjun_skip_bridge_as_event",
-          "summary": "Do NOT reframe Sudipto's bridge invitation as a `Buy tickets for ...` or similar event task. Bridge at the Saturday Club is not a ticketed event; the email is social coordination owned by email_triage.",
-          "evidence_email_ids": [
-            "msg_bbeb109a3ff1"
-          ],
+          "summary": "Do NOT reframe Sudipto's bridge invitation as a `Buy tickets for ...` event task. Social coordination, owned by email_triage.",
+          "evidence_email_ids": ["msg_bbeb109a3ff1"],
           "category": "off_lane_email",
           "valid_until": null,
           "profile_md_lines": [],
@@ -154,10 +303,8 @@
         },
         {
           "id": "arjun_skip_breakfast_as_event",
-          "summary": "Do NOT reframe Mitali's Sunday breakfast email as an event task. Breakfast is food / social coordination; not a ticketed event.",
-          "evidence_email_ids": [
-            "msg_9995f6f04ae9"
-          ],
+          "summary": "Do NOT reframe Mitali's Sunday breakfast email as an event task. Food / social coordination, not a ticketed event.",
+          "evidence_email_ids": ["msg_9995f6f04ae9"],
           "category": "off_lane_email",
           "valid_until": null,
           "profile_md_lines": [],
@@ -165,19 +312,40 @@
           "calendar_json_lines": []
         },
         {
-          "id": "arjun_skip_dover_lane_outside_window",
-          "summary": "Do NOT emit `Lineup update — Dover Lane Music Conference` or `Tickets open for Dover Lane`. Dover Lane is in December; today is May 1. Outside the 7–14-day prep window for festivals. Wait until ~10 days before.",
-          "evidence_email_ids": [],
+          "id": "arjun_skip_dover_lane_2027_too_early",
+          "summary": "Do NOT emit `Tickets open for Dover Lane Music Conference 2027` today. Tentative dates 22–26 Jan 2027; ticketing typically opens late December 2026.",
           "category": "outside_window",
-          "valid_until": null,
+          "as_of": "2026-05-02",
+          "valid_until": "2026-12-15",
           "profile_md_lines": [],
           "mailbox_json_lines": [],
           "calendar_json_lines": []
         },
         {
-          "id": "arjun_skip_speculative_jazz_europe",
-          "summary": "Do NOT emit `Watch for European jazz festivals` or similar. Profile lists this as bucket-list but with no London/Europe trip in the live calendar and no announcement email, this is speculation.",
-          "evidence_email_ids": [],
+          "id": "arjun_skip_dag_mumbai_free_exhibitions",
+          "summary": "Do NOT emit `Buy tickets for Epochal: The Period of Pioneers` or `The Body of the Ascetic` at DAG Mumbai. Both are free-entry art exhibitions during his Mumbai Jun trip — destination-prep is travel agent's lane, not events.",
+          "category": "off_lane_travel",
+          "as_of": "2026-05-02",
+          "valid_until": "2026-08-31",
+          "source_url": "https://dagworld.com/exhibitions.html",
+          "profile_md_lines": [],
+          "mailbox_json_lines": [],
+          "calendar_json_lines": []
+        },
+        {
+          "id": "arjun_skip_something_like_cinema_too_early",
+          "summary": "Do NOT emit `Tickets open for Something like Cinema – Exploring Ray` (Nandan Kolkata) today. Sale opens 2026-08-25 for Sep 5 release; countdown should fire 2–6 hours before sale-open, not 4 months early.",
+          "category": "outside_window",
+          "as_of": "2026-05-02",
+          "valid_until": "2026-08-20",
+          "source_url": "https://www.nandan.gov.in/",
+          "profile_md_lines": [],
+          "mailbox_json_lines": [],
+          "calendar_json_lines": []
+        },
+        {
+          "id": "arjun_skip_kishori_kirana_no_event",
+          "summary": "Profile names Kishori Amonkar / Kirana gharana. No event found in window (winter Sammelan season is Dec–Feb). Do not surface speculative `Buy tickets for ...`.",
           "category": "speculative_no_signal",
           "valid_until": null,
           "profile_md_lines": [],
@@ -185,10 +353,18 @@
           "calendar_json_lines": []
         },
         {
-          "id": "arjun_skip_profile_echo_pref_update",
-          "summary": "Do NOT emit a preference_update that just restates the profile's stated artists or 'attends Dover Lane every year.' BACKFILL preference_updates must come from mailbox/calendar evidence the profile doesn't already capture; not from re-summarising the profile.",
-          "evidence_email_ids": [],
-          "category": "profile_echo",
+          "id": "arjun_skip_miles_davis_coltrane_no_event",
+          "summary": "Profile lists Miles Davis / Coltrane tribute concerts. The 100th-anniversary tour peaked in early 2026; no concrete tribute concerts in his cities in window. Do not speculate.",
+          "category": "speculative_no_signal",
+          "valid_until": null,
+          "profile_md_lines": [],
+          "mailbox_json_lines": [],
+          "calendar_json_lines": []
+        },
+        {
+          "id": "arjun_skip_european_jazz_bucket_list",
+          "summary": "Do NOT emit `Watch for European jazz festivals`. Bucket-list but no European trip in window; no concrete signal.",
+          "category": "speculative_no_signal",
           "valid_until": null,
           "profile_md_lines": [],
           "mailbox_json_lines": [],
@@ -197,20 +373,142 @@
       ],
       "expected_preference_topics": []
     },
+
     {
       "slug": "devendra",
       "mode": "STEADY-STATE",
       "fixture_path": "backend/data/users/devendra/fixtures/2026-05-01.json",
-      "fixture_summary": "Steady-state (onboarded 2026-01-20). Calendar empty. Mailbox slice: 1 work email from Nilesh about FY25 audit. Mailbox history (44 messages) has ZERO ticket-platform mails. Profile is cricket-heavy: bucket list 'live match at Lord's or MCG'; London trip July 2026 already booked and includes a cricket match. No music-concert interests.",
-      "expected_tasks": [],
-      "expected_tasks_note": "No live event signal. The cricket-match-in-London entry is already on the calendar / travel itinerary; that's calendar/travel's lane. No sale-open email for any cricket match in the live slice.",
+      "fixture_summary": "Steady-state. Calendar empty, mailbox slice: Nilesh audit. Profile: cricket fan (Lord's/MCG bucket-list), bhajans (Anup Jalota), old Hindi (Rafi/Kishore tributes), Gujarati Dayro, numismatics, Gujarati Sahitya Parishad. London Jul trip booked (with one cricket match already booked). Mumbai May conference trip booked.",
+
+      "expected_tasks": [
+        {
+          "id": "devendra_buy_ipl_gt_pbks_may3",
+          "summary": "Buy tickets for IPL: Gujarat Titans vs Punjab Kings at Narendra Modi Stadium Ahmedabad on 2026-05-03 — sale open BookMyShow ₹800–15,000. Home venue, cricket fan.",
+          "category": "sale_window_nudge_web_verified",
+          "as_of": "2026-05-02",
+          "valid_until": "2026-05-03",
+          "source_url": "https://www.iplt20.com",
+          "profile_md_lines": [],
+          "mailbox_json_lines": [],
+          "calendar_json_lines": []
+        },
+        {
+          "id": "devendra_buy_ipl_gt_srh_may12",
+          "summary": "Buy tickets for IPL: Gujarat Titans vs Sunrisers Hyderabad at Narendra Modi Stadium Ahmedabad on 2026-05-12 — sale open ₹800–18,000.",
+          "category": "sale_window_nudge_web_verified",
+          "as_of": "2026-05-02",
+          "valid_until": "2026-05-12",
+          "source_url": "https://www.iplt20.com",
+          "profile_md_lines": [],
+          "mailbox_json_lines": [],
+          "calendar_json_lines": []
+        },
+        {
+          "id": "devendra_tickets_open_ipl_final_may24",
+          "summary": "Tickets open 2026-05-15 for IPL 2026 Final at M. Chinnaswamy Stadium Bengaluru on 2026-05-24, ₹2,500–45,000. Bengaluru is reachable via short flight from Ahmedabad.",
+          "category": "tickets_open_countdown",
+          "as_of": "2026-05-02",
+          "valid_until": "2026-05-24",
+          "source_url": "https://www.iplt20.com",
+          "profile_md_lines": [],
+          "mailbox_json_lines": [],
+          "calendar_json_lines": []
+        },
+        {
+          "id": "devendra_buy_eng_w_vs_ind_w_t20_final_jul5",
+          "summary": "Buy tickets for ICC Women's T20 World Cup 2026 Final at Lord's London on 2026-07-05 — sale open £40–250 (₹4K–25K). London-Jul trip overlap, bucket-list (Lord's).",
+          "category": "sale_window_nudge_web_verified",
+          "as_of": "2026-05-02",
+          "valid_until": "2026-07-05",
+          "source_url": "https://www.icc-cricket.com",
+          "profile_md_lines": [],
+          "mailbox_json_lines": [],
+          "calendar_json_lines": []
+        },
+        {
+          "id": "devendra_buy_eng_vs_ind_lords_jul19",
+          "summary": "Buy tickets for England vs India Men's ODI at Lord's London on 2026-07-19 — limited availability via ECB Tickets, £90–400 (₹9K–40K). London-Jul trip overlap, bucket-list (Lord's). NOTE: this is NOT the match Devendra has already booked — that one stays calendar/travel's lane.",
+          "category": "sale_window_nudge_web_verified",
+          "as_of": "2026-05-02",
+          "valid_until": "2026-07-19",
+          "source_url": "https://www.lords.org",
+          "profile_md_lines": [],
+          "mailbox_json_lines": [],
+          "calendar_json_lines": []
+        },
+        {
+          "id": "devendra_buy_carvaan_rafi_kishore_may31",
+          "summary": "Buy tickets for Carvaan Live: Mohammed Rafi & Kishore Kumar Tribute at Four Seasons Mumbai on 2026-05-31 — sale open BookMyShow ₹2,500–8,000. Mumbai-May trip overlap; profile-listed top tribute concerts.",
+          "category": "sale_window_nudge_web_verified",
+          "as_of": "2026-05-02",
+          "valid_until": "2026-05-31",
+          "source_url": "https://in.bookmyshow.com",
+          "profile_md_lines": [],
+          "mailbox_json_lines": [],
+          "calendar_json_lines": []
+        },
+        {
+          "id": "devendra_save_lecture_womens_cricket_may3",
+          "summary": "Save the date for 'Glorious History of Women's Cricket (1973 onwards)' lecture at Sahitya Forum Navrangpura Ahmedabad on 2026-05-03 — free entry; profile match: Gujarati Sahitya Parishad + cricket.",
+          "category": "save_the_date_free_event",
+          "as_of": "2026-05-02",
+          "valid_until": "2026-05-03",
+          "source_url": "https://www.gujaratisahitya.org",
+          "profile_md_lines": [],
+          "mailbox_json_lines": [],
+          "calendar_json_lines": []
+        },
+        {
+          "id": "devendra_save_mumbai_coin_fair_may9",
+          "summary": "Save the date for Mumbai One-Day Coin Fair at Indian Merchant Chambers Churchgate on 2026-05-09 — free entry; Mumbai-May trip overlap; profile hobby: numismatics.",
+          "category": "save_the_date_free_event",
+          "as_of": "2026-05-02",
+          "valid_until": "2026-05-09",
+          "source_url": "http://www.mumbaicoinsociety.org",
+          "profile_md_lines": [],
+          "mailbox_json_lines": [],
+          "calendar_json_lines": []
+        },
+        {
+          "id": "devendra_save_vachikam_rajesh_dani_may10",
+          "summary": "Save the date for Vachikam by Rajesh Dani at Gujarati Sahitya Parishad Navrangpura Ahmedabad on 2026-05-10 — free entry; Gujarati literary event.",
+          "category": "save_the_date_free_event",
+          "as_of": "2026-05-02",
+          "valid_until": "2026-05-10",
+          "source_url": "https://www.gujaratisahitya.org",
+          "profile_md_lines": [],
+          "mailbox_json_lines": [],
+          "calendar_json_lines": []
+        },
+        {
+          "id": "devendra_save_ahmedabad_coin_fair_aug7",
+          "summary": "Save the date for Ahmedabad Coins and Currency Fair at President Hotel / CG Road, 2026-08-07 to 2026-08-09 (tentative) — free entry; profile hobby: numismatics.",
+          "category": "save_the_date_free_event",
+          "as_of": "2026-05-02",
+          "valid_until": "2026-08-09",
+          "source_url": "https://www.classicalnumismaticgallery.com",
+          "profile_md_lines": [],
+          "mailbox_json_lines": [],
+          "calendar_json_lines": []
+        },
+        {
+          "id": "devendra_save_paryushan_discourses_sep8",
+          "summary": "Save the date for Paryushan Mahaparva 2026 discourses at Tapovan / local Upashrays Ahmedabad, 2026-09-08 to 2026-09-15 — free entry; profile-priority religious observance.",
+          "category": "save_the_date_free_event",
+          "as_of": "2026-05-02",
+          "valid_until": "2026-09-15",
+          "source_url": "https://www.rajsaubhag.org",
+          "profile_md_lines": [],
+          "mailbox_json_lines": [],
+          "calendar_json_lines": []
+        }
+      ],
+
       "expected_skips": [
         {
           "id": "devendra_skip_audit_as_event",
-          "summary": "Do NOT reframe Nilesh's audit email as an event task. Work coordination, not a ticketed event.",
-          "evidence_email_ids": [
-            "fix_msg_1"
-          ],
+          "summary": "Do NOT reframe Nilesh's audit email as an event task. Work coordination.",
+          "evidence_email_ids": ["fix_msg_1"],
           "category": "off_lane_email",
           "valid_until": null,
           "profile_md_lines": [],
@@ -218,19 +516,19 @@
           "calendar_json_lines": []
         },
         {
-          "id": "devendra_skip_speculative_world_cup",
-          "summary": "Do NOT emit `Buy tickets for ICC World Cup 2026` or any speculative cricket-tournament task. No sale-open email; profile alone is not a trigger.",
-          "evidence_email_ids": [],
-          "category": "speculative_no_signal",
-          "valid_until": null,
+          "id": "devendra_skip_world_cup_2027_not_on_sale",
+          "summary": "Do NOT emit `Buy tickets for ICC World Cup 2027` today. Tournament is Oct/Nov 2027 (Africa); ballot opens 12–18 months before, not yet live. Pre-registering with travel syndicates is not an events-agent buy action.",
+          "category": "tickets_not_yet_on_sale",
+          "as_of": "2026-05-02",
+          "valid_until": "2027-10-01",
+          "source_url": "https://www.icc-cricket.com/",
           "profile_md_lines": [],
           "mailbox_json_lines": [],
           "calendar_json_lines": []
         },
         {
           "id": "devendra_skip_london_cricket_already_booked",
-          "summary": "Do NOT surface a `Buy tickets for London cricket match` task. The London trip + match is already booked and on the calendar. Repeating it is duplication; any pre-trip prep belongs to travel/calendar agents.",
-          "evidence_email_ids": [],
+          "summary": "Do NOT re-surface the cricket match Devendra already booked on his July London itinerary. That match is on his calendar/travel; only ADJACENT cricket events (e.g. Eng vs Ind ODI Jul 19, Women's T20 Final Jul 5) are events-agent triggers.",
           "category": "duplication_other_lane",
           "valid_until": null,
           "profile_md_lines": [],
@@ -238,10 +536,20 @@
           "calendar_json_lines": []
         },
         {
-          "id": "devendra_skip_profile_echo_pref_update",
-          "summary": "Do NOT emit a preference_update that restates 'user is a cricket fan' or 'user has a London trip booked.' Both are already in the profile; BACKFILL/STEADY-STATE preference_updates require new evidence from mail history, not a re-summary.",
-          "evidence_email_ids": [],
-          "category": "profile_echo",
+          "id": "devendra_skip_navratri_too_early",
+          "summary": "Do NOT emit `Tickets open for Sharad Navratri 2026 Garba` today. Sale opens in September; countdown fires close to sale-open, not 4 months early.",
+          "category": "outside_window",
+          "as_of": "2026-05-02",
+          "valid_until": "2026-09-01",
+          "source_url": "https://www.gujarattourism.com",
+          "profile_md_lines": [],
+          "mailbox_json_lines": [],
+          "calendar_json_lines": []
+        },
+        {
+          "id": "devendra_skip_anup_jalota_no_event",
+          "summary": "Profile lists Anup Jalota as a top devotional artist. No live concerts in his cities in window. Do not speculate.",
+          "category": "speculative_no_signal",
           "valid_until": null,
           "profile_md_lines": [],
           "mailbox_json_lines": [],
@@ -250,29 +558,65 @@
       ],
       "expected_preference_topics": []
     },
+
     {
       "slug": "meera",
       "mode": "BACKFILL",
       "fixture_path": "backend/data/users/meera/fixtures/2026-05-01.json",
-      "fixture_summary": "Onboarded today (2026-05-01) → BACKFILL. Empty calendar fixture, empty mailbox (0 messages), empty calendar.json. Profile note: Meera has not granted Gmail / Calendar access yet — assistant works profile-only. Profile bucket list includes BTS reunion, IU India show, Frank Ocean; 'Currently saving for' Anuv Jain Aria Tour Mumbai; Mood Indigo + KEM cultural fest are cheap-concert highlights.",
-      "expected_tasks": [],
-      "expected_tasks_note": "Total silence is the only correct output. No mailbox to mine, no calendar events, no live signal. The profile names many high-emotion bucket-list items (BTS, IU, Anuv Jain, Frank Ocean) but the events agent's trigger contract requires a real signal in the live slice. Profile-only personas with no OAuth → 0 tasks AND 0 preference_updates.",
+      "fixture_summary": "Onboarded today (2026-05-01) → BACKFILL. Empty calendar fixture, empty mailbox, empty calendar.json. Profile note: no Gmail/Calendar OAuth granted. Profile top-artists (Indian indie): Anuv Jain (saving for Aria Tour Mumbai), Prateek Kuhad, Ritviz, Lifafa, Anirudh Varma; (K-pop): BTS, IU, V, NewJeans, LE SSERAFIM; (South Indian): Vineeth Sreenivasan, K.S. Chithra, Shreya Ghoshal, Arijit Singh.",
+
+      "expected_tasks": [
+        {
+          "id": "meera_buy_arijit_singh_navi_mumbai_may15",
+          "summary": "Buy tickets for Arijit Singh at DY Patil Stadium Navi Mumbai, 2026-05-15 to 2026-05-16 — sale via BookMyShow/District. GA ₹1,500–₹3,500 (within stipend), VIP ₹8K–₹25K+. Profile top-artist + home Mumbai stadium show.",
+          "category": "sale_window_nudge_web_verified",
+          "as_of": "2026-05-02",
+          "valid_until": "2026-05-16",
+          "source_url": "https://india.wildoak.store/blogs/skincare-ingredients/arijit-singh-live-concert-tour-2025-dates",
+          "notes": "Within-stipend GA tier exists. Sourced from Gemini Deep Research (Events Prompt 4).",
+          "profile_md_lines": [],
+          "mailbox_json_lines": [],
+          "calendar_json_lines": []
+        },
+        {
+          "id": "meera_buy_bts_arirang_busan_jun12",
+          "summary": "Buy tickets for BTS WORLD TOUR 'ARIRANG' at Busan Asiad Main Stadium, 2026-06-12 to 2026-06-13 — sale OPEN since 30 Apr 2026 via NOL World, ₹12,800–₹17,000 (264k–198k KRW). Profile bucket-list BTS reunion (Asia hop). Aspirational budget; surface but flag.",
+          "category": "sale_window_nudge_web_verified",
+          "as_of": "2026-05-02",
+          "valid_until": "2026-06-13",
+          "source_url": "https://world.nol.com/en/ticket/places/26000398/products/26005547",
+          "notes": "Aspirational budget tier (above ₹8K). Bucket-list BTS reunion — first Asia leg after full-group return. Realistic Asia hop if she splurges.",
+          "profile_md_lines": [],
+          "mailbox_json_lines": [],
+          "calendar_json_lines": []
+        }
+      ],
+
       "expected_skips": [
         {
-          "id": "meera_skip_speculative_anuv_jain_mumbai",
-          "summary": "Do NOT emit `Buy tickets for Anuv Jain Mumbai` despite the profile saying she's actively saving for it. No sale-open email landed (mailbox is empty). Bucket-list + savings jar = NOT a trigger; an actual ticket-platform email is the trigger.",
-          "evidence_email_ids": [],
+          "id": "meera_skip_anuv_jain_dastakhat_concluded",
+          "summary": "Do NOT re-surface the Anuv Jain Dastakhat Mumbai show. The Mumbai date concluded 2026-02-14 (before the window). Profile says she's saving for it but the specific show is past. Watch for a NEW announcement before firing.",
+          "category": "event_concluded_no_re_surface",
+          "as_of": "2026-05-02",
+          "valid_until": null,
+          "source_url": "https://www.aninews.in/news/entertainment/music/anuv-jain-announces-his-first-ever-world-tour-see-deets-inside20251117175822",
+          "notes": "Highest-temptation skip target — profile signals high intent but the specific show has passed.",
+          "profile_md_lines": [],
+          "mailbox_json_lines": [],
+          "calendar_json_lines": []
+        },
+        {
+          "id": "meera_skip_prateek_kuhad_off_tour",
+          "summary": "Do NOT emit Prateek Kuhad tasks. He's off tour with no upcoming concerts listed in 2026.",
           "category": "speculative_no_signal",
-          "notes": "Highest-temptation skip target for this persona — profile signals high intent, but the agent must wait for a real announcement email.",
           "valid_until": null,
           "profile_md_lines": [],
           "mailbox_json_lines": [],
           "calendar_json_lines": []
         },
         {
-          "id": "meera_skip_speculative_bts_iu",
-          "summary": "Do NOT emit BTS / IU / Frank Ocean tasks. All bucket-list, none have a live signal.",
-          "evidence_email_ids": [],
+          "id": "meera_skip_ritviz_no_window_event",
+          "summary": "Do NOT emit Ritviz tasks. Only early-2026 shows outside her window; nothing in Mumbai/Pune/Kochi May–Oct 2026.",
           "category": "speculative_no_signal",
           "valid_until": null,
           "profile_md_lines": [],
@@ -280,20 +624,54 @@
           "calendar_json_lines": []
         },
         {
-          "id": "meera_skip_mood_indigo_outside_window",
-          "summary": "Do NOT emit a Mood Indigo task today. Mood Indigo is in December; today is May 1 — far outside the 7–14-day festival prep window.",
-          "evidence_email_ids": [],
+          "id": "meera_skip_lifafa_no_window_event",
+          "summary": "Do NOT emit Lifafa tasks. Mumbai date concluded 2026-04-04 (just before window); no follow-up city dates in window.",
+          "category": "speculative_no_signal",
+          "valid_until": null,
+          "profile_md_lines": [],
+          "mailbox_json_lines": [],
+          "calendar_json_lines": []
+        },
+        {
+          "id": "meera_skip_iu_no_india_dates",
+          "summary": "Do NOT emit IU tasks. Bucket-list but no concrete 2026 India/Asia dates announced.",
+          "category": "speculative_no_signal",
+          "valid_until": null,
+          "profile_md_lines": [],
+          "mailbox_json_lines": [],
+          "calendar_json_lines": []
+        },
+        {
+          "id": "meera_skip_le_sserafim_outside_window",
+          "summary": "Do NOT emit LE SSERAFIM tasks today. PUREFLOW Asia stops are after the window (Nov–Dec). Revisit closer to Asia dates.",
           "category": "outside_window",
+          "valid_until": "2026-10-31",
+          "profile_md_lines": [],
+          "mailbox_json_lines": [],
+          "calendar_json_lines": []
+        },
+        {
+          "id": "meera_skip_frank_ocean_no_tour",
+          "summary": "Do NOT emit Frank Ocean tasks. Bucket-list but no announced 2026 tour.",
+          "category": "speculative_no_signal",
           "valid_until": null,
           "profile_md_lines": [],
           "mailbox_json_lines": [],
           "calendar_json_lines": []
         },
         {
-          "id": "meera_skip_profile_only_pref_updates",
-          "summary": "Do NOT emit preference_updates for a profile-only persona with no OAuth-granted mail/calendar to mine. Echoing 'user loves BTS' or 'user attends Mood Indigo' restates the profile — not a discovery.",
-          "evidence_email_ids": [],
-          "category": "profile_echo",
+          "id": "meera_skip_mood_indigo_no_lineup",
+          "summary": "Do NOT emit Mood Indigo 2026 lineup tasks. Festival is December; lineup not announced as of May. Revisit when lineup drops.",
+          "category": "outside_window",
+          "valid_until": "2026-09-01",
+          "profile_md_lines": [],
+          "mailbox_json_lines": [],
+          "calendar_json_lines": []
+        },
+        {
+          "id": "meera_skip_kem_aavishkaar_no_lineup",
+          "summary": "Do NOT emit KEM cultural-fest tasks. Aavishkaar 2026 cycle started but no headliner / profile-named-artist announcement yet.",
+          "category": "speculative_no_signal",
           "valid_until": null,
           "profile_md_lines": [],
           "mailbox_json_lines": [],
@@ -302,23 +680,5 @@
       ],
       "expected_preference_topics": []
     }
-  ],
-  "evaluation_method": {
-    "task_alignment": "For each surfaced task, the LLM judge classifies it as: matches an expected_task (TP — there are none in this golden set), matches an expected_skip (skip violation — high-severity), or unexpected (plain FP). Matching is semantic: title + action + rationale should align with the expected summary. Skip targets enumerate the real-world failure modes (admin emails reframed, social emails reframed, speculative bucket-list tasks with no live signal, outside-window festival nudges, generic-platform browsing, profile-only-persona over-reach).",
-    "lane_discipline_check": "Skip targets explicitly cover: finance / dates / travel / food / email_triage / calendar lane leaks. The agent must NOT reframe insurance, birthdays, trip-blocks, food, replies, or routine calendar events as events tasks.",
-    "speculation_check": "The most distinctive failure mode for this agent is profile-without-signal speculation — emitting `Buy tickets for X bucket-list artist` or `Watch for X tour news` when the profile names an artist but the live slice has no email or calendar trigger. These skip targets are explicit per persona.",
-    "outside_window_check": "Festival prep lead window is 7–14 days. Mood Indigo / Dover Lane / Onam etc. fired in May for December events are skip violations.",
-    "verb_prefix_check": "The agent's prompt restricts action prefixes to `Buy tickets for `, `Tickets open `, `Lineup update — `. Any actual task whose action begins with `Watch for`, `Save the date`, `Look for`, `Plan`, `Suggest`, `Track`, etc. is at minimum a quality flag — call it out in `reasoning`.",
-    "silence_correctness": "When expected_tasks is empty (every persona in this golden set), zero actual tasks scores 1.0 silence. Each surfaced task is at least an unexpected FP, often a skip violation.",
-    "preference_topic_coverage": "Every persona has expected_preference_topics = []. The agent should NOT emit preference_updates that just restate the profile (echoes) or that drift into other lanes (Food / Bills / Travel / etc.). Profile-only personas with no mailbox to mine should emit zero updates.",
-    "metrics": {
-      "task_recall": "TP / (TP + FN); N/A when expected_tasks is empty",
-      "task_precision": "TP / (TP + FP_unexpected + FP_skip_violation)",
-      "task_f1": "2*P*R / (P+R), with the same N/A rule",
-      "specificity": "expected_skips_correctly_omitted / total_expected_skips",
-      "pref_coverage": "topics_matched / total_expected_topics; N/A when topic list empty",
-      "silence_rate": "1.0 if expected_tasks=[] AND actual_tasks=[]; degrades with every surfaced task"
-    },
-    "judge_prompt_hint": "Tell the judge: 'The events agent's hardest property is resisting profile-without-signal speculation. A bucket-list entry is NOT a trigger — only a real email, calendar event, or profile-listed festival inside its 7–14-day prep window is a trigger. Bucket-list speculation, generic platform browsing, lane reframings, and outside-window festival nudges are all skip violations. Reward silence when the slice has no concrete trigger.'"
-  }
+  ]
 }
