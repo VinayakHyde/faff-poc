@@ -1,10 +1,10 @@
 {
   "agent": "shopping",
   "macro_avg": {
-    "precision": 1.0,
-    "recall": 1.0,
-    "f1": 1.0,
-    "specificity": 1.0,
+    "precision": 0.5,
+    "recall": 0.4375,
+    "f1": 0.4642857142857143,
+    "specificity": 0.95,
     "pref_coverage": 1.0
   },
   "personas": [
@@ -12,28 +12,76 @@
       "slug": "aditi",
       "mode": "STEADY-STATE",
       "metrics": {
-        "tp": 0,
+        "tp": 3,
         "fp_unexpected": 0,
         "fp_skip_violations": 0,
-        "fn": 0,
-        "expected_tasks": 0,
-        "actual_tasks": 0,
-        "expected_skips": 4,
+        "fn": 1,
+        "expected_tasks": 4,
+        "actual_tasks": 3,
+        "expected_skips": 8,
         "expected_topics": 0,
         "precision": 1.0,
-        "recall": 1.0,
-        "f1": 1.0,
+        "recall": 0.75,
+        "f1": 0.8571428571428571,
         "specificity": 1.0,
-        "pref_coverage": 1.0
+        "pref_coverage": 1.0,
+        "expired_tasks_filtered": 0,
+        "expired_skips_filtered": 1
       },
       "judge": {
-        "task_alignments": [],
-        "expected_task_misses": [],
+        "task_alignments": [
+          {
+            "actual_task_index": 0,
+            "matched_id": "aditi_buy_airpods_max_gen2",
+            "kind": "expected_task",
+            "reasoning": "This directly matches the expected buy-now task for AirPods Max Gen 2: same product, same retailer (Apple India), and same trigger type (web-verified launch/in-stock availability for a wishlist item). Surface time is concrete though somewhat late in the day, which is a minor quality note only."
+          },
+          {
+            "actual_task_index": 1,
+            "matched_id": "aditi_buy_theragun_mini",
+            "kind": "expected_task",
+            "reasoning": "This matches the expected Theragun Mini buy task: same wishlist item, same retailer class (Amazon.in), and same buy-now web-verified price trigger. The agent cites a stronger current markdown than the golden, but the underlying intent is the same."
+          },
+          {
+            "actual_task_index": 2,
+            "matched_id": "aditi_buy_nothing_phone_3",
+            "kind": "expected_task",
+            "reasoning": "This matches the expected Nothing Phone 3 buy task: same product, same retailer family (Flipkart/Amazon.in vs Flipkart), and same web-verified below-normal-price trigger. The cited price differs from the golden but still reflects the same intent to buy now due to a meaningful discount."
+          }
+        ],
+        "expected_task_misses": [
+          {
+            "id": "aditi_buy_nicobar_olive_linen_shirt",
+            "reasoning": "No actual task references buying a specific Nicobar olive linen shirt despite the expected web-verified in-stock trigger on a wishlist match."
+          }
+        ],
         "expected_skip_violations": [],
         "preference_topic_hits": [],
         "preference_topic_misses": []
       },
-      "actual_tasks": [],
+      "actual_tasks": [
+        {
+          "title": "Buy AirPods Max 2 from Apple India",
+          "action": "Buy AirPods Max 2 from Apple India",
+          "rationale": "Wishlist match: 'Apple AirPods Max — waiting for the next generation.' Web search today shows the next-gen model has launched in India: India Today reports AirPods Max 2 launched on 2026-03-16 at ₹67,900 in India, with availability from March 25 (https://www.indiatoday.in/technology/news/story/apple-launches-airpods-max-2-with-better-anc-price-set-under-rs-70000-in-india-2882847-2026-03-16). This is a launch/in-stock trigger, not a generic wishlist nudge.",
+          "suggested_surface_time": "2026-05-02T20:30:00+05:30",
+          "sub_agent": "shopping"
+        },
+        {
+          "title": "Buy Theragun Mini on Amazon.in",
+          "action": "Buy Theragun Mini on Amazon.in",
+          "rationale": "Wishlist match: Theragun Mini. Web search today shows a live Amazon India listing from Therabody India at ₹14,999 for Theragun Mini 2.0, versus another Theragun Mini listing at ₹19,999, indicating a meaningful current markdown on the wishlist item class (https://www.amazon.in/Theragun-Mini-2-0-Percussion-Attachments/dp/B0F7X4H2YJ). This clears the current-sale trigger bar.",
+          "suggested_surface_time": "2026-05-02T20:35:00+05:30",
+          "sub_agent": "shopping"
+        },
+        {
+          "title": "Buy Nothing Phone 3 on Flipkart",
+          "action": "Buy Nothing Phone 3 on Flipkart",
+          "rationale": "Wishlist match: Nothing Phone 3. Web search today shows an active Flipkart sale window with a substantial live discount: reporting cites the Nothing Phone 3 down from ₹79,999 to about ₹41,354 during Flipkart's Republic Day/ongoing gadget sale, and price-history pages show a low around ₹44,000 vs average ~₹52,380 (e.g. https://pricehistory.app/p/nothing-phone-3-white-12gb-256gb-nIjXVDIm). This is a meaningful below-norm price trigger.",
+          "suggested_surface_time": "2026-05-02T20:40:00+05:30",
+          "sub_agent": "shopping"
+        }
+      ],
       "actual_prefs": []
     },
     {
@@ -41,83 +89,187 @@
       "mode": "BACKFILL",
       "metrics": {
         "tp": 0,
-        "fp_unexpected": 0,
+        "fp_unexpected": 1,
         "fp_skip_violations": 0,
-        "fn": 0,
-        "expected_tasks": 0,
-        "actual_tasks": 0,
-        "expected_skips": 3,
+        "fn": 4,
+        "expected_tasks": 4,
+        "actual_tasks": 1,
+        "expected_skips": 7,
         "expected_topics": 0,
-        "precision": 1.0,
-        "recall": 1.0,
-        "f1": 1.0,
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0.0,
         "specificity": 1.0,
-        "pref_coverage": 1.0
+        "pref_coverage": 1.0,
+        "expired_tasks_filtered": 0,
+        "expired_skips_filtered": 0
       },
       "judge": {
-        "task_alignments": [],
-        "expected_task_misses": [],
+        "task_alignments": [
+          {
+            "actual_task_index": 0,
+            "matched_id": null,
+            "kind": "unexpected",
+            "reasoning": "This is a Bose headphone buy, but it does not semantically match the expected task for Bose QuietComfort Ultra Headphones (2nd Gen) at Bose India for ₹49,900. The surfaced item is a different product/model ('QuietComfort Wireless' on Amazon.in at ₹27,900), so the product intent differs meaningfully. It also does not match any listed expected_skip. Surface time is concrete and acceptable, but the item mismatch makes this an unexpected false positive."
+          }
+        ],
+        "expected_task_misses": [
+          {
+            "id": "arjun_buy_leica_q3",
+            "reasoning": "No actual task references buying the Leica Q3 from Leica India / authorized dealer."
+          },
+          {
+            "id": "arjun_buy_bose_qc_ultra_gen2",
+            "reasoning": "The only actual Bose task is for a different headphone model on Amazon.in, not the expected QuietComfort Ultra Headphones (2nd Gen) from Bose India."
+          },
+          {
+            "id": "arjun_buy_forest_essentials_sandalwood_2026",
+            "reasoning": "No actual task references buying from the Forest Essentials Sandalwood collection."
+          },
+          {
+            "id": "arjun_buy_good_earth_naadia_apparel",
+            "reasoning": "No actual task references buying from Good Earth's Naadia Collection for Mitali."
+          }
+        ],
         "expected_skip_violations": [],
         "preference_topic_hits": [],
         "preference_topic_misses": []
       },
-      "actual_tasks": [],
+      "actual_tasks": [
+        {
+          "title": "Buy Bose QuietComfort Wireless noise-cancelling headphones",
+          "action": "Buy Bose QuietComfort Wireless noise-cancelling headphones on Amazon.in",
+          "rationale": "Wishlist match: new Bose noise-cancelling headphones for travel. Web search today shows Bose QuietComfort Wireless Noise Cancelling Headphones live on Amazon.in at ₹27,900 with No Cost EMI available (https://www.amazon.in/Bose-QuietComfort-Cancelling-Headphones-Bluetooth/dp/B0DZHR44J9). That is a current actionable buy trigger for a profile-listed item.",
+          "suggested_surface_time": "2026-05-02T20:00:00+05:30",
+          "sub_agent": "shopping"
+        }
+      ],
       "actual_prefs": []
     },
     {
       "slug": "devendra",
-      "mode": "BACKFILL",
+      "mode": "STEADY-STATE",
       "metrics": {
         "tp": 0,
         "fp_unexpected": 0,
-        "fp_skip_violations": 0,
-        "fn": 0,
-        "expected_tasks": 0,
-        "actual_tasks": 0,
-        "expected_skips": 2,
+        "fp_skip_violations": 1,
+        "fn": 4,
+        "expected_tasks": 4,
+        "actual_tasks": 1,
+        "expected_skips": 5,
         "expected_topics": 0,
-        "precision": 1.0,
-        "recall": 1.0,
-        "f1": 1.0,
-        "specificity": 1.0,
-        "pref_coverage": 1.0
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0.0,
+        "specificity": 0.8,
+        "pref_coverage": 1.0,
+        "expired_tasks_filtered": 0,
+        "expired_skips_filtered": 0
       },
       "judge": {
-        "task_alignments": [],
-        "expected_task_misses": [],
-        "expected_skip_violations": [],
+        "task_alignments": [
+          {
+            "actual_task_index": 0,
+            "matched_id": "devendra_skip_profile_only_wishlist",
+            "kind": "expected_skip",
+            "reasoning": "This buy nudge is for Skechers walking shoes based on a general brand affinity plus a live sale, but Skechers walking shoes are not one of the four web-verified valid buy-now items expected today. Per the golden skip, wishlist/profile items without today's specific approved trigger should not be surfaced. It also lacks a concrete specific product/retailer/price in the title-level intent, making it broader than the allowed shopping nudges."
+          }
+        ],
+        "expected_task_misses": [
+          {
+            "id": "devendra_buy_wilson_golf_set",
+            "reasoning": "No actual task surfaced the Wilson Profile XD golf set from Golf Mart India at the specified best current price."
+          },
+          {
+            "id": "devendra_buy_vortex_binoculars",
+            "reasoning": "No actual task surfaced the Vortex Diamondback HD 10x42 binoculars from Fotocart at the specified price."
+          },
+          {
+            "id": "devendra_buy_iphone_17",
+            "reasoning": "No actual task surfaced the iPhone 17 (256GB) from Apple India at the specified current price."
+          },
+          {
+            "id": "devendra_buy_jadeblue_spring_summer_sale",
+            "reasoning": "No actual task surfaced the Jade Blue Spring Summer Sale ethnic-wear buy opportunity."
+          }
+        ],
+        "expected_skip_violations": [
+          {
+            "id": "devendra_skip_profile_only_wishlist",
+            "actual_task_index": 0,
+            "reasoning": "The agent surfaced a shopping task for Skechers walking shoes even though today's valid triggers are limited to the four approved web-verified items. A generic sale on a liked brand is not enough here; this is outside the golden's allowed shopping set for the day."
+          }
+        ],
         "preference_topic_hits": [],
         "preference_topic_misses": []
       },
-      "actual_tasks": [],
+      "actual_tasks": [
+        {
+          "title": "Buy Skechers walking shoes on sale",
+          "action": "Buy Skechers men's walking shoes on sale from Skechers India or Myntra",
+          "rationale": "Profile names Skechers as a brand he actually buys. web_search on 2026-05-02 shows an active Skechers India sale page (https://www.skechers.in/sale) with men's footwear discounted, including walking/Arch Fit styles, and Myntra lists Skechers walking shoes at ₹3,299 (45% off; best price ₹2,999 with coupon) at https://www.myntra.com/skechers-walking-shoes. This is a live, meaningful discount window today.",
+          "suggested_surface_time": "2026-05-03T09:00:00+05:30",
+          "sub_agent": "shopping"
+        }
+      ],
       "actual_prefs": []
     },
     {
       "slug": "meera",
       "mode": "BACKFILL",
       "metrics": {
-        "tp": 0,
+        "tp": 2,
         "fp_unexpected": 0,
         "fp_skip_violations": 0,
         "fn": 0,
-        "expected_tasks": 0,
-        "actual_tasks": 0,
-        "expected_skips": 0,
+        "expected_tasks": 2,
+        "actual_tasks": 2,
+        "expected_skips": 8,
         "expected_topics": 0,
         "precision": 1.0,
         "recall": 1.0,
         "f1": 1.0,
         "specificity": 1.0,
-        "pref_coverage": 1.0
+        "pref_coverage": 1.0,
+        "expired_tasks_filtered": 0,
+        "expired_skips_filtered": 0
       },
       "judge": {
-        "task_alignments": [],
+        "task_alignments": [
+          {
+            "actual_task_index": 0,
+            "matched_id": "meera_buy_skechers_arch_fit_go_walk",
+            "kind": "expected_task",
+            "reasoning": "This clearly matches the expected buy-now task for Skechers GO WALK Arch Fit 2.0 via Skechers India sale. The exact price is not stated in the actual task, but the underlying intent, product family, retailer, and sale-triggered timing align. Suggested surface time is concrete and within the current window."
+          },
+          {
+            "actual_task_index": 1,
+            "matched_id": "meera_buy_laneige_lip_mask_8g",
+            "kind": "expected_task",
+            "reasoning": "This matches the expected Laneige Lip Sleeping Mask buy-now task: same wishlist item, same retailer (Nykaa), same current sale trigger, and same action to purchase now. The actual task is slightly less specific about size/variant, but still semantically the same item and offer."
+          }
+        ],
         "expected_task_misses": [],
         "expected_skip_violations": [],
         "preference_topic_hits": [],
         "preference_topic_misses": []
       },
-      "actual_tasks": [],
+      "actual_tasks": [
+        {
+          "title": "Buy Skechers Arch Fit shoes on sale",
+          "action": "Buy Skechers Arch Fit from Skechers India sale",
+          "rationale": "Wishlist match: Skechers Arch Fit. Web check today shows live sale inventory on Skechers India with Arch Fit styles listed under the women's sale page (https://www.skechers.in/sale/womens/footwear) including GO WALK ARCH FIT 2.0 variants, alongside the Arch Fit collection page (https://www.skechers.in/women/shop-by-collections/arch-fit). This is a current sale window on a profile-named wishlist item, which clears the bar better than full-price footwear for a stipend-tight user.",
+          "suggested_surface_time": "2026-05-02T18:30:00+05:30",
+          "sub_agent": "shopping"
+        },
+        {
+          "title": "Buy Laneige Lip Sleeping Mask during Nykaa flash sale",
+          "action": "Buy Laneige Lip Sleeping Mask on Nykaa",
+          "rationale": "Wishlist match: Laneige Lip Sleeping Mask. Web check today shows Nykaa's active Korean Beauty Flash Sale (https://www.nykaa.com/korean-beauty-flash-sale/c/66753) and a live Laneige flash-sale page (https://www.nykaa.com/laneige-flash-sale/c/70997) with Laneige Lip Sleeping Mask Berry discounted from ₹600 to ₹540 (10% off). This is a current named sale on a wishlist item and sits in her comfortable spend tier.",
+          "suggested_surface_time": "2026-05-02T19:00:00+05:30",
+          "sub_agent": "shopping"
+        }
+      ],
       "actual_prefs": []
     }
   ]

@@ -33,7 +33,8 @@
           "source_url": "https://pricehistory.app/p/theragun-mini-therabody-3rd-generation-ultra-portable-aJFtitce",
           "notes": "Time-sensitive — the price-floor anomaly is fragile.",
           "profile_md_lines": [
-            73
+            73,
+            165
           ],
           "mailbox_json_lines": [],
           "calendar_json_lines": []
@@ -62,8 +63,6 @@
           "notes": "Independent label — rapid size depletion expected on new-collection drops; no markdowns on new-season items.",
           "profile_md_lines": [
             156,
-            157,
-            161,
             168
           ],
           "mailbox_json_lines": [],
@@ -80,24 +79,14 @@
           "category": "out_of_lane_admin",
           "valid_until": "2026-05-15",
           "profile_md_lines": [
-            150,
-            152
+            148,
+            150
           ],
           "mailbox_json_lines": [
-            1249,
             1250,
-            1251,
             1252,
-            1253,
             1254,
-            1255,
-            1256,
-            1257,
-            1258,
-            1259,
-            1260,
-            1261,
-            1262
+            1256
           ],
           "calendar_json_lines": []
         },
@@ -110,23 +99,13 @@
           "category": "out_of_lane_fyi",
           "valid_until": "2026-05-01",
           "profile_md_lines": [
-            14
+            10
           ],
           "mailbox_json_lines": [
-            1235,
             1236,
-            1237,
             1238,
-            1239,
             1240,
-            1241,
-            1242,
-            1243,
-            1244,
-            1245,
-            1246,
-            1247,
-            1248
+            1242
           ],
           "calendar_json_lines": []
         },
@@ -139,23 +118,13 @@
           "category": "out_of_lane_personal",
           "valid_until": "2026-05-09",
           "profile_md_lines": [
-            133
+            121
           ],
           "mailbox_json_lines": [
-            1221,
             1222,
-            1223,
             1224,
-            1225,
             1226,
-            1227,
-            1228,
-            1229,
-            1230,
-            1231,
-            1232,
-            1233,
-            1234
+            1228
           ],
           "calendar_json_lines": []
         },
@@ -206,7 +175,7 @@
           "valid_until": "2026-09-01",
           "source_url": "https://www.shopbop.com/sale",
           "profile_md_lines": [
-            99
+            172
           ],
           "mailbox_json_lines": [],
           "calendar_json_lines": []
@@ -219,7 +188,6 @@
           "valid_until": "2026-09-25",
           "source_url": "https://www.aboutamazon.in/news/retail/amazon-great-summer-sale",
           "profile_md_lines": [
-            48,
             172
           ],
           "mailbox_json_lines": [],
@@ -258,6 +226,7 @@
           "source_url": "https://leica-store.in/products/leica-q3-black",
           "notes": "Profile wishlist: Leica Q3. Q3 43 (₹7,60,000) and Q3 Monochrom (₹7,75,000) are alternates worth considering at the dealer visit.",
           "profile_md_lines": [
+            140,
             144
           ],
           "mailbox_json_lines": [],
@@ -300,8 +269,8 @@
           "source_url": "https://www.goodearth.in/collection/naadia_397/",
           "notes": "Diwali home/resin drops typically late Aug-Sep — handle as separate skip.",
           "profile_md_lines": [
-            137,
-            154
+            105,
+            137
           ],
           "mailbox_json_lines": [],
           "calendar_json_lines": []
@@ -317,24 +286,14 @@
           "category": "out_of_lane_personal",
           "valid_until": "2026-05-03",
           "profile_md_lines": [
-            32,
-            44
+            44,
+            101
           ],
           "mailbox_json_lines": [
-            871,
             872,
-            873,
             874,
-            875,
             876,
-            877,
-            878,
-            879,
-            880,
-            881,
-            882,
-            883,
-            884
+            878
           ],
           "calendar_json_lines": []
         },
@@ -351,20 +310,10 @@
             118
           ],
           "mailbox_json_lines": [
-            857,
             858,
-            859,
             860,
-            861,
             862,
-            863,
-            864,
-            865,
-            866,
-            867,
-            868,
-            869,
-            870
+            864
           ],
           "calendar_json_lines": []
         },
@@ -376,8 +325,6 @@
           "valid_until": null,
           "source_url": "https://www.bidcurios.com/product/very-rare-autograph-book-of-satyajit-ray-signed-by-the-master-himself-autograph/",
           "profile_md_lines": [
-            55,
-            61,
             71,
             145
           ],
@@ -392,8 +339,8 @@
           "valid_until": null,
           "source_url": "https://www.vadehraart.com/",
           "profile_md_lines": [
-            10,
-            81
+            67,
+            146
           ],
           "mailbox_json_lines": [],
           "calendar_json_lines": []
@@ -419,7 +366,6 @@
           "valid_until": "2026-09-15",
           "source_url": "https://forestessentialsindia.worthepenny.com/coupon/",
           "profile_md_lines": [
-            81,
             139
           ],
           "mailbox_json_lines": [],
@@ -468,6 +414,7 @@
           "source_url": "https://fotocart.in/products/vortex-optics-diamondback-10x42-roof-prism-binocular-b004803ytw",
           "notes": "Bushnell Legend (~₹35,921 incl GST) and Nikon Monarch M7 (~₹45,950) are the alternates. Vortex hits the optimal price/optics intersection. Re-verify in Aug 2026.",
           "profile_md_lines": [
+            67,
             138
           ],
           "mailbox_json_lines": [],
@@ -496,7 +443,6 @@
           "source_url": "https://jadeblue.com/pages/sale",
           "notes": "Spring Summer Sale window is currently active — confirmed end date varies by year, conservatively assume late July. Jade Blue's regional retail strategy uses aggressive mid-year liquidation, contrasted with Manyavar's Diwali-only discount window.",
           "profile_md_lines": [
-            93,
             130
           ],
           "mailbox_json_lines": [],
@@ -513,22 +459,13 @@
           "category": "out_of_lane_work",
           "valid_until": "2026-05-09",
           "profile_md_lines": [
-            126
+            112
           ],
           "mailbox_json_lines": [
-            570,
             571,
-            572,
             573,
-            574,
             575,
-            576,
-            577,
-            578,
-            579,
-            580,
-            581,
-            582
+            577
           ],
           "calendar_json_lines": []
         },
@@ -542,7 +479,6 @@
           "notes": "Profile bucket-list: live cricket at Lord's / MCG. London-Jul-2026 trip already includes a booked match. The 2027 World Cup is the next bucket-list opportunity but not on sale yet. Re-evaluate when ICC announces ballot dates.",
           "profile_md_lines": [
             63,
-            78,
             80,
             137
           ],
@@ -558,7 +494,7 @@
           "source_url": "https://www.manyavar.com/en-in/men/new-arrivals",
           "notes": "Re-evaluate around 2026-09-15 when Manyavar's pre-Diwali window typically opens.",
           "profile_md_lines": [
-            10
+            130
           ],
           "mailbox_json_lines": [],
           "calendar_json_lines": []
@@ -572,7 +508,8 @@
           "source_url": "https://namasteindiaevents.com/india-jewellery-show",
           "notes": "Could become a calendar/events expected_task; stays a skip in shopping until a specific item-to-buy is identified.",
           "profile_md_lines": [
-            126
+            102,
+            103
           ],
           "mailbox_json_lines": [],
           "calendar_json_lines": []
@@ -583,7 +520,7 @@
           "category": "profile_only_no_trigger",
           "valid_until": null,
           "profile_md_lines": [
-            130
+            134
           ],
           "mailbox_json_lines": [],
           "calendar_json_lines": []
@@ -606,8 +543,6 @@
           "notes": "Stipend-friendly tier (₹3K-10K, needs saving). Sale liquidation is time-sensitive.",
           "profile_md_lines": [
             12,
-            37,
-            70,
             154
           ],
           "mailbox_json_lines": [],
@@ -694,7 +629,8 @@
           "valid_until": "2026-05-29",
           "source_url": "https://www2.hm.com/en_in/sale/women/last-chance-up-to-70--off.html",
           "profile_md_lines": [
-            115
+            146,
+            160
           ],
           "mailbox_json_lines": [],
           "calendar_json_lines": []
@@ -720,7 +656,8 @@
           "valid_until": "2026-06-15",
           "source_url": "https://www.apple.com/in-edu/shop/back-to-school",
           "profile_md_lines": [
-            9
+            148,
+            153
           ],
           "mailbox_json_lines": [],
           "calendar_json_lines": []
@@ -732,6 +669,7 @@
           "valid_until": null,
           "source_url": "https://www.decathlon.in/clearance",
           "profile_md_lines": [
+            146,
             160
           ],
           "mailbox_json_lines": [],
