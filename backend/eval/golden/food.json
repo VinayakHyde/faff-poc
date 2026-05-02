@@ -1,0 +1,87 @@
+{
+  "agent": "food",
+  "schema_version": 2,
+  "evaluation_date": "2026-05-01",
+  "personas": [
+    {
+      "slug": "aditi",
+      "mode": "STEADY-STATE",
+      "expected_tasks": [],
+      "expected_skips": [
+        {
+          "id": "aditi_skip_mom_email",
+          "summary": "Mom's relational check-in is not a food task — it's email_triage's lane.",
+          "evidence_email_ids": ["msg_mom_1"],
+          "category": "out_of_lane_personal"
+        },
+        {
+          "id": "aditi_skip_hr_holiday",
+          "summary": "HR Labor Day FYI announcement — no food action; not for the food agent.",
+          "evidence_email_ids": ["msg_hr_1"],
+          "category": "out_of_lane_fyi"
+        },
+        {
+          "id": "aditi_skip_dad_insurance",
+          "summary": "Dad's insurance renewal email is admin/finance, not food. food.py prompt calls this out explicitly as a skip.",
+          "evidence_email_ids": ["msg_dad_1"],
+          "category": "out_of_lane_admin"
+        }
+      ],
+      "expected_preference_topics": [],
+      "notes": "Friday May 1 (Labor Day, WFH). Profile food patterns are all satisfied by today's calendar: Friday date-night → Toit already booked 20:00; Sunday brunch → Glen's already booked May 3. Wednesday-14:00 Meghana's biryani fires on May 6, not today. No food signal in slice. Correct behaviour is silence on tasks — the persona tests lane discipline against three out-of-lane emails."
+    },
+
+    {
+      "slug": "arjun",
+      "mode": "BACKFILL",
+      "expected_tasks": [],
+      "expected_skips": [
+        {
+          "id": "arjun_skip_mitali_flurys",
+          "summary": "Mitali's 'Sunday Breakfast Idea — Flurys?' email is a personal/social invitation that goes to email_triage. Food agent must NOT convert this into a 'Order Flurys this Sunday' task — the recurring Sunday-9am Flurys pattern fires on its own day-of-week trigger.",
+          "evidence_email_ids": ["msg_9995f6f04ae9"],
+          "category": "in_domain_looking_sender_off_domain_intent"
+        },
+        {
+          "id": "arjun_skip_sudipto_bridge",
+          "summary": "Sudipto's Saturday bridge invitation is social, not food — even though Saturday Club has snacks/drinks, the food agent should not surface anything off this email.",
+          "evidence_email_ids": ["msg_bbeb109a3ff1"],
+          "category": "out_of_lane_personal"
+        }
+      ],
+      "expected_preference_topics": [
+        "Sunday ~9am Flurys breakfast via Swiggy — recurring (~4 orders in 12 months)",
+        "Thursday ~8pm North Indian dinner from Amber or Kareem's — recurring (~6 orders in 12 months, alternating)"
+      ],
+      "notes": "BACKFILL — onboarded today. Empty calendar. Mailbox shows two clean recurring patterns the agent should mine and emit as preference_updates with quantitative confidence (order counts + day-of-week + ~time). Profile narrative already mentions both restaurants but the BACKFILL job is to confirm cadence from email evidence. No grocery/Instamart emails exist in mailbox so no staple-cadence preferences are expected. Tasks should be empty: today is Friday, profile has no Friday food pattern, and even Mitali's Flurys mention should be skipped (social invitation, not an order trigger)."
+    },
+
+    {
+      "slug": "devendra",
+      "mode": "BACKFILL",
+      "expected_tasks": [],
+      "expected_skips": [
+        {
+          "id": "devendra_skip_nilesh_audit",
+          "summary": "Nilesh's FY25 audit-review email is professional work correspondence, not food — even though it says 'Discuss tomorrow?' it is not a meal/order signal.",
+          "evidence_email_ids": ["fix_msg_1"],
+          "category": "out_of_lane_work"
+        }
+      ],
+      "expected_preference_topics": [
+        "Saturday ~6:15pm Swati Snacks order — Jain Panki + Handvo, recurring (~4 orders in 12 months)",
+        "Sunday ~8:30am Iscon Gathiya order — Gathiya (500g) + Jalebi (250g), recurring (~4 orders in 12 months)"
+      ],
+      "notes": "BACKFILL — onboarded today. Empty calendar. Two clean weekend ordering patterns in mailbox: Swati Snacks every ~quarter on Saturday evening and Iscon Gathiya every ~quarter on Sunday morning. Profile narrative mentions both but email confirms specific dishes + cadence. No tasks expected — today is Friday, profile has no Friday food pattern, no in-slice food signal."
+    },
+
+    {
+      "slug": "meera",
+      "mode": "BACKFILL",
+      "expected_tasks": [],
+      "expected_skips": [],
+      "expected_preference_topics": [],
+      "notes": "Profile-only persona — Meera has not granted Gmail or Calendar access. Empty mailbox + empty fixture + empty calendar. Correct behaviour is total silence: 0 tasks, 0 preference_updates. Even though the profile is rich with food preferences (Mani's Lunch Home, Kyani & Co. bun-maska, late-night Zepto Maggi runs), the food agent's BACKFILL job depends on email/calendar evidence — there is none to mine. Profile-only patterns are not enough to fire today (Friday has no specific profile pattern)."
+    }
+  ]
+}
