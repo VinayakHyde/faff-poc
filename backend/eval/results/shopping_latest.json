@@ -1,0 +1,124 @@
+{
+  "agent": "shopping",
+  "macro_avg": {
+    "precision": 1.0,
+    "recall": 1.0,
+    "f1": 1.0,
+    "specificity": 1.0,
+    "pref_coverage": 1.0
+  },
+  "personas": [
+    {
+      "slug": "aditi",
+      "mode": "STEADY-STATE",
+      "metrics": {
+        "tp": 0,
+        "fp_unexpected": 0,
+        "fp_skip_violations": 0,
+        "fn": 0,
+        "expected_tasks": 0,
+        "actual_tasks": 0,
+        "expected_skips": 4,
+        "expected_topics": 0,
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0,
+        "specificity": 1.0,
+        "pref_coverage": 1.0
+      },
+      "judge": {
+        "task_alignments": [],
+        "expected_task_misses": [],
+        "expected_skip_violations": [],
+        "preference_topic_hits": [],
+        "preference_topic_misses": []
+      },
+      "actual_tasks": [],
+      "actual_prefs": []
+    },
+    {
+      "slug": "arjun",
+      "mode": "BACKFILL",
+      "metrics": {
+        "tp": 0,
+        "fp_unexpected": 0,
+        "fp_skip_violations": 0,
+        "fn": 0,
+        "expected_tasks": 0,
+        "actual_tasks": 0,
+        "expected_skips": 3,
+        "expected_topics": 0,
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0,
+        "specificity": 1.0,
+        "pref_coverage": 1.0
+      },
+      "judge": {
+        "task_alignments": [],
+        "expected_task_misses": [],
+        "expected_skip_violations": [],
+        "preference_topic_hits": [],
+        "preference_topic_misses": []
+      },
+      "actual_tasks": [],
+      "actual_prefs": []
+    },
+    {
+      "slug": "devendra",
+      "mode": "BACKFILL",
+      "metrics": {
+        "tp": 0,
+        "fp_unexpected": 0,
+        "fp_skip_violations": 0,
+        "fn": 0,
+        "expected_tasks": 0,
+        "actual_tasks": 0,
+        "expected_skips": 2,
+        "expected_topics": 0,
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0,
+        "specificity": 1.0,
+        "pref_coverage": 1.0
+      },
+      "judge": {
+        "task_alignments": [],
+        "expected_task_misses": [],
+        "expected_skip_violations": [],
+        "preference_topic_hits": [],
+        "preference_topic_misses": []
+      },
+      "actual_tasks": [],
+      "actual_prefs": []
+    },
+    {
+      "slug": "meera",
+      "mode": "BACKFILL",
+      "metrics": {
+        "tp": 0,
+        "fp_unexpected": 0,
+        "fp_skip_violations": 0,
+        "fn": 0,
+        "expected_tasks": 0,
+        "actual_tasks": 0,
+        "expected_skips": 0,
+        "expected_topics": 0,
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0,
+        "specificity": 1.0,
+        "pref_coverage": 1.0
+      },
+      "judge": {
+        "task_alignments": [],
+        "expected_task_misses": [],
+        "expected_skip_violations": [],
+        "preference_topic_hits": [],
+        "preference_topic_misses": []
+      },
+      "actual_tasks": [],
+      "actual_prefs": []
+    }
+  ]
+}

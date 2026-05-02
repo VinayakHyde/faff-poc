@@ -1,0 +1,96 @@
+{
+  "agent": "shopping",
+  "schema_version": 2,
+  "evaluation_date": "2026-05-01",
+  "personas": [
+    {
+      "slug": "aditi",
+      "mode": "STEADY-STATE",
+      "expected_tasks": [],
+      "expected_skips": [
+        {
+          "id": "aditi_skip_dad_insurance",
+          "summary": "Dad's email about ICICI Lombard insurance renewal is admin/finance content — not a shopping trigger; no wishlist item involved. Agent must NOT rephrase as 'Buy a new insurance policy'.",
+          "evidence_email_ids": ["msg_dad_1"],
+          "category": "out_of_lane_admin"
+        },
+        {
+          "id": "aditi_skip_hr_holiday",
+          "summary": "HR Labor Day holiday FYI — a long weekend is not a shopping trigger. Agent must NOT turn this into 'Buy yourself a long-weekend treat' or similar.",
+          "evidence_email_ids": ["msg_hr_1"],
+          "category": "out_of_lane_fyi"
+        },
+        {
+          "id": "aditi_skip_mom_checkin",
+          "summary": "Mom's relational check-in ('Thinking of you') is not a shopping trigger. Agent must NOT turn this into 'Buy mom a card' or 'Buy mom flowers'.",
+          "evidence_email_ids": ["msg_mom_1"],
+          "category": "out_of_lane_personal"
+        },
+        {
+          "id": "aditi_skip_profile_only_wishlist",
+          "summary": "Profile lists 6 active wishlist items (Loewe Puzzle bag, AirPods Max next-gen, Theragun Mini, Le Creuset Dutch oven cerise 4.5L, Nothing Phone 3, Nicobar olive linen shirts). The wishlist alone is NOT a trigger — without a sale-alert / price-drop / restock email or a web_search-verified price drop, the agent must NOT surface 'Buy <wishlist item> — wishlist item' style nudges.",
+          "category": "profile_only_no_trigger"
+        }
+      ],
+      "expected_preference_topics": [],
+      "notes": "Friday May 1 (Labor Day, WFH). Slice contains exactly 3 emails — none is a shopping trigger. Mailbox history is dominated by Swiggy food orders + bills + travel; zero sale-alert / price-drop / restock / cart / abandoned-cart / brand-newsletter emails. Profile names a rich wishlist and explicitly tracks Myntra EORS / ShopBop / Amazon Great Indian Festival / Apple back-to-school, but none of those events is firing today and no related email exists. Correct behaviour is silence on tasks. The four expected_skips are the four most-likely-confusion failure modes to test specificity: (a) admin email rephrased as a buy, (b) FYI rephrased as a buy, (c) social email rephrased as a gifting buy, (d) profile-only wishlist nudge with no trigger."
+    },
+
+    {
+      "slug": "arjun",
+      "mode": "BACKFILL",
+      "expected_tasks": [],
+      "expected_skips": [
+        {
+          "id": "arjun_skip_mitali_breakfast",
+          "summary": "Mitali's 'Sunday Breakfast Idea — Flurys?' is a personal/social invitation. Not a shopping trigger; no wishlist item involved. Agent must NOT turn this into 'Buy a brunch gift card for Mitali' or similar.",
+          "evidence_email_ids": ["msg_9995f6f04ae9"],
+          "category": "out_of_lane_personal"
+        },
+        {
+          "id": "arjun_skip_sudipto_bridge",
+          "summary": "Sudipto's Saturday bridge invitation is a social plan. Not a shopping trigger; no wishlist item involved.",
+          "evidence_email_ids": ["msg_bbeb109a3ff1"],
+          "category": "out_of_lane_personal"
+        },
+        {
+          "id": "arjun_skip_profile_only_wishlist",
+          "summary": "Profile lists wishlist items (Leica Q3 camera, a Satyajit Ray first edition, Bose noise-cancelling headphones, a specific Baroda-based artist's piece). Mailbox has zero sale-alert / price-drop / restock / brand-newsletter / cart emails. Without a trigger event, the agent must NOT surface buy nudges from the wishlist alone.",
+          "category": "profile_only_no_trigger"
+        }
+      ],
+      "expected_preference_topics": [],
+      "notes": "BACKFILL — onboarded today. Empty calendar. Mailbox is filled with gallery business (Kalakriti framing-status updates, Rina/modernart show invitations, art-collector price-list inquiries), bills (Jio / Airtel / CESC), Swiggy food orders (Flurys / Amber / Kareem's), India Art Fair tickets, an Air India Kolkata→London ticket, and a Taj Mahal Palace Mumbai booking. Zero shopping-domain emails — no Myntra, no Amazon-sale, no Loewe / Apple / Bose / Leica brand newsletters, no abandoned-cart mails. There is no shopping cadence to mine, so expected_preference_topics is intentionally empty: a BACKFILL preference_update that simply restates the profile's wishlist (without quantitative email evidence) is not a topic hit. Tasks empty — no triggers in slice or history. Expected_skips test specificity against the two personal-invitation emails and the temptation to surface profile-only wishlist nudges."
+    },
+
+    {
+      "slug": "devendra",
+      "mode": "BACKFILL",
+      "expected_tasks": [],
+      "expected_skips": [
+        {
+          "id": "devendra_skip_nilesh_audit",
+          "summary": "Nilesh's 'Final review of FY25 Audit' email is professional work correspondence. Not a shopping trigger; no wishlist item involved.",
+          "evidence_email_ids": ["fix_msg_1"],
+          "category": "out_of_lane_work"
+        },
+        {
+          "id": "devendra_skip_profile_only_wishlist",
+          "summary": "Profile lists wishlist items (a new set of golf clubs, premium next-World-Cup cricket tickets, high-quality cricket binoculars). Mailbox has zero sale-alert / price-drop / restock / brand-newsletter / cart emails. Without a trigger event, the agent must NOT surface buy nudges from the wishlist alone.",
+          "category": "profile_only_no_trigger"
+        }
+      ],
+      "expected_preference_topics": [],
+      "notes": "BACKFILL — onboarded today. Empty calendar. Mailbox: bills (Airtel postpaid, Torrent Power), food orders (Swati Snacks, Iscon Gathiya), Cricinfo IPL Updates newsletter (informational, not a buy trigger), travel bookings (Air India AMD↔EWR, Indigo AMD↔BOM, Palitana retreat), and one work email from Nilesh. Zero shopping-domain emails. No cadence to mine. Tasks should be empty. Expected_skips test specificity against the work email and the temptation to surface profile-only wishlist nudges."
+    },
+
+    {
+      "slug": "meera",
+      "mode": "BACKFILL",
+      "expected_tasks": [],
+      "expected_skips": [],
+      "expected_preference_topics": [],
+      "notes": "Profile-only persona — Meera has not granted Gmail or Calendar access. Empty mailbox + empty fixture + empty calendar. Correct behaviour is total silence: 0 tasks, 0 preference_updates. Even though the profile is rich with wishlist items (3M Littmann Cardiology IV stethoscope, iPad Air with Pencil, Skechers Arch Fit, Laneige Lip Sleeping Mask, Anuv Jain Mumbai concert ticket) and explicitly tracked sales (Nykaa Pink Friday, H&M EOSS, Amazon Great Indian Festival, Decathlon clearance), the shopping agent's BACKFILL job depends on email evidence — there is none to mine. Profile alone is not a trigger."
+    }
+  ]
+}
