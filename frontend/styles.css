@@ -608,9 +608,12 @@ body:not(.has-persona) .profile-panel {
   background: var(--panel);  /* match input-area so no awkward gap below */
 }
 .input-area {
+  /* Grow to absorb leftover run-panel space so the action bar sits at the
+     bottom when there's nothing below it. The editor inside stays content-
+     sized; the extra space is just the input-area's panel-colored bg. */
+  flex: 1 1 auto;
   padding: 16px 20px;
   background: var(--panel);
-  flex-shrink: 0;
 }
 .input-area .input-label {
   display: block;
