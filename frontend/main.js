@@ -1033,7 +1033,12 @@ function buildFilterBar() {
       const slug = e.target.dataset.agent;
       const on = e.target.checked;
       row.classList.toggle("off", !on);
-      $$(`.trace-node[data-agent="${slug}"]`).forEach((n) => n.classList.toggle("hidden", !on));
+      // Match both the primary agent (stage-1 nodes) AND the origin agent
+      // (rubric/messenger nodes that surface a task originally produced
+      // by this agent). Otherwise filtering Shopping would still show
+      // shopping's rubric scores and shopping's drafted messages.
+      $$(`.trace-node[data-agent="${slug}"], .trace-node[data-origin-agent="${slug}"]`)
+        .forEach((n) => n.classList.toggle("hidden", !on));
       updateFilterCount();
     });
     host.appendChild(row);
@@ -1309,9 +1314,7 @@ function renderGenericTraceNode(traceEvent, elapsed) {
   const node = document.createElement("div");
   node.className = "trace-node" + (isTool ? " tool" : "");
   node.dataset.agent = sa;
-
-  const cb = document.querySelector(`#filter-toggles input[data-agent="${sa}"]`);
-  if (cb && !cb.checked) node.classList.add("hidden");
+  applyFilterVisibility(node);
 
   node.appendChild(buildTime(elapsed));
   const body = document.createElement("div");
@@ -1336,6 +1339,11 @@ function renderRubricNode(traceEvent, elapsed) {
   const node = document.createElement("div");
   node.className = "trace-node" + (dropped ? " dropped" : "");
   node.dataset.agent = "rubric";
+  // Tag the originating agent too so the filter can hide this row when
+  // that agent is unchecked (otherwise filtering Shopping would still
+  // leave shopping's rubric scores visible).
+  node.dataset.originAgent = originAgent;
+  applyFilterVisibility(node);
 
   const time = document.createElement("div");
   time.className = "trace-time";
@@ -1401,6 +1409,8 @@ function renderReframeNode(traceEvent, elapsed) {
   const node = document.createElement("div");
   node.className = "trace-node";
   node.dataset.agent = "messenger";
+  node.dataset.originAgent = originAgent;
+  applyFilterVisibility(node);
 
   const time = document.createElement("div");
   time.className = "trace-time";
@@ -1500,6 +1510,21 @@ function buildTime(label) {
   el.className = "trace-time";
   el.textContent = label;
   return el;
+}
+
+// Hide a freshly-built node when the filter for its agent (or origin
+// agent, for rubric/messenger cards) is currently off. Mirrors the
+// filter handler's selector so a node arriving mid-stream while a
+// filter is unchecked doesn't visibly flicker into view.
+function applyFilterVisibility(node) {
+  const slugs = [node.dataset.agent, node.dataset.originAgent].filter(Boolean);
+  for (const slug of slugs) {
+    const cb = document.querySelector(`#filter-toggles input[data-agent="${slug}"]`);
+    if (cb && !cb.checked) {
+      node.classList.add("hidden");
+      return;
+    }
+  }
 }
 
 function buildAgentTag(agent) {
