@@ -4,7 +4,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 
-from app.api import personas
+from app.api import evals, personas
 from app.config import get_settings
 
 settings = get_settings()
@@ -26,6 +26,7 @@ def healthz() -> dict[str, str]:
 
 # API routes — register before the static mount so they aren't shadowed.
 app.include_router(personas.router)
+app.include_router(evals.router)
 
 
 # Serve the vanilla-JS frontend at /. Catch-all html=True returns index.html

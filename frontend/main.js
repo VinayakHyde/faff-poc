@@ -53,6 +53,7 @@ let jsonEditor = null;
   buildFilterBar();
   initTabs();
   initStickyActionBar();
+  initEvalsToggle();
   await loadPersonas();
   $("#run-btn").addEventListener("click", runStream);
 })();
@@ -395,36 +396,14 @@ function applyLineFrames(items) {
   requestAnimationFrame(() => paintFrames(root, buckets));
 }
 
-// For each bucket, return the buckets that strictly contain it (cross-agent),
-// sorted biggest → smallest. Used to render ancestor pills on the smaller
-// frame so the bigger frame's agents don't get hidden behind it.
-function computeBucketParents(buckets) {
-  const result = new Map();
-  for (const b of buckets) {
-    const parents = [];
-    for (const c of buckets) {
-      if (c === b) continue;
-      const strictlyContains =
-        c.startLine <= b.startLine &&
-        c.endLine >= b.endLine &&
-        (c.startLine !== b.startLine || c.endLine !== b.endLine);
-      if (strictlyContains) parents.push(c);
-    }
-    parents.sort(
-      (x, y) =>
-        y.endLine - y.startLine - (x.endLine - x.startLine) ||
-        x.startLine - y.startLine,
-    );
-    result.set(b.key, parents);
-  }
-  return result;
-}
-
 // Build a single tag pill bound to a target frame. Hovering it traces that
 // frame; the tooltip (anchored under the pill) lists the agent's summaries.
-function buildTagPill({ agent, summaries, targetFrame, isAncestor }) {
+// `isHollow` switches the pill style to the outlined "repeat" variant —
+// used when the same agent has already been rendered in this row from a
+// bigger frame (so two pills don't both look filled-gold).
+function buildTagPill({ agent, summaries, targetFrame, hostFrame, isHollow }) {
   const tag = document.createElement("span");
-  tag.className = "golden-shim-tag" + (isAncestor ? " is-ancestor" : "");
+  tag.className = "golden-shim-tag" + (isHollow ? " is-hollow" : "");
   tag.appendChild(document.createTextNode(agentLabel(agent)));
 
   const tip = document.createElement("div");
@@ -448,6 +427,9 @@ function buildTagPill({ agent, summaries, targetFrame, isAncestor }) {
 
   tag.addEventListener("mouseenter", () => {
     targetFrame.classList.add("is-tracing");
+    // Lift the *host* frame above all neighbours so the tooltip (which lives
+    // in the host's stacking context) isn't covered by later frames.
+    if (hostFrame) hostFrame.classList.add("is-on-top");
     const panel = document.querySelector(".profile-panel");
     const tagRect = tag.getBoundingClientRect();
     const panelRect = panel
@@ -460,6 +442,7 @@ function buildTagPill({ agent, summaries, targetFrame, isAncestor }) {
   });
   tag.addEventListener("mouseleave", () => {
     targetFrame.classList.remove("is-tracing");
+    if (hostFrame) hostFrame.classList.remove("is-on-top");
     tip.classList.remove("flip-up");
   });
 
@@ -513,33 +496,66 @@ function paintFrames(root, buckets) {
     frameMap.set(bucket.key, { bucket, frameEl: frame, tagRow });
   }
 
-  // Pass 2: populate each frame's tag-row with its own pills, then with
-  // ancestor pills for any covering frame (cross-agent). Hovering an
-  // ancestor pill traces the bigger frame even though its native tag-row
-  // is hidden behind smaller frames.
-  const parentsMap = computeBucketParents(buckets);
-  for (const { bucket, frameEl, tagRow } of frameMap.values()) {
-    const ownByAgent = groupTagsByAgent(bucket.tags);
-    for (const [agent, summaries] of ownByAgent) {
-      tagRow.appendChild(
-        buildTagPill({ agent, summaries, targetFrame: frameEl, isAncestor: false }),
-      );
-    }
+  // Group buckets by startLine. Within a group, the SMALLEST bucket hosts
+  // the shared tag-row — it's the front-most in DOM (smaller frames render
+  // after bigger ones), so its tag-row isn't covered by neighbours. Each
+  // shared row contains pills from every group member: largest = filled
+  // gold, others = hollow (so the bigger box's pill is visible alongside
+  // the smaller box's pill, side by side).
+  const groupsByStart = new Map();
+  for (const b of buckets) {
+    if (!groupsByStart.has(b.startLine)) groupsByStart.set(b.startLine, []);
+    groupsByStart.get(b.startLine).push(b);
+  }
+  for (const g of groupsByStart.values()) {
+    g.sort(
+      (x, y) =>
+        y.endLine - y.startLine - (x.endLine - x.startLine) ||
+        x.endLine - y.endLine,
+    );
+  }
+  const hosts = new Set();
+  for (const g of groupsByStart.values()) {
+    hosts.add(g[g.length - 1]); // last = smallest = host
+  }
 
-    const parents = parentsMap.get(bucket.key) || [];
-    for (const parent of parents) {
-      const parentEntry = frameMap.get(parent.key);
-      if (!parentEntry) continue;
-      const parentByAgent = groupTagsByAgent(parent.tags);
-      for (const [agent, summaries] of parentByAgent) {
+  // Pass 2: only hosts populate their tag-rows. Each host renders pills
+  // for its same-startLine group members only — bigger first, smaller
+  // after. Frames that don't share a startLine with any other frame just
+  // render their own pill at their own top edge. Pills never repeat
+  // across rows.
+  for (const { bucket, frameEl, tagRow } of frameMap.values()) {
+    if (!hosts.has(bucket)) continue;
+
+    const group = groupsByStart.get(bucket.startLine);
+    const toRender = [...group];
+    toRender.sort(
+      (x, y) =>
+        y.endLine - y.startLine - (x.endLine - x.startLine) ||
+        x.startLine - y.startLine,
+    );
+
+    // Per-agent dedup within the shared row: as we walk frames bigger →
+    // smaller, the FIRST pill for each agent is filled. A second pill for
+    // the same agent (from a smaller frame in this row) renders hollow.
+    // Different agents on different frames → all filled.
+    const seenAgents = new Set();
+    for (const b of toRender) {
+      const targetEntry = frameMap.get(b.key);
+      if (!targetEntry) continue;
+      const byAgent = groupTagsByAgent(b.tags);
+      for (const [agent, summaries] of byAgent) {
+        const isHollow = seenAgents.has(agent);
         tagRow.appendChild(
           buildTagPill({
             agent,
             summaries,
-            targetFrame: parentEntry.frameEl,
-            isAncestor: true,
+            targetFrame: targetEntry.frameEl,
+            hostFrame: frameEl,
+            isHollow,
           }),
         );
+        seenAgents.add(agent);
       }
     }
   }
@@ -1543,4 +1559,393 @@ function escapeHtml(s) {
   return s.replace(/[&<>"']/g, (c) => ({
     "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;",
   }[c]));
+}
+
+// ─────────────────────────────────────────────────────────────────────────
+// Evals view — toggled by the header button. When open, hides <main>
+// and renders historical eval data as charts + tables.
+// ─────────────────────────────────────────────────────────────────────────
+
+const evalsState = {
+  open: false,
+  loaded: false,
+  data: null,
+  charts: [],   // active Chart.js instances; destroyed on view close
+};
+
+// Per-agent colour anchors (hex). Mirror the CSS --c-<agent> values so the
+// chart line colours match the agent tags shown elsewhere in the UI.
+const AGENT_COLOR = {
+  calendar:     "#2563eb",
+  email_triage: "#9333ea",
+  food:         "#ea580c",
+  travel:       "#0d9488",
+  finance:      "#16a34a",
+  dates:        "#db2777",
+  shopping:     "#dc2626",
+  todos:        "#4f46e5",
+  events:       "#ca8a04",
+};
+
+function initEvalsToggle() {
+  const btn = $("#evals-toggle");
+  if (!btn) return;
+  btn.addEventListener("click", () => {
+    evalsState.open ? closeEvalsView() : openEvalsView();
+  });
+}
+
+async function openEvalsView() {
+  evalsState.open = true;
+  $("#evals-toggle").classList.add("active");
+  $("main.layout").style.display = "none";
+  $("#evals-view").hidden = false;
+  if (!evalsState.loaded) {
+    await loadEvalsData();
+  } else {
+    renderEvalsView();
+  }
+}
+
+function closeEvalsView() {
+  evalsState.open = false;
+  $("#evals-toggle").classList.remove("active");
+  $("main.layout").style.display = "";
+  $("#evals-view").hidden = true;
+  // Charts hold canvas refs; destroy them so a re-open re-creates fresh
+  // instances (otherwise the second open can leak resize observers).
+  for (const c of evalsState.charts) {
+    try { c.destroy(); } catch (_e) { /* noop */ }
+  }
+  evalsState.charts = [];
+}
+
+async function loadEvalsData() {
+  const view = $("#evals-view");
+  view.innerHTML = `<div class="evals-loading">loading eval history…</div>`;
+  try {
+    evalsState.data = await fetchJSON("/api/evals");
+    evalsState.loaded = true;
+    renderEvalsView();
+  } catch (err) {
+    view.innerHTML = `<div class="evals-loading">failed to load: ${escapeHtml(err.message)}</div>`;
+  }
+}
+
+function renderEvalsView() {
+  const view = $("#evals-view");
+  view.innerHTML = "";
+  // Destroy any charts left over from a prior render.
+  for (const c of evalsState.charts) { try { c.destroy(); } catch (_e) {} }
+  evalsState.charts = [];
+
+  const agents = (evalsState.data?.agents || []).filter((a) => a.runs.length);
+  if (!agents.length) {
+    view.innerHTML = `<div class="evals-loading">no eval history found.</div>`;
+    return;
+  }
+
+  view.appendChild(renderLeaderboard(agents));
+  view.appendChild(renderCombinedTimeline(agents));
+  view.appendChild(renderPerAgentSection(agents));
+}
+
+// ── leaderboard (top section) ──
+
+function renderLeaderboard(agents) {
+  const wrap = document.createElement("section");
+  wrap.className = "evals-section";
+  wrap.innerHTML = `<h2 class="evals-section-title">Latest run — leaderboard</h2>`;
+
+  const table = document.createElement("table");
+  table.className = "evals-leaderboard";
+  table.innerHTML = `
+    <thead>
+      <tr>
+        <th>Agent</th><th>Date</th><th>Model</th>
+        <th>F1</th><th>Precision</th><th>Recall</th>
+        <th>Specificity</th><th>Pref&nbsp;coverage</th>
+        <th>Runs</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  `;
+  const tbody = table.querySelector("tbody");
+
+  // Sort by latest F1 desc so the strongest agents bubble to the top.
+  const rows = [...agents].sort((a, b) => {
+    const af = a.latest?.macro?.f1 ?? -1;
+    const bf = b.latest?.macro?.f1 ?? -1;
+    return bf - af;
+  });
+
+  for (const a of rows) {
+    const m = a.latest?.macro || {};
+    const tr = document.createElement("tr");
+    tr.innerHTML = `
+      <td><span class="agent-tag ${a.agent}">${a.agent}</span></td>
+      <td>${a.latest?.evaluation_date || "—"}</td>
+      <td>${a.latest?.model || "—"}</td>
+      <td class="metric ${f1Class(m.f1)}">${fmt(m.f1)}</td>
+      <td class="metric">${fmt(m.precision)}</td>
+      <td class="metric">${fmt(m.recall)}</td>
+      <td class="metric">${fmt(m.specificity)}</td>
+      <td class="metric">${fmt(m.pref_coverage)}</td>
+      <td class="metric">${a.runs.length}</td>
+    `;
+    tbody.appendChild(tr);
+  }
+  wrap.appendChild(table);
+  return wrap;
+}
+
+// ── combined F1 timeline (one chart, all agents) ──
+
+function renderCombinedTimeline(agents) {
+  const wrap = document.createElement("section");
+  wrap.className = "evals-section";
+  wrap.innerHTML = `<h2 class="evals-section-title">Combined — F1 trajectory across agents</h2>`;
+
+  const card = document.createElement("div");
+  card.className = "eval-card";
+  card.innerHTML = `
+    <div class="eval-card-head">
+      <h3>F1 over time</h3>
+      <span class="eval-card-meta">${agents.length} agents</span>
+    </div>
+    <div class="eval-chart-wrap large"><canvas></canvas></div>
+  `;
+  wrap.appendChild(card);
+
+  const canvas = card.querySelector("canvas");
+  const datasets = agents
+    .filter((a) => a.runs.length >= 1)
+    .map((a) => ({
+      label: a.agent,
+      data: a.runs.map((r) => ({
+        x: r.timestamp,
+        y: r.macro?.f1 ?? null,
+      })),
+      borderColor: AGENT_COLOR[a.agent] || "#525252",
+      backgroundColor: AGENT_COLOR[a.agent] || "#525252",
+      tension: 0.25,
+      pointRadius: 3,
+      borderWidth: 2,
+      spanGaps: true,
+    }));
+
+  evalsState.charts.push(new Chart(canvas, {
+    type: "line",
+    data: { datasets },
+    options: lineChartOptions({ yMax: 1, yLabel: "F1" }),
+  }));
+
+  return wrap;
+}
+
+// ── per-agent grid: chart + macro pills + persona table + failures ──
+
+function renderPerAgentSection(agents) {
+  const wrap = document.createElement("section");
+  wrap.className = "evals-section";
+  wrap.innerHTML = `<h2 class="evals-section-title">Per-agent detail</h2>`;
+  const grid = document.createElement("div");
+  grid.className = "evals-grid";
+  for (const a of agents) grid.appendChild(renderAgentCard(a));
+  wrap.appendChild(grid);
+  return wrap;
+}
+
+function renderAgentCard(agent) {
+  const card = document.createElement("div");
+  card.className = "eval-card";
+
+  const m = agent.latest?.macro || {};
+  card.innerHTML = `
+    <div class="eval-card-head">
+      <span class="agent-tag ${agent.agent}">${agent.agent}</span>
+      <h3 style="margin-left: 4px;">${agent.runs.length} run${agent.runs.length === 1 ? "" : "s"}</h3>
+      <span class="eval-card-meta">latest: ${agent.latest?.evaluation_date || "—"}</span>
+    </div>
+    <div class="eval-chart-wrap"><canvas></canvas></div>
+    <div class="eval-macro-row">
+      <span class="eval-macro-pill">F1 <b>${fmt(m.f1)}</b></span>
+      <span class="eval-macro-pill">P <b>${fmt(m.precision)}</b></span>
+      <span class="eval-macro-pill">R <b>${fmt(m.recall)}</b></span>
+      <span class="eval-macro-pill">Spec <b>${fmt(m.specificity)}</b></span>
+      <span class="eval-macro-pill">Pref <b>${fmt(m.pref_coverage)}</b></span>
+    </div>
+  `;
+
+  // Per-agent line chart: 3 series (precision, recall, F1).
+  const canvas = card.querySelector("canvas");
+  const color = AGENT_COLOR[agent.agent] || "#525252";
+  evalsState.charts.push(new Chart(canvas, {
+    type: "line",
+    data: {
+      datasets: [
+        {
+          label: "F1",
+          data: agent.runs.map((r) => ({ x: r.timestamp, y: r.macro?.f1 ?? null })),
+          borderColor: color,
+          backgroundColor: color,
+          borderWidth: 2.5,
+          tension: 0.25,
+          pointRadius: 3,
+          spanGaps: true,
+        },
+        {
+          label: "Precision",
+          data: agent.runs.map((r) => ({ x: r.timestamp, y: r.macro?.precision ?? null })),
+          borderColor: color,
+          backgroundColor: "transparent",
+          borderWidth: 1.4,
+          borderDash: [4, 4],
+          tension: 0.25,
+          pointRadius: 2,
+          spanGaps: true,
+        },
+        {
+          label: "Recall",
+          data: agent.runs.map((r) => ({ x: r.timestamp, y: r.macro?.recall ?? null })),
+          borderColor: color,
+          backgroundColor: "transparent",
+          borderWidth: 1.4,
+          borderDash: [2, 3],
+          tension: 0.25,
+          pointRadius: 2,
+          spanGaps: true,
+        },
+      ],
+    },
+    options: lineChartOptions({ yMax: 1, yLabel: "" }),
+  }));
+
+  // Per-persona table (latest run).
+  if (agent.latest?.personas?.length) {
+    card.appendChild(renderPersonaTable(agent.latest.personas));
+  }
+
+  // Failures (latest run, aggregated across personas).
+  const failures = collectFailures(agent.latest?.personas || []);
+  if (failures.length) {
+    card.appendChild(renderFailures(failures));
+  }
+
+  return card;
+}
+
+function renderPersonaTable(personas) {
+  const t = document.createElement("table");
+  t.className = "eval-persona-table";
+  t.innerHTML = `
+    <thead>
+      <tr>
+        <th>Persona</th><th>Mode</th>
+        <th>F1</th><th>P</th><th>R</th>
+        <th>TP</th><th>FP</th><th>FN</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  `;
+  const tb = t.querySelector("tbody");
+  for (const p of personas) {
+    const tr = document.createElement("tr");
+    const fp = (p.fp_unexpected ?? 0) + (p.fp_skip_violations ?? 0);
+    tr.innerHTML = `
+      <td>${escapeHtml(p.slug || "")}</td>
+      <td>${escapeHtml(p.mode || "")}</td>
+      <td class="metric ${f1Class(p.f1)}">${fmt(p.f1)}</td>
+      <td class="metric">${fmt(p.precision)}</td>
+      <td class="metric">${fmt(p.recall)}</td>
+      <td class="metric">${p.tp ?? 0}</td>
+      <td class="metric">${fp}</td>
+      <td class="metric">${p.fn ?? 0}</td>
+    `;
+    tb.appendChild(tr);
+  }
+  return t;
+}
+
+function collectFailures(personas) {
+  const out = [];
+  for (const p of personas) {
+    const f = p.failures || {};
+    for (const m of f.task_misses || [])      out.push({ persona: p.slug, kind: "miss",   ...m });
+    for (const v of f.skip_violations || [])  out.push({ persona: p.slug, kind: "skipv",  ...v });
+    for (const u of f.unexpected_tasks || []) out.push({ persona: p.slug, kind: "unexp",  ...u });
+    for (const t of f.pref_topic_misses || [])out.push({ persona: p.slug, kind: "preft",  ...t });
+  }
+  return out;
+}
+
+function renderFailures(failures) {
+  const det = document.createElement("details");
+  det.className = "eval-failures";
+  const sum = document.createElement("summary");
+  sum.textContent = `${failures.length} failure${failures.length === 1 ? "" : "s"} — click to expand`;
+  det.appendChild(sum);
+
+  const KIND_LABEL = { miss: "miss", skipv: "skip violation", unexp: "unexpected", preft: "pref topic miss" };
+  for (const f of failures) {
+    const item = document.createElement("div");
+    item.className = "eval-failure-item";
+    const summary = f.summary || f.title || "(no summary)";
+    item.innerHTML = `
+      <span class="eval-failure-kind ${f.kind}">${KIND_LABEL[f.kind] || f.kind}</span>
+      <span class="muted">${escapeHtml(f.persona || "")}</span>
+      <div class="eval-failure-summary">${escapeHtml(summary)}</div>
+      ${f.judge_reasoning ? `<div class="eval-failure-reason">${escapeHtml(f.judge_reasoning)}</div>` : ""}
+    `;
+    det.appendChild(item);
+  }
+  return det;
+}
+
+// ── chart helpers ──
+
+function lineChartOptions({ yMax = 1, yLabel = "" } = {}) {
+  // Detect dark mode so axis labels stay readable in both themes.
+  const dark = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches;
+  const tickColor = dark ? "#a1a1aa" : "#71717a";
+  const gridColor = dark ? "rgba(255,255,255,0.06)" : "rgba(0,0,0,0.06)";
+  return {
+    responsive: true,
+    maintainAspectRatio: false,
+    interaction: { mode: "index", intersect: false },
+    scales: {
+      x: {
+        type: "time",
+        time: { unit: "day", tooltipFormat: "MMM d, HH:mm" },
+        ticks: { color: tickColor, font: { size: 10 } },
+        grid: { color: gridColor },
+      },
+      y: {
+        min: 0, max: yMax,
+        title: yLabel ? { display: true, text: yLabel, color: tickColor, font: { size: 10 } } : undefined,
+        ticks: { color: tickColor, font: { size: 10 }, stepSize: 0.2 },
+        grid: { color: gridColor },
+      },
+    },
+    plugins: {
+      legend: { labels: { color: tickColor, font: { size: 11 }, boxWidth: 12 } },
+      tooltip: {
+        backgroundColor: "rgba(0,0,0,0.85)",
+        titleFont: { size: 11 },
+        bodyFont: { size: 11 },
+      },
+    },
+  };
+}
+
+function fmt(n) {
+  if (n == null || Number.isNaN(n)) return "—";
+  return Number(n).toFixed(2);
+}
+
+function f1Class(n) {
+  if (n == null) return "";
+  if (n >= 0.75) return "f1-good";
+  if (n >= 0.5)  return "f1-mid";
+  return "f1-bad";
 }
