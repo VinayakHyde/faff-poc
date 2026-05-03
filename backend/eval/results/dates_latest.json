@@ -18,13 +18,15 @@
         "fn": 0,
         "expected_tasks": 0,
         "actual_tasks": 0,
-        "expected_skips": 6,
+        "expected_skips": 5,
         "expected_topics": 0,
         "precision": 1.0,
         "recall": 1.0,
         "f1": 1.0,
         "specificity": 1.0,
-        "pref_coverage": 1.0
+        "pref_coverage": 1.0,
+        "expired_tasks_filtered": 0,
+        "expired_skips_filtered": 1
       },
       "judge": {
         "task_alignments": [],
@@ -52,7 +54,9 @@
         "recall": 1.0,
         "f1": 1.0,
         "specificity": 1.0,
-        "pref_coverage": 1.0
+        "pref_coverage": 1.0,
+        "expired_tasks_filtered": 0,
+        "expired_skips_filtered": 0
       },
       "judge": {
         "task_alignments": [],
@@ -62,32 +66,32 @@
           {
             "topic": "Mom (Bela) birthday May 15 — gifting cues from profile: gardening, old Bengali movies, knitting for grandkids",
             "actual_pref_index": 3,
-            "reasoning": "Faithfully captures Mom Bela's birthday date and the listed gifting cues: gardening, old Bengali movies, and knitting for grandkids."
+            "reasoning": "Preference update explicitly captures Mom Bela's birthday on May 15 and the profile gifting cues of gardening, old Bengali movies, and knitting for grandkids."
           },
           {
             "topic": "Mitali (wife) birthday November 12 — gifting cues: rare art books, handloom sarees (Jamdani/Baluchari), spa vouchers at The Taj",
             "actual_pref_index": 0,
-            "reasoning": "Covers Mitali's birthday on November 12 and includes the expected gifting cues, including rare art books, handloom sarees, and spa vouchers at The Taj."
+            "reasoning": "Preference update explicitly captures Mitali's November 12 birthday and includes the expected gifting cues: rare art books, Jamdani/Baluchari handloom sarees, and spa vouchers at The Taj."
           },
           {
             "topic": "Mitali + Arjun anniversary February 4",
             "actual_pref_index": 5,
-            "reasoning": "Explicitly records the couple's anniversary as February 4."
+            "reasoning": "Preference update explicitly records Arjun and Mitali's anniversary as February 4."
           },
           {
             "topic": "Sister Anjali (London) birthday July 2 — international shipping needs longer lead time",
             "actual_pref_index": 6,
-            "reasoning": "Captures Anjali's July 2 birthday, notes she is in London, and assigns an international gift lead window reflecting longer shipping time."
+            "reasoning": "Preference update explicitly captures sister Anjali in London, her July 2 birthday, and notes the international gift lead window."
           },
           {
             "topic": "Durga Puja (October) — major Bengali family festival the user actively celebrates",
             "actual_pref_index": 7,
-            "reasoning": "Records Durga Puja in October as important Bengali family time with handling guidance, matching the expected observance topic."
+            "reasoning": "Preference update captures Durga Puja in October and describes it as important Bengali family time from the profile, matching the celebration topic."
           },
           {
             "topic": "Dad's death anniversary September 10",
             "actual_pref_index": 4,
-            "reasoning": "Explicitly captures Dad's death anniversary on September 10."
+            "reasoning": "Preference update explicitly records Dad's death anniversary on September 10 and adds message-only handling guidance."
           }
         ],
         "preference_topic_misses": []
@@ -96,79 +100,79 @@
       "actual_prefs": [
         {
           "section": "Important Dates",
-          "content": "Mitali Banerjee (wife) — birthday November 12. Profile gifting cues: ikebana, antique furniture, linen sarees, dark chocolate, rare art books, handloom sarees (Jamdani / Baluchari), spa vouchers at The Taj. Lead window: gift-local, fire on Nov 5–7.",
-          "reason": "Profile Important Dates row backfilled with relationship, date, gifting cues, and lead window."
+          "content": "Mitali Banerjee (wife) — birthday November 12. Profile gifting cues: ikebana, antique furniture, linen sarees, dark chocolate; stronger gift ideas from profile: rare art books, handloom sarees (Jamdani/Baluchari), spa vouchers at The Taj. Lead window: gift-local, fire on Nov 5–7.",
+          "reason": "Backfill of profile Important Dates row with relationship and gifting cues."
         },
         {
           "section": "Important Dates",
           "content": "Ishaan (son) — birthday August 5. Profile gifting cues: football (Mohun Bagan fan), gaming, drums. Lead window: gift-local, fire on Jul 29–31.",
-          "reason": "Profile Important Dates row backfilled with relationship, date, gifting cues, and lead window."
+          "reason": "Backfill of profile Important Dates row with relationship and gifting cues."
         },
         {
           "section": "Important Dates",
           "content": "Maya (daughter) — birthday February 20. Profile gifting cues: painting, swimming, Harry Potter. Lead window: gift-local, fire on Feb 13–15.",
-          "reason": "Profile Important Dates row backfilled with relationship, date, gifting cues, and lead window."
+          "reason": "Backfill of profile Important Dates row with relationship and gifting cues."
         },
         {
           "section": "Important Dates",
           "content": "Mom (Bela Banerjee) — birthday May 15. Profile gifting cues: gardening, old Bengali movies, knitting for her grandkids. Lead window: gift-local, fire on May 8–10.",
-          "reason": "Profile Important Dates row backfilled with relationship, date, gifting cues, and lead window."
+          "reason": "Backfill of profile Important Dates row with relationship and gifting cues."
         },
         {
           "section": "Important Dates",
-          "content": "Dad (deceased) — death anniversary September 10. Profile gifting cues: none listed. Lead window: death-anniversary, fire on Sep 8–9 with a gentle check-in framing for bereaved family.",
-          "reason": "Profile Important Dates row backfilled with relationship, date, and bereavement-specific lead window."
+          "content": "Dad (deceased) — death anniversary September 10. Profile cue: bereaved family context; frame as a gentle check-in with Mom and family. Lead window: death-anniversary, message-only, fire on Sep 8–9.",
+          "reason": "Backfill of profile Important Dates row with death-anniversary handling guidance."
         },
         {
           "section": "Important Dates",
-          "content": "Anniversary (Mitali + Arjun) — February 4. Profile gifting cues from Mitali's profile: ikebana, linen sarees, dark chocolate, rare art books, handloom sarees, spa vouchers at The Taj. Lead window: gift-local, fire on Jan 28–30.",
-          "reason": "Profile Important Dates row backfilled with relationship, date, gifting cues, and lead window."
+          "content": "Arjun + Mitali — anniversary February 4. Profile gifting cues via spouse preferences: rare art books, handloom sarees (Jamdani/Baluchari), dark chocolate, spa vouchers at The Taj. Lead window: gift-local, fire on Jan 28–30.",
+          "reason": "Backfill of profile Important Dates row with anniversary gifting cues."
         },
         {
           "section": "Important Dates",
-          "content": "Sister Anjali (in London) — birthday July 2. Profile gifting cues: none listed. Lead window: gift-international, fire on Jun 22–25.",
-          "reason": "Profile Important Dates row backfilled with relationship, date, and international lead window."
+          "content": "Sister Anjali (in London) — birthday July 2. No explicit gifting cues in profile. Lead window: gift-international, fire on Jun 22–25.",
+          "reason": "Backfill of profile Important Dates row; sister is abroad so use international lead window."
         },
         {
           "section": "Important Dates",
-          "content": "Durga Puja (Saptami–Dashami) — October 2026, exact dates vary. Profile cultural cue: Bengali family time; respect note not to schedule things during Durga Puja. Lead window: festival prep 7–10 days before once dates are known; greetings 1–2 days before.",
-          "reason": "Profile Important Dates row backfilled with festival timing and cultural handling guidance."
+          "content": "Durga Puja (Saptami–Dashami) — October 2026, date varies. Profile cultural cue: Bengali family with deep roots; respect Durga Puja as family time and do not schedule things during Puja. Lead window: festival prep 7–10 days before; greetings 1–2 days before.",
+          "reason": "Backfill of profile Important Dates row for a named cultural occasion."
         },
         {
           "section": "Important Dates",
-          "content": "Poila Baisakh (Bengali New Year) — April 14. Profile cultural cue: Bengali New Year observance. Lead window: message-only, fire on Apr 12–13.",
-          "reason": "Profile Important Dates row backfilled with festival timing and lead window."
+          "content": "Poila Baisakh — April 14. Profile cultural cue: Bengali New Year, likely family-oriented observance. Lead window: prep/sweets 7–10 days before; greetings 1–2 days before.",
+          "reason": "Backfill of profile Important Dates row for a named cultural occasion."
         },
         {
           "section": "Important Dates",
-          "content": "Sudipto (close friend) — birthday March 28. Profile gifting cues: school friend, frequent bridge partner at the club. Lead window: message-only, fire on Mar 26–27.",
-          "reason": "Profile Important Dates row backfilled with relationship, date, and message lead window."
+          "content": "Sudipto (close friend) — birthday March 28. Profile cues: school friend, frequent bridge partner at the club. Lead window: message-only, fire on Mar 26–27 or morning of Mar 28.",
+          "reason": "Backfill of profile Important Dates row with relationship context."
         },
         {
           "section": "Festivals",
-          "content": "Durga Puja — October. Celebration intensity/ritual: important Bengali family time. Cultural constraint: do not schedule things during Durga Puja. Lead window: 7–10 days before for prep, 1–2 days before for greetings.",
-          "reason": "Festival explicitly named in profile; backfilled with month, observance style, and trigger windows."
+          "content": "Durga Puja — October. Celebration intensity: important Bengali family time per profile background. Cultural constraint: avoid scheduling other commitments during Puja days; treat as sensitive family/cultural time. Lead window: 7–10 days before for prep/sweets/clothes, 1–2 days before for greetings.",
+          "reason": "Profile explicitly names Durga Puja and asks the assistant to respect this cultural period."
         },
         {
           "section": "Festivals",
-          "content": "Poila Baisakh — April. Celebration intensity/ritual: Bengali New Year observance. Cultural constraint: treat as a meaningful Bengali family festival. Lead window: 1–2 days before for greetings.",
-          "reason": "Festival explicitly named in profile; backfilled with month, observance style, and trigger windows."
+          "content": "Poila Baisakh — April. Celebration intensity: Bengali New Year, family-oriented observance. Cultural constraint: keep messaging culturally respectful and Bengali-specific. Lead window: 7–10 days before for sweets/meal prep, 1–2 days before for greetings.",
+          "reason": "Profile explicitly names Poila Baisakh as a celebrated occasion."
         },
         {
           "section": "Relationships",
-          "content": "Sudipto — close friend, school friend, frequent bridge partner. Profile cadence: regular social contact. Gmail evidence shows contact on 2026-04-30, so no silence issue now. Suggested silence threshold for future 'Reach out' trigger: 3+ months without contact.",
-          "reason": "Profile-listed close contact checked against Gmail history for relationship-revival cadence."
+          "content": "Sudipto — close friend, school friend, frequent bridge partner. Profile cadence suggests at least monthly contact. Gmail evidence shows very recent inbound contact on 2026-04-30, so he is currently active. Suggested silence threshold for future 'Reach out' trigger: 3+ months with no contact.",
+          "reason": "Profile lists Sudipto as a close friend; gmail history used to estimate current cadence."
         },
         {
           "section": "Relationships",
-          "content": "Rina — close friend and professional confidante, fellow gallery owner. Profile cadence: periodic keep-in-touch. Gmail evidence shows exchanges through 2026-04-18 and multiple touches over the past 12 months. Suggested silence threshold for future 'Reach out' trigger: 4+ months without contact.",
-          "reason": "Profile-listed close contact checked against Gmail history for relationship-revival cadence."
+          "content": "Rina — fellow gallery owner, professional confidante. Profile does not state cadence. Gmail evidence shows contact points across the last 12 months, most recently on 2026-04-18, suggesting an every-few-months cadence. Suggested silence threshold for future 'Reach out' trigger: 4+ months with no contact.",
+          "reason": "Profile lists Rina as a close contact; gmail history used to estimate cadence."
         }
       ]
     },
     {
       "slug": "devendra",
-      "mode": "BACKFILL",
+      "mode": "STEADY-STATE",
       "metrics": {
         "tp": 0,
         "fp_unexpected": 0,
@@ -177,119 +181,24 @@
         "expected_tasks": 0,
         "actual_tasks": 0,
         "expected_skips": 5,
-        "expected_topics": 6,
+        "expected_topics": 0,
         "precision": 1.0,
         "recall": 1.0,
         "f1": 1.0,
         "specificity": 1.0,
-        "pref_coverage": 1.0
+        "pref_coverage": 1.0,
+        "expired_tasks_filtered": 0,
+        "expired_skips_filtered": 0
       },
       "judge": {
         "task_alignments": [],
         "expected_task_misses": [],
         "expected_skip_violations": [],
-        "preference_topic_hits": [
-          {
-            "topic": "Hetal (wife) birthday October 5 — gifting cues: Taneira sarees, gold jewelry, religious books",
-            "actual_pref_index": 0,
-            "reasoning": "Preference update explicitly captures Hetal's birthday, relationship, and the listed gifting cues."
-          },
-          {
-            "topic": "Riya (daughter, US-based) birthday December 18 — international shipping needs longer lead",
-            "actual_pref_index": 1,
-            "reasoning": "Preference update explicitly captures Riya's December 18 birthday, that she is US-based, and uses an international gift lead window."
-          },
-          {
-            "topic": "Anniversary Devendra + Hetal January 25",
-            "actual_pref_index": 3,
-            "reasoning": "Preference update explicitly records Devendra and Hetal's anniversary on January 25."
-          },
-          {
-            "topic": "Mom birthday June 22",
-            "actual_pref_index": 4,
-            "reasoning": "Preference update explicitly records Mom's birthday as June 22."
-          },
-          {
-            "topic": "Paryushan (Aug/Sep) — strict Jain festival; the assistant must avoid surfacing travel / lavish suggestions during this period",
-            "actual_pref_index": 5,
-            "reasoning": "Preference update captures Paryushan in Aug/Sept and the strict Jain observance constraint against travel or lavishness during the period."
-          },
-          {
-            "topic": "Diwali / Vikram Samvat New Year (Nov) — major family festival the user actively celebrates",
-            "actual_pref_index": 6,
-            "reasoning": "Preference update captures Diwali / Vikram Samvat New Year in November and notes it as a traditional family celebration with Jain constraints."
-          }
-        ],
+        "preference_topic_hits": [],
         "preference_topic_misses": []
       },
       "actual_tasks": [],
-      "actual_prefs": [
-        {
-          "section": "Important Dates",
-          "content": "Hetal Patel (wife) — birthday October 5. Profile gifting cues: Taneira sarees, gold jewelry, religious books. Lead window: gift-local, fire on Sep 28–30.",
-          "reason": "BACKFILL: indexed profile Important Dates row with relationship, date, gifting cues, and lead window."
-        },
-        {
-          "section": "Important Dates",
-          "content": "Riya (daughter, lives in US) — birthday December 18. Profile gifting cues: none listed beyond family context; married to Amit and based in New Jersey. Lead window: gift-international, fire on Dec 8–11.",
-          "reason": "BACKFILL: indexed profile Important Dates row with relationship, date, available cues, and international lead window."
-        },
-        {
-          "section": "Important Dates",
-          "content": "Krish (son) — birthday April 10. Profile gifting cues: fitness and cricket. Lead window: gift-local, fire on Apr 3–5.",
-          "reason": "BACKFILL: indexed profile Important Dates row with relationship, date, gifting cues from Relationships, and lead window."
-        },
-        {
-          "section": "Important Dates",
-          "content": "Devendra + Hetal — anniversary January 25. Profile gifting cues for Hetal: Taneira sarees, gold jewelry, religious books. Lead window: gift-local, fire on Jan 18–20.",
-          "reason": "BACKFILL: indexed profile Important Dates row with occasion, date, linked gifting cues, and lead window."
-        },
-        {
-          "section": "Important Dates",
-          "content": "Mom (mother) — birthday June 22. Profile gifting cues: none listed. Lead window: message-only, fire on Jun 20–21.",
-          "reason": "BACKFILL: indexed profile Important Dates row; no profile gifting cue available, so classified as message-only."
-        },
-        {
-          "section": "Important Dates",
-          "content": "Paryushan (Jain festival) — varies in Aug/Sept. Profile cues: strict Jain observance; no travel or lavishness during the period. Lead window: message-only / observance-sensitive reminder, fire 1–2 days before once dates are known.",
-          "reason": "BACKFILL: indexed profile Important Dates row for festival observance and constraint handling."
-        },
-        {
-          "section": "Important Dates",
-          "content": "Diwali / Vikram Samvat New Year — varies in November. Profile cues: traditional family celebration; any sweets or gifts must be strictly Jain. Lead window: gift-local, fire 7–10 days before once dates are known.",
-          "reason": "BACKFILL: indexed profile Important Dates row for named festival with celebration constraints and prep window."
-        },
-        {
-          "section": "Important Dates",
-          "content": "Brother Mukesh (brother) — birthday March 5. Profile gifting cues: none listed. Lead window: message-only, fire on Mar 3–4.",
-          "reason": "BACKFILL: indexed profile Important Dates row; no explicit gifting cue available, so classified as message-only."
-        },
-        {
-          "section": "Important Dates",
-          "content": "Nilesh (best friend; business partner and childhood friend) — birthday July 15. Profile gifting cues: none listed. Lead window: message-only, fire on Jul 13–14.",
-          "reason": "BACKFILL: indexed profile Important Dates row with relationship and date; no explicit gifting cue available."
-        },
-        {
-          "section": "Festivals",
-          "content": "Paryushan — August/September. Profile says he follows Jainism strictly; treat this as a serious austerity period with no travel or lavishness. Lead window: 7–10 days before for calendar protection/prep, 1–2 days before for respectful observance messaging.",
-          "reason": "BACKFILL: indexed each festival explicitly named in the profile with intensity, ritual constraint, and lead windows."
-        },
-        {
-          "section": "Festivals",
-          "content": "Diwali / Vikram Samvat New Year — November. Profile indicates traditional family celebration; any sweets, meals, or gifting suggestions must be strictly Jain. Lead window: 7–10 days before for sweets/gifting prep, 1–2 days before for greetings.",
-          "reason": "BACKFILL: indexed each festival explicitly named in the profile with celebration style and cultural constraints."
-        },
-        {
-          "section": "Relationships",
-          "content": "Nilesh — best friend, business partner, childhood friend. Profile marks him as a close friend. Gmail evidence shows active contact on 2026-04-30 and 2026-04-29, so evidenced cadence is active/frequent rather than dormant. Suggested silence threshold for future 'Reach out' trigger: only if no meaningful personal contact for 3+ months, and never when active work email is in flight.",
-          "reason": "BACKFILL: profile-listed close contact checked against Gmail history to estimate cadence and future reach-out threshold."
-        },
-        {
-          "section": "Relationships",
-          "content": "Dr. Shah — family doctor and weekend walking partner. Profile marks him as a close contact. Gmail search found no clear recent thread, so evidenced cadence is unknown from email. Suggested silence threshold for future 'Reach out' trigger: 3–4 months without contact, with a message angle tied to weekend walks or a health check-in.",
-          "reason": "BACKFILL: profile-listed close contact checked against Gmail history; no recent evidence found, so set a conservative cadence threshold."
-        }
-      ]
+      "actual_prefs": []
     },
     {
       "slug": "meera",
@@ -307,7 +216,9 @@
         "recall": 1.0,
         "f1": 1.0,
         "specificity": 1.0,
-        "pref_coverage": 1.0
+        "pref_coverage": 1.0,
+        "expired_tasks_filtered": 0,
+        "expired_skips_filtered": 0
       },
       "judge": {
         "task_alignments": [],

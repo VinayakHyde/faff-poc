@@ -1662,6 +1662,7 @@ function renderLeaderboard(agents) {
   table.innerHTML = `
     <thead>
       <tr>
+        <th>Rank</th>
         <th>Agent</th><th>Date</th><th>Model</th>
         <th>F1</th><th>Precision</th><th>Recall</th>
         <th>Specificity</th><th>Pref&nbsp;coverage</th>
@@ -1679,10 +1680,21 @@ function renderLeaderboard(agents) {
     return bf - af;
   });
 
-  for (const a of rows) {
+  // Standard competition ranking — ties share the same rank, next rank
+  // skips accordingly (1, 2, 2, 4, …). Rounding to 4 dp avoids float
+  // noise classifying mathematically equal F1s as different.
+  const keyFor = (a) => Math.round((a.latest?.macro?.f1 ?? -1) * 1e4);
+  let lastKey = null;
+  let lastRank = 0;
+  for (let i = 0; i < rows.length; i++) {
+    const a = rows[i];
+    const k = keyFor(a);
+    const rank = k === lastKey ? lastRank : i + 1;
+    lastKey = k; lastRank = rank;
     const m = a.latest?.macro || {};
     const tr = document.createElement("tr");
     tr.innerHTML = `
+      <td class="metric"><b>${rank}</b></td>
       <td><span class="agent-tag ${a.agent}">${a.agent}</span></td>
       <td>${a.latest?.evaluation_date || "—"}</td>
       <td>${a.latest?.model || "—"}</td>
@@ -1710,7 +1722,7 @@ function renderCombinedTimeline(agents) {
   card.className = "eval-card";
   card.innerHTML = `
     <div class="eval-card-head">
-      <h3>F1 over time</h3>
+      <h3>F1 over iterations</h3>
       <span class="eval-card-meta">${agents.length} agents</span>
     </div>
     <div class="eval-chart-wrap large"><canvas></canvas></div>
@@ -1722,8 +1734,8 @@ function renderCombinedTimeline(agents) {
     .filter((a) => a.runs.length >= 1)
     .map((a) => ({
       label: a.agent,
-      data: a.runs.map((r) => ({
-        x: r.timestamp,
+      data: a.runs.map((r, i) => ({
+        x: i + 1,
         y: r.macro?.f1 ?? null,
       })),
       borderColor: AGENT_COLOR[a.agent] || "#525252",
@@ -1751,7 +1763,17 @@ function renderPerAgentSection(agents) {
   wrap.innerHTML = `<h2 class="evals-section-title">Per-agent detail</h2>`;
   const grid = document.createElement("div");
   grid.className = "evals-grid";
-  for (const a of agents) grid.appendChild(renderAgentCard(a));
+  // Sort by number of runs desc — agents with more history go on top so
+  // their richer trend lines are visible without scrolling. Tiebreak by
+  // latest F1 desc, then alphabetically for stability.
+  const ordered = [...agents].sort((a, b) => {
+    if (b.runs.length !== a.runs.length) return b.runs.length - a.runs.length;
+    const af = a.latest?.macro?.f1 ?? -1;
+    const bf = b.latest?.macro?.f1 ?? -1;
+    if (bf !== af) return bf - af;
+    return a.agent.localeCompare(b.agent);
+  });
+  for (const a of ordered) grid.appendChild(renderAgentCard(a));
   wrap.appendChild(grid);
   return wrap;
 }
@@ -1786,7 +1808,7 @@ function renderAgentCard(agent) {
       datasets: [
         {
           label: "F1",
-          data: agent.runs.map((r) => ({ x: r.timestamp, y: r.macro?.f1 ?? null })),
+          data: agent.runs.map((r, i) => ({ x: i + 1, y: r.macro?.f1 ?? null })),
           borderColor: color,
           backgroundColor: color,
           borderWidth: 2.5,
@@ -1796,7 +1818,7 @@ function renderAgentCard(agent) {
         },
         {
           label: "Precision",
-          data: agent.runs.map((r) => ({ x: r.timestamp, y: r.macro?.precision ?? null })),
+          data: agent.runs.map((r, i) => ({ x: i + 1, y: r.macro?.precision ?? null })),
           borderColor: color,
           backgroundColor: "transparent",
           borderWidth: 1.4,
@@ -1807,7 +1829,7 @@ function renderAgentCard(agent) {
         },
         {
           label: "Recall",
-          data: agent.runs.map((r) => ({ x: r.timestamp, y: r.macro?.recall ?? null })),
+          data: agent.runs.map((r, i) => ({ x: i + 1, y: r.macro?.recall ?? null })),
           borderColor: color,
           backgroundColor: "transparent",
           borderWidth: 1.4,
@@ -1909,21 +1931,41 @@ function lineChartOptions({ yMax = 1, yLabel = "" } = {}) {
   const dark = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches;
   const tickColor = dark ? "#a1a1aa" : "#71717a";
   const gridColor = dark ? "rgba(255,255,255,0.06)" : "rgba(0,0,0,0.06)";
+  // Sliver of headroom so series sitting exactly on yMax (e.g. F1=1.0 or
+  // perfect precision) don't have their points clipped against the top
+  // edge of the chart area. Tick labels are still capped at the round
+  // 0.0 → 1.0 grid via the callback below.
+  const headroom = yMax * 0.06;
   return {
     responsive: true,
     maintainAspectRatio: false,
     interaction: { mode: "index", intersect: false },
+    layout: { padding: { top: 8 } },
     scales: {
       x: {
-        type: "time",
-        time: { unit: "day", tooltipFormat: "MMM d, HH:mm" },
-        ticks: { color: tickColor, font: { size: 10 } },
+        type: "linear",
+        title: { display: true, text: "Iteration", color: tickColor, font: { size: 10 } },
+        ticks: {
+          color: tickColor,
+          font: { size: 10 },
+          stepSize: 1,
+          precision: 0,
+          callback: (v) => (Number.isInteger(v) ? v : ""),
+        },
         grid: { color: gridColor },
       },
       y: {
-        min: 0, max: yMax,
+        min: 0,
+        max: yMax + headroom,
         title: yLabel ? { display: true, text: yLabel, color: tickColor, font: { size: 10 } } : undefined,
-        ticks: { color: tickColor, font: { size: 10 }, stepSize: 0.2 },
+        ticks: {
+          color: tickColor,
+          font: { size: 10 },
+          stepSize: yMax / 5,
+          // Suppress any tick auto-generated above yMax so the axis
+          // doesn't show an awkward "1.06" label up top.
+          callback: (v) => (v <= yMax + 1e-9 ? Number(v).toFixed(1) : ""),
+        },
         grid: { color: gridColor },
       },
     },
@@ -1933,6 +1975,9 @@ function lineChartOptions({ yMax = 1, yLabel = "" } = {}) {
         backgroundColor: "rgba(0,0,0,0.85)",
         titleFont: { size: 11 },
         bodyFont: { size: 11 },
+        callbacks: {
+          title: (items) => `Iteration ${items[0].parsed.x}`,
+        },
       },
     },
   };

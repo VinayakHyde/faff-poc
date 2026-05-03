@@ -18,13 +18,15 @@
         "fn": 0,
         "expected_tasks": 0,
         "actual_tasks": 0,
-        "expected_skips": 3,
+        "expected_skips": 2,
         "expected_topics": 0,
         "precision": 1.0,
         "recall": 1.0,
         "f1": 1.0,
         "specificity": 1.0,
-        "pref_coverage": 1.0
+        "pref_coverage": 1.0,
+        "expired_tasks_filtered": 0,
+        "expired_skips_filtered": 1
       },
       "judge": {
         "task_alignments": [],
@@ -52,7 +54,9 @@
         "recall": 1.0,
         "f1": 1.0,
         "specificity": 1.0,
-        "pref_coverage": 1.0
+        "pref_coverage": 1.0,
+        "expired_tasks_filtered": 0,
+        "expired_skips_filtered": 0
       },
       "judge": {
         "task_alignments": [],
@@ -62,12 +66,12 @@
           {
             "topic": "Sunday ~9am Flurys breakfast via Swiggy — recurring (~4 orders in 12 months)",
             "actual_pref_index": 0,
-            "reasoning": "The update explicitly captures a recurring Sunday around 09:00 Flurys breakfast via Swiggy with email-confirmation evidence, which semantically matches the expected topic despite citing 2 confirmations rather than ~4."
+            "reasoning": "The update semantically matches the Sunday ~9am recurring Flurys breakfast pattern via Swiggy and grounds it in email-confirmation history, which is useful BACKFILL evidence even though the counted frequency differs."
           },
           {
             "topic": "Thursday ~8pm North Indian dinner from Amber or Kareem's — recurring (~6 orders in 12 months, alternating)",
             "actual_pref_index": 1,
-            "reasoning": "The update covers the Thursday around 20:00 North Indian dinner cadence and names Kareem's as one of the expected alternating restaurants. It is lower-confidence and incomplete versus the fuller Amber-or-Kareem's recurring pattern, but it still semantically covers the topic."
+            "reasoning": "The update captures the Thursday ~8pm recurring North Indian dinner pattern via Kareem's and ties it to email evidence. It is narrower and weaker than the expected Amber/Kareem's alternating pattern, but still covers the core topic semantically."
           }
         ],
         "preference_topic_misses": []
@@ -76,19 +80,19 @@
       "actual_prefs": [
         {
           "section": "Food",
-          "content": "Recurring order pattern: Flurys on Sundays around 09:00 for breakfast; 2 Swiggy confirmations found (2025-12-28 09:48, 2026-03-01 09:11).",
-          "reason": "BACKFILL: email order-history cadence supports the profile-stated Sunday Breakfast pattern with quantitative evidence."
+          "content": "Sunday breakfast recurring pattern: Flurys via Swiggy around 09:00 on Sundays; 2 confirmations found in the last 6 months (2025-12-28 09:48, 2026-03-01 09:11). Confidence: medium.",
+          "reason": "Email order-history cadence from Swiggy confirmations matches the profile-stated Sunday Breakfast pattern."
         },
         {
           "section": "Food",
-          "content": "Possible recurring order pattern: Kareem's on Thursdays around 20:00 for North Indian dinner; 1 Swiggy confirmation found (2026-01-29 20:02).",
-          "reason": "BACKFILL: limited email order-history evidence aligns with the profile-stated Thursday Dinner preference; low confidence until more confirmations appear."
+          "content": "Thursday dinner recurring pattern: Kareem's via Swiggy around 20:00 on Thursdays; 1 confirmation found (2026-01-29 20:02). Confidence: low.",
+          "reason": "Email order-history cadence shows one Thursday-night Kareem's order, consistent with the profile's Thursday dinner rotation, but evidence is limited."
         }
       ]
     },
     {
       "slug": "devendra",
-      "mode": "BACKFILL",
+      "mode": "STEADY-STATE",
       "metrics": {
         "tp": 0,
         "fp_unexpected": 0,
@@ -97,49 +101,24 @@
         "expected_tasks": 0,
         "actual_tasks": 0,
         "expected_skips": 1,
-        "expected_topics": 2,
+        "expected_topics": 0,
         "precision": 1.0,
         "recall": 1.0,
         "f1": 1.0,
         "specificity": 1.0,
-        "pref_coverage": 1.0
+        "pref_coverage": 1.0,
+        "expired_tasks_filtered": 0,
+        "expired_skips_filtered": 0
       },
       "judge": {
         "task_alignments": [],
         "expected_task_misses": [],
         "expected_skip_violations": [],
-        "preference_topic_hits": [
-          {
-            "topic": "Saturday ~6:15pm Swati Snacks order — Jain Panki + Handvo, recurring (~4 orders in 12 months)",
-            "actual_pref_index": 1,
-            "reasoning": "This update covers the same restaurant, timing, and dishes: Swati Snacks around 18:15 with Jain Panki and Handvo. Although it understates confidence as only one observed order, it still semantically addresses the expected cadence topic in BACKFILL."
-          },
-          {
-            "topic": "Sunday ~8:30am Iscon Gathiya order — Gathiya (500g) + Jalebi (250g), recurring (~4 orders in 12 months)",
-            "actual_pref_index": 0,
-            "reasoning": "This update matches the expected topic on venue, meal timing, and items: Sunday around 08:30 from Iscon Gathiya with Gathiya 500g and Jalebi 250g. It notes only early evidence rather than the fuller recurring count, but it still covers the intended preference topic."
-          }
-        ],
+        "preference_topic_hits": [],
         "preference_topic_misses": []
       },
       "actual_tasks": [],
-      "actual_prefs": [
-        {
-          "section": "Food",
-          "content": "Recurring order pattern: Sunday breakfast from Iscon Gathiya — Gathiya (500g) and Jalebi (250g); observed 1 order confirmation on Sunday 2026-01-11 at 08:30 IST. Early evidence only; monitor for repeat Sunday cadence.",
-          "reason": "BACKFILL gmail_search found an Iscon Gathiya order confirmation on Sunday matching the profile-stated recurring food pattern."
-        },
-        {
-          "section": "Food",
-          "content": "Possible tax-season Jain snack pattern: Swati Snacks — Jain Panki and Handvo; observed 1 order confirmation on 2026-01-10 at 18:15 IST. Not enough evidence yet for a stable recurring cadence.",
-          "reason": "BACKFILL gmail_search found a Swati Snacks confirmation aligned with the profile note about tax-season late orders, but only one occurrence is available."
-        },
-        {
-          "section": "Food",
-          "content": "Dietary preference reinforced: strict Jain ordering; avoids onion, garlic, potato, and other root vegetables; vegetarian only. Swati order explicitly used Jain items.",
-          "reason": "Profile states strict Jain rules, and BACKFILL food-order evidence is consistent with Jain-specific dishes."
-        }
-      ]
+      "actual_prefs": []
     },
     {
       "slug": "meera",
@@ -157,7 +136,9 @@
         "recall": 1.0,
         "f1": 1.0,
         "specificity": 1.0,
-        "pref_coverage": 1.0
+        "pref_coverage": 1.0,
+        "expired_tasks_filtered": 0,
+        "expired_skips_filtered": 0
       },
       "judge": {
         "task_alignments": [],

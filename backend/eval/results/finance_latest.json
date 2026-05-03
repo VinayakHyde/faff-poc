@@ -5,7 +5,7 @@
     "recall": 1.0,
     "f1": 1.0,
     "specificity": 1.0,
-    "pref_coverage": 0.875
+    "pref_coverage": 1.0
   },
   "personas": [
     {
@@ -18,7 +18,7 @@
         "fn": 0,
         "expected_tasks": 1,
         "actual_tasks": 1,
-        "expected_skips": 9,
+        "expected_skips": 8,
         "expected_topics": 0,
         "precision": 1.0,
         "recall": 1.0,
@@ -26,7 +26,7 @@
         "specificity": 1.0,
         "pref_coverage": 1.0,
         "expired_tasks_filtered": 0,
-        "expired_skips_filtered": 0
+        "expired_skips_filtered": 1
       },
       "judge": {
         "task_alignments": [
@@ -34,7 +34,7 @@
             "actual_task_index": 0,
             "matched_id": "aditi_icici_lombard_renewal",
             "kind": "expected_task",
-            "reasoning": "This is the same underlying finance action: pay the ICICI Lombard family floater insurance renewal referenced in Dad's forwarded renewal notice. It correctly treats the item as an insurance payment rather than a 'reply to Dad' task. The suggested time of 2026-05-04 is consistent with a ~3-day-out nudge for a 'due next week' notice."
+            "reasoning": "This semantically matches the expected insurance bill-due nudge: pay the ICICI Lombard family floater renewal referenced in Dad's forwarded renewal notice, with the correct finance action verb ('Pay') rather than a reply. The suggested surface time of 2026-05-05 is consistent with a roughly 3-day-out nudge for a 'due next week' notice."
           }
         ],
         "expected_task_misses": [],
@@ -45,9 +45,9 @@
       "actual_tasks": [
         {
           "title": "Pay ICICI Lombard family floater renewal — due next week",
-          "action": "Pay the ICICI Lombard family floater health insurance renewal (~₹15L cover incl. parents) before the stated due date — preferred card per profile is HDFC Diners Club Black. Pull the exact amount and policy number from the renewal notice Dad forwarded.",
-          "rationale": "Email from rajesh.sharma.banker@gmail.com (subject: 'Insurance renewal') flags the insurance renewal as due next week. Profile lists ICICI Lombard family floater health insurance under Bills & Subscriptions and notes HDFC Diners Club Black as the primary card, making this a concrete manual-pay bill action.",
-          "suggested_surface_time": "2026-05-04T09:00:00+05:30",
+          "action": "Pay the ICICI Lombard family floater health insurance renewal (~₹15L cover incl. parents) before the stated due date — preferred card per profile is HDFC Diners Club Black. Pull the exact amount + policy number from the renewal notice Dad forwarded.",
+          "rationale": "Email from rajesh.sharma.banker@gmail.com (subject: 'Insurance renewal') flags the ICICI Lombard renewal as due next week. Profile lists this policy under Bills & Subscriptions and notes that bill due nudges 3 days before work well for her.",
+          "suggested_surface_time": "2026-05-05T09:00:00+05:30",
           "sub_agent": "finance"
         }
       ],
@@ -81,17 +81,17 @@
           {
             "topic": "JioFiber bill arrives ~1st of every month at ~₹999, stable amount",
             "actual_pref_index": 1,
-            "reasoning": "The preference update explicitly says JioFiber bills arrive on the 1st each month and the amount is stable at INR 999."
+            "reasoning": "The preference update explicitly says JioFiber bills arrive on the 1st each month with a stable observed amount of ₹999."
           },
           {
             "topic": "Airtel postpaid bill arrives ~2nd of every month at ~₹1,499, stable amount",
             "actual_pref_index": 2,
-            "reasoning": "The preference update explicitly says Airtel Postpaid bills arrive on the 2nd each month and the amount is stable at INR 1,499."
+            "reasoning": "The preference update explicitly says Airtel Postpaid bills arrive on the 2nd each month with a stable observed amount of ₹1,499."
           },
           {
             "topic": "CESC electricity bill (account 8892) arrives ~5th of every month, due ~15th, amount varies seasonally (~₹3.4K–₹5.7K)",
             "actual_pref_index": 0,
-            "reasoning": "The preference update identifies CESC account 8892, says bills typically arrive on the 5th, and gives a variable historical amount range broadly matching the expected seasonal variation. It does not restate due ~15th, but the core arrival-cadence and variable-amount topic is covered."
+            "reasoning": "The preference update covers CESC account 8892 arriving consistently on the 5th each month and gives a variable historical amount range that matches the expected seasonal variation; it does not mention due ~15th, but the core inbox-backed cadence and variable amount topic are covered."
           }
         ],
         "preference_topic_misses": []
@@ -100,24 +100,24 @@
       "actual_prefs": [
         {
           "section": "Bills & Subscriptions",
-          "content": "Historical inbox shows a recurring monthly CESC electricity bill from billing@cesc.co.in for account ending 8892, typically arriving on the 5th of each month. Observed billed amounts vary materially by month (INR 3,214-5,774 across May 2025-Feb 2026), suggesting a variable utility rather than a fixed plan. No autopay signal is visible in the bill emails.",
-          "reason": "Backfill gmail_search returned 10 CESC bill emails (May 2025-Feb 2026), adding durable arrival-day and amount-range evidence beyond the profile's rough '~5th / ~15th' note."
+          "content": "CESC electricity bills are confirmed in inbox as a recurring manual bill for account ending 8892, arriving very consistently on the 5th of each month (observed May 2025 through Feb 2026). Observed bill amounts vary seasonally in roughly the ₹3,214–₹5,774 range.",
+          "reason": "Historical emails from billing@cesc.co.in with subjects like 'CESC Bill for Account 8892 - May 2025' through '... - February 2026' establish a stable monthly arrival pattern and variable amount range beyond the profile's '~5th / ~15th' note."
         },
         {
           "section": "Bills & Subscriptions",
-          "content": "Historical inbox shows a recurring monthly JioFiber bill from billing@jio.com, consistently arriving on the 1st of each month. Amount is stable at INR 999 across May 2025-Feb 2026. No autopay signal is visible in the bill emails.",
-          "reason": "Backfill gmail_search returned 10 JioFiber bill emails (May 2025-Feb 2026), confirming a stable monthly amount and observed arrival cadence beyond the profile's '~₹999 plan' note."
+          "content": "JioFiber is confirmed in inbox as a recurring monthly bill arriving on the 1st of the month, with a stable observed amount of ₹999 (observed Jun 2025 through Mar 2026).",
+          "reason": "Historical emails from billing@jio.com with subjects 'JioFiber Bill - June 2025' through '... - March 2026' show a highly stable cycle and amount, confirming the profile's ~₹999 plan with inbox-backed timing."
         },
         {
           "section": "Bills & Subscriptions",
-          "content": "Historical inbox shows a recurring monthly Airtel Postpaid bill from ebill@airtel.com, consistently arriving on the 2nd of each month. Amount is stable at INR 1,499 across May 2025-Feb 2026. No autopay signal is visible in the bill emails.",
-          "reason": "Backfill gmail_search returned 10 Airtel bill emails (May 2025-Feb 2026), confirming a stable INR 1,499 family-plan charge and observed arrival cadence beyond the profile's '~₹1,499' note."
+          "content": "Airtel Postpaid is confirmed in inbox as a recurring monthly bill arriving on the 2nd of the month, with a stable observed amount of ₹1,499 (observed May 2025 through Feb 2026).",
+          "reason": "Historical emails from ebill@airtel.com with subjects 'Your Airtel Postpaid Bill - May 2025' through '... - February 2026' show a consistent monthly arrival day and stable bill amount, adding inbox-backed cadence to the profile."
         }
       ]
     },
     {
       "slug": "devendra",
-      "mode": "BACKFILL",
+      "mode": "STEADY-STATE",
       "metrics": {
         "tp": 0,
         "fp_unexpected": 0,
@@ -126,12 +126,12 @@
         "expected_tasks": 0,
         "actual_tasks": 0,
         "expected_skips": 6,
-        "expected_topics": 2,
+        "expected_topics": 0,
         "precision": 1.0,
         "recall": 1.0,
         "f1": 1.0,
         "specificity": 1.0,
-        "pref_coverage": 0.5,
+        "pref_coverage": 1.0,
         "expired_tasks_filtered": 0,
         "expired_skips_filtered": 0
       },
@@ -139,28 +139,11 @@
         "task_alignments": [],
         "expected_task_misses": [],
         "expected_skip_violations": [],
-        "preference_topic_hits": [
-          {
-            "topic": "Airtel postpaid bill arrives ~5th of every month, paid via Airtel Thanks app",
-            "actual_pref_index": 0,
-            "reasoning": "The update clearly covers Airtel postpaid monthly cadence with bill emails arriving around the 5th. It does not mention Airtel Thanks app explicitly, but it substantively hits the arrival-timing topic and adds observed billing details from inbox history."
-          }
-        ],
-        "preference_topic_misses": [
-          {
-            "topic": "Torrent Power electricity bill arrives ~10th of every month, due ~20th, monthly cadence",
-            "reasoning": "No actual preference_update mentions Torrent Power's monthly arrival and due-date cadence."
-          }
-        ]
+        "preference_topic_hits": [],
+        "preference_topic_misses": []
       },
       "actual_tasks": [],
-      "actual_prefs": [
-        {
-          "section": "Bills & Subscriptions",
-          "content": "Airtel Postpaid bill history shows a stable monthly amount of ₹1,299, with bill emails typically arriving on the 5th of the month and due on the 20th. No autopay signal is visible from the bill emails.",
-          "reason": "Historical inbox search returned recurring bill emails from billing@airtel.com with subjects like 'Your Airtel Postpaid Bill for May 2025', consistently showing ₹1,299 and a due date of the 20th; this adds concrete cycle timing beyond the profile."
-        }
-      ]
+      "actual_prefs": []
     },
     {
       "slug": "meera",
@@ -188,7 +171,7 @@
             "actual_task_index": 0,
             "matched_id": "meera_airtel_postpaid_may4",
             "kind": "expected_task",
-            "reasoning": "This is the canonical profile-only fallback bill nudge: Airtel Postpaid ₹599 due on the 4th, no fresh bill email, within 7 days, and not autopay. The action is the correct finance verb (Pay). Surface time is slightly off the note's preferred 2-days-before timing since it is set for May 2 rather than 2 days before May 4, but timing quality does not negate the semantic match."
+            "reasoning": "This matches the expected profile-fallback bill nudge: Airtel Postpaid ₹599 due May 4, explicitly justified by no fresh bill email and the profile-stated monthly due date. The action verb is correctly 'Pay'. Surface time at 2026-05-02 aligns with the persona note that 2-day bill reminders work best, even though the golden summary mentions 3 days out as the evaluation slice framing."
           }
         ],
         "expected_task_misses": [],
@@ -198,7 +181,7 @@
       },
       "actual_tasks": [
         {
-          "title": "Pay Airtel Postpaid ₹599 — due May 4 (3 days)",
+          "title": "Pay Airtel Postpaid ₹599 — due May 4 (2 days)",
           "action": "Pay the ₹599 Airtel Postpaid bill on May 4 via the Airtel Thanks app or your usual UPI handle.",
           "rationale": "No fresh bill email in inbox; profile states Airtel Postpaid ₹599 due 4th of every month, which is within 7 days. Profile also says money / bill due reminders 2 days before work best on her.",
           "suggested_surface_time": "2026-05-02T09:00:00+05:30",

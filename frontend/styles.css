@@ -47,6 +47,11 @@ body {
   color: var(--text);
   font-size: 14px;
   line-height: 1.5;
+  /* Body never scrolls — .layout / .run-panel / .evals-view each manage
+     their own internal scroll. Otherwise sub-pixel header rounding can
+     push body just past 100vh and produce a stray outer scrollbar. */
+  overflow: hidden;
+  height: 100vh;
 }
 
 .app-header {
