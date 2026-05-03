@@ -106,6 +106,10 @@ body {
   --sidebar-min: 60px;
   --sidebar-max: 480px;
   grid-template-columns: var(--sidebar-w) 1px minmax(0, 1fr);
+  /* Force the single implicit row to exactly fill the grid container —
+     without this, auto row sizing balloons to fit run-panel's content and
+     run-panel inherits that ballooned height, producing an outer scroll. */
+  grid-template-rows: 1fr;
   height: calc(100vh - 50px);
   overflow: hidden;
 }
@@ -377,6 +381,7 @@ body:not(.has-persona) .profile-panel {
   gap: 12px;
   padding: 6px 4px;
   font-size: 12px;
+  border-radius: 6px;
 }
 .calendar-time {
   color: var(--muted);
@@ -391,7 +396,6 @@ body:not(.has-persona) .profile-panel {
 }
 .calendar-event.all-day {
   background: var(--code-bg);
-  border-radius: 4px;
 }
 
 /* ---------------- shimmer overlay for items present in any agent's golden set ---------------- */
@@ -1164,6 +1168,10 @@ body:not(.has-persona) .profile-panel {
   flex-direction: column;
   gap: 12px;
 }
+/* Restore the hidden attribute's display:none — `display: flex` above
+   would otherwise override it and leave the empty container taking
+   ~44px of vertical space before any run has started. */
+.trace-stages[hidden] { display: none; }
 .stage {
   border: 1px solid var(--border);
   border-radius: 8px;

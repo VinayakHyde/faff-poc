@@ -48,6 +48,10 @@ const COMPACT_THRESHOLD = 140; // px below which we collapse to icon-only
 let jsonEditor = null;
 
 (async function init() {
+  // Preview pages (e.g. trace-preview.html) import this module purely
+  // to get the trace renderers — they don't have the full app shell.
+  // Detect that and skip the bootstrap so the import side-effect is safe.
+  if (!document.getElementById("run-btn")) return;
   initSidebarResize();
   initJsonEditor();
   buildFilterBar();
@@ -2024,3 +2028,16 @@ function f1Class(n) {
   if (n >= 0.5)  return "f1-mid";
   return "f1-bad";
 }
+
+// Exports for preview pages (trace-preview.html). These are the exact
+// renderers main.js uses for live SSE events — preview drives them with
+// synthetic events so a full agent run isn't needed to verify UI changes.
+export {
+  AGENTS,
+  STAGE_DEFS,
+  initStages,
+  finalizeStages,
+  routeTraceEvent,
+  renderFinalStage,
+  buildFilterBar,
+};

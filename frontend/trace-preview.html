@@ -3,648 +3,381 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Trace elements — preview</title>
+    <title>Trace preview — driven by live main.js</title>
     <link rel="stylesheet" href="./styles.css" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/themes/prism-tomorrow.min.css" />
     <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-core.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-json.min.js"></script>
     <style>
-      /* Stage sections — same visual language as the existing
-         "Agent trace" / "Surfaced for the user" blocks, just chained. */
-      .stage {
-        border: 1px solid var(--border);
-        border-radius: 8px;
-        padding: 16px 20px;
-        margin-bottom: 16px;
-        background: var(--panel);
-      }
-      .stage-head {
+      /* Preview-only chrome — the trace itself uses live styles.css. */
+      .preview-controls {
         display: flex;
-        align-items: baseline;
-        gap: 10px;
-        margin: 0 0 12px;
-      }
-      .stage-head .step-no {
-        font-size: 10px;
-        font-weight: 700;
-        letter-spacing: 0.12em;
-        color: var(--muted);
-        background: var(--code-bg);
-        padding: 2px 7px;
-        border-radius: 999px;
-      }
-      .stage-head h3 {
-        font-size: 11px;
-        text-transform: uppercase;
-        letter-spacing: 0.08em;
-        color: var(--muted);
-        margin: 0;
-      }
-      .stage-head .stage-sub {
-        font-size: 11px;
-        color: var(--muted);
-        margin-left: auto;
-        font-style: italic;
-      }
-
-      /* Tool-call sub-events — visually nested under their owning agent. */
-      .trace-node.tool {
-        margin-left: 24px;
-        background: var(--bg);
-        border-style: dashed;
-      }
-      .trace-node.tool .event-type::before {
-        content: "→ ";
-        color: var(--muted);
-      }
-
-      /* Side-by-side original-vs-rephrased for the messenger stage. */
-      .reframe-grid {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
         gap: 8px;
-        margin-top: 6px;
-        font-size: 11px;
+        align-items: center;
+        padding: 10px 20px;
+        background: var(--panel);
+        border-bottom: 1px solid var(--border);
       }
-      .reframe-cell {
-        background: var(--code-bg);
-        padding: 8px 10px;
-        border-radius: 4px;
+      .preview-controls button {
+        padding: 6px 12px;
+        font-size: 12px;
+        font-weight: 600;
+        border-radius: 6px;
+        border: 1px solid var(--border);
+        background: var(--panel);
+        color: var(--text);
+        cursor: pointer;
       }
-      .reframe-cell .reframe-label {
-        font-size: 9px;
-        text-transform: uppercase;
-        letter-spacing: 0.08em;
-        color: var(--muted);
-        margin-bottom: 4px;
+      .preview-controls button.primary {
+        background: var(--accent);
+        border-color: var(--accent);
+        color: white;
       }
-      .reframe-cell.after { background: color-mix(in srgb, var(--accent) 8%, var(--code-bg)); }
-
-      /* Rubric criteria pills under a scored task. */
-      .rubric-criteria {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 4px;
-        margin-top: 4px;
-      }
-      .rubric-pill {
-        font-size: 10px;
-        font-family: ui-monospace, monospace;
-        padding: 1px 6px;
-        border-radius: 3px;
-        background: var(--code-bg);
-        color: var(--muted);
-      }
-      .rubric-pill.hit { background: color-mix(in srgb, #16a34a 18%, transparent); color: #16a34a; }
-      .rubric-pill.miss { background: color-mix(in srgb, #dc2626 14%, transparent); color: #dc2626; opacity: 0.85; }
-
-      .stage-note {
+      .preview-controls button:hover { filter: brightness(1.05); }
+      .preview-note {
         font-size: 11px;
         color: var(--muted);
         font-style: italic;
-        padding: 6px 10px;
-        background: var(--code-bg);
-        border-radius: 4px;
-        margin-bottom: 8px;
+        margin-left: auto;
       }
-      .stage-note b { color: var(--text); font-style: normal; }
+      .preview-status { font-size: 12px; color: var(--muted); }
 
-      /* Filtered (dropped) tasks — slightly faded so passed tasks pop. */
-      .trace-node.dropped { opacity: 0.62; }
-      .trace-node.dropped .event-type { color: #dc2626; }
-
-      /* Prism JSON payloads — match the dark editor-card look used by the
-         daily-input editor in index.html so prism-tomorrow's palette reads
-         correctly regardless of light/dark app theme. */
-      .trace-payload pre.payload-pre {
-        margin: 6px 0 0;
-        background: #2d2d2d !important;
-        border: 1px solid #3a3a3a;
-        border-radius: 6px;
-        padding: 8px 10px !important;
-        overflow: auto;
-      }
-      .trace-payload pre.payload-pre code.language-json {
-        background: transparent !important;
-        font-family: ui-monospace, SFMono-Regular, monospace !important;
-        font-size: 11px !important;
-        line-height: 1.5 !important;
-        padding: 0 !important;
-        text-shadow: none !important;
+      /* Mimic the run-panel scroll container so autoscroll behavior
+         matches what the live app does. */
+      .run-panel {
+        display: flex !important;
+        flex-direction: column;
+        height: calc(100vh - 100px);
+        overflow-y: auto;
+        background: var(--panel);
       }
     </style>
   </head>
   <body class="has-persona">
     <header class="app-header">
       <h1>
-        <span>Trace elements preview</span>
-        <span class="muted">— atomic events, grouped by run stage</span>
+        <span>Trace preview</span>
+        <span class="muted">— driven by the live main.js renderers</span>
       </h1>
     </header>
 
-    <main style="padding: 20px; max-width: 980px; margin: 0 auto;" id="stages"></main>
+    <section class="run-panel">
+      <!-- Filter dropdown — main.js's buildFilterBar populates #filter-toggles. -->
+      <div class="action-bar" id="action-bar">
+        <span class="preview-status" id="preview-status">ready</span>
+        <div class="filter-dropdown" id="filter-dropdown" style="margin-left: auto;">
+          <button class="filter-trigger" id="filter-trigger" type="button" aria-haspopup="true" aria-expanded="false">
+            <svg class="filter-icon" viewBox="0 0 16 16" aria-hidden="true">
+              <path fill="currentColor" d="M2 3h12l-4.5 6v4l-3 1V9z"/>
+            </svg>
+            <span class="filter-trigger-label">Filter output</span>
+            <span class="filter-count" id="filter-count">12</span>
+            <svg class="filter-chevron" viewBox="0 0 12 12" aria-hidden="true">
+              <path fill="none" stroke="currentColor" stroke-width="1.5" d="M3 4.5l3 3 3-3"/>
+            </svg>
+          </button>
+          <div class="filter-popover" id="filter-popover" hidden>
+            <div class="filter-popover-header">
+              <span class="filter-popover-title">Show agents</span>
+              <div class="filter-popover-actions">
+                <button class="filter-link" id="filter-all" type="button">All</button>
+                <button class="filter-link" id="filter-none" type="button">None</button>
+              </div>
+            </div>
+            <div class="filter-popover-body" id="filter-toggles"></div>
+          </div>
+        </div>
+      </div>
 
-    <script>
-      // ─────────────────────────────────────────────────────────────────────
-      // Mock data: one realistic run for the "shopping" persona.
-      //
-      // Stage 1 (Agent execution) is the only stage that mocks events the
-      // backend doesn't yet emit — tool_call / tool_result / llm_call —
-      // so a "(proposed)" note is shown there. Every other stage mirrors
-      // an event type that already exists in models.py:TraceEventType.
-      // ─────────────────────────────────────────────────────────────────────
+      <div class="preview-controls">
+        <button id="play-btn" class="primary" type="button">▶ Replay events</button>
+        <button id="reset-btn" type="button">Reset</button>
+        <span class="preview-note">All events flow through the same routeTraceEvent() the live SSE stream uses.</span>
+      </div>
 
-      // ── Stage 1: agent execution ──
-      const agentEvents = [
-        { t: "+0.00s", agent: "orchestrator", type: "orchestrator_started",
+      <!-- main.js writes stage cards into here. -->
+      <div id="trace-stages" class="trace-stages" hidden></div>
+    </section>
+
+    <script type="module">
+      import {
+        initStages,
+        finalizeStages,
+        routeTraceEvent,
+        renderFinalStage,
+        buildFilterBar,
+      } from "./main.js";
+
+      // Build the filter bar (live function — no duplication).
+      buildFilterBar();
+
+      // Synthetic SSE-shaped events. Each maps onto a real backend
+      // TraceEventType, so the live router buckets them into the
+      // correct stage exactly the way it would for a real run.
+      const fixture = [
+        // --- Stage 1: Agent execution ---
+        { type: "orchestrator_started", sub_agent: "orchestrator",
           payload: { persona: "amelia", date: "2026-05-03", agents: 9 } },
+        { type: "subagent_started", sub_agent: "shopping", payload: {} },
+        { type: "subagent_started", sub_agent: "travel",   payload: {} },
+        { type: "subagent_started", sub_agent: "calendar", payload: {} },
+        { type: "subagent_started", sub_agent: "finance",  payload: {} },
+        { type: "subagent_started", sub_agent: "email_triage", payload: {} },
+        { type: "subagent_started", sub_agent: "food",     payload: {} },
+        { type: "subagent_started", sub_agent: "dates",    payload: {} },
+        { type: "subagent_started", sub_agent: "events",   payload: {} },
+        { type: "subagent_started", sub_agent: "todos",    payload: {} },
 
-        { t: "+0.02s", agent: "shopping", type: "subagent_started", payload: {} },
-        { t: "+0.18s", agent: "shopping", type: "tool_call", proposed: true,
-          payload: { tool: "gmail_search", query: "from:on-running.com OR from:strava.com after:2026-04-01", max: 20 } },
-        { t: "+0.31s", agent: "shopping", type: "tool_result", proposed: true,
-          payload: { tool: "gmail_search", hits: 3, ids: ["msg_812", "msg_847", "msg_901"] } },
-        { t: "+0.44s", agent: "shopping", type: "tool_call", proposed: true,
-          payload: { tool: "web_search", query: "On Cloudmonster 2 vs Hoka Clifton 9 review 2026", region: "us-en" } },
-        { t: "+1.10s", agent: "shopping", type: "tool_result", proposed: true,
-          payload: { tool: "web_search", results: 8, top: [
-            { title: "On Cloudmonster 2 review — Believe in the Run", url: "believeintherun.com/on-cloudmonster-2" },
-            { title: "Cloudmonster 2 vs Clifton 9 — RoadTrailRun", url: "roadtrailrun.com/cloudmonster-vs-clifton" }
+        { type: "tool_call", sub_agent: "shopping",
+          payload: { tool: "gmail_search", input: { query: "from:on-running.com after:2026-04-01", max: 20 } } },
+        { type: "tool_result", sub_agent: "shopping",
+          payload: { tool: "gmail_search", result_count: 3, preview: [
+            { title: "Strava: shoe mileage update", url: null },
+            { title: "On Running: Cloudmonster 2 launch", url: null },
+            { title: "REI: receipt — On Cloudmonsters US10", url: null },
           ]}},
-        { t: "+1.62s", agent: "shopping", type: "llm_call", proposed: true,
-          payload: { model: "claude-opus-4-7", input_tokens: 8214, output_tokens: 412, cache_read: 6800, cache_write: 1414 } },
-        { t: "+1.71s", agent: "shopping", type: "subagent_returned",
+        { type: "tool_call", sub_agent: "shopping",
+          payload: { tool: "web_search", input: { query: "On Cloudmonster 2 review 2026" } } },
+        { type: "tool_result", sub_agent: "shopping",
+          payload: { tool: "web_search", result_count: 8, preview: [
+            { title: "On Cloudmonster 2 — Believe in the Run", url: "believeintherun.com/on-cloudmonster-2" },
+            { title: "Cloudmonster 2 vs Clifton 9", url: "roadtrailrun.com/cmst2-vs-clifton" },
+          ]}},
+        { type: "llm_call", sub_agent: "shopping",
+          payload: { model: "claude-opus-4-7", tokens: { input_tokens: 8214, output_tokens: 412, cache_read_input_tokens: 6800 } } },
+        { type: "subagent_returned", sub_agent: "shopping",
           payload: {
             tasks: [
               { title: "Replace On Cloudmonsters — current pair at 580mi",
-                action: "queue replacement order for On Cloudmonster 2, size US 10, same colorway",
-                surface_window: "evening", rationale: "Strava shoe-mileage hit 580mi; user typically swaps ~500mi" },
-              { title: "Restock oat milk — last Trader Joe's order 18d ago",
-                action: "add 2x Oatly Barista to next TJ's run",
-                surface_window: "weekend", rationale: "consumption cadence ~14d; running low" }
+                action: "queue replacement order for On Cloudmonster 2, US 10, same colorway",
+                rationale: "Strava shoe-mileage 580mi; user typically swaps ~500mi",
+                suggested_surface_time: "2026-05-03T18:00",
+                sub_agent: "shopping" },
             ],
             preference_updates: [
               { section: "Shopping",
                 content: "prefers On running shoes (Cloudmonster line); replaces ~every 500mi; size US 10",
-                reason: "consistent purchase history + REI receipt for sizing" }
+                reason: "consistent purchase history + REI receipt for sizing" },
             ]
-          } },
+          }},
 
-        { t: "+0.02s", agent: "travel", type: "subagent_started", payload: {} },
-        { t: "+0.21s", agent: "travel", type: "tool_call", proposed: true,
-          payload: { tool: "gmail_search", query: "subject:(itinerary OR confirmation OR reservation) after:2026-04-15" } },
-        { t: "+0.39s", agent: "travel", type: "tool_result", proposed: true,
-          payload: { tool: "gmail_search", hits: 1, ids: ["msg_770"] } },
-        { t: "+0.55s", agent: "travel", type: "tool_call", proposed: true,
-          payload: { tool: "calendar_query", range: "2026-05-03..2026-05-17" } },
-        { t: "+0.61s", agent: "travel", type: "tool_result", proposed: true,
-          payload: { tool: "calendar_query", events: 4 } },
-        { t: "+1.40s", agent: "travel", type: "llm_call", proposed: true,
-          payload: { model: "claude-opus-4-7", input_tokens: 6102, output_tokens: 287 } },
-        { t: "+1.48s", agent: "travel", type: "subagent_returned",
-          payload: {
-            tasks: [
-              { title: "Check in for SFO→JFK flight — opens 24h prior",
-                action: "remind 30min before check-in window opens; surface seat-map link",
-                surface_window: "2026-05-04T17:55", rationale: "UA1234 dep 2026-05-05 18:25; seat 14C unselected" }
-            ],
-            preference_updates: []
-          } },
+        { type: "tool_call",   sub_agent: "travel", payload: { tool: "calendar_query", input: { range: "2026-05-03..2026-05-17" } } },
+        { type: "tool_result", sub_agent: "travel", payload: { tool: "calendar_query", result_count: 4 } },
+        { type: "subagent_returned", sub_agent: "travel",
+          payload: { tasks: [
+            { title: "Check in for SFO→JFK flight — opens 24h prior",
+              action: "remind 30min before check-in window opens; surface seat-map link",
+              rationale: "UA1234 dep 2026-05-05 18:25; seat 14C unselected",
+              suggested_surface_time: "2026-05-04T17:55",
+              sub_agent: "travel" }
+          ], preference_updates: [] }},
 
-        { t: "+0.02s", agent: "calendar",     type: "subagent_started", payload: {} },
-        { t: "+1.12s", agent: "calendar", type: "subagent_returned",
-          payload: {
-            tasks: [
-              { title: "Move dentist appt — conflicts with standup",
-                action: "propose 4 alternative slots from open calendar windows in next 5 days",
-                surface_window: "morning", rationale: "9:00 dentist overlaps recurring 9:00 eng standup tomorrow" }
-            ],
-            preference_updates: []
-          } },
+        { type: "subagent_returned", sub_agent: "calendar",
+          payload: { tasks: [
+            { title: "Move dentist appt — conflicts with standup",
+              action: "propose 4 alternative slots from open windows",
+              rationale: "9:00 dentist overlaps recurring 9:00 standup tomorrow",
+              suggested_surface_time: "2026-05-03T08:30",
+              sub_agent: "calendar" }
+          ], preference_updates: [] }},
 
-        { t: "+0.02s", agent: "email_triage", type: "subagent_started", payload: {} },
-        { t: "+1.31s", agent: "email_triage", type: "subagent_returned",
-          payload: {
-            tasks: [
-              { title: "Reply to landlord — lease renewal Q",
-                action: "draft a holding reply asking for the proposed terms in writing",
-                surface_window: "today", rationale: "landlord asked for verbal commit; user prefers paper trail" },
-              { title: "Respond to mom — Mother's Day brunch?",
-                action: "draft a reply confirming brunch; suggest Tartine or Foreign Cinema",
-                surface_window: "today", rationale: "mom emailed yday; Mother's Day in 8 days" },
-              { title: "Newsletter from Stripe — q1 product roundup",
-                action: "archive; not actionable",
-                surface_window: "n/a", rationale: "promotional; user has never engaged with this sender" }
-            ],
-            preference_updates: []
-          } },
+        { type: "subagent_returned", sub_agent: "finance",
+          payload: { tasks: [
+            { title: "Amex Platinum bill $1,247 due Fri — autopay off",
+              action: "remind to pay or enable autopay; flag $312 dining as 2x usual",
+              rationale: "due 2026-05-08; $312 Atelier Crenn is 2x median",
+              suggested_surface_time: "2026-05-03T09:00",
+              sub_agent: "finance" }
+          ], preference_updates: [] }},
 
-        { t: "+0.02s", agent: "finance", type: "subagent_started", payload: {} },
-        { t: "+0.95s", agent: "finance", type: "subagent_returned",
-          payload: {
-            tasks: [
-              { title: "Amex Platinum bill $1,247 due Fri — autopay off",
-                action: "remind to pay or enable autopay; flag $312 dining charge as ~2x usual",
-                surface_window: "morning", rationale: "due 2026-05-08; $312 Atelier Crenn is 2x median dining" }
-            ],
-            preference_updates: []
-          } },
+        { type: "subagent_returned", sub_agent: "email_triage",
+          payload: { tasks: [
+            { title: "Reply to Mom's check-in", action: "draft a short reply",
+              rationale: "mom emailed yesterday", suggested_surface_time: "2026-05-03T11:00",
+              sub_agent: "email_triage" },
+            { title: "Respond to landlord — lease renewal Q",
+              action: "draft a holding reply asking for terms in writing",
+              rationale: "landlord asked for verbal commit", suggested_surface_time: "2026-05-03T11:00",
+              sub_agent: "email_triage" }
+          ], preference_updates: [] }},
 
-        { t: "+0.02s", agent: "food", type: "subagent_started", payload: {} },
-        { t: "+0.88s", agent: "food", type: "subagent_returned",
-          payload: {
-            tasks: [],
-            preference_updates: [
-              { section: "Food",
-                content: "vegetarian-leaning at home; eats meat when out; gluten-fine but avoids when paired w/ heavy meals",
-                reason: "Trader Joe's order pattern + Resy reservation history" }
-            ]
-          } },
+        { type: "subagent_returned", sub_agent: "food",
+          payload: { tasks: [], preference_updates: [
+            { section: "Food",
+              content: "vegetarian-leaning at home; eats meat when out",
+              reason: "Trader Joe's order pattern + Resy reservation history" }
+          ]}},
 
-        { t: "+0.02s", agent: "dates",  type: "subagent_started", payload: {} },
-        { t: "+0.12s", agent: "dates", type: "subagent_returned",
-          payload: { tasks: [], preference_updates: [], note: "no romantic-context signals today" } },
+        { type: "subagent_returned", sub_agent: "dates",
+          payload: { tasks: [], preference_updates: [], note: "no romantic-context signals today" }},
 
-        { t: "+0.02s", agent: "events", type: "subagent_started", payload: {} },
-        { t: "+1.09s", agent: "events", type: "subagent_returned",
-          payload: {
-            tasks: [
-              { title: "Phoebe Bridgers @ Greek — presale opens 10am Fri",
-                action: "set a reminder for 09:55 Fri; pre-fill 2 GA tickets in cart",
-                surface_window: "Fri 09:50", rationale: "user attended last 2 Bridgers shows; followed @greekberkeley" }
-            ],
-            preference_updates: []
-          } },
+        { type: "subagent_returned", sub_agent: "events",
+          payload: { tasks: [
+            { title: "Anuv Jain — Singapore — Ticketmaster SG",
+              action: "set reminder 09:55 Fri; pre-fill 2 GA tickets",
+              rationale: "user follows artist; presale opens Fri 10am",
+              suggested_surface_time: "2026-05-09T09:55",
+              sub_agent: "events" }
+          ], preference_updates: [] }},
 
-        { t: "+0.02s", agent: "todos",  type: "subagent_started", payload: {} },
-        { t: "+0.74s", agent: "todos", type: "subagent_returned",
-          payload: {
-            tasks: [
-              { title: "Renew passport — expires 2026-08",
-                action: "queue routine renewal application; surface link to USPS form DS-82",
-                surface_window: "this week", rationale: "expires in <90d; SFO→JFK is domestic so not blocking, but international trip likely in summer per inbox" }
-            ],
-            preference_updates: []
-          } },
+        { type: "subagent_returned", sub_agent: "todos",
+          payload: { tasks: [
+            { title: "Send Q2 product spec doc to leadership",
+              action: "draft and send the doc",
+              rationale: "self-committed to 'this Friday' in Slack",
+              suggested_surface_time: "2026-05-03T15:00",
+              sub_agent: "todos" },
+            { title: "Send Mira birthday photo album to Priya",
+              action: "compile and send the album",
+              rationale: "promised Priya last week",
+              suggested_surface_time: "2026-05-03T19:00",
+              sub_agent: "todos" }
+          ], preference_updates: [] }},
+
+        // --- Stage 2: Preference updates (orchestrator merges) ---
+        { type: "preference_merged", sub_agent: "orchestrator",
+          payload: { section: "Shopping",
+            content: "prefers On running shoes (Cloudmonster line); replaces ~every 500mi; size US 10",
+            reason: "consistent purchase history + REI receipt for sizing" }},
+        { type: "preference_merged", sub_agent: "orchestrator",
+          payload: { section: "Food",
+            content: "vegetarian-leaning at home; eats meat when out",
+            reason: "Trader Joe's order pattern + Resy reservation history" }},
+
+        // --- Stage 3: Rubric scoring + filter ---
+        // task_emitted = passed; task_filtered = dropped. Both carry the
+        // same 7-criteria array so the hit/miss pill row renders.
+        rubric("task_emitted",  "calendar", "Move dentist appt — conflicts with standup", 5,
+          ["time_sensitive","concrete_action","high_stakes_if_missed","non_redundant","well_justified_surface_time"]),
+        rubric("task_emitted",  "finance",  "Amex Platinum bill $1,247 due Fri — autopay off", 6,
+          ["time_sensitive","concrete_action","high_stakes_if_missed","non_redundant","matches_stated_preference","well_justified_surface_time"]),
+        rubric("task_emitted",  "shopping", "Replace On Cloudmonsters — current pair at 580mi", 4,
+          ["recurring_pattern_match","concrete_action","non_redundant","matches_stated_preference"]),
+        rubric("task_filtered", "email_triage", "Reply to Mom's check-in", 2,
+          ["concrete_action","non_redundant"], "below cutoff"),
+        rubric("task_filtered", "shopping", "Buy Theragun Mini on Amazon.in", 3,
+          ["recurring_pattern_match","matches_stated_preference","non_redundant"], "below cutoff"),
+        rubric("task_emitted",  "todos", "Send Q2 product spec doc to leadership", 5,
+          ["time_sensitive","concrete_action","high_stakes_if_missed","non_redundant","well_justified_surface_time"]),
+        rubric("task_emitted",  "todos", "Send Mira birthday photo album to Priya", 4,
+          ["time_sensitive","concrete_action","non_redundant","matches_stated_preference"]),
+        rubric("task_filtered", "events", "Anuv Jain — Singapore — Ticketmaster SG", 3,
+          ["time_sensitive","concrete_action","matches_stated_preference"], "capped (per-agent max already filled)"),
+        rubric("task_emitted",  "travel", "Check in for SFO→JFK flight — opens 24h prior", 4,
+          ["time_sensitive","concrete_action","non_redundant","well_justified_surface_time"]),
+
+        // --- Stage 4: LLM reframing ---
+        reframe("calendar", "Move dentist appt — conflicts with standup",
+          "propose 4 alternative slots from open windows",
+          "Your dentist appt tomorrow at 9am clashes with standup. I lined up 4 open slots later this week — pick one?",
+          "2026-05-03T08:30"),
+        reframe("finance", "Amex Platinum bill $1,247 due Fri — autopay off",
+          "remind to pay or enable autopay; flag $312 dining as 2x usual",
+          "Amex bill ($1,247) due Friday — autopay isn't on. One unusual charge: $312 at Atelier Crenn vs your usual ~$150.",
+          "2026-05-03T09:00"),
+        reframe("shopping", "Replace On Cloudmonsters — current pair at 580mi",
+          "queue replacement order for On Cloudmonster 2, US 10, same colorway",
+          "Your Cloudmonsters are at 580mi (you usually swap at 500). Want me to queue the Cloudmonster 2 in your usual size?",
+          "2026-05-03T18:00"),
+        reframe("travel", "Check in for SFO→JFK flight — opens 24h prior",
+          "remind 30min before check-in window opens; surface seat-map link",
+          "SFO→JFK check-in opens at 6:25pm tomorrow. I'll ping you 30min before with the seat map.",
+          "2026-05-04T17:55"),
+        reframe("todos", "Send Q2 product spec doc to leadership",
+          "draft and send the doc",
+          "Your Q2 spec doc is committed for Friday. Want me to surface the draft so you can ship it before EOD?",
+          "2026-05-03T15:00"),
+        reframe("todos", "Send Mira birthday photo album to Priya",
+          "compile and send the album",
+          "You promised Priya the Mira birthday photos last week — want me to compile and send the album?",
+          "2026-05-03T19:00"),
       ];
 
-      // ── Stage 2: rubric scoring + filter ──
-      // Each task carries the full rubric breakdown so it's clear WHY it
-      // passed or failed (instead of just "score 6/7").
-      const RUBRIC_CRITERIA = [
+      // Synthetic 'result' frame for stage 5.
+      const synthResult = {
+        final_messages: [
+          { message: "Your dentist appt tomorrow at 9am clashes with standup. I lined up 4 open slots later this week — pick one?",
+            surface_time: "2026-05-03T08:30",
+            scored_task: { total_score: 5, task: { sub_agent: "calendar" } } },
+          { message: "Amex bill ($1,247) due Friday — autopay isn't on. One unusual charge: $312 at Atelier Crenn vs your usual ~$150.",
+            surface_time: "2026-05-03T09:00",
+            scored_task: { total_score: 6, task: { sub_agent: "finance" } } },
+          { message: "Your Cloudmonsters are at 580mi (you usually swap at 500). Want me to queue the Cloudmonster 2 in your usual size?",
+            surface_time: "2026-05-03T18:00",
+            scored_task: { total_score: 4, task: { sub_agent: "shopping" } } },
+          { message: "SFO→JFK check-in opens at 6:25pm tomorrow. I'll ping you 30min before with the seat map.",
+            surface_time: "2026-05-04T17:55",
+            scored_task: { total_score: 4, task: { sub_agent: "travel" } } },
+          { message: "Your Q2 spec doc is committed for Friday. Want me to surface the draft so you can ship it before EOD?",
+            surface_time: "2026-05-03T15:00",
+            scored_task: { total_score: 5, task: { sub_agent: "todos" } } },
+        ],
+      };
+
+      // Helpers — keep the fixture above readable.
+      const ALL_CRITERIA = [
         "time_sensitive", "recurring_pattern_match", "concrete_action",
         "high_stakes_if_missed", "non_redundant", "matches_stated_preference",
         "well_justified_surface_time"
       ];
-
-      const rubricTasks = [
-        { agent: "calendar", title: "Move dentist appt — conflicts with standup",
-          hits: ["time_sensitive", "concrete_action", "high_stakes_if_missed", "non_redundant", "well_justified_surface_time"],
-          score: 5, kept: true },
-        { agent: "finance", title: "Amex Platinum bill $1,247 due Fri — autopay off",
-          hits: ["time_sensitive", "concrete_action", "high_stakes_if_missed", "non_redundant", "matches_stated_preference", "well_justified_surface_time"],
-          score: 6, kept: true },
-        { agent: "shopping", title: "Replace On Cloudmonsters — current pair at 580mi",
-          hits: ["recurring_pattern_match", "concrete_action", "non_redundant", "matches_stated_preference"],
-          score: 4, kept: true },
-        { agent: "shopping", title: "Restock oat milk — last Trader Joe's order 18d ago",
-          hits: ["recurring_pattern_match", "non_redundant"],
-          score: 2, kept: false, reason: "below cutoff" },
-        { agent: "travel", title: "Check in for SFO→JFK flight — opens 24h prior",
-          hits: ["time_sensitive", "concrete_action", "non_redundant", "well_justified_surface_time"],
-          score: 4, kept: true },
-        { agent: "email_triage", title: "Reply to landlord — lease renewal Q",
-          hits: ["concrete_action", "high_stakes_if_missed", "non_redundant"],
-          score: 3, kept: false, reason: "below cutoff" },
-        { agent: "email_triage", title: "Respond to mom — Mother's Day brunch?",
-          hits: ["time_sensitive", "concrete_action", "non_redundant", "matches_stated_preference"],
-          score: 4, kept: true },
-        { agent: "email_triage", title: "Newsletter from Stripe — q1 product roundup",
-          hits: [],
-          score: 0, kept: false, reason: "below cutoff" },
-        { agent: "events", title: "Phoebe Bridgers @ Greek — presale opens 10am Fri",
-          hits: ["time_sensitive", "concrete_action", "non_redundant", "matches_stated_preference", "well_justified_surface_time"],
-          score: 5, kept: false, reason: "capped (per-agent max 2 already filled)" },
-        { agent: "todos", title: "Renew passport — expires 2026-08",
-          hits: ["concrete_action", "high_stakes_if_missed", "non_redundant"],
-          score: 3, kept: false, reason: "below cutoff" },
-      ];
-
-      // ── Stage 3: messenger reframing ──
-      // Show original task title + action AND the user-facing rephrase,
-      // side by side, so we can eyeball whether the LLM kept the meaning.
-      const reframes = [
-        { agent: "calendar",
-          original: { title: "Move dentist appt — conflicts with standup",
-                      action: "propose 4 alternative slots from open calendar windows in next 5 days" },
-          message: "Your dentist appt tomorrow at 9am clashes with standup. I lined up 4 open slots later this week — pick one?",
-          surface_time: "2026-05-03T08:30" },
-        { agent: "finance",
-          original: { title: "Amex Platinum bill $1,247 due Fri — autopay off",
-                      action: "remind to pay or enable autopay; flag $312 dining charge as ~2x usual" },
-          message: "Amex bill ($1,247) due Friday — autopay isn't on. One unusual charge: $312 at Atelier Crenn vs your usual ~$150.",
-          surface_time: "2026-05-03T09:00" },
-        { agent: "shopping",
-          original: { title: "Replace On Cloudmonsters — current pair at 580mi",
-                      action: "queue replacement order for On Cloudmonster 2, size 10, same colorway" },
-          message: "Your Cloudmonsters are at 580mi (you usually swap at 500). Want me to queue the Cloudmonster 2 in your usual size?",
-          surface_time: "2026-05-03T18:00" },
-        { agent: "travel",
-          original: { title: "Check in for SFO→JFK flight — opens 24h prior",
-                      action: "remind 30min before check-in window opens; surface seat-map link" },
-          message: "SFO→JFK check-in opens at 6:25pm tomorrow. I'll ping you 30min before with the seat map.",
-          surface_time: "2026-05-04T17:55" },
-        { agent: "email_triage",
-          original: { title: "Respond to mom — Mother's Day brunch?",
-                      action: "draft a reply confirming brunch; suggest Tartine or Foreign Cinema" },
-          message: "Your mom asked about Mother's Day brunch. Drafted a reply suggesting Tartine or Foreign Cinema — review & send?",
-          surface_time: "2026-05-03T11:00" },
-      ];
-
-      // ── Stage 4: preference updates ──
-      const prefUpdates = [
-        { section: "Shopping",
-          content: "prefers On running shoes (Cloudmonster line); replaces ~every 500mi; size US 10",
-          reason: "consistent purchase history + REI receipt for sizing" },
-        { section: "Food",
-          content: "vegetarian-leaning at home; eats meat when out; gluten-fine but avoids when paired w/ heavy meals",
-          reason: "Trader Joe's order pattern + Resy reservation history" },
-      ];
-
-      // ── Stage 5: final surfaced messages ──
-      // (Drawn from the same `reframes` list — only the kept ones with
-      //  earliest surface_time.)
-      const surfaced = reframes;
-
-      // ─────────────────────────────────────────────────────────────────────
-      // Renderers
-      // ─────────────────────────────────────────────────────────────────────
-
-      function prettyPayload(payload) {
-        if (!payload || Object.keys(payload).length === 0) return "";
-        return JSON.stringify(payload, null, 2);
+      function rubric(type, agent, title, score, hits, reason) {
+        return {
+          type, sub_agent: type === "task_emitted" ? agent : "orchestrator",
+          payload: {
+            title, action: `(action for "${title}")`, score, agent,
+            ...(reason ? { reason } : {}),
+            criteria: ALL_CRITERIA.map((name) => ({
+              name, matches: hits.includes(name),
+              reasoning: hits.includes(name) ? "matched" : "no signal",
+            })),
+          },
+        };
+      }
+      function reframe(agent, title, action, message, surface_time) {
+        return {
+          type: "message_drafted", sub_agent: "messenger",
+          payload: { title, action, agent, message, surface_time },
+        };
       }
 
-      function buildTraceNode({ t, agent, type, payload, extraClass = "", proposed = false }) {
-        const node = document.createElement("div");
-        node.className = "trace-node " + extraClass;
-        node.dataset.agent = agent;
+      // Replay loop — feeds each event through the live router with a
+      // small delay so the streaming + autoscroll behavior is testable.
+      const status = document.getElementById("preview-status");
+      const playBtn = document.getElementById("play-btn");
+      const resetBtn = document.getElementById("reset-btn");
+      let replaying = false;
 
-        const time = document.createElement("div");
-        time.className = "trace-time";
-        time.textContent = t;
-
-        const body = document.createElement("div");
-        body.className = "trace-body";
-
-        const header = document.createElement("div");
-        header.className = "trace-header-line";
-        const tag = document.createElement("span");
-        tag.className = `agent-tag ${agent}`;
-        tag.textContent = agent;
-        const typeEl = document.createElement("span");
-        typeEl.className = "event-type";
-        typeEl.textContent = type;
-        header.appendChild(tag);
-        header.appendChild(typeEl);
-        if (proposed) {
-          const tag2 = document.createElement("span");
-          tag2.className = "event-type";
-          tag2.style.color = "#ca8a04";
-          tag2.textContent = "(proposed)";
-          header.appendChild(tag2);
+      async function replay() {
+        if (replaying) return;
+        replaying = true;
+        playBtn.disabled = true;
+        initStages();
+        const t0 = performance.now();
+        for (let i = 0; i < fixture.length; i++) {
+          routeTraceEvent(fixture[i], t0);
+          status.textContent = `streaming ${i + 1}/${fixture.length}`;
+          await sleep(80);
         }
-
-        const payloadDiv = document.createElement("div");
-        payloadDiv.className = "trace-payload";
-        const json = prettyPayload(payload);
-        if (json) {
-          const pre = document.createElement("pre");
-          pre.className = "payload-pre";
-          const code = document.createElement("code");
-          code.className = "language-json";
-          code.textContent = json;
-          pre.appendChild(code);
-          payloadDiv.appendChild(pre);
-          if (window.Prism) Prism.highlightElement(code);
-        }
-
-        body.appendChild(header);
-        if (payloadDiv.firstChild) body.appendChild(payloadDiv);
-        node.appendChild(time);
-        node.appendChild(body);
-        return node;
+        renderFinalStage(synthResult);
+        finalizeStages();
+        status.textContent = `done — ${fixture.length} events`;
+        replaying = false;
+        playBtn.disabled = false;
       }
 
-      function buildStage({ stepNo, title, subtitle, note }) {
-        const stage = document.createElement("section");
-        stage.className = "stage";
-        const head = document.createElement("div");
-        head.className = "stage-head";
-        head.innerHTML = `
-          <span class="step-no">Step ${stepNo}</span>
-          <h3>${title}</h3>
-          ${subtitle ? `<span class="stage-sub">${subtitle}</span>` : ""}
-        `;
-        stage.appendChild(head);
-        if (note) {
-          const n = document.createElement("div");
-          n.className = "stage-note";
-          n.innerHTML = note;
-          stage.appendChild(n);
-        }
-        return stage;
+      function reset() {
+        initStages();
+        finalizeStages();
+        status.textContent = "ready";
       }
 
-      const stagesHost = document.getElementById("stages");
+      function sleep(ms) { return new Promise((r) => setTimeout(r, ms)); }
 
-      // ── STEP 1: Agent execution ──
-      {
-        const stage = buildStage({
-          stepNo: 1,
-          title: "Agent execution",
-          subtitle: "9 sub-agents fan out in parallel",
-          note: `Tool-call events (<b>tool_call</b>, <b>tool_result</b>, <b>llm_call</b>) are <b>proposed</b> — the backend currently only emits <code>subagent_started</code> / <code>subagent_returned</code> at the agent boundary. Adding the inner events would surface what each agent actually did.`,
-        });
-        // Sort chronologically — agents fan out in parallel, so a real run
-        // interleaves their events by timestamp rather than grouping by agent.
-        // (Source array stays grouped per-agent for readability; sort is
-        // stable so events at the same +Xs tick keep declaration order.)
-        const parseT = (s) => parseFloat(String(s).replace(/[^0-9.]/g, "")) || 0;
-        const ordered = [...agentEvents].sort((a, b) => parseT(a.t) - parseT(b.t));
-        for (const ev of ordered) {
-          const isTool = ev.type === "tool_call" || ev.type === "tool_result" || ev.type === "llm_call";
-          stage.appendChild(buildTraceNode({ ...ev, extraClass: isTool ? "tool" : "" }));
-        }
-        stagesHost.appendChild(stage);
-      }
+      playBtn.addEventListener("click", replay);
+      resetBtn.addEventListener("click", reset);
 
-      // ── STEP 2: Rubric scoring + filter ──
-      {
-        const stage = buildStage({
-          stepNo: 2,
-          title: "Rubric scoring & filter",
-          subtitle: "score 0–7, cutoff ≥4, per-agent cap of 2",
-        });
-        for (const t of rubricTasks) {
-          const node = document.createElement("div");
-          node.className = "trace-node" + (t.kept ? "" : " dropped");
-          node.dataset.agent = "rubric";
-
-          const time = document.createElement("div");
-          time.className = "trace-time";
-          time.textContent = t.kept ? "kept" : "drop";
-
-          const body = document.createElement("div");
-          body.className = "trace-body";
-
-          const header = document.createElement("div");
-          header.className = "trace-header-line";
-          const tag = document.createElement("span");
-          tag.className = `agent-tag rubric`;
-          tag.textContent = "rubric";
-          const originAgentTag = document.createElement("span");
-          originAgentTag.className = `agent-tag ${t.agent}`;
-          originAgentTag.style.opacity = "0.7";
-          originAgentTag.textContent = t.agent;
-          const typeEl = document.createElement("span");
-          typeEl.className = "event-type";
-          typeEl.textContent = t.kept ? `task_emitted · ${t.score}/7` : `task_filtered · ${t.score}/7 — ${t.reason}`;
-          header.appendChild(tag);
-          header.appendChild(originAgentTag);
-          header.appendChild(typeEl);
-
-          const titleLine = document.createElement("div");
-          titleLine.className = "trace-payload";
-          titleLine.style.whiteSpace = "normal";
-          titleLine.textContent = t.title;
-
-          const pills = document.createElement("div");
-          pills.className = "rubric-criteria";
-          for (const c of RUBRIC_CRITERIA) {
-            const p = document.createElement("span");
-            const hit = t.hits.includes(c);
-            p.className = "rubric-pill " + (hit ? "hit" : "miss");
-            p.textContent = (hit ? "✓ " : "✗ ") + c;
-            pills.appendChild(p);
-          }
-
-          body.appendChild(header);
-          body.appendChild(titleLine);
-          body.appendChild(pills);
-          node.appendChild(time);
-          node.appendChild(body);
-          stage.appendChild(node);
-        }
-        stagesHost.appendChild(stage);
-      }
-
-      // ── STEP 3: LLM reframing (messenger) ──
-      {
-        const stage = buildStage({
-          stepNo: 3,
-          title: "LLM reframing",
-          subtitle: "messenger turns each kept task into user-facing copy",
-        });
-        for (const r of reframes) {
-          const node = document.createElement("div");
-          node.className = "trace-node";
-          node.dataset.agent = "messenger";
-
-          const time = document.createElement("div");
-          time.className = "trace-time";
-          time.textContent = r.surface_time.slice(11, 16);
-
-          const body = document.createElement("div");
-          body.className = "trace-body";
-
-          const header = document.createElement("div");
-          header.className = "trace-header-line";
-          const tag = document.createElement("span");
-          tag.className = "agent-tag messenger";
-          tag.textContent = "messenger";
-          const originTag = document.createElement("span");
-          originTag.className = `agent-tag ${r.agent}`;
-          originTag.style.opacity = "0.7";
-          originTag.textContent = r.agent;
-          const typeEl = document.createElement("span");
-          typeEl.className = "event-type";
-          typeEl.textContent = `message_drafted · surface @ ${r.surface_time}`;
-          header.appendChild(tag);
-          header.appendChild(originTag);
-          header.appendChild(typeEl);
-
-          const grid = document.createElement("div");
-          grid.className = "reframe-grid";
-          grid.innerHTML = `
-            <div class="reframe-cell">
-              <div class="reframe-label">original task</div>
-              <div><b>${r.original.title}</b></div>
-              <div style="color: var(--muted); margin-top: 4px;">${r.original.action}</div>
-            </div>
-            <div class="reframe-cell after">
-              <div class="reframe-label">user-facing message</div>
-              <div>${r.message}</div>
-            </div>
-          `;
-
-          body.appendChild(header);
-          body.appendChild(grid);
-          node.appendChild(time);
-          node.appendChild(body);
-          stage.appendChild(node);
-        }
-        stagesHost.appendChild(stage);
-      }
-
-      // ── STEP 4: Preference updates ──
-      {
-        const stage = buildStage({
-          stepNo: 4,
-          title: "Preference updates",
-          subtitle: "merged into persona profile for future runs",
-        });
-        for (const p of prefUpdates) {
-          stage.appendChild(buildTraceNode({
-            t: "merge",
-            agent: "orchestrator",
-            type: "preference_merged",
-            payload: { section: p.section, content: p.content, reason: p.reason },
-          }));
-        }
-        stagesHost.appendChild(stage);
-      }
-
-      // ── STEP 5: Surfaced for the user ──
-      {
-        const stage = buildStage({
-          stepNo: 5,
-          title: "Surfaced for the user",
-          subtitle: `${surfaced.length} of ${rubricTasks.length} candidates cleared the cutoff`,
-        });
-        const inner = document.createElement("div");
-        inner.className = "final-tasks";
-        inner.style.padding = "0";
-        inner.style.background = "transparent";
-        inner.style.borderBottom = "none";
-        const list = document.createElement("div");
-        for (const m of surfaced) {
-          const card = document.createElement("div");
-          card.className = "final-task-card";
-          card.style.borderLeftColor = `var(--c-${m.agent})`;
-          card.innerHTML = `
-            <p class="final-task-message">${m.message}</p>
-            <div class="final-task-meta">
-              <span class="agent-tag ${m.agent}">${m.agent}</span>
-              <span>surface @ <code>${m.surface_time}</code></span>
-            </div>
-          `;
-          list.appendChild(card);
-        }
-        inner.appendChild(list);
-        stage.appendChild(inner);
-        stagesHost.appendChild(stage);
-      }
+      // Auto-play on first load so user lands on something.
+      replay();
     </script>
   </body>
 </html>
