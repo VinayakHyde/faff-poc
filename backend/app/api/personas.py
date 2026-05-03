@@ -106,6 +106,75 @@ async def get_avatar(slug: str):
     return FileResponse(p, media_type="image/png")
 
 
+@router.get("/{slug}/golden")
+async def get_golden(slug: str) -> dict:
+    """Aggregate golden expectations across all agents for this persona.
+
+    Walks every `eval/golden/<agent>.json`, finds the section for `slug`,
+    and flattens expected_tasks + expected_skips + expected_preference_topics
+    into a single list (each item carries its source `agent` and `kind`).
+    The frontend Golden tab consumes this directly.
+    """
+    import json
+
+    eval_dir = Path(__file__).resolve().parent.parent.parent / "eval" / "golden"
+    items: list[dict] = []
+    if not eval_dir.is_dir():
+        return {"slug": slug, "items": [], "agents": []}
+
+    agents_seen: set[str] = set()
+    for path in sorted(eval_dir.glob("*.json")):
+        agent_name = path.stem
+        try:
+            golden = json.loads(path.read_text())
+        except Exception:
+            continue
+        for p in golden.get("personas", []):
+            if p.get("slug") != slug:
+                continue
+            agents_seen.add(agent_name)
+            for t in p.get("expected_tasks", []):
+                items.append({
+                    "agent": agent_name,
+                    "kind": "expected_task",
+                    "id": t.get("id"),
+                    "summary": t.get("summary", ""),
+                    "evidence_email_ids": t.get("evidence_email_ids") or [],
+                    "profile_md_lines": t.get("profile_md_lines") or [],
+                    "mailbox_json_lines": t.get("mailbox_json_lines") or [],
+                    "calendar_json_lines": t.get("calendar_json_lines") or [],
+                    "category": t.get("category"),
+                    "valid_until": t.get("valid_until"),
+                    "notes": t.get("notes"),
+                })
+            for s in p.get("expected_skips", []):
+                items.append({
+                    "agent": agent_name,
+                    "kind": "expected_skip",
+                    "id": s.get("id"),
+                    "summary": s.get("summary", ""),
+                    "evidence_email_ids": s.get("evidence_email_ids") or [],
+                    "profile_md_lines": s.get("profile_md_lines") or [],
+                    "mailbox_json_lines": s.get("mailbox_json_lines") or [],
+                    "calendar_json_lines": s.get("calendar_json_lines") or [],
+                    "category": s.get("category"),
+                    "valid_until": s.get("valid_until"),
+                    "notes": s.get("notes"),
+                })
+            for topic in p.get("expected_preference_topics", []):
+                items.append({
+                    "agent": agent_name,
+                    "kind": "expected_pref_topic",
+                    "id": None,
+                    "summary": topic if isinstance(topic, str) else str(topic),
+                    "evidence_email_ids": [],
+                    "category": None,
+                    "valid_until": None,
+                    "notes": None,
+                })
+    return {"slug": slug, "items": items, "agents": sorted(agents_seen)}
+
+
 @router.get("/{slug}/mailbox")
 async def get_mailbox(slug: str) -> dict:
     """Return the persona's full historical mailbox (for the Email tab)."""

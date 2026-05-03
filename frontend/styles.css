@@ -394,18 +394,82 @@ body:not(.has-persona) .profile-panel {
   animation: golden-shim-sheen 8s linear infinite;
   mix-blend-mode: screen;
 }
-/* Profile-section variant: needs explicit padding + radius since it wraps
-   raw markdown nodes (h2 + p + ul + …) rather than an existing card. */
-.profile-shim-section {
-  border: 1px solid rgba(255,196,77,0.55);
-  border-radius: 10px;
-  padding: 4px 16px 14px;
-  margin: 32px 0 18px !important;
-  background: rgba(255,196,77,0.035);
+/* Line-by-line profile view: each source line is one .profile-line div with
+   data-line=N. Inline markdown still renders nicely; multi-line constructs
+   (lists, headings) become per-line nodes so each bullet has its own line
+   number for shim targeting. */
+.profile-line-view { font-size: 13px; line-height: 1.6; position: relative; }
+.profile-line { padding: 2px 4px; }
+.profile-line.empty { height: 6px; padding: 0; }
+/* Lines covered by a shim frame get extra breathing room — margin-top so
+   the tag (which sits above the frame) clears the previous line, and a bit
+   of padding so the frame border doesn't hug the text. Table rows stay flush. */
+.profile-line.has-frame {
+  padding-top: 16px;
+  padding-bottom: 6px;
+  margin-top: 16px;
+  margin-bottom: 4px;
 }
-.profile-shim-section > h2 {
-  margin-top: 8px !important;
-  border-bottom: 1px solid rgba(255,196,77,0.25) !important;
+.profile-line.h1 h1 { font-size: 18px; margin: 14px 0 8px; }
+.profile-line.h2 h2 {
+  font-size: 15px;
+  margin: 18px 0 8px;
+  padding-bottom: 4px;
+  border-bottom: 1px solid var(--border);
+  color: var(--accent);
+}
+.profile-line.h3 h3 { font-size: 13px; margin: 14px 0 6px; color: var(--muted); }
+.profile-line.bullet,
+.profile-line.ordered {
+  display: grid;
+  grid-template-columns: 22px 1fr;
+  gap: 4px;
+  padding-left: 6px;
+}
+.profile-line.bullet .bullet-marker,
+.profile-line.ordered .bullet-marker { color: var(--muted); text-align: right; }
+.profile-line.table-row {
+  padding: 0 4px;
+  margin: 0;
+}
+.profile-line.table-row code {
+  display: block;
+  font-size: 11px;
+  background: var(--code-bg);
+  padding: 5px 8px;
+  white-space: pre;
+  overflow-x: auto;
+}
+
+/* Absolute-positioned frame that overlays a contiguous run of lines.
+   Flat treatment, no constant animation — frames freely overlap. Hovering a
+   tag brightens its frame so the user can see which rectangle it belongs to. */
+.shim-frame {
+  position: absolute;
+  border: 1.5px solid rgba(255,196,77,0.55);
+  border-radius: 8px;
+  background: rgba(255,196,77,0.04);
+  pointer-events: none;
+  z-index: 1;
+  transition: border-color 120ms ease, box-shadow 120ms ease, background 120ms ease;
+}
+.shim-frame-tags {
+  position: absolute;
+  top: -11px;
+  left: 8px;
+  right: 8px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  pointer-events: auto;
+  z-index: 2;
+}
+
+.shim-frame.is-tracing {
+  border-color: rgba(255,232,170,0.95);
+  background: rgba(255,232,170,0.10);
+  box-shadow: 0 0 0 1px rgba(255,232,170,0.85), 0 0 22px rgba(255,196,77,0.45);
+  z-index: 200;
 }
 
 .golden-shim-tag {
@@ -427,6 +491,89 @@ body:not(.has-persona) .profile-panel {
   overflow: hidden;
   text-overflow: ellipsis;
   z-index: 2;
+}
+/* Inside shim-frame-tags (profile shims), tags are flex children — clear
+   the absolute positioning used on card shims. */
+.shim-frame-tags .golden-shim-tag {
+  position: relative;
+  top: auto;
+  right: auto;
+  max-width: none;
+  cursor: default;
+  overflow: visible;
+}
+
+/* Custom tooltip for profile shim tags — replaces the slow native title
+   attribute. Appears immediately on hover, styled to match the panel.
+   Anchored flush to the tag (top: 100%) with pointer-events: auto so the
+   cursor can move from tag → tooltip without leaving the hover region. */
+.shim-frame-tip {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  min-width: 240px;
+  max-width: 380px;
+  margin-top: 0;
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-top: 6px solid transparent;
+  border-radius: 8px;
+  padding: 9px 12px 10px;
+  font-size: 12px;
+  font-weight: 400;
+  letter-spacing: normal;
+  text-transform: none;
+  color: var(--text);
+  background-clip: padding-box;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.45), 0 0 0 1px rgba(255,196,77,0.18);
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(-2px);
+  transition: opacity 70ms ease, transform 70ms ease;
+  z-index: 100;
+  white-space: normal;
+}
+.golden-shim-tag:hover .shim-frame-tip {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateY(0);
+}
+.shim-frame-tip.flip-up {
+  top: auto;
+  bottom: 100%;
+  border-top: 1px solid var(--border);
+  border-bottom: 6px solid transparent;
+  transform: translateY(2px);
+}
+.golden-shim-tag:hover .shim-frame-tip.flip-up {
+  transform: translateY(0);
+}
+.shim-frame-tip-single {
+  line-height: 1.5;
+  color: var(--text);
+}
+.shim-frame-tip-list {
+  margin: 0;
+  padding-left: 16px;
+  line-height: 1.5;
+}
+.shim-frame-tip-list li {
+  margin: 3px 0;
+  color: var(--text);
+}
+
+/* Ancestor pill — agent tag for a containing (bigger) frame whose own
+   tag-row is hidden behind smaller frames. Outlined instead of filled so
+   the user can tell at a glance which pills point to "this frame" vs. a
+   covering frame. Hover behaviour is identical: trace + tooltip. */
+.shim-frame-tags .golden-shim-tag.is-ancestor {
+  background: transparent;
+  color: rgba(255, 210, 120, 0.95);
+  border: 1px solid rgba(255, 196, 77, 0.65);
+  box-shadow: none;
+}
+.shim-frame-tags .golden-shim-tag.is-ancestor:hover {
+  background: rgba(255, 196, 77, 0.10);
 }
 
 /* ---------------- golden tab ---------------- */
@@ -964,4 +1111,132 @@ body:not(.has-persona) .profile-panel {
 }
 @media (prefers-color-scheme: dark) {
   .trace-node.error { background: #450a0a; }
+}
+
+/* ---------------- staged trace stream ---------------- */
+/* The trace stream is bucketed into 5 chronological stages: agent
+   execution, rubric scoring + filter, LLM reframing, preference updates,
+   surfaced messages. Each stage card mirrors the existing "Agent trace"
+   look but is independently populated from the SSE event types it owns. */
+
+.trace-stages {
+  padding: 16px 20px;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.stage {
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 14px 16px;
+  background: var(--panel);
+}
+.stage-head {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  margin: 0 0 10px;
+}
+.stage-head .step-no {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  color: var(--muted);
+  background: var(--code-bg);
+  padding: 2px 7px;
+  border-radius: 999px;
+}
+.stage-head h3 {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--muted);
+  margin: 0;
+}
+.stage-head .stage-sub {
+  font-size: 11px;
+  color: var(--muted);
+  margin-left: auto;
+  font-style: italic;
+}
+.stage-empty {
+  color: var(--muted);
+  font-style: italic;
+  font-size: 11px;
+  padding: 4px 2px;
+}
+
+/* Tool-call sub-events — visually nested under their owning agent. */
+.trace-node.tool {
+  margin-left: 24px;
+  background: var(--bg);
+  border-style: dashed;
+}
+.trace-node.tool .event-type::before {
+  content: "→ ";
+  color: var(--muted);
+}
+
+/* Side-by-side original-vs-rephrased for the messenger stage. */
+.reframe-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin-top: 6px;
+  font-size: 11px;
+}
+.reframe-cell {
+  background: var(--code-bg);
+  padding: 8px 10px;
+  border-radius: 4px;
+}
+.reframe-cell .reframe-label {
+  font-size: 9px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--muted);
+  margin-bottom: 4px;
+}
+.reframe-cell.after { background: color-mix(in srgb, var(--accent) 8%, var(--code-bg)); }
+
+/* Rubric criteria pills. */
+.rubric-criteria {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-top: 4px;
+}
+.rubric-pill {
+  font-size: 10px;
+  font-family: ui-monospace, monospace;
+  padding: 1px 6px;
+  border-radius: 3px;
+  background: var(--code-bg);
+  color: var(--muted);
+}
+.rubric-pill.hit  { background: color-mix(in srgb, #16a34a 18%, transparent); color: #16a34a; }
+.rubric-pill.miss { background: color-mix(in srgb, #dc2626 14%, transparent); color: #dc2626; opacity: 0.85; }
+
+/* Filtered (dropped) tasks — slightly faded so passed tasks pop. */
+.trace-node.dropped { opacity: 0.62; }
+.trace-node.dropped .event-type { color: #dc2626; }
+
+/* Prism JSON payload — match the dark editor-card so prism-tomorrow
+   reads correctly regardless of the app's light/dark theme. */
+.trace-payload pre.payload-pre {
+  margin: 6px 0 0;
+  background: #2d2d2d !important;
+  border: 1px solid #3a3a3a;
+  border-radius: 6px;
+  padding: 8px 10px !important;
+  overflow: auto;
+}
+.trace-payload pre.payload-pre code.language-json {
+  background: transparent !important;
+  font-family: ui-monospace, SFMono-Regular, monospace !important;
+  font-size: 11px !important;
+  line-height: 1.5 !important;
+  padding: 0 !important;
+  text-shadow: none !important;
 }

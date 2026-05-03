@@ -241,12 +241,10 @@ async function loadProfile(slug) {
     $("#profile-meta").textContent =
       `${profile.meta.neighbourhood}, ${profile.meta.city}  ·  onboarded ${profile.meta.onboarded_at}`;
 
-    $("#tab-profile").innerHTML = marked.parse(profile.markdown);
-    // Wrap markdown sections that golden items explicitly anchor to (via
-    // their profile_md_lines field). Each agent's distinct expectation
-    // becomes a concentric wrapper with a cycling border style; identical
-    // (lines, summary) merge with multi-agent tag.
-    applyShimToProfileSections(profile.markdown, golden.allItems);
+    renderProfileLineByLine(profile.markdown);
+    // Overlay per-item absolute-positioned frames over the exact source
+    // lines each golden item anchors to (via profile_md_lines).
+    applyLineFrames(golden.allItems);
   } catch (err) {
     $("#profile-empty").hidden = false;
     $("#profile-content-wrapper").hidden = true;
@@ -259,32 +257,291 @@ async function loadProfile(slug) {
 // run the heuristic match. If any agent's expected_task summary shares a
 // 4+ char token with the section text, wrap the section in a `golden-shim`
 // div with the agent labels as a tag.
-function applyShimToProfileSections(goldenItems) {
+// Per-line frame approach for the profile shim.
+//
+//   1. Render profile.md line-by-line, each line as its own DOM node with
+//      `data-line="N"`. Inline markdown (bold, italic, links) is preserved
+//      via marked.parseInline; multi-line constructs (lists, headings) are
+//      handled per-line so each list bullet / heading line is its own node.
+//
+//   2. For each golden item with profile_md_lines, compute a bounding
+//      rectangle from the min/max line's offsetTop/offsetHeight and overlay
+//      an absolute-positioned frame on the profile container. Frames don't
+//      nest in the DOM, so multiple items with overlapping line ranges
+//      render as separate, visually-overlapping rectangles — exactly the
+//      "different line styles for overlap" the spec asks for.
+//
+//   3. Buckets merge only when (sorted line set, summary) are EXACTLY
+//      identical — those collapse into a single frame whose tag lists all
+//      contributing agents. Otherwise each bucket gets its own frame.
+//
+//   4. Border style cycles solid → dashed → dotted → double per stacking
+//      order. Frame tags stagger horizontally so multiple stacks per region
+//      are all readable.
+
+function renderProfileLineByLine(rawMarkdown) {
   const root = $("#tab-profile");
-  if (!root || !goldenItems.length) return;
-  const h2s = [...root.querySelectorAll("h2")];
-  for (let i = 0; i < h2s.length; i++) {
-    const h2 = h2s[i];
-    const next = h2s[i + 1] || null;
-    const sectionNodes = [h2];
-    let cur = h2.nextSibling;
-    while (cur && cur !== next) {
-      sectionNodes.push(cur);
-      cur = cur.nextSibling;
+  if (!root) return;
+  root.classList.add("profile-line-view");
+  root.innerHTML = "";
+
+  const lines = rawMarkdown.split("\n");
+  for (let i = 0; i < lines.length; i++) {
+    const raw = lines[i];
+    const div = document.createElement("div");
+    div.className = "profile-line";
+    div.dataset.line = String(i + 1);
+
+    if (raw.trim() === "") {
+      div.classList.add("empty");
+      div.innerHTML = "&nbsp;";
+    } else if (/^#\s+/.test(raw)) {
+      div.classList.add("h1");
+      div.innerHTML = `<h1>${marked.parseInline(raw.replace(/^#\s+/, ""))}</h1>`;
+    } else if (/^##\s+/.test(raw)) {
+      div.classList.add("h2");
+      div.innerHTML = `<h2>${marked.parseInline(raw.replace(/^##\s+/, ""))}</h2>`;
+    } else if (/^###\s+/.test(raw)) {
+      div.classList.add("h3");
+      div.innerHTML = `<h3>${marked.parseInline(raw.replace(/^###\s+/, ""))}</h3>`;
+    } else if (/^\s*[-*]\s+/.test(raw)) {
+      const text = raw.replace(/^\s*[-*]\s+/, "");
+      div.classList.add("bullet");
+      div.innerHTML = `<span class="bullet-marker">•</span><span class="bullet-text">${marked.parseInline(text)}</span>`;
+    } else if (/^\s*\d+\.\s+/.test(raw)) {
+      const m = raw.match(/^(\s*)(\d+)\.\s+(.*)$/);
+      div.classList.add("ordered");
+      div.innerHTML = `<span class="bullet-marker">${m[2]}.</span><span class="bullet-text">${marked.parseInline(m[3])}</span>`;
+    } else if (/^\|/.test(raw)) {
+      // Render table rows as monospace pre-formatted (preserves columns).
+      div.classList.add("table-row");
+      div.innerHTML = `<code>${escapeHtml(raw)}</code>`;
+    } else {
+      div.innerHTML = marked.parseInline(raw);
     }
-    const sectionText = sectionNodes.map((n) => n.textContent || "").join(" ");
-    const agents = matchAgentsByText(sectionText, goldenItems);
-    if (!agents.size) continue;
-    const wrap = document.createElement("div");
-    wrap.className = "golden-shim profile-shim-section";
-    h2.parentNode.insertBefore(wrap, h2);
-    sectionNodes.forEach((n) => wrap.appendChild(n));
-    const tag = document.createElement("span");
-    tag.className = "golden-shim-tag";
-    const labels = [...agents].map(agentLabel);
-    tag.textContent = labels.join(" · ");
-    tag.title = `In golden set of: ${labels.join(", ")}`;
-    wrap.appendChild(tag);
+    root.appendChild(div);
+  }
+}
+
+// Split a list of line numbers into contiguous runs (gap of ≥1 splits).
+function splitIntoContiguousRuns(lines) {
+  const sorted = [...new Set(lines.filter((n) => Number.isInteger(n)))].sort((a, b) => a - b);
+  const runs = [];
+  let cur = null;
+  for (const n of sorted) {
+    if (cur && n === cur[cur.length - 1] + 1) {
+      cur.push(n);
+    } else {
+      cur = [n];
+      runs.push(cur);
+    }
+  }
+  return runs;
+}
+
+function applyLineFrames(items) {
+  const root = $("#tab-profile");
+  if (!root || !items.length) return;
+
+  root.querySelectorAll(".shim-frame").forEach((n) => n.remove());
+  root.querySelectorAll(".profile-line.has-frame").forEach((n) =>
+    n.classList.remove("has-frame"),
+  );
+  if (getComputedStyle(root).position === "static") {
+    root.style.position = "relative";
+  }
+
+  // The H1 title line is exempt from framing — it's a header, not content.
+  const isH1Line = (n) => {
+    const el = root.querySelector(`.profile-line[data-line="${n}"]`);
+    return !!(el && el.classList.contains("h1"));
+  };
+
+  // Each item splits into contiguous runs; each run produces a record.
+  // Frames are bucketed strictly by (startLine, endLine).
+  const bucketMap = new Map();
+  for (const item of items) {
+    const filtered = (item.profile_md_lines || []).filter(
+      (n) => Number.isInteger(n) && !isH1Line(n),
+    );
+    const runs = splitIntoContiguousRuns(filtered);
+    const summary = (item.summary || "").trim();
+    for (const run of runs) {
+      const startLine = run[0];
+      const endLine = run[run.length - 1];
+      const key = `${startLine}-${endLine}`;
+      let bucket = bucketMap.get(key);
+      if (!bucket) {
+        bucket = { startLine, endLine, key, tags: [] };
+        bucketMap.set(key, bucket);
+      }
+      // Only collapse identical (agent, summary) duplicates.
+      const dupe = bucket.tags.some((t) => t.agent === item.agent && t.summary === summary);
+      if (!dupe) bucket.tags.push({ agent: item.agent, summary });
+    }
+  }
+  const buckets = [...bucketMap.values()];
+  if (!buckets.length) return;
+
+  // Tag every profile-line covered by a frame so CSS can give it extra
+  // breathing room (only framed lines, not the whole profile).
+  for (const bucket of buckets) {
+    for (let ln = bucket.startLine; ln <= bucket.endLine; ln++) {
+      const el = root.querySelector(`.profile-line[data-line="${ln}"]`);
+      if (el) el.classList.add("has-frame");
+    }
+  }
+
+  requestAnimationFrame(() => paintFrames(root, buckets));
+}
+
+// For each bucket, return the buckets that strictly contain it (cross-agent),
+// sorted biggest → smallest. Used to render ancestor pills on the smaller
+// frame so the bigger frame's agents don't get hidden behind it.
+function computeBucketParents(buckets) {
+  const result = new Map();
+  for (const b of buckets) {
+    const parents = [];
+    for (const c of buckets) {
+      if (c === b) continue;
+      const strictlyContains =
+        c.startLine <= b.startLine &&
+        c.endLine >= b.endLine &&
+        (c.startLine !== b.startLine || c.endLine !== b.endLine);
+      if (strictlyContains) parents.push(c);
+    }
+    parents.sort(
+      (x, y) =>
+        y.endLine - y.startLine - (x.endLine - x.startLine) ||
+        x.startLine - y.startLine,
+    );
+    result.set(b.key, parents);
+  }
+  return result;
+}
+
+// Build a single tag pill bound to a target frame. Hovering it traces that
+// frame; the tooltip (anchored under the pill) lists the agent's summaries.
+function buildTagPill({ agent, summaries, targetFrame, isAncestor }) {
+  const tag = document.createElement("span");
+  tag.className = "golden-shim-tag" + (isAncestor ? " is-ancestor" : "");
+  tag.appendChild(document.createTextNode(agentLabel(agent)));
+
+  const tip = document.createElement("div");
+  tip.className = "shim-frame-tip";
+  if (summaries.length === 1) {
+    const body = document.createElement("div");
+    body.className = "shim-frame-tip-single";
+    body.textContent = summaries[0];
+    tip.appendChild(body);
+  } else {
+    const list = document.createElement("ul");
+    list.className = "shim-frame-tip-list";
+    for (const s of summaries) {
+      const li = document.createElement("li");
+      li.textContent = s;
+      list.appendChild(li);
+    }
+    tip.appendChild(list);
+  }
+  tag.appendChild(tip);
+
+  tag.addEventListener("mouseenter", () => {
+    targetFrame.classList.add("is-tracing");
+    const panel = document.querySelector(".profile-panel");
+    const tagRect = tag.getBoundingClientRect();
+    const panelRect = panel
+      ? panel.getBoundingClientRect()
+      : { top: 0, bottom: window.innerHeight };
+    const spaceBelow = panelRect.bottom - tagRect.bottom;
+    const spaceAbove = tagRect.top - panelRect.top;
+    const needed = 220;
+    tip.classList.toggle("flip-up", spaceBelow < needed && spaceAbove > spaceBelow);
+  });
+  tag.addEventListener("mouseleave", () => {
+    targetFrame.classList.remove("is-tracing");
+    tip.classList.remove("flip-up");
+  });
+
+  return tag;
+}
+
+// Group a bucket's tag list into agent → unique-summaries[].
+function groupTagsByAgent(tags) {
+  const byAgent = new Map();
+  for (const t of tags) {
+    const list = byAgent.get(t.agent) || [];
+    const s = t.summary || "(no summary)";
+    if (!list.includes(s)) list.push(s);
+    byAgent.set(t.agent, list);
+  }
+  return byAgent;
+}
+
+function paintFrames(root, buckets) {
+  // Stable ordering: top-to-bottom, longer spans first so shorter overlapping
+  // frames render in front.
+  buckets.sort((a, b) => {
+    if (a.startLine !== b.startLine) return a.startLine - b.startLine;
+    return (b.endLine - b.startLine) - (a.endLine - a.startLine);
+  });
+
+  // Pass 1: create + append every frame element so cross-frame references
+  // (ancestor pills, etc.) can resolve via the dom map below.
+  const frameMap = new Map(); // bucket.key → { bucket, frameEl, tagRow }
+  for (const bucket of buckets) {
+    const firstLine = root.querySelector(`.profile-line[data-line="${bucket.startLine}"]`);
+    const lastLine = root.querySelector(`.profile-line[data-line="${bucket.endLine}"]`);
+    if (!firstLine || !lastLine) continue;
+
+    const top = firstLine.offsetTop;
+    const bottom = lastLine.offsetTop + lastLine.offsetHeight;
+
+    const frame = document.createElement("div");
+    frame.className = "shim-frame";
+    frame.dataset.frameId = bucket.key;
+    frame.style.top = `${top - 1}px`;
+    frame.style.height = `${bottom - top + 2}px`;
+    frame.style.left = "0";
+    frame.style.right = "0";
+
+    const tagRow = document.createElement("div");
+    tagRow.className = "shim-frame-tags";
+    frame.appendChild(tagRow);
+    root.appendChild(frame);
+
+    frameMap.set(bucket.key, { bucket, frameEl: frame, tagRow });
+  }
+
+  // Pass 2: populate each frame's tag-row with its own pills, then with
+  // ancestor pills for any covering frame (cross-agent). Hovering an
+  // ancestor pill traces the bigger frame even though its native tag-row
+  // is hidden behind smaller frames.
+  const parentsMap = computeBucketParents(buckets);
+  for (const { bucket, frameEl, tagRow } of frameMap.values()) {
+    const ownByAgent = groupTagsByAgent(bucket.tags);
+    for (const [agent, summaries] of ownByAgent) {
+      tagRow.appendChild(
+        buildTagPill({ agent, summaries, targetFrame: frameEl, isAncestor: false }),
+      );
+    }
+
+    const parents = parentsMap.get(bucket.key) || [];
+    for (const parent of parents) {
+      const parentEntry = frameMap.get(parent.key);
+      if (!parentEntry) continue;
+      const parentByAgent = groupTagsByAgent(parent.tags);
+      for (const [agent, summaries] of parentByAgent) {
+        tagRow.appendChild(
+          buildTagPill({
+            agent,
+            summaries,
+            targetFrame: parentEntry.frameEl,
+            isAncestor: true,
+          }),
+        );
+      }
+    }
   }
 }
 
@@ -825,6 +1082,47 @@ function updateFilterCount() {
 
 // ---- run + SSE consumer ----
 
+// The 7 rubric criteria (in canonical order) — mirrors backend/app/rubric.py
+// so the frontend can render a hit/miss pill row even before the live event
+// arrives carrying the criterion list.
+const RUBRIC_CRITERIA = [
+  "time_sensitive",
+  "recurring_pattern_match",
+  "concrete_action",
+  "high_stakes_if_missed",
+  "non_redundant",
+  "matches_stated_preference",
+  "well_justified_surface_time",
+];
+
+// Map every backend trace event type to the visual stage it belongs in.
+// The backend emits in chronological order; the frontend only routes by
+// type so each stage card stays semantically pure (rubric stuff in rubric,
+// messenger stuff in messenger, etc.).
+const STAGE_BY_TYPE = {
+  orchestrator_started: 1,
+  subagent_started: 1,
+  tool_call: 1,
+  tool_result: 1,
+  llm_call: 1,
+  subagent_returned: 1,
+  dedup_decision: 1,
+  task_scored: 2,
+  task_emitted: 2,
+  task_filtered: 2,
+  message_drafted: 3,
+  preference_merged: 4,
+  // orchestrator_finished — intentionally unrouted; nothing to render
+};
+
+const STAGE_DEFS = [
+  { no: 1, title: "Agent execution", subtitle: "9 sub-agents fan out in parallel" },
+  { no: 2, title: "Rubric scoring & filter", subtitle: "score 0–7, cutoff ≥4, per-agent cap of 2" },
+  { no: 3, title: "LLM reframing", subtitle: "messenger turns each kept task into user-facing copy" },
+  { no: 4, title: "Preference updates", subtitle: "merged into the persona profile for future runs" },
+  { no: 5, title: "Surfaced for the user", subtitle: "" },
+];
+
 async function runStream() {
   if (state.running || !state.selected) return;
   state.running = true;
@@ -833,11 +1131,8 @@ async function runStream() {
   const slug = state.selected;
   const inputRaw = getDailyInputRaw().trim();
 
-  // Reset trace + final tasks for a fresh run.
-  $("#trace-stream").hidden = false;
-  $("#trace-list").innerHTML = "";
-  $("#final-tasks").hidden = true;
-  $("#final-tasks-list").innerHTML = "";
+  // Reset all stage cards for a fresh run.
+  initStages();
   $("#run-status").textContent = "running…";
 
   const startedAt = performance.now();
@@ -855,6 +1150,7 @@ async function runStream() {
     }
 
     await consumeSSE(response, (event, data) => handleSSEFrame(event, data, startedAt));
+    finalizeStages();
     $("#run-status").textContent = `done — ${((performance.now() - startedAt) / 1000).toFixed(1)}s`;
   } catch (err) {
     appendTraceError(err.message);
@@ -896,56 +1192,332 @@ async function consumeSSE(response, onFrame) {
 
 function handleSSEFrame(eventName, data, startedAt) {
   if (eventName === "trace") {
-    appendTraceNode(data, startedAt);
+    routeTraceEvent(data, startedAt);
   } else if (eventName === "result") {
-    renderFinalResult(data);
+    renderFinalStage(data);
   } else if (eventName === "error") {
     appendTraceError(data.error || "unknown error");
   }
 }
 
-// ---- trace nodes ----
+// ---- staged trace renderer ----
 
-function appendTraceNode(traceEvent, startedAt) {
-  const elapsed = ((performance.now() - startedAt) / 1000).toFixed(1) + "s";
-  const node = document.createElement("div");
+function initStages() {
+  const host = $("#trace-stages");
+  host.hidden = false;
+  host.innerHTML = "";
+  for (const def of STAGE_DEFS) {
+    const stage = document.createElement("section");
+    stage.className = "stage";
+    stage.id = `stage-${def.no}`;
+    stage.innerHTML = `
+      <div class="stage-head">
+        <span class="step-no">Step ${def.no}</span>
+        <h3>${def.title}</h3>
+        ${def.subtitle ? `<span class="stage-sub">${def.subtitle}</span>` : ""}
+      </div>
+      <div class="stage-body" id="stage-${def.no}-body"></div>
+    `;
+    host.appendChild(stage);
+  }
+}
+
+function finalizeStages() {
+  // Any stage that didn't receive an event gets a "no events" placeholder
+  // — clearer than an empty card with just a header.
+  for (const def of STAGE_DEFS) {
+    const body = document.getElementById(`stage-${def.no}-body`);
+    if (body && !body.children.length) {
+      const empty = document.createElement("div");
+      empty.className = "stage-empty";
+      empty.textContent = def.no === 5
+        ? "no tasks cleared the cutoff today — silence is correct output."
+        : "no events";
+      body.appendChild(empty);
+    }
+  }
+}
+
+function routeTraceEvent(traceEvent, startedAt) {
+  const stageNo = STAGE_BY_TYPE[traceEvent.type];
+  if (!stageNo) return; // orchestrator_finished etc. — not displayed
+  const body = document.getElementById(`stage-${stageNo}-body`);
+  if (!body) return;
+  const elapsed = `+${((performance.now() - startedAt) / 1000).toFixed(1)}s`;
+
+  let node;
+  switch (traceEvent.type) {
+    case "task_scored":
+    case "task_emitted":
+    case "task_filtered":
+      node = renderRubricNode(traceEvent, elapsed);
+      break;
+    case "message_drafted":
+      node = renderReframeNode(traceEvent, elapsed);
+      break;
+    case "preference_merged":
+      node = renderPrefNode(traceEvent, elapsed);
+      break;
+    default:
+      // Stage 1 events: agent execution + tool calls + llm calls.
+      node = renderGenericTraceNode(traceEvent, elapsed);
+  }
+  if (node) body.appendChild(node);
+  autoScrollRunPanel();
+}
+
+// ── generic trace node (stage 1 events) ──
+
+function renderGenericTraceNode(traceEvent, elapsed) {
   const sa = traceEvent.sub_agent || "orchestrator";
-  node.className = "trace-node";
+  const isTool = traceEvent.type === "tool_call"
+    || traceEvent.type === "tool_result"
+    || traceEvent.type === "llm_call";
+
+  const node = document.createElement("div");
+  node.className = "trace-node" + (isTool ? " tool" : "");
   node.dataset.agent = sa;
 
-  // honour current filter checkbox state for this agent
   const cb = document.querySelector(`#filter-toggles input[data-agent="${sa}"]`);
   if (cb && !cb.checked) node.classList.add("hidden");
 
+  node.appendChild(buildTime(elapsed));
+  const body = document.createElement("div");
+  body.className = "trace-body";
+  body.appendChild(buildHeader(sa, traceEvent.type));
+  const payload = buildPayloadBlock(traceEvent.payload);
+  if (payload) body.appendChild(payload);
+  node.appendChild(body);
+  return node;
+}
+
+// ── stage 2 — rubric scoring + filter ──
+
+function renderRubricNode(traceEvent, elapsed) {
+  const p = traceEvent.payload || {};
+  const originAgent = p.agent || traceEvent.sub_agent || "orchestrator";
+  // task_emitted / task_filtered tell us pass/fail; task_scored is a
+  // pre-filter scoring tick.
+  const passed = traceEvent.type === "task_emitted";
+  const dropped = traceEvent.type === "task_filtered";
+
+  const node = document.createElement("div");
+  node.className = "trace-node" + (dropped ? " dropped" : "");
+  node.dataset.agent = "rubric";
+
   const time = document.createElement("div");
   time.className = "trace-time";
-  time.textContent = `+${elapsed}`;
+  if (passed) time.textContent = "kept";
+  else if (dropped) time.textContent = "drop";
+  else time.textContent = elapsed;
+  node.appendChild(time);
 
   const body = document.createElement("div");
   body.className = "trace-body";
 
   const header = document.createElement("div");
   header.className = "trace-header-line";
-  const tag = document.createElement("span");
-  tag.className = `agent-tag ${sa}`;
-  tag.textContent = sa;
-  const type = document.createElement("span");
-  type.className = "event-type";
-  type.textContent = traceEvent.type;
-  header.appendChild(tag);
-  header.appendChild(type);
-
-  const payloadDiv = document.createElement("div");
-  payloadDiv.className = "trace-payload";
-  payloadDiv.textContent = formatPayload(traceEvent.payload);
-
+  header.appendChild(buildAgentTag("rubric"));
+  const originTag = buildAgentTag(originAgent);
+  originTag.style.opacity = "0.7";
+  header.appendChild(originTag);
+  const typeEl = document.createElement("span");
+  typeEl.className = "event-type";
+  if (passed) typeEl.textContent = `task_emitted · ${p.score ?? "?"}/7`;
+  else if (dropped) typeEl.textContent = `task_filtered · ${p.score ?? "?"}/7 — ${p.reason || ""}`;
+  else typeEl.textContent = `task_scored · ${p.score ?? "?"}/7`;
+  header.appendChild(typeEl);
   body.appendChild(header);
-  if (payloadDiv.textContent) body.appendChild(payloadDiv);
-  node.appendChild(time);
-  node.appendChild(body);
-  $("#trace-list").appendChild(node);
 
-  autoScrollRunPanel();
+  if (p.title) {
+    const titleLine = document.createElement("div");
+    titleLine.className = "trace-payload";
+    titleLine.style.whiteSpace = "normal";
+    titleLine.textContent = p.title;
+    body.appendChild(titleLine);
+  }
+  if (Array.isArray(p.criteria) && p.criteria.length) {
+    body.appendChild(buildCriteriaPills(p.criteria));
+  }
+  node.appendChild(body);
+  return node;
+}
+
+function buildCriteriaPills(criteria) {
+  const wrap = document.createElement("div");
+  wrap.className = "rubric-criteria";
+  // Render in canonical order so all rubric rows align visually.
+  const byName = new Map(criteria.map((c) => [c.name, c]));
+  for (const name of RUBRIC_CRITERIA) {
+    const c = byName.get(name);
+    const hit = c ? !!c.matches : false;
+    const pill = document.createElement("span");
+    pill.className = "rubric-pill " + (hit ? "hit" : "miss");
+    pill.textContent = (hit ? "✓ " : "✗ ") + name;
+    if (c?.reasoning) pill.title = c.reasoning;
+    wrap.appendChild(pill);
+  }
+  return wrap;
+}
+
+// ── stage 3 — messenger reframing ──
+
+function renderReframeNode(traceEvent, elapsed) {
+  const p = traceEvent.payload || {};
+  const originAgent = p.agent || "orchestrator";
+
+  const node = document.createElement("div");
+  node.className = "trace-node";
+  node.dataset.agent = "messenger";
+
+  const time = document.createElement("div");
+  time.className = "trace-time";
+  time.textContent = (p.surface_time || elapsed).slice(11, 16) || elapsed;
+  node.appendChild(time);
+
+  const body = document.createElement("div");
+  body.className = "trace-body";
+
+  const header = document.createElement("div");
+  header.className = "trace-header-line";
+  header.appendChild(buildAgentTag("messenger"));
+  const originTag = buildAgentTag(originAgent);
+  originTag.style.opacity = "0.7";
+  header.appendChild(originTag);
+  const typeEl = document.createElement("span");
+  typeEl.className = "event-type";
+  typeEl.textContent = `message_drafted · surface @ ${p.surface_time || "?"}`;
+  header.appendChild(typeEl);
+  body.appendChild(header);
+
+  const grid = document.createElement("div");
+  grid.className = "reframe-grid";
+  grid.innerHTML = `
+    <div class="reframe-cell">
+      <div class="reframe-label">original task</div>
+      <div><b>${escapeHtml(p.title || "")}</b></div>
+      ${p.action ? `<div style="color: var(--muted); margin-top: 4px;">${escapeHtml(p.action)}</div>` : ""}
+    </div>
+    <div class="reframe-cell after">
+      <div class="reframe-label">user-facing message</div>
+      <div>${escapeHtml(p.message || "")}</div>
+    </div>
+  `;
+  body.appendChild(grid);
+  node.appendChild(body);
+  return node;
+}
+
+// ── stage 4 — preference updates ──
+
+function renderPrefNode(traceEvent, elapsed) {
+  // Prefs are orchestrator-emitted; tag color stays neutral.
+  const node = document.createElement("div");
+  node.className = "trace-node";
+  node.dataset.agent = "orchestrator";
+  node.appendChild(buildTime("merge"));
+  const body = document.createElement("div");
+  body.className = "trace-body";
+  body.appendChild(buildHeader("orchestrator", "preference_merged"));
+  const payload = buildPayloadBlock(traceEvent.payload);
+  if (payload) body.appendChild(payload);
+  node.appendChild(body);
+  return node;
+}
+
+// ── stage 5 — final surfaced messages (from `result` SSE frame) ──
+
+function renderFinalStage(result) {
+  const body = document.getElementById("stage-5-body");
+  if (!body) return;
+  body.innerHTML = "";
+  const messages = result.final_messages || [];
+  if (messages.length === 0) {
+    const empty = document.createElement("p");
+    empty.className = "muted";
+    empty.style.fontSize = "12px";
+    empty.style.margin = "0";
+    empty.textContent = "no tasks cleared the cutoff today — silence is correct output.";
+    body.appendChild(empty);
+    return;
+  }
+  for (const m of messages) {
+    const t = m.scored_task.task;
+    const card = document.createElement("div");
+    card.className = "final-task-card";
+    card.style.borderLeftColor = `var(--c-${t.sub_agent}, var(--accent))`;
+    const msg = document.createElement("p");
+    msg.className = "final-task-message";
+    msg.textContent = m.message;
+    const meta = document.createElement("div");
+    meta.className = "final-task-meta";
+    meta.innerHTML =
+      `<span class="agent-tag ${t.sub_agent}">${t.sub_agent}</span>` +
+      `<span>score ${m.scored_task.total_score}/7</span>` +
+      `<span>surface @ <code>${m.surface_time}</code></span>`;
+    card.appendChild(msg);
+    card.appendChild(meta);
+    body.appendChild(card);
+  }
+}
+
+// ── shared builders ──
+
+function buildTime(label) {
+  const el = document.createElement("div");
+  el.className = "trace-time";
+  el.textContent = label;
+  return el;
+}
+
+function buildAgentTag(agent) {
+  const tag = document.createElement("span");
+  tag.className = `agent-tag ${agent}`;
+  tag.textContent = agent;
+  return tag;
+}
+
+function buildHeader(agent, type) {
+  const header = document.createElement("div");
+  header.className = "trace-header-line";
+  header.appendChild(buildAgentTag(agent));
+  const t = document.createElement("span");
+  t.className = "event-type";
+  t.textContent = type;
+  header.appendChild(t);
+  return header;
+}
+
+function buildPayloadBlock(payload) {
+  if (!payload || typeof payload !== "object" || Object.keys(payload).length === 0) return null;
+  const wrap = document.createElement("div");
+  wrap.className = "trace-payload";
+  const pre = document.createElement("pre");
+  pre.className = "payload-pre";
+  const code = document.createElement("code");
+  code.className = "language-json";
+  code.textContent = JSON.stringify(payload, null, 2);
+  pre.appendChild(code);
+  wrap.appendChild(pre);
+  if (window.Prism) Prism.highlightElement(code);
+  return wrap;
+}
+
+function appendTraceError(msg) {
+  // Errors land in stage 1 since they're typically subagent failures.
+  const body = document.getElementById("stage-1-body");
+  if (!body) return;
+  const node = document.createElement("div");
+  node.className = "trace-node error";
+  node.dataset.agent = "orchestrator";
+  node.innerHTML = `<div class="trace-time">err</div>
+    <div class="trace-body">
+      <div class="trace-header-line">
+        <span class="agent-tag orchestrator">error</span>
+      </div>
+      <div class="trace-payload">${escapeHtml(msg)}</div>
+    </div>`;
+  body.appendChild(node);
 }
 
 // Smart autoscroll: only follow new traces if the user is already near the
@@ -957,64 +1529,6 @@ function autoScrollRunPanel() {
   if (distanceFromBottom < 80) {
     panel.scrollTop = panel.scrollHeight;
   }
-}
-
-function appendTraceError(msg) {
-  const node = document.createElement("div");
-  node.className = "trace-node error";
-  node.dataset.agent = "orchestrator";
-  node.innerHTML = `<div class="trace-time">err</div>
-    <div class="trace-body">
-      <div class="trace-header-line">
-        <span class="agent-tag orchestrator">error</span>
-      </div>
-      <div class="trace-payload">${escapeHtml(msg)}</div>
-    </div>`;
-  $("#trace-list").appendChild(node);
-}
-
-function formatPayload(payload) {
-  if (!payload || typeof payload !== "object" || Object.keys(payload).length === 0) return "";
-  // Compact one-liner for short payloads, multi-line JSON for bigger ones.
-  const json = JSON.stringify(payload);
-  if (json.length <= 120) return json;
-  return JSON.stringify(payload, null, 2);
-}
-
-// ---- final result ----
-
-function renderFinalResult(result) {
-  const list = $("#final-tasks-list");
-  list.innerHTML = "";
-  const messages = result.final_messages || [];
-  if (messages.length === 0) {
-    const empty = document.createElement("p");
-    empty.className = "muted";
-    empty.style.fontSize = "12px";
-    empty.style.margin = "0";
-    empty.textContent = "no tasks cleared the cutoff today — silence is correct output.";
-    list.appendChild(empty);
-  } else {
-    for (const m of messages) {
-      const t = m.scored_task.task;
-      const card = document.createElement("div");
-      card.className = "final-task-card";
-      card.style.borderLeftColor = `var(--c-${t.sub_agent}, var(--accent))`;
-      const msg = document.createElement("p");
-      msg.className = "final-task-message";
-      msg.textContent = m.message;
-      const meta = document.createElement("div");
-      meta.className = "final-task-meta";
-      meta.innerHTML =
-        `<span class="agent-tag ${t.sub_agent}">${t.sub_agent}</span>` +
-        `<span>score ${m.scored_task.total_score}/7</span>` +
-        `<span>surface @ <code>${m.surface_time}</code></span>`;
-      card.appendChild(msg);
-      card.appendChild(meta);
-      list.appendChild(card);
-    }
-  }
-  $("#final-tasks").hidden = false;
 }
 
 // ---- utils ----
