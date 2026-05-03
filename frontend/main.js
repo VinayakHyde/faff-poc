@@ -1112,9 +1112,9 @@ const RUBRIC_CRITERIA = [
 ];
 
 // Map every backend trace event type to the visual stage it belongs in.
-// The backend emits in chronological order; the frontend only routes by
-// type so each stage card stays semantically pure (rubric stuff in rubric,
-// messenger stuff in messenger, etc.).
+// Stages are rendered in this fixed order regardless of backend emission
+// order — preferences arrive mid-run from the orchestrator but read more
+// naturally as a "post-agent, pre-rubric" step.
 const STAGE_BY_TYPE = {
   orchestrator_started: 1,
   subagent_started: 1,
@@ -1123,19 +1123,19 @@ const STAGE_BY_TYPE = {
   llm_call: 1,
   subagent_returned: 1,
   dedup_decision: 1,
-  task_scored: 2,
-  task_emitted: 2,
-  task_filtered: 2,
-  message_drafted: 3,
-  preference_merged: 4,
+  preference_merged: 2,
+  task_scored: 3,
+  task_emitted: 3,
+  task_filtered: 3,
+  message_drafted: 4,
   // orchestrator_finished — intentionally unrouted; nothing to render
 };
 
 const STAGE_DEFS = [
   { no: 1, title: "Agent execution", subtitle: "9 sub-agents fan out in parallel" },
-  { no: 2, title: "Rubric scoring & filter", subtitle: "score 0–7, cutoff ≥4, per-agent cap of 2" },
-  { no: 3, title: "LLM reframing", subtitle: "messenger turns each kept task into user-facing copy" },
-  { no: 4, title: "Preference updates", subtitle: "merged into the persona profile for future runs" },
+  { no: 2, title: "Preference updates", subtitle: "merged into the persona profile for future runs" },
+  { no: 3, title: "Rubric scoring & filter", subtitle: "score 0–7, cutoff ≥4, per-agent cap of 2" },
+  { no: 4, title: "LLM reframing", subtitle: "messenger turns each kept task into user-facing copy" },
   { no: 5, title: "Surfaced for the user", subtitle: "" },
 ];
 
@@ -1278,8 +1278,24 @@ function routeTraceEvent(traceEvent, startedAt) {
       // Stage 1 events: agent execution + tool calls + llm calls.
       node = renderGenericTraceNode(traceEvent, elapsed);
   }
-  if (node) body.appendChild(node);
-  autoScrollRunPanel();
+  if (!node) return;
+
+  // Streaming follow-tail: scroll the new node into view IF the user was
+  // already at the bottom of the run-panel before we appended. Once they
+  // scroll up to inspect, we leave them alone — standard tail -f behavior.
+  // Captured BEFORE append because the append itself extends scrollHeight.
+  const wasAtBottom = isPanelAtBottom();
+  body.appendChild(node);
+  if (wasAtBottom) {
+    node.scrollIntoView({ block: "end", behavior: "instant" });
+  }
+}
+
+function isPanelAtBottom() {
+  const panel = document.querySelector(".run-panel");
+  if (!panel) return false;
+  const distanceFromBottom = panel.scrollHeight - panel.scrollTop - panel.clientHeight;
+  return distanceFromBottom < 80;
 }
 
 // ── generic trace node (stage 1 events) ──
@@ -1534,17 +1550,6 @@ function appendTraceError(msg) {
       <div class="trace-payload">${escapeHtml(msg)}</div>
     </div>`;
   body.appendChild(node);
-}
-
-// Smart autoscroll: only follow new traces if the user is already near the
-// bottom. If they've scrolled up to inspect, leave them alone.
-function autoScrollRunPanel() {
-  const panel = document.querySelector(".run-panel");
-  if (!panel) return;
-  const distanceFromBottom = panel.scrollHeight - panel.scrollTop - panel.clientHeight;
-  if (distanceFromBottom < 80) {
-    panel.scrollTop = panel.scrollHeight;
-  }
 }
 
 // ---- utils ----

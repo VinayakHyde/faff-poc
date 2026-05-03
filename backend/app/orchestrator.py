@@ -292,6 +292,7 @@ async def run(
     final_titles = {(s.task.title, s.task.sub_agent) for s in final}
     for s in scored:
         key = (s.task.title, s.task.sub_agent)
+        criteria_payload = [c.model_dump() for c in s.criteria]
         if key in final_titles:
             _emit(
                 TraceEvent(
@@ -301,6 +302,7 @@ async def run(
                         "title": s.task.title,
                         "action": s.task.action,
                         "score": s.total_score,
+                        "criteria": criteria_payload,
                     },
                 )
             )
@@ -315,6 +317,7 @@ async def run(
                         "score": s.total_score,
                         "agent": s.task.sub_agent,
                         "reason": "below cutoff" if s.total_score < CUTOFF_SCORE else "capped",
+                        "criteria": criteria_payload,
                     },
                 )
             )
