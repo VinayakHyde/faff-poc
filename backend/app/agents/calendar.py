@@ -5,7 +5,7 @@ post-event follow-ups, RSVP-needed invites. Skips: birthdays
 (→ dates), travel-itinerary blocks (→ travel), bills (→ finance).
 """
 
-from app.agents.base import run_subagent
+from app.agents.base import EmitFn, run_subagent
 from app.models import DailyInput, PreferencesProfile, SubAgentResult
 
 
@@ -141,5 +141,7 @@ If you find yourself writing a task whose rationale starts with "[Sender] emaile
 async def run(
     daily_input: DailyInput,
     profile: PreferencesProfile,
+    *,
+    emit: EmitFn | None = None,
 ) -> SubAgentResult:
-    return await run_subagent(NAME, SYSTEM_PROMPT, daily_input, profile)
+    return await run_subagent(NAME, SYSTEM_PROMPT, daily_input, profile, emit=emit)

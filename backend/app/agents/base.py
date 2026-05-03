@@ -6,10 +6,12 @@ plus the prompt. The orchestrator (step 3) iterates `ALL_AGENTS`.
 """
 
 import json
-from typing import Protocol
+from typing import Any, Callable, Protocol
+from uuid import UUID
 
 import openai._compat as _openai_compat
 import openai.lib._parsing._completions as _openai_parse_completions
+from langchain_core.callbacks import AsyncCallbackHandler
 from langchain_openai import ChatOpenAI
 from langgraph.prebuilt import create_react_agent
 from pydantic import BaseModel, Field
@@ -23,6 +25,108 @@ from app.models import (
     SubAgentResult,
 )
 from app.tools import make_tools_for_persona
+
+
+# Type of the per-agent emit callable wired in by the orchestrator. It takes
+# (event_type, payload) and stamps sub_agent itself.
+EmitFn = Callable[[str, dict[str, Any]], None]
+
+
+def _truncate(s: str, n: int = 600) -> str:
+    s = str(s)
+    return s if len(s) <= n else s[:n] + "…"
+
+
+class _TraceCallbackHandler(AsyncCallbackHandler):
+    """Bridge LangChain/LangGraph callbacks into orchestrator trace events.
+
+    Emits one `tool_call` per `on_tool_start` and one `tool_result` per
+    `on_tool_end` (paired by run_id so the result knows which tool it
+    belonged to). Emits one `llm_call` per `on_chat_model_end` carrying
+    model name + token usage when the model exposes it.
+    """
+
+    def __init__(self, emit: EmitFn) -> None:
+        self._emit = emit
+        self._tool_names: dict[UUID, str] = {}
+
+    async def on_tool_start(  # type: ignore[override]
+        self,
+        serialized: dict[str, Any],
+        input_str: str,
+        *,
+        run_id: UUID,
+        **kwargs: Any,
+    ) -> None:
+        name = (serialized or {}).get("name") or "tool"
+        self._tool_names[run_id] = name
+        # input_str is langchain's stringified arg blob. Try to parse it as
+        # JSON for nicer pretty-printing in the trace UI; fall back to raw.
+        parsed: Any
+        try:
+            parsed = json.loads(input_str)
+        except Exception:
+            parsed = input_str
+        self._emit("tool_call", {"tool": name, "input": parsed})
+
+    async def on_tool_end(  # type: ignore[override]
+        self,
+        output: Any,
+        *,
+        run_id: UUID,
+        **kwargs: Any,
+    ) -> None:
+        name = self._tool_names.pop(run_id, "tool")
+        # Tool outputs are often huge JSON blobs (web_search returns full
+        # Tavily response). Summarize when possible: count list-shaped
+        # results, truncate long strings.
+        text = str(output) if not isinstance(output, str) else output
+        summary: dict[str, Any] = {"tool": name}
+        try:
+            parsed = json.loads(text)
+            if isinstance(parsed, list):
+                summary["result_count"] = len(parsed)
+                summary["preview"] = parsed[:3]
+            elif isinstance(parsed, dict):
+                # Tavily returns {"results": [...], "query": ...}
+                if "results" in parsed and isinstance(parsed["results"], list):
+                    summary["result_count"] = len(parsed["results"])
+                    summary["preview"] = [
+                        {k: r.get(k) for k in ("title", "url") if k in r}
+                        for r in parsed["results"][:3]
+                    ]
+                else:
+                    summary["output"] = _truncate(text)
+            else:
+                summary["output"] = _truncate(text)
+        except Exception:
+            summary["output"] = _truncate(text)
+        self._emit("tool_result", summary)
+
+    async def on_chat_model_end(  # type: ignore[override]
+        self,
+        response: Any,
+        *,
+        run_id: UUID,
+        **kwargs: Any,
+    ) -> None:
+        usage: dict[str, Any] = {}
+        model_name: str | None = None
+        try:
+            gen = response.generations[0][0]
+            msg = getattr(gen, "message", None)
+            if msg is not None and getattr(msg, "usage_metadata", None):
+                usage = dict(msg.usage_metadata)
+            if msg is not None and getattr(msg, "response_metadata", None):
+                model_name = msg.response_metadata.get("model_name") or msg.response_metadata.get("model")
+        except Exception:
+            pass
+        if not model_name:
+            model_name = (response.llm_output or {}).get("model_name") if hasattr(response, "llm_output") else None
+        payload: dict[str, Any] = {"model": model_name or "unknown"}
+        if usage:
+            payload["tokens"] = usage
+        self._emit("llm_call", payload)
 
 
 # Some chat models occasionally emit a valid JSON object followed by trailing
@@ -124,8 +228,15 @@ async def run_subagent(
     system_prompt: str,
     daily_input: DailyInput,
     profile: PreferencesProfile,
+    *,
+    emit: EmitFn | None = None,
 ) -> SubAgentResult:
-    """Build a react agent with the persona's tools, run it once, parse output."""
+    """Build a react agent with the persona's tools, run it once, parse output.
+
+    If `emit` is provided, every tool invocation and LLM call inside the
+    react loop is forwarded as a TraceEvent (`tool_call`, `tool_result`,
+    `llm_call`) so the streaming UI can show what the agent actually did.
+    """
     settings = get_settings()
     agent = create_react_agent(
         model=ChatOpenAI(
@@ -145,6 +256,10 @@ async def run_subagent(
         name=name,
     )
 
+    config: dict[str, Any] = {}
+    if emit is not None:
+        config["callbacks"] = [_TraceCallbackHandler(emit)]
+
     # Retry once on transient structured-output parse errors (some models
     # occasionally emit a valid JSON object followed by trailing whitespace
     # or a stray line, which the strict OpenAI parser rejects).
@@ -152,7 +267,8 @@ async def run_subagent(
     for _ in range(2):
         try:
             result = await agent.ainvoke(
-                {"messages": [("user", build_user_message(daily_input, profile))]}
+                {"messages": [("user", build_user_message(daily_input, profile))]},
+                config=config,
             )
             break
         except Exception as e:

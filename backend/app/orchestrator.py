@@ -194,15 +194,21 @@ async def run(
     # ---- 1. Fan-out ----
     async def _run_one(agent) -> SubAgentResult:
         _emit(TraceEvent(type="subagent_started", sub_agent=agent.NAME))
+
+        # Per-agent emit closure — stamps sub_agent so the agent's own code
+        # (and the LangChain trace callback) doesn't have to think about it.
+        def _agent_emit(event_type: str, payload: dict) -> None:
+            _emit(TraceEvent(type=event_type, sub_agent=agent.NAME, payload=payload))
+
         try:
-            r = await agent.run(daily_input, profile)
+            r = await agent.run(daily_input, profile, emit=_agent_emit)
             _emit(
                 TraceEvent(
                     type="subagent_returned",
                     sub_agent=agent.NAME,
                     payload={
-                        "task_count": len(r.tasks),
-                        "preference_update_count": len(r.preference_updates),
+                        "tasks": [t.model_dump() for t in r.tasks],
+                        "preference_updates": [p.model_dump() for p in r.preference_updates],
                     },
                 )
             )
@@ -256,7 +262,11 @@ async def run(
             TraceEvent(
                 type="preference_merged",
                 sub_agent="orchestrator",
-                payload={"section": p.section, "content": p.content[:120]},
+                payload={
+                    "section": p.section,
+                    "content": p.content,
+                    "reason": p.reason,
+                },
             )
         )
 
@@ -269,8 +279,10 @@ async def run(
                 sub_agent="rubric",
                 payload={
                     "title": s.task.title,
+                    "action": s.task.action,
                     "score": s.total_score,
                     "agent": s.task.sub_agent,
+                    "criteria": [c.model_dump() for c in s.criteria],
                 },
             )
         )
@@ -285,7 +297,11 @@ async def run(
                 TraceEvent(
                     type="task_emitted",
                     sub_agent=s.task.sub_agent,
-                    payload={"title": s.task.title, "score": s.total_score},
+                    payload={
+                        "title": s.task.title,
+                        "action": s.task.action,
+                        "score": s.total_score,
+                    },
                 )
             )
         else:
@@ -295,6 +311,7 @@ async def run(
                     sub_agent="orchestrator",
                     payload={
                         "title": s.task.title,
+                        "action": s.task.action,
                         "score": s.total_score,
                         "agent": s.task.sub_agent,
                         "reason": "below cutoff" if s.total_score < CUTOFF_SCORE else "capped",
@@ -315,6 +332,7 @@ async def run(
                     sub_agent="messenger",
                     payload={
                         "title": m.scored_task.task.title,
+                        "action": m.scored_task.task.action,
                         "agent": m.scored_task.task.sub_agent,
                         "message": m.message,
                         "surface_time": m.surface_time,

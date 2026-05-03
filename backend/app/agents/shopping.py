@@ -1,6 +1,6 @@
 """Shopping & wishlist sub-agent."""
 
-from app.agents.base import run_subagent
+from app.agents.base import EmitFn, run_subagent
 from app.models import DailyInput, PreferencesProfile, SubAgentResult
 
 
@@ -256,5 +256,7 @@ Empty `tasks` after this filter is correct and expected. Do NOT add tasks back t
 async def run(
     daily_input: DailyInput,
     profile: PreferencesProfile,
+    *,
+    emit: EmitFn | None = None,
 ) -> SubAgentResult:
-    return await run_subagent(NAME, SYSTEM_PROMPT, daily_input, profile)
+    return await run_subagent(NAME, SYSTEM_PROMPT, daily_input, profile, emit=emit)

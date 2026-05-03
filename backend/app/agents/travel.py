@@ -1,6 +1,6 @@
 """Travel sub-agent."""
 
-from app.agents.base import run_subagent
+from app.agents.base import EmitFn, run_subagent
 from app.models import DailyInput, PreferencesProfile, SubAgentResult
 
 
@@ -248,5 +248,7 @@ These are real bad outputs from past runs. Read them and do not repeat them.
 async def run(
     daily_input: DailyInput,
     profile: PreferencesProfile,
+    *,
+    emit: EmitFn | None = None,
 ) -> SubAgentResult:
-    return await run_subagent(NAME, SYSTEM_PROMPT, daily_input, profile)
+    return await run_subagent(NAME, SYSTEM_PROMPT, daily_input, profile, emit=emit)

@@ -8,7 +8,7 @@ Mashing both into one prompt forces a trade-off at emission time. Splitting
 lets each prompt lean hard in its own direction.
 """
 
-from app.agents.base import run_subagent
+from app.agents.base import EmitFn, run_subagent
 from app.models import DailyInput, PreferencesProfile, SubAgentResult
 
 
@@ -203,7 +203,9 @@ If `gmail_search` returns empty for every probe (the persona genuinely hasn't gr
 async def run(
     daily_input: DailyInput,
     profile: PreferencesProfile,
+    *,
+    emit: EmitFn | None = None,
 ) -> SubAgentResult:
     is_backfill = daily_input.date == profile.meta.onboarded_at
     prompt = BACKFILL_PROMPT if is_backfill else STEADY_STATE_PROMPT
-    return await run_subagent(NAME, prompt, daily_input, profile)
+    return await run_subagent(NAME, prompt, daily_input, profile, emit=emit)

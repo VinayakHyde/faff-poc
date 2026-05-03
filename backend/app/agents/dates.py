@@ -1,6 +1,6 @@
 """Dates, occasions & relationships sub-agent."""
 
-from app.agents.base import run_subagent
+from app.agents.base import EmitFn, run_subagent
 from app.models import DailyInput, PreferencesProfile, SubAgentResult
 
 
@@ -261,10 +261,13 @@ SYSTEM_PROMPT = SYSTEM_PROMPT_STEADY_STATE
 async def run(
     daily_input: DailyInput,
     profile: PreferencesProfile,
+    *,
+    emit: EmitFn | None = None,
 ) -> SubAgentResult:
     return await run_subagent(
         NAME,
         _select_prompt(daily_input, profile),
         daily_input,
         profile,
+        emit=emit,
     )

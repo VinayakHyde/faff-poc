@@ -139,6 +139,9 @@ class DeliverableMessage(BaseModel):
 TraceEventType = Literal[
     "orchestrator_started",
     "subagent_started",
+    "tool_call",
+    "tool_result",
+    "llm_call",
     "subagent_returned",
     "dedup_decision",
     "preference_merged",

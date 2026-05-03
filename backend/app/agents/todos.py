@@ -6,7 +6,7 @@ mailbox via tools to surface any overdue or imminent self-made commitments
 plus the durable patterns the user follows.
 """
 
-from app.agents.base import run_subagent
+from app.agents.base import EmitFn, run_subagent
 from app.models import DailyInput, PreferencesProfile, SubAgentResult
 
 
@@ -205,10 +205,12 @@ def _is_backfill(daily_input: DailyInput, profile: PreferencesProfile) -> bool:
 async def run(
     daily_input: DailyInput,
     profile: PreferencesProfile,
+    *,
+    emit: EmitFn | None = None,
 ) -> SubAgentResult:
     prompt = (
         SYSTEM_PROMPT_BACKFILL
         if _is_backfill(daily_input, profile)
         else SYSTEM_PROMPT_STEADY_STATE
     )
-    return await run_subagent(NAME, prompt, daily_input, profile)
+    return await run_subagent(NAME, prompt, daily_input, profile, emit=emit)
