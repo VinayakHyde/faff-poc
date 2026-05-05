@@ -232,10 +232,7 @@ async function selectPersona(slug) {
 
 async function loadProfile(slug) {
   try {
-    const [profile, golden] = await Promise.all([
-      fetchJSON(`/api/personas/${slug}`),
-      ensureGoldenMap(slug),
-    ]);
+    const profile = await fetchJSON(`/api/personas/${slug}`);
     $("#profile-empty").hidden = true;
     $("#profile-content-wrapper").hidden = false;
 
@@ -246,322 +243,11 @@ async function loadProfile(slug) {
     $("#profile-meta").textContent =
       `${profile.meta.neighbourhood}, ${profile.meta.city}  ·  onboarded ${profile.meta.onboarded_at}`;
 
-    renderProfileLineByLine(profile.markdown);
-    // Overlay per-item absolute-positioned frames over the exact source
-    // lines each golden item anchors to (via profile_md_lines).
-    applyLineFrames(golden.allItems);
+    $("#tab-profile").innerHTML = marked.parse(profile.markdown);
   } catch (err) {
     $("#profile-empty").hidden = false;
     $("#profile-content-wrapper").hidden = true;
     $("#profile-empty").textContent = `failed: ${err.message}`;
-  }
-}
-
-// Walk every h2 section in the rendered profile markdown. For each, gather
-// the section's text (heading + following siblings until the next h2) and
-// run the heuristic match. If any agent's expected_task summary shares a
-// 4+ char token with the section text, wrap the section in a `golden-shim`
-// div with the agent labels as a tag.
-// Per-line frame approach for the profile shim.
-//
-//   1. Render profile.md line-by-line, each line as its own DOM node with
-//      `data-line="N"`. Inline markdown (bold, italic, links) is preserved
-//      via marked.parseInline; multi-line constructs (lists, headings) are
-//      handled per-line so each list bullet / heading line is its own node.
-//
-//   2. For each golden item with profile_md_lines, compute a bounding
-//      rectangle from the min/max line's offsetTop/offsetHeight and overlay
-//      an absolute-positioned frame on the profile container. Frames don't
-//      nest in the DOM, so multiple items with overlapping line ranges
-//      render as separate, visually-overlapping rectangles — exactly the
-//      "different line styles for overlap" the spec asks for.
-//
-//   3. Buckets merge only when (sorted line set, summary) are EXACTLY
-//      identical — those collapse into a single frame whose tag lists all
-//      contributing agents. Otherwise each bucket gets its own frame.
-//
-//   4. Border style cycles solid → dashed → dotted → double per stacking
-//      order. Frame tags stagger horizontally so multiple stacks per region
-//      are all readable.
-
-function renderProfileLineByLine(rawMarkdown) {
-  const root = $("#tab-profile");
-  if (!root) return;
-  root.classList.add("profile-line-view");
-  root.innerHTML = "";
-
-  const lines = rawMarkdown.split("\n");
-  for (let i = 0; i < lines.length; i++) {
-    const raw = lines[i];
-    const div = document.createElement("div");
-    div.className = "profile-line";
-    div.dataset.line = String(i + 1);
-
-    if (raw.trim() === "") {
-      div.classList.add("empty");
-      div.innerHTML = "&nbsp;";
-    } else if (/^#\s+/.test(raw)) {
-      div.classList.add("h1");
-      div.innerHTML = `<h1>${marked.parseInline(raw.replace(/^#\s+/, ""))}</h1>`;
-    } else if (/^##\s+/.test(raw)) {
-      div.classList.add("h2");
-      div.innerHTML = `<h2>${marked.parseInline(raw.replace(/^##\s+/, ""))}</h2>`;
-    } else if (/^###\s+/.test(raw)) {
-      div.classList.add("h3");
-      div.innerHTML = `<h3>${marked.parseInline(raw.replace(/^###\s+/, ""))}</h3>`;
-    } else if (/^\s*[-*]\s+/.test(raw)) {
-      const text = raw.replace(/^\s*[-*]\s+/, "");
-      div.classList.add("bullet");
-      div.innerHTML = `<span class="bullet-marker">•</span><span class="bullet-text">${marked.parseInline(text)}</span>`;
-    } else if (/^\s*\d+\.\s+/.test(raw)) {
-      const m = raw.match(/^(\s*)(\d+)\.\s+(.*)$/);
-      div.classList.add("ordered");
-      div.innerHTML = `<span class="bullet-marker">${m[2]}.</span><span class="bullet-text">${marked.parseInline(m[3])}</span>`;
-    } else if (/^\|/.test(raw)) {
-      // Render table rows as monospace pre-formatted (preserves columns).
-      div.classList.add("table-row");
-      div.innerHTML = `<code>${escapeHtml(raw)}</code>`;
-    } else {
-      div.innerHTML = marked.parseInline(raw);
-    }
-    root.appendChild(div);
-  }
-}
-
-// Split a list of line numbers into contiguous runs (gap of ≥1 splits).
-function splitIntoContiguousRuns(lines) {
-  const sorted = [...new Set(lines.filter((n) => Number.isInteger(n)))].sort((a, b) => a - b);
-  const runs = [];
-  let cur = null;
-  for (const n of sorted) {
-    if (cur && n === cur[cur.length - 1] + 1) {
-      cur.push(n);
-    } else {
-      cur = [n];
-      runs.push(cur);
-    }
-  }
-  return runs;
-}
-
-function applyLineFrames(items) {
-  const root = $("#tab-profile");
-  if (!root || !items.length) return;
-
-  root.querySelectorAll(".shim-frame").forEach((n) => n.remove());
-  root.querySelectorAll(".profile-line.has-frame").forEach((n) =>
-    n.classList.remove("has-frame"),
-  );
-  if (getComputedStyle(root).position === "static") {
-    root.style.position = "relative";
-  }
-
-  // The H1 title line is exempt from framing — it's a header, not content.
-  const isH1Line = (n) => {
-    const el = root.querySelector(`.profile-line[data-line="${n}"]`);
-    return !!(el && el.classList.contains("h1"));
-  };
-
-  // Each item splits into contiguous runs; each run produces a record.
-  // Frames are bucketed strictly by (startLine, endLine).
-  const bucketMap = new Map();
-  for (const item of items) {
-    const filtered = (item.profile_md_lines || []).filter(
-      (n) => Number.isInteger(n) && !isH1Line(n),
-    );
-    const runs = splitIntoContiguousRuns(filtered);
-    const summary = (item.summary || "").trim();
-    for (const run of runs) {
-      const startLine = run[0];
-      const endLine = run[run.length - 1];
-      const key = `${startLine}-${endLine}`;
-      let bucket = bucketMap.get(key);
-      if (!bucket) {
-        bucket = { startLine, endLine, key, tags: [] };
-        bucketMap.set(key, bucket);
-      }
-      // Only collapse identical (agent, summary) duplicates.
-      const dupe = bucket.tags.some((t) => t.agent === item.agent && t.summary === summary);
-      if (!dupe) bucket.tags.push({ agent: item.agent, summary });
-    }
-  }
-  const buckets = [...bucketMap.values()];
-  if (!buckets.length) return;
-
-  // Tag every profile-line covered by a frame so CSS can give it extra
-  // breathing room (only framed lines, not the whole profile).
-  for (const bucket of buckets) {
-    for (let ln = bucket.startLine; ln <= bucket.endLine; ln++) {
-      const el = root.querySelector(`.profile-line[data-line="${ln}"]`);
-      if (el) el.classList.add("has-frame");
-    }
-  }
-
-  requestAnimationFrame(() => paintFrames(root, buckets));
-}
-
-// Build a single tag pill bound to a target frame. Hovering it traces that
-// frame; the tooltip (anchored under the pill) lists the agent's summaries.
-// `isHollow` switches the pill style to the outlined "repeat" variant —
-// used when the same agent has already been rendered in this row from a
-// bigger frame (so two pills don't both look filled-gold).
-function buildTagPill({ agent, summaries, targetFrame, hostFrame, isHollow }) {
-  const tag = document.createElement("span");
-  tag.className = "golden-shim-tag" + (isHollow ? " is-hollow" : "");
-  tag.appendChild(document.createTextNode(agentLabel(agent)));
-
-  const tip = document.createElement("div");
-  tip.className = "shim-frame-tip";
-  if (summaries.length === 1) {
-    const body = document.createElement("div");
-    body.className = "shim-frame-tip-single";
-    body.textContent = summaries[0];
-    tip.appendChild(body);
-  } else {
-    const list = document.createElement("ul");
-    list.className = "shim-frame-tip-list";
-    for (const s of summaries) {
-      const li = document.createElement("li");
-      li.textContent = s;
-      list.appendChild(li);
-    }
-    tip.appendChild(list);
-  }
-  tag.appendChild(tip);
-
-  tag.addEventListener("mouseenter", () => {
-    targetFrame.classList.add("is-tracing");
-    // Lift the *host* frame above all neighbours so the tooltip (which lives
-    // in the host's stacking context) isn't covered by later frames.
-    if (hostFrame) hostFrame.classList.add("is-on-top");
-    const panel = document.querySelector(".profile-panel");
-    const tagRect = tag.getBoundingClientRect();
-    const panelRect = panel
-      ? panel.getBoundingClientRect()
-      : { top: 0, bottom: window.innerHeight };
-    const spaceBelow = panelRect.bottom - tagRect.bottom;
-    const spaceAbove = tagRect.top - panelRect.top;
-    const needed = 220;
-    tip.classList.toggle("flip-up", spaceBelow < needed && spaceAbove > spaceBelow);
-  });
-  tag.addEventListener("mouseleave", () => {
-    targetFrame.classList.remove("is-tracing");
-    if (hostFrame) hostFrame.classList.remove("is-on-top");
-    tip.classList.remove("flip-up");
-  });
-
-  return tag;
-}
-
-// Group a bucket's tag list into agent → unique-summaries[].
-function groupTagsByAgent(tags) {
-  const byAgent = new Map();
-  for (const t of tags) {
-    const list = byAgent.get(t.agent) || [];
-    const s = t.summary || "(no summary)";
-    if (!list.includes(s)) list.push(s);
-    byAgent.set(t.agent, list);
-  }
-  return byAgent;
-}
-
-function paintFrames(root, buckets) {
-  // Stable ordering: top-to-bottom, longer spans first so shorter overlapping
-  // frames render in front.
-  buckets.sort((a, b) => {
-    if (a.startLine !== b.startLine) return a.startLine - b.startLine;
-    return (b.endLine - b.startLine) - (a.endLine - a.startLine);
-  });
-
-  // Pass 1: create + append every frame element so cross-frame references
-  // (ancestor pills, etc.) can resolve via the dom map below.
-  const frameMap = new Map(); // bucket.key → { bucket, frameEl, tagRow }
-  for (const bucket of buckets) {
-    const firstLine = root.querySelector(`.profile-line[data-line="${bucket.startLine}"]`);
-    const lastLine = root.querySelector(`.profile-line[data-line="${bucket.endLine}"]`);
-    if (!firstLine || !lastLine) continue;
-
-    const top = firstLine.offsetTop;
-    const bottom = lastLine.offsetTop + lastLine.offsetHeight;
-
-    const frame = document.createElement("div");
-    frame.className = "shim-frame";
-    frame.dataset.frameId = bucket.key;
-    frame.style.top = `${top - 1}px`;
-    frame.style.height = `${bottom - top + 2}px`;
-    frame.style.left = "0";
-    frame.style.right = "0";
-
-    const tagRow = document.createElement("div");
-    tagRow.className = "shim-frame-tags";
-    frame.appendChild(tagRow);
-    root.appendChild(frame);
-
-    frameMap.set(bucket.key, { bucket, frameEl: frame, tagRow });
-  }
-
-  // Group buckets by startLine. Within a group, the SMALLEST bucket hosts
-  // the shared tag-row — it's the front-most in DOM (smaller frames render
-  // after bigger ones), so its tag-row isn't covered by neighbours. Each
-  // shared row contains pills from every group member: largest = filled
-  // gold, others = hollow (so the bigger box's pill is visible alongside
-  // the smaller box's pill, side by side).
-  const groupsByStart = new Map();
-  for (const b of buckets) {
-    if (!groupsByStart.has(b.startLine)) groupsByStart.set(b.startLine, []);
-    groupsByStart.get(b.startLine).push(b);
-  }
-  for (const g of groupsByStart.values()) {
-    g.sort(
-      (x, y) =>
-        y.endLine - y.startLine - (x.endLine - x.startLine) ||
-        x.endLine - y.endLine,
-    );
-  }
-  const hosts = new Set();
-  for (const g of groupsByStart.values()) {
-    hosts.add(g[g.length - 1]); // last = smallest = host
-  }
-
-  // Pass 2: only hosts populate their tag-rows. Each host renders pills
-  // for its same-startLine group members only — bigger first, smaller
-  // after. Frames that don't share a startLine with any other frame just
-  // render their own pill at their own top edge. Pills never repeat
-  // across rows.
-  for (const { bucket, frameEl, tagRow } of frameMap.values()) {
-    if (!hosts.has(bucket)) continue;
-
-    const group = groupsByStart.get(bucket.startLine);
-    const toRender = [...group];
-    toRender.sort(
-      (x, y) =>
-        y.endLine - y.startLine - (x.endLine - x.startLine) ||
-        x.startLine - y.startLine,
-    );
-
-    // Per-agent dedup within the shared row: as we walk frames bigger →
-    // smaller, the FIRST pill for each agent is filled. A second pill for
-    // the same agent (from a smaller frame in this row) renders hollow.
-    // Different agents on different frames → all filled.
-    const seenAgents = new Set();
-    for (const b of toRender) {
-      const targetEntry = frameMap.get(b.key);
-      if (!targetEntry) continue;
-      const byAgent = groupTagsByAgent(b.tags);
-      for (const [agent, summaries] of byAgent) {
-        const isHollow = seenAgents.has(agent);
-        tagRow.appendChild(
-          buildTagPill({
-            agent,
-            summaries,
-            targetFrame: targetEntry.frameEl,
-            hostFrame: frameEl,
-            isHollow,
-          }),
-        );
-        seenAgents.add(agent);
-      }
-    }
   }
 }
 
@@ -592,16 +278,12 @@ async function loadFixtureIntoInput(slug) {
 async function loadEmailTab(slug) {
   const wrap = $("#tab-email");
   if (state.emailCache.has(slug)) {
-    const golden = await ensureGoldenMap(slug);
-    renderEmailTab(state.emailCache.get(slug), golden.emailMap);
+    renderEmailTab(state.emailCache.get(slug));
     return;
   }
   wrap.innerHTML = `<div class="email-empty">loading…</div>`;
   try {
-    const [r, golden] = await Promise.all([
-      fetch(`/api/personas/${slug}/mailbox`),
-      ensureGoldenMap(slug),
-    ]);
+    const r = await fetch(`/api/personas/${slug}/mailbox`);
     if (!r.ok) {
       wrap.innerHTML = `<div class="email-empty">No mailbox for this persona — they haven't granted Gmail access.</div>`;
       state.emailCache.set(slug, []);
@@ -610,86 +292,21 @@ async function loadEmailTab(slug) {
     const data = await r.json();
     const messages = data.messages || [];
     state.emailCache.set(slug, messages);
-    renderEmailTab(messages, golden.emailMap);
+    renderEmailTab(messages);
   } catch (err) {
     wrap.innerHTML = `<div class="email-empty">failed to load: ${escapeHtml(err.message)}</div>`;
   }
 }
 
-// Pull the persona's golden set (cached). Returns:
-//   items     — expected_task only, used for the email/calendar tab shims
-//                (skips would be noise there — we want "agents that ACT
-//                on this thing", not "agents that decided to ignore it")
-//   allItems  — tasks + skips, used for the profile shim where line-number
-//                provenance keeps things scoped tightly enough that skips
-//                are meaningful signal too
-//   emailMap  — email_id → Set<agent>, computed from items.evidence_email_ids
-async function ensureGoldenMap(slug) {
-  if (!state.goldenCache.has(slug)) {
-    try {
-      const r = await fetch(`/api/personas/${slug}/golden`);
-      if (r.ok) state.goldenCache.set(slug, await r.json());
-      else state.goldenCache.set(slug, { items: [], agents: [] });
-    } catch {
-      state.goldenCache.set(slug, { items: [], agents: [] });
-    }
-  }
-  const allItems = state.goldenCache.get(slug).items || [];
-  const items = allItems.filter((i) => i.kind === "expected_task");
-  const emailMap = new Map();
-  for (const item of items) {
-    for (const eid of item.evidence_email_ids || []) {
-      if (!emailMap.has(eid)) emailMap.set(eid, new Set());
-      emailMap.get(eid).add(item.agent);
-    }
-  }
-  return { items, allItems, emailMap };
-}
-
-// Heuristic word-overlap match: does any expected_task summary share a
-// meaningful word (≥4 chars) with the given haystack text? Used for
-// calendar events + profile sections where the schema doesn't yet carry
-// explicit evidence ids.
-function matchAgentsByText(haystack, items) {
-  const norm = (s) => (s || "").toLowerCase();
-  const tokens = (s) =>
-    norm(s).split(/[^\w]+/).filter((w) => w.length >= 4);
-  const haystackTokens = new Set(tokens(haystack));
-  if (!haystackTokens.size) return new Set();
-  const agents = new Set();
-  for (const item of items) {
-    const itemTokens = tokens(`${item.summary} ${item.category || ""}`);
-    if (itemTokens.some((t) => haystackTokens.has(t))) agents.add(item.agent);
-  }
-  return agents;
-}
-
-// Apply the shim class + tag to a card-shaped element.
-function applyShim(el, agents) {
-  if (!agents || !agents.size) return;
-  el.classList.add("golden-shim");
-  const tag = document.createElement("span");
-  tag.className = "golden-shim-tag";
-  const labels = [...agents].map(agentLabel);
-  tag.textContent = labels.join(" · ");
-  tag.title = `In golden set of: ${labels.join(", ")}`;
-  el.appendChild(tag);
-}
-
-function renderEmailTab(messages, goldenMap = new Map()) {
+function renderEmailTab(messages) {
   const wrap = $("#tab-email");
   if (!messages.length) {
     wrap.innerHTML = `<div class="email-empty">No emails yet — this persona is profile-only (no Gmail connected).</div>`;
     return;
   }
-  // Sort: golden-shimmed ones first (so the shimmer is visible without scrolling),
-  // then newest-first within each group.
-  const sorted = [...messages].sort((a, b) => {
-    const aGolden = goldenMap.has(a.id) ? 0 : 1;
-    const bGolden = goldenMap.has(b.id) ? 0 : 1;
-    if (aGolden !== bGolden) return aGolden - bGolden;
-    return (b.received_at || "").localeCompare(a.received_at || "");
-  });
+  const sorted = [...messages].sort((a, b) =>
+    (b.received_at || "").localeCompare(a.received_at || ""),
+  );
 
   wrap.innerHTML = "";
   const search = document.createElement("input");
@@ -701,7 +318,7 @@ function renderEmailTab(messages, goldenMap = new Map()) {
   const list = document.createElement("div");
   wrap.appendChild(list);
 
-  const cards = sorted.map((m) => buildEmailCard(m, goldenMap.get(m.id)));
+  const cards = sorted.map((m) => buildEmailCard(m));
   cards.forEach((c) => list.appendChild(c));
 
   search.addEventListener("input", () => {
@@ -712,10 +329,9 @@ function renderEmailTab(messages, goldenMap = new Map()) {
   });
 }
 
-function buildEmailCard(m, goldenAgents) {
+function buildEmailCard(m) {
   const card = document.createElement("div");
   card.className = "email-card";
-  applyShim(card, goldenAgents);
   const haystack =
     `${m.from || ""} ${m.subject || ""} ${m.snippet || ""} ${m.body || ""}`.toLowerCase();
   card.dataset.haystack = haystack;
@@ -752,16 +368,12 @@ function buildEmailCard(m, goldenAgents) {
 async function loadCalendarTab(slug) {
   const wrap = $("#tab-calendar");
   if (state.calendarCache.has(slug)) {
-    const golden = await ensureGoldenMap(slug);
-    renderCalendarTab(state.calendarCache.get(slug), golden.items);
+    renderCalendarTab(state.calendarCache.get(slug));
     return;
   }
   wrap.innerHTML = `<div class="calendar-empty">loading…</div>`;
   try {
-    const [r, golden] = await Promise.all([
-      fetch(`/api/personas/${slug}/calendar`),
-      ensureGoldenMap(slug),
-    ]);
+    const r = await fetch(`/api/personas/${slug}/calendar`);
     if (!r.ok) {
       wrap.innerHTML = `<div class="calendar-empty">No calendar for this persona — they haven't granted Calendar access.</div>`;
       state.calendarCache.set(slug, []);
@@ -770,13 +382,13 @@ async function loadCalendarTab(slug) {
     const data = await r.json();
     const events = data.events || [];
     state.calendarCache.set(slug, events);
-    renderCalendarTab(events, golden.items);
+    renderCalendarTab(events);
   } catch (err) {
     wrap.innerHTML = `<div class="calendar-empty">failed to load: ${escapeHtml(err.message)}</div>`;
   }
 }
 
-function renderCalendarTab(events, goldenItems = []) {
+function renderCalendarTab(events) {
   const wrap = $("#tab-calendar");
   if (!events.length) {
     wrap.innerHTML = `<div class="calendar-empty">No calendar events yet — this persona is profile-only.</div>`;
@@ -805,10 +417,6 @@ function renderCalendarTab(events, goldenItems = []) {
     for (const e of list) {
       const ev = document.createElement("div");
       ev.className = "calendar-event" + (e.all_day ? " all-day" : "");
-      // Heuristic: any expected_task whose summary shares a 4+ char word
-      // with this event's summary or description.
-      const haystack = `${e.summary || ""} ${e.description || ""}`;
-      applyShim(ev, matchAgentsByText(haystack, goldenItems));
       const time = document.createElement("div");
       time.className = "calendar-time";
       const start = String(e.start || "");
