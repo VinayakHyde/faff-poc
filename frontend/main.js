@@ -30,13 +30,62 @@ const AGENTS = [
 
 const state = {
   selected: null,
-  running: false,
   activeTab: "profile",
   // Per-persona caches so switching tabs doesn't refetch.
   emailCache: new Map(),    // slug → messages[]
   calendarCache: new Map(), // slug → events[]
   goldenCache: new Map(),   // slug → { items, agents }
+  // Per-persona run-panel "chat" state. Each entry owns its own stages
+  // DOM subtree so SSE events keep streaming into a chat even while the
+  // user is viewing a different persona; switching back just toggles
+  // visibility on the existing DOM.
+  runChats: new Map(),      // slug → { stagesEl, dailyInputText, runStatus, hasRun, running }
 };
+
+// ---- per-persona run-panel chat ----
+
+// Lazy-create or return the chat container for this persona. The stages
+// subtree stays attached even while the user views a different persona —
+// a running SSE keeps writing to it; switching back just unhides it.
+function ensureChat(slug) {
+  let chat = state.runChats.get(slug);
+  if (chat) return chat;
+  const stagesEl = document.createElement("div");
+  stagesEl.className = "trace-stages";
+  stagesEl.dataset.slug = slug;
+  stagesEl.hidden = true;
+  document.getElementById("run-output").appendChild(stagesEl);
+  chat = { slug, stagesEl, dailyInputText: "", runStatus: "", hasRun: false, running: false };
+  state.runChats.set(slug, chat);
+  return chat;
+}
+
+function setActiveChat(slug) {
+  for (const chat of state.runChats.values()) {
+    chat.stagesEl.hidden = chat.slug !== slug || !chat.hasRun;
+  }
+}
+
+// Returns the body of stage `no` within `chat`'s stages subtree.
+function chatStageBody(chat, no) {
+  return chat.stagesEl.querySelector(`.stage-body[data-stage-no="${no}"]`);
+}
+
+// Update the action-bar chrome (Simulate button + status text) to reflect
+// whichever persona is currently visible.
+function syncRunPanelChrome() {
+  const chat = state.selected ? state.runChats.get(state.selected) : null;
+  const btn = document.getElementById("run-btn");
+  const status = document.getElementById("run-status");
+  if (!btn || !status) return;
+  if (!chat) {
+    btn.disabled = true;
+    status.textContent = "";
+    return;
+  }
+  btn.disabled = chat.running;
+  status.textContent = chat.runStatus;
+}
 
 // ---- sidebar resize constants (must be declared before init() IIFE) ----
 
@@ -211,7 +260,14 @@ function renderPersonaList(personas) {
 }
 
 async function selectPersona(slug) {
-  if (state.running) return;
+  if (state.selected === slug) return;
+
+  // Snapshot the outgoing persona's editor text so it survives the switch.
+  if (state.selected) {
+    const out = state.runChats.get(state.selected);
+    if (out) out.dailyInputText = getDailyInputRaw();
+  }
+
   state.selected = slug;
   document.body.classList.add("has-persona");
   $$(".persona-list li").forEach((li) => {
@@ -224,8 +280,20 @@ async function selectPersona(slug) {
   $("#tab-calendar").innerHTML = "";
   $("#tab-golden").innerHTML = "";
 
-  await Promise.all([loadProfile(slug), loadFixtureIntoInput(slug)]);
-  $("#run-btn").disabled = false;
+  // Create or surface this persona's chat (stages + running run, if any).
+  const chat = ensureChat(slug);
+  setActiveChat(slug);
+
+  // Restore the persona's editor text, or load the fixture if none yet.
+  await loadProfile(slug);
+  if (chat.dailyInputText) {
+    setDailyInput(chat.dailyInputText);
+  } else {
+    await loadFixtureIntoInput(slug);
+    chat.dailyInputText = getDailyInputRaw();
+  }
+
+  syncRunPanelChrome();
 }
 
 // ---- profile panel ----
@@ -757,16 +825,22 @@ const STAGE_DEFS = [
 ];
 
 async function runStream() {
-  if (state.running || !state.selected) return;
-  state.running = true;
-  $("#run-btn").disabled = true;
-
+  if (!state.selected) return;
   const slug = state.selected;
-  const inputRaw = getDailyInputRaw().trim();
+  const chat = ensureChat(slug);
+  if (chat.running) return;
 
-  // Reset all stage cards for a fresh run.
-  initStages();
-  $("#run-status").textContent = "running…";
+  // Snapshot the editor text into chat state and use it for the run.
+  chat.dailyInputText = getDailyInputRaw();
+  const inputRaw = chat.dailyInputText.trim();
+
+  // Replace any prior run for this persona — single thread per chat.
+  chat.running = true;
+  chat.hasRun = true;
+  chat.runStatus = "running…";
+  initStages(chat);
+  if (state.selected === slug) setActiveChat(slug);
+  syncRunPanelChrome();
 
   const startedAt = performance.now();
 
@@ -782,15 +856,15 @@ async function runStream() {
       throw new Error(`HTTP ${response.status}: ${text}`);
     }
 
-    await consumeSSE(response, (event, data) => handleSSEFrame(event, data, startedAt));
-    finalizeStages();
-    $("#run-status").textContent = `done — ${((performance.now() - startedAt) / 1000).toFixed(1)}s`;
+    await consumeSSE(response, (event, data) => handleSSEFrame(chat, event, data, startedAt));
+    finalizeStages(chat);
+    chat.runStatus = `done — ${((performance.now() - startedAt) / 1000).toFixed(1)}s`;
   } catch (err) {
-    appendTraceError(err.message);
-    $("#run-status").textContent = `error`;
+    appendTraceError(chat, err.message);
+    chat.runStatus = "error";
   } finally {
-    state.running = false;
-    $("#run-btn").disabled = false;
+    chat.running = false;
+    if (state.selected === slug) syncRunPanelChrome();
   }
 }
 
@@ -823,43 +897,42 @@ async function consumeSSE(response, onFrame) {
   }
 }
 
-function handleSSEFrame(eventName, data, startedAt) {
+function handleSSEFrame(chat, eventName, data, startedAt) {
   if (eventName === "trace") {
-    routeTraceEvent(data, startedAt);
+    routeTraceEvent(chat, data, startedAt);
   } else if (eventName === "result") {
-    renderFinalStage(data);
+    renderFinalStage(chat, data);
   } else if (eventName === "error") {
-    appendTraceError(data.error || "unknown error");
+    appendTraceError(chat, data.error || "unknown error");
   }
 }
 
 // ---- staged trace renderer ----
 
-function initStages() {
-  const host = $("#trace-stages");
-  host.hidden = false;
-  host.innerHTML = "";
+function initStages(chat) {
+  chat.stagesEl.hidden = state.selected !== chat.slug;
+  chat.stagesEl.innerHTML = "";
   for (const def of STAGE_DEFS) {
     const stage = document.createElement("section");
     stage.className = "stage";
-    stage.id = `stage-${def.no}`;
+    stage.dataset.stageNo = String(def.no);
     stage.innerHTML = `
       <div class="stage-head">
         <span class="step-no">Step ${def.no}</span>
         <h3>${def.title}</h3>
         ${def.subtitle ? `<span class="stage-sub">${def.subtitle}</span>` : ""}
       </div>
-      <div class="stage-body" id="stage-${def.no}-body"></div>
+      <div class="stage-body" data-stage-no="${def.no}"></div>
     `;
-    host.appendChild(stage);
+    chat.stagesEl.appendChild(stage);
   }
 }
 
-function finalizeStages() {
+function finalizeStages(chat) {
   // Any stage that didn't receive an event gets a "no events" placeholder
   // — clearer than an empty card with just a header.
   for (const def of STAGE_DEFS) {
-    const body = document.getElementById(`stage-${def.no}-body`);
+    const body = chatStageBody(chat, def.no);
     if (body && !body.children.length) {
       const empty = document.createElement("div");
       empty.className = "stage-empty";
@@ -871,10 +944,10 @@ function finalizeStages() {
   }
 }
 
-function routeTraceEvent(traceEvent, startedAt) {
+function routeTraceEvent(chat, traceEvent, startedAt) {
   const stageNo = STAGE_BY_TYPE[traceEvent.type];
   if (!stageNo) return; // orchestrator_finished etc. — not displayed
-  const body = document.getElementById(`stage-${stageNo}-body`);
+  const body = chatStageBody(chat, stageNo);
   if (!body) return;
   const elapsed = `+${((performance.now() - startedAt) / 1000).toFixed(1)}s`;
 
@@ -897,11 +970,12 @@ function routeTraceEvent(traceEvent, startedAt) {
   }
   if (!node) return;
 
-  // Streaming follow-tail: scroll the new node into view IF the user was
-  // already at the bottom of the run-panel before we appended. Once they
-  // scroll up to inspect, we leave them alone — standard tail -f behavior.
-  // Captured BEFORE append because the append itself extends scrollHeight.
-  const wasAtBottom = isPanelAtBottom();
+  // Streaming follow-tail: scroll the new node into view IF this chat is
+  // the visible one AND the user was already at the bottom of the run-panel.
+  // For background chats we just append silently — when the user switches
+  // back, the freshest activity is already at the end of the chat.
+  const isVisible = state.selected === chat.slug;
+  const wasAtBottom = isVisible && isPanelAtBottom();
   body.appendChild(node);
   if (wasAtBottom) {
     node.scrollIntoView({ block: "end", behavior: "instant" });
@@ -1081,8 +1155,8 @@ function renderPrefNode(traceEvent, elapsed) {
 
 // ── stage 5 — final surfaced messages (from `result` SSE frame) ──
 
-function renderFinalStage(result) {
-  const body = document.getElementById("stage-5-body");
+function renderFinalStage(chat, result) {
+  const body = chatStageBody(chat, 5);
   if (!body) return;
   body.innerHTML = "";
   const messages = result.final_messages || [];
@@ -1172,9 +1246,9 @@ function buildPayloadBlock(payload) {
   return wrap;
 }
 
-function appendTraceError(msg) {
+function appendTraceError(chat, msg) {
   // Errors land in stage 1 since they're typically subagent failures.
-  const body = document.getElementById("stage-1-body");
+  const body = chatStageBody(chat, 1);
   if (!body) return;
   const node = document.createElement("div");
   node.className = "trace-node error";
